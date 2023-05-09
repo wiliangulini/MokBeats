@@ -1,0 +1,20 @@
+@font-face {
+  font-family: Walsheim;
+  src: url("assets/fonts/GTWalsheimPro-Light.woff");
+}
+@font-face {
+  font-family: WalsheimBold;
+  src: url("assets/fonts/GTWalsheimPro-Bold.woff");
+}
+body {
+  font-family: Walsheim;
+  background-color: #101010 !important;
+}
+a {
+  text-decoration: none !important;
+}
+.modal-backdrop {
+  z-index: 1050 !important;
+}
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

@@ -1,0 +1,71 @@
+nav.navbar {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1020;
+}
+li.nav-item {
+  position: relative;
+}
+li.nav-item a.nav-link:hover:before {
+  background-color: #00db7a;
+}
+li.nav-item a.nav-link:hover:before,
+li.nav-item.active a:before {
+  width: 100%;
+}
+li.nav-item a:before {
+  width: 0%;
+  left: 0;
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  height: 5px;
+  background-color: #dcad54;
+  transition: all 300ms linear;
+  content: "";
+}
+a.nav-link,
+a.nav-link span.material-icons {
+  cursor: pointer !important;
+}
+a.nav-link {
+  padding: 0.5rem 1rem !important;
+  transition: all .45s ease-in-out;
+}
+.navbar-light .navbar-nav .nav-link,
+.dropdown-item {
+  color: #FFF;
+  font-size: 15px;
+  text-transform: uppercase;
+  font-weight: bolder;
+}
+.dropdown-item:hover {
+  color: black;
+}
+nav.navbar {
+  height: 7.7vh;
+}
+.bg-dark {
+  background-image: linear-gradient(90deg, #000, #343a40);
+}
+.dropdown-menu {
+  background-color: #343a40;
+}
+ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 {
+  max-width: 40%;
+}
+ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link d-flex justify-content-center align-items-center span.material-icons {
+  font-size: 32px;
+}
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .col-sm-2.col-md-2.col-lg-2.col-xl-2 {
+    width: 65%;
+  }
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6 {
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    padding: 0;
+  }
+}

@@ -1,0 +1,55 @@
+<nav #nav class="navbar navbar-expand-lg navbar-light">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-between align-items-center">
+    <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2">
+      <a [routerLink]="['']" class="navbar-brand" href="#"><logo></logo></a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav w-100">
+        <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 d-flex justify-content-end align-items-end">
+          <li routerLinkActive="active" class="nav-item">
+            <a class="nav-link" [routerLink]="['/home']" href="">Home</a>
+          </li>
+          <li routerLinkActive="active" class="nav-item">
+            <a class="nav-link" [routerLink]="['/musicas']" href="">Músicas</a>
+          </li>
+          <li routerLinkActive="active" class="nav-item">
+            <a class="nav-link" [routerLink]="['/efeitos']" href="">Efeitos Sonoros</a>
+          </li>
+          <li routerLinkActive="active" class="nav-item">
+            <a class="nav-link" [routerLink]="['/produtores']" href="">Produtores</a>
+          </li>
+          <li routerLinkActive="active" class="nav-item">
+            <a class="nav-link" href="#">Blog</a>
+          </li>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex justify-content-end align-items-end">
+          <li routerLinkActive="active" class="nav-item">
+            <a class="nav-link" href="#">Preços</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+              Idioma
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">Português</a>
+              <a class="dropdown-item" href="#">Inglês</a>
+            </div>
+          </li>
+          <li routerLinkActive="active" class="nav-item">
+            <a class="nav-link d-flex justify-content-center align-items-center" [routerLink]="['/carrinho']" href="">
+              <span class="material-icons">shopping_cart</span>
+            </a>
+          </li>
+          <li routerLinkActive="active" class="nav-item">
+            <a class="nav-link d-flex justify-content-center align-items-center" (click)="modalOpen()">
+              <span class="material-icons">person</span>
+            </a>
+          </li>
+        </div>
+      </ul>
+    </div>
+  </div>
+</nav>

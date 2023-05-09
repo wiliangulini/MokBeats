@@ -1,0 +1,277 @@
+article.container-fluid {
+  background: url('../../assets/images/CDJ-3000.jpg');
+  height: calc(100vh - 7.7vh);
+  background-position: top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-top: 7.7vh;
+}
+button, a {
+  transition: all .4s ease-in;
+}
+h1, h3 {
+  text-align: center;
+}
+h3 {
+  font-size: 1.60rem !important;
+  margin-top: 3%;
+}
+article input,
+article input:focus {
+  outline: none !important;
+  border: 0;
+  box-shadow: none;
+}
+article input {
+  border: none;
+}
+.col-sm-9.col-md-9.col-lg-9.col-xl-9.title {
+  padding-top: 13%;
+}
+form.form, #genero {
+  height: 50px;
+}
+#genero option {
+  color: black !important;
+}
+#genero {
+  background: #FFF;
+  color: #000;
+  border: 1px solid #FFF;
+  border-radius: 999px 0 0 999px;
+  width: 150px;
+  font-weight: bold;
+  text-transform: uppercase;
+  outline: none;
+}
+.form-group {
+  margin: 0 !important;
+}
+.input-group.w-100,
+section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 button.btn.btn-primary,
+a.btn.btn-warning,
+button.btn.w-100.btn-warning,
+form .input-group button.btn.btn-warning,
+section.one .container .row.button button {
+  border-radius: 999px;
+}
+a.btn.btn-warning,
+section.one .container .row.button button,
+button.btn.w-100.btn-warning {
+  background: #dcad54;
+  font-weight: bold;
+  color: #FFF;
+  border: 0;
+}
+svg.hearth1 {
+  display: none;
+}
+.amarelo {
+  fill: #dcad54 !important;
+}
+#hearth {
+  display: block;
+}
+form .input-group button.btn.btn-warning {
+  background: #dcad54;
+  font-weight: bold;
+  color: #000;
+  height: 27px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  padding: 0px 12px;
+  margin-right: 10px;
+}
+.input-group.w-100 {
+  background: #FFF;
+}
+.form-control.mr-sm-2 {
+  margin: 0 !important;
+  height: inherit;
+  border-right: 0 !important;
+}
+.form-group {
+  border-right: 1px solid #ddd;
+}
+button.btn-outline-success {
+  height: 90%;
+  font-weight: bold;
+  border-radius: 999px !important;
+  margin: 6px 6px 0px !important;
+}
+article h1, article h3,
+section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p,
+section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 a.btn,
+section.three .container .row.trusted p,
+section.four .container .row {
+  color: #FFF !important;
+}
+section.one .container .row h2,
+section.one .container .row h3,
+section.one .material-icons,
+section.one .text p.h4 a,
+section.one .text p.h6 a,
+section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2 p,
+section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 button.btn.btn-primary {
+  color: #000 !important;
+}
+section.one .container .row h2 {
+  font-size: 4rem;
+  font-weight: bold;
+  width: 70%;
+}
+section.one .container .row h3 {
+  width: 75%;
+  font-weight: 600;
+}
+section.one {
+  background: #ffff;
+  padding-bottom: 4rem !important;
+}
+section.one .container .row.button button {
+
+}
+section.one .text {
+  margin-left: 3%;
+}
+section.one .text p.h6 a {
+  font-size: 14px;
+}
+section.one .material-icons {
+  font-size: 45px !important;
+  cursor: pointer;
+}
+section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 {
+  flex: 0 0 23.5%;
+  max-width: 23.5%;
+}
+section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 p.h4 {
+  margin-bottom: 0;
+}
+section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.border-bottom {
+  padding: 1.5% 0%;
+}
+section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1.loops {
+  flex: 0 0 10.333333%;
+  max-width: 10.333333%;
+}
+section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1.loops p.h6 {
+  color: #000;
+  border-radius: 50%;
+  border: 1px solid #000;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+button.btn.btn-icons {
+  background: transparent;
+  border: 0;
+}
+section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 button.btn.btn-primary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #000;
+  background: transparent;
+  font-weight: bold;
+}
+section.two {
+  padding-top: 4.5% !important;
+}
+section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p.h2 {
+  font-weight: bold;
+  font-size: 50px;
+}
+section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p.h5 {
+  font-size: 20px;
+}
+section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 a.btn {
+  font-size: 18px;
+  width: 37%;
+}
+section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.txt {
+  max-width: 40%;
+  padding-left: 5%;
+}
+section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.video {
+  max-width: 60%;
+  flex: 0 0 60%;
+}
+section.three .container {
+  padding: 4% 0 0;
+  background: #FFF;
+}
+section.three .container .row .control .controlInt span.material-icons {
+  font-size: 85px;
+}
+section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h1 {
+  font-size: 3.5rem;
+}
+section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h5 {
+  font-size: 18px;
+  padding-right: 8%;
+}
+section.three .container .row.trusted {
+  background: #cfab5b;
+}
+section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn {
+  width: 52%;
+  font-size: 17px;
+  margin-top: 6%;
+}
+section.three {
+  padding-bottom: 4.5% !important;
+}
+section.four {
+  background: url('../../assets/images/background.png');
+  background-position: center;
+  background-size: cover;
+  height: 60vh;
+  background-repeat: no-repeat;
+  padding: 7% 0;
+  position: relative;
+}
+section.four .container {
+  position: absolute;
+  top: 22vh;
+  right: 20vw;
+}
+section.four .container .row p.h5.win {
+  display: none;
+}
+section.four .container .row p.h1.text-center {
+  font-size: 50px;
+  font-weight: bold;
+  color: #dcad54;
+  font-family: WalsheimBold !important;
+}
+section.four .container .row form .inputInt {
+  border-bottom: 1px solid #8c8c8c;
+  color: #8c8c8c;
+  width: 70%;
+  margin-right: 3%;
+  padding-bottom: 1%;
+}
+section.four .container .row form {
+  margin-top: 3%;
+}
+section.four .container .row form .btnSubmit {
+  width: 27%;
+}
+section.four .container .row form input {
+  background: transparent;
+  outline: none;
+  border: 0;
+  width: 68%;
+  padding-left: 2%;
+  font-size: 20px;
+  color: #FFF;
+}
+section.four .container .row form:focus-within .control .inputInt {
+  border-bottom: 1px solid #FFF;
+  color: #FFF;
+}

@@ -1,0 +1,50 @@
+footer {
+  padding: 5% 0;
+}
+footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul {
+  list-style: none;
+}
+footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 p.h5 {
+  color: #dcad54;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li a,
+footer .container .row .col-sm-1.col-md-1.col-lg-1.col-xl-1 a {
+  transition: all .35s ease-in;
+}
+footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li a {
+  height:45px !important;
+  min-width:45px !important;
+}
+footer .container .row .col-sm-1.col-md-1.col-lg-1.col-xl-1 a {
+  &:hover {
+    background: #252525;
+    color: #FFF;
+  }
+  &:hover svg {
+    fill: #FFF;
+  }
+}
+footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li {
+  cursor: pointer;
+}
+footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li:hover a {
+  color: #FFFFFF;
+  font-weight: bold;
+}
+footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li a,
+footer .container .row.creditCard .col-sm-3.col-md-3.col-lg-3.col-xl-3,
+footer .container .row.directs p {
+  color: #828282;
+}
+footer .container .row.creditCard .col-sm-3.col-md-3.col-lg-3.col-xl-3 {
+  max-width: 23%;
+  font-weight: bold;
+  font-family: 'WALSHEIMBOLD';
+}
+footer .container .row.redesSociais,
+footer .container .row.creditCard,
+footer .container .row.directs {
+  margin: 5.5% 0;
+}
