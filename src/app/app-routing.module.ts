@@ -5,6 +5,7 @@ import {LoginComponent} from "./login/login.component";
 import {PoliticaPrivacidadeComponent} from "./politica-privacidade/politica-privacidade.component";
 import {MusicasComponent} from "./musicas/musicas.component";
 import {GeneroComponent} from "./genero/genero.component";
+import {HumorComponent} from "./humor/humor.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'musicas', component: MusicasComponent },
   { path: 'politica-de-privacidade', component: PoliticaPrivacidadeComponent },
   { path: 'genero', component: GeneroComponent },
+  { path: 'humor', component: HumorComponent },
 ];
 
 @NgModule({

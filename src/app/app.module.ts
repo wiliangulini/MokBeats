@@ -22,6 +22,7 @@ import {MusicasService} from "./musicas/musicas.service";
 import { GeneroComponent } from './genero/genero.component';
 import { FilterComponent } from './filter/filter.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import { HumorComponent } from './humor/humor.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     MusicasComponent,
     GeneroComponent,
     FilterComponent,
+    HumorComponent,
   ],
     imports: [
         BrowserModule,

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {MusicasService} from "../musicas/musicas.service";
 
 @Component({
   selector: 'app-filter',
@@ -122,8 +123,13 @@ export class FilterComponent implements OnInit {
     "Folk",
     "Hip Hop",
   ];
+  humor: any[];
 
-  constructor() { }
+  constructor(
+    private musicService: MusicasService,
+  ) {
+    this.humor = this.musicService.humor;
+  }
 
   ngOnInit(): void {
   }

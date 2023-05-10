@@ -114,15 +114,19 @@ section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-fle
   fill: #dcad54;
 }
 .card,
+#humorAccordion,
 #generoAccordion {
   background-color: #1b1b1b;
 }
+#humorAccordion .container-fluid .row button.btn.btn-warning,
 #generoAccordion .container-fluid .row button.btn.btn-warning {
   border-radius: 999px;
 }
+#humorAccordion .container-fluid .row button.btn.btn-warning,
 #generoAccordion .container-fluid .row button.btn.btn-warning {
   width: 15%;
 }
+#humorAccordion .container-fluid .row button.btn.btn-warning,
 #generoAccordion .container-fluid .row button.btn.btn-warning {
   background: #dcad54;
   font-weight: bold;
@@ -133,6 +137,7 @@ section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-fle
   padding: 7px 12px;
   margin-right: 10px;
 }
+#humorAccordion .container-fluid .row button.btn.btn-warning,
 #generoAccordion .container-fluid .row button.btn.btn-warning,
 button.btn.btn-warning a {
   color: #FFFFFF;

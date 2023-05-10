@@ -45,7 +45,16 @@ article.one {
   margin-bottom: 0;
   width: inherit;
 }
-
+.svg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  border: 1px solid #FFF;
+  border-radius: 50%;
+  cursor: pointer;
+}
 button, a {
   transition: all .4s ease-in;
 }

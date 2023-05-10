@@ -28,9 +28,39 @@ export class MusicasComponent implements OnInit {
     {value: 'Bonieky', viewValue: 'Bonieky'},
     {value: 'Wilian', viewValue: 'Wilian'},
     {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
-    {value: 'HighFrenetic', viewValue: 'HighFrenetic'}
+    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
+    {value: 'Sweet Spot', viewValue: 'Sweet Spot'},
+    {value: 'Bonieky', viewValue: 'Bonieky'},
+    {value: 'Wilian', viewValue: 'Wilian'},
+    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
+    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
+    {value: 'Sweet Spot', viewValue: 'Sweet Spot'},
+    {value: 'Bonieky', viewValue: 'Bonieky'},
+    {value: 'Wilian', viewValue: 'Wilian'},
+    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
+    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
+    {value: 'Sweet Spot', viewValue: 'Sweet Spot'},
+    {value: 'Bonieky', viewValue: 'Bonieky'},
+    {value: 'Wilian', viewValue: 'Wilian'},
+    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
+    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
   ];
   produtores: Array<any> = [
+    {value: 'The Funkster', viewValue: 'The Funkster'},
+    {value: 'Code', viewValue: 'Code'},
+    {value: 'Impertinent', viewValue: 'Impertinent'},
+    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
+    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
+    {value: 'The Funkster', viewValue: 'The Funkster'},
+    {value: 'Code', viewValue: 'Code'},
+    {value: 'Impertinent', viewValue: 'Impertinent'},
+    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
+    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
+    {value: 'The Funkster', viewValue: 'The Funkster'},
+    {value: 'Code', viewValue: 'Code'},
+    {value: 'Impertinent', viewValue: 'Impertinent'},
+    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
+    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
     {value: 'The Funkster', viewValue: 'The Funkster'},
     {value: 'Code', viewValue: 'Code'},
     {value: 'Impertinent', viewValue: 'Impertinent'},
@@ -50,6 +80,8 @@ export class MusicasComponent implements OnInit {
     this.titles = this.musicService.convertida2;
     this.music = this.musicService.convertida;
     this.humor = this.musicService.humor;
+    console.log(this.dados.length);
+    console.log(this.produtores.length);
   }
 
   ngOnInit(): void {
