@@ -16,5 +16,8 @@ a {
 .modal-backdrop {
   z-index: 1050 !important;
 }
+.mat-checkbox-frame, .mat-checkbox-background {
+  display: none !important;
+}
 /* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+@import 'bootstrap/scss/bootstrap';

@@ -1,16 +1,5 @@
-article.one,
-section.filter {
+article.one {
   background-color: #101010;
-}
-section.filter {
-  margin-top: 8vh;
-}
-section.filter .container-fluid {
-  height: 8vh;
-  background: #252525;
-}
-section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4.p-0 .h5.font-weight-bold {
-  font-size: 18px !important;
 }
 #navLeft ul li span.text-uppercase {
   color: #dcad54;
@@ -29,18 +18,26 @@ section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4.p-0 .h5.
   height: 70px;
   transition: all .1ms linear !important;
 }
-#navLeft ul li,
-section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4.p-0 {
+#navLeft ul li {
   color: #FFF !important;
-}
-section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-sm-6.col-md-6.col-lg-6.col-xl-6 .btn.h-100:hover {
-  color: #dcad54;
 }
 #navLeft {
   position: absolute;
   background: #1b1b1b;
   height: 100vh;
   transition: all .5s ease-in-out;
+  overflow-y: scroll;
+}
+#navLeft::-webkit-scrollbar {
+  width: 8px;               /* width of the entire scrollbar */
+}
+#navLeft::-webkit-scrollbar-track {
+  background: #ddd;        /* color of the tracking area */
+}
+#navLeft::-webkit-scrollbar-thumb {
+  background-color: #000;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: .5px solid #ddd;  /* creates padding around scroll thumb */
 }
 #navLeft ul {
   list-style: none;
@@ -48,115 +45,7 @@ section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-
   margin-bottom: 0;
   width: inherit;
 }
-section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-sm-6.col-md-6.col-lg-6.col-xl-6 .btn.h-100:hover:before{
-  right: 5%;
-  left: 5%;
-  position: absolute;
-  top: auto;
-  bottom: 0;
-  height: 5px;
-  background-color: #dcad54;
-  content: "";
-}
-section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-flex.justify-content-end.align-items-center button.btn:hover:before {
-  right: 5%;
-  left: 5%;
-  position: absolute;
-  top: auto;
-  bottom: 0;
-  height: 5px;
-  background-color: #dcad54;
-  content: "";
-}
-section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-sm-6.col-md-6.col-lg-6.col-xl-6 .btn.h-100:hover svg {
-  fill: #dcad54;
-}
-section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-flex.justify-content-end.align-items-center .controlTwo,
-section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-flex.justify-content-end.align-items-center button.btn,
-section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-flex.justify-content-end.align-items-center button.btn svg,
-section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-sm-6.col-md-6.col-lg-6.col-xl-6 .control,
-section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-sm-6.col-md-6.col-lg-6.col-xl-6 .btn.h-100,
-section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-sm-6.col-md-6.col-lg-6.col-xl-6 .btn.h-100 svg {
-  transition: all .5s ease-in-out;
-}
-section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-sm-6.col-md-6.col-lg-6.col-xl-6 .btn.h-100 {
-  border: 0;
-  color: #FFF;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-section.filter .container-fluid form .inputFilter {
-  position: relative;
-  width: 81% !important;
-}
-section.filter .container-fluid form .inputFilter input {
-  border: 0;
-  border-radius: 0px 999px 999px 0px;
-}
-section.filter .container-fluid form:focus-within button.btn.w-25.btn-outline-success.mr-2 input {
-  background-color: #828282;
-}
-section.filter .container-fluid form:focus-within .inputFilter span,
-section.filter .container-fluid form .inputFilter input:focus {
-  outline: none !important;
-  color: #828282;
-  background-color: #FFF;
-  transition: all .35s ease-in !important;
-}
-section.filter .container-fluid form .inputFilter input::placeholder {
-  color: #b4b4b5 !important;
-}
-section.filter .container-fluid form .inputFilter button.btn {
-  height: 40px;
-  background: transparent;
-  color: #b4b4b5;
-  position: absolute;
-  right: 1.25%;
-}
-section.filter .container-fluid form .inputFilter input,
-section.filter .container-fluid form .inputFilter span {
-  height: 40px;
-  background: #333;
-  color: #b4b4b5 !important;
-}
-section.filter .container-fluid form .inputFilter span {
-  border-radius: 999px 0px 0px 999px;
-  width: 9%;
-  position: relative;
-  right: -1%;
-  padding-left: 2%;
-}
-section.filter .container-fluid button {
-  color: #dcad54;
-  border: 0;
-  background-color: #1b1b1b;
-  height: 100%;
-}
-section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.p-0.d-flex.justify-content-center.align-items-center.h-100.position-relative {
-  padding-right: 9% !important;
-}
-section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-flex.justify-content-end.align-items-center button:hover svg {
-  fill: #dcad54;
-}
-.card,
-#generoAccordion {
-  background-color: #1b1b1b;
-}
-.card{
-  border: 0;
-}
-.div2 {
-  border-bottom: solid 1px rgba(255,255,255,.15);
-  padding: 4.5% 0;
-}
-.card .card-body a.h5:hover {
-  color: #dcad54;
-}
-.card .card-body a.h5,
-.card .card-body {
-  color: rgba(255,255,255,.8);
-}
+
 button, a {
   transition: all .4s ease-in;
 }
@@ -178,6 +67,26 @@ article.one .container-fluid .row.button button {
   font-weight: bold;
   color: #FFF;
   border: 0;
+}
+article.one .position-absolute ul .control li {
+  cursor: pointer;
+}
+article.one .position-absolute ul .control .card .controlInt.d-flex.flex-column {
+  height: 24px;
+}
+article.one .position-absolute ul .control .card input {
+  margin-right: 2%;
+}
+article.one .position-absolute ul .control .card {
+  background: transparent;
+  color: #FFF;
+  padding-top: 10px;
+}
+.div2 {
+  z-index: 9999999 !important;
+}
+article.one .position-absolute ul .control .card a {
+  color: #FFF;
 }
 svg.hearth1 {
   display: none;
@@ -243,6 +152,9 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.border-bottom {
   padding: 1.5% 0%;
+}
+#li {
+  justify-content: space-between;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1.loops {
   flex: 0 0 10.333333%;

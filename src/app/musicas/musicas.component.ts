@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MusicasService} from "./musicas.service";
 import {AuthService} from "../login/auth.service";
+import {FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-musicas',
@@ -10,7 +11,18 @@ import {AuthService} from "../login/auth.service";
 export class MusicasComponent implements OnInit {
 
   icon: string = 'play_circle';
+  titles: any[];
+  music: any[];
+  humor: any[];
+  formG!: FormGroup;
 
+  cantada: Array<any> = [
+    "Amostras/Efeitos",
+    "Cantores principais",
+    "Coro/Grupo",
+    "Oohs e Aahs",
+    "Todos os Cantores",
+  ]
   dados: Array<any> =  [
     {value: 'Sweet Spot', viewValue: 'Sweet Spot'},
     {value: 'Bonieky', viewValue: 'Bonieky'},
@@ -26,128 +38,18 @@ export class MusicasComponent implements OnInit {
     {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
   ];
 
-  filter: Array<any> = [];
-  generos: Array<any> = [
-    "Blues",
-    "Clássica",
-    "Corporativo",
-    "Dance/Tecno",
-    "Datas comemorativas",
-    "Eletrônica",
-    "Folk",
-    "Hip Hop",
-    "Infantil/Crianças",
-    "Jazz",
-    "Jogos",
-    "Latina",
-    "Mundo",
-    "New age",
-    "Noticiário",
-    "Piano/Solo instrumental",
-    "Pop",
-    "Reggae",
-    "Rhythm and blues",
-    "Rock",
-    "Sertanejo",,
-    "Blues",
-    "Clássica",
-    "Corporativo",
-    "Dance/Tecno",
-    "Datas comemorativas",
-    "Eletrônica",
-    "Folk",
-    "Hip Hop",
-    "Infantil/Crianças",
-    "Jazz",
-    "Jogos",
-    "Latina",
-    "Mundo",
-    "New age",
-    "Noticiário",
-    "Piano/Solo instrumental",
-    "Pop",
-    "Reggae",
-    "Rhythm and blues",
-    "Rock",
-    "Sertanejo",,
-    "Blues",
-    "Clássica",
-    "Corporativo",
-    "Dance/Tecno",
-    "Datas comemorativas",
-    "Eletrônica",
-    "Folk",
-    "Hip Hop",
-    "Infantil/Crianças",
-    "Jazz",
-    "Jogos",
-    "Latina",
-    "Mundo",
-    "New age",
-    "Noticiário",
-    "Piano/Solo instrumental",
-    "Pop",
-    "Reggae",
-    "Rhythm and blues",
-    "Rock",
-    "Sertanejo",,
-    "Blues",
-    "Clássica",
-    "Corporativo",
-    "Dance/Tecno",
-    "Datas comemorativas",
-    "Eletrônica",
-    "Folk",
-    "Hip Hop",
-    "Infantil/Crianças",
-    "Jazz",
-    "Jogos",
-    "Latina",
-    "Mundo",
-    "New age",
-    "Noticiário",
-    "Piano/Solo instrumental",
-    "Pop",
-    "Reggae",
-    "Rhythm and blues",
-    "Rock",
-    "Sertanejo",
-    "Blues",
-    "Clássica",
-    "Corporativo",
-    "Dance/Tecno",
-    "Datas comemorativas",
-    "Eletrônica",
-    "Folk",
-    "Hip Hop",
-    "Infantil/Crianças",
-    "Jazz",
-    "Jogos",
-    "Latina",
-    "Mundo",
-    "New age",
-    "Noticiário",
-    "Piano/Solo instrumental",
-    "Pop",
-    "Reggae",
-    "Rhythm and blues",
-    "Rock",
-    "Sertanejo",
-    "Blues",
-    "Clássica",
-    "Corporativo",
-    "Dance/Tecno",
-    "Datas comemorativas",
-    "Eletrônica",
-    "Folk",
-    "Hip Hop",
-  ];
-
   constructor(
     private musicService: MusicasService,
     private authService: AuthService,
+    private fb: FormBuilder,
   ) {
-    this.filter = this.musicService.filtroGenero;
+    this.formG = this.fb.group({
+      checkbox: [],
+      checkbox1: [],
+    });
+    this.titles = this.musicService.convertida2;
+    this.music = this.musicService.convertida;
+    this.humor = this.musicService.humor;
   }
 
   ngOnInit(): void {
@@ -173,24 +75,8 @@ export class MusicasComponent implements OnInit {
     this.authService.verificaLogin();
   }
 
-  filtrar() {
-    console.log('filtrar');
-    let navleft = document.getElementById('navLeft');
-    let cf = document.getElementById('cf');
-    if(navleft!.getAttribute('style') == 'width: 15vw;' || navleft!.getAttribute('style') == 'width: 15vw; opacity: 1;') {
-      navleft!.style.width = '0vw';
-      navleft!.style.opacity = '0';
-      cf!.style.width = '100vw';
-    } else {
-      navleft!.style.width = '15vw';
-      navleft!.style.opacity = '1';
-      cf!.style.width = '84vw';
-    }
-  }
-
-  openGeneroAccordion() {
-    let section = document.getElementById('generoAccordion');
-    section!.getAttribute('style') == 'display: none;' ? section!.style.display = 'flex' : section!.style.display = 'none';
+  onChange(event: any) {
+    console.log(event);
   }
 
 }

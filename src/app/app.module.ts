@@ -20,6 +20,8 @@ import {AuthService} from "./login/auth.service";
 import { MusicasComponent } from './musicas/musicas.component';
 import {MusicasService} from "./musicas/musicas.service";
 import { GeneroComponent } from './genero/genero.component';
+import { FilterComponent } from './filter/filter.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
@@ -32,22 +34,24 @@ import { GeneroComponent } from './genero/genero.component';
     PoliticaPrivacidadeComponent,
     MusicasComponent,
     GeneroComponent,
+    FilterComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    FormsModule,
-    RouterOutlet,
-    RouterLinkWithHref,
-    RouterLinkActive,
-    MatSelectModule,
-    MatOptionModule,
-    MatIconModule,
-    NgbModule,
-    NgbTooltipModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        FormsModule,
+        RouterOutlet,
+        RouterLinkWithHref,
+        RouterLinkActive,
+        MatSelectModule,
+        MatOptionModule,
+        MatIconModule,
+        NgbModule,
+        NgbTooltipModule,
+        MatCheckboxModule,
+    ],
   providers: [
     NgbTooltip,
     NgbActiveModal,

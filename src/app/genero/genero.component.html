@@ -1,3 +1,4 @@
+<app-filter></app-filter>
 <section id="genero" class="genero pl-5 pt-0 pr-5 pb-3">
   <div class="container-fluid">
     <div class="row title justify-content-start align-items-center mb-5">
@@ -5,9 +6,9 @@
     </div>
     <div class="row mb-5">
       <div class="col-lg-12 col-xl-12 w-100" style="column-count: 5; column-fill: balance">
-        <div class="div2" *ngFor="let g of titles; let i = index;" style="break-inside: avoid-column;">
+        <div class="div2 pt-3" *ngFor="let g of titles; let i = index;" style="break-inside: avoid-column;">
           <a href="" class="h5">{{ g }}</a>
-          <div class="textMusic d-flex flex-column mt-3 mb-5">
+          <div class="textMusic d-flex flex-column mt-3 mb-3 pb-3">
             <a *ngFor="let mus of music[i];" href="#" class="h6 pl-3">{{ mus }}</a>
           </div>
         </div>

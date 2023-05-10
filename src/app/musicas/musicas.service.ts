@@ -346,16 +346,6 @@ export class MusicasService {
       ]
     }
   ];
-  public filtroGenero: any = [
-    "Estilos",
-    "Cantada NOVIDADE",
-    "Clima",
-    "BPM",
-    "Duração",
-    "Artistas",
-    "Instrumentos",
-    "Avançado",
-  ];
   public humor: any = [
     "Action / Sports",
     "Adventure / Discovery",
