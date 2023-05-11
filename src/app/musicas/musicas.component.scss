@@ -271,6 +271,18 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
   border-radius: 999px;
   font-size: 12px;
 }
+div.control li.d-flex.align-items-center.justify-content-between.w-100 p.mb-0.position-relative,
+div.control li.d-flex.align-items-center.justify-content-between.w-100 p.mb-0.position-relative span#dur,
+div.control li.d-flex.align-items-center.justify-content-between.w-100 p.mb-0.position-relative span#num {
+  font-size: 14px !important;
+  color: #828282;
+}
+div.control li.d-flex.align-items-center.justify-content-between.w-100 p.mb-0.position-relative.dur {
+  right: 7%;
+}
+div.control li.d-flex.align-items-center.justify-content-between.w-100 p.mb-0.position-relative {
+  right: 18%;
+}
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2 p.h4 {
   margin-bottom: 5px;
   font-size: 18px;

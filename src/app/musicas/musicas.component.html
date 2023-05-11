@@ -48,14 +48,15 @@
             data-target="#collapse04"
             aria-expanded="true"
             aria-controls="collapse04"
-            class="d-flex align-items-center justify-content-between w-100">
-            BPM [0-{{number}}] <span class="ml-3 material-icons">add</span>
+            class="d-flex align-items-center justify-content-between w-100"
+          >
+            BPM <p class="mb-0 position-relative" *ngIf="number != undefined">(0-<span id="num">{{number}}</span>)</p><span class="ml-3 material-icons">add</span>
           </li>
           <div class="accordion w-100" id="accordion4">
             <div class="card">
               <div id="collapse04" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion4">
                 <div class="div2 pt-3">
-                  <input type="range" formControlName="bpm" min="1" max="250"  (ngModelChange)="onChangedEvent($event)"
+                  <input class="w-100" type="range" formControlName="bpm" min="1" max="250"  (ngModelChange)="onChangedEvent($event, 'bpm')"
                          [(ngModel)]="musicas.bpm"/>
                   <div class="num d-flex justify-content-between align-items-center w-100">
                     <div class="numInt">0</div>
@@ -72,17 +73,18 @@
             data-target="#collapse05"
             aria-expanded="true"
             aria-controls="collapse05"
-            class="d-flex align-items-center justify-content-between w-100">Duração <span class="ml-3 material-icons">add</span>
+            class="d-flex align-items-center justify-content-between w-100">
+            Duração <p class="mb-0 position-relative dur" *ngIf="duration != undefined">(0:00-<span id="dur">{{durationAut}}</span>)</p><span class="ml-3 material-icons">add</span>
           </li>
           <div class="accordion w-100" id="accordion5">
             <div class="card">
               <div id="collapse05" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion5">
                 <div class="div2 pt-3">
-                  <input type="range" formControlName="bpm" min="1" max="250"  (ngModelChange)="onChangedEvent($event)"
-                         [(ngModel)]="musicas.bpm"/>
+                  <input class="w-100" type="range" formControlName="duracao" min="1" max="300"  (ngModelChange)="onChangedEvent($event, 'duracao')"
+                         [(ngModel)]="musicas.duracao"/>
                   <div class="num d-flex justify-content-between align-items-center w-100">
-                    <div class="numInt">0</div>
-                    <div class="numInt">250+</div>
+                    <div class="numInt">0:00</div>
+                    <div class="numInt">5:00+</div>
                   </div>
                 </div>
               </div>

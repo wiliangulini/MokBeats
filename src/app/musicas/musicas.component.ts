@@ -11,6 +11,8 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 export class MusicasComponent implements OnInit {
 
   musicAdd: any;
+  duration: any;
+  durationAut: any;
   musicDownload: any[] = [];
   icon: string = 'play_circle';
   titles: any[];
@@ -174,10 +176,17 @@ export class MusicasComponent implements OnInit {
     return valor;
   }
 
-  onChangedEvent(event: any) {
-    this.number = event;
-    console.log(this.number)
-  }
+  onChangedEvent(event: any, elem: any) {
+    elem == 'bpm' ? this.number = event : this.duration = event;
+    if(elem == 'duracao') {
+        let dateObj: any = new Date(this.duration * 1000);
+        let minutes: any = dateObj.getUTCMinutes();
+        let seconds: any = dateObj.getSeconds();
 
+        let timeString: any = minutes.toString().padStart(1) + ':' + seconds.toString().padStart(2, '0');
+        this.durationAut = timeString;
+        console.log(this.durationAut)
+      }
+    }
 
 }
