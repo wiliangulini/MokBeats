@@ -26,8 +26,8 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   form: FormGroup;
   public mokbeats: any = {};
   icon: string = 'play_circle';
-  hearth: any;
-  hearth1: any;
+  musicAdd: any;
+  musicDownload: any[] = [];
 
   dados: Array<any> =  [
     {value: 'Sweet Spot', viewValue: 'Sweet Spot'},
@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
     {value: 'HighFrenetic', viewValue: 'HighFrenetic'}
   ];
-  produtores: Array<any> = [
+  arrMusic: Array<any> = [
     {value: 'The Funkster', viewValue: 'The Funkster'},
     {value: 'Code', viewValue: 'Code'},
     {value: 'Impertinent', viewValue: 'Impertinent'},
@@ -77,7 +77,8 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   addPlayList(i: number) {
-    return this.musicService.addPlayList(i);
+    this.musicAdd = this.dados[i].viewValue;
+    return this.musicService.addPlayList(i, this.musicAdd);
   }
 
   copiarLink(i: number) {
@@ -85,7 +86,9 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   baixarAmostra(i: number) {
-    return this.musicService.baixarAmostra(i);
+    this.musicDownload.push(this.arrMusic[i].viewValue);
+    this.musicDownload.push(this.dados[i].viewValue);
+    this.musicService.baixarAmostra(i, this.musicDownload);
   }
 
   verificaLogin() {

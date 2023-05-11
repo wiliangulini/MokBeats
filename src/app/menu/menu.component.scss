@@ -10,6 +10,10 @@ li.nav-item {
 li.nav-item a.nav-link:hover:before {
   background-color: #00db7a;
 }
+a.navbar-brand img.logo {
+  height: 7.7vh;
+  filter: invert(90%);
+}
 li.nav-item a.nav-link:hover:before,
 li.nav-item.active a:before {
   width: 100%;
@@ -53,7 +57,7 @@ nav.navbar {
   background-color: #343a40;
 }
 ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 {
-  max-width: 40%;
+  max-width: 43%;
 }
 ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link d-flex justify-content-center align-items-center span.material-icons {
   font-size: 32px;

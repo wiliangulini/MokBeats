@@ -1,46 +1,43 @@
-<!-- Modal -->
-<!--<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">-->
-  <div class="modal-dialog modal-dialog-centered modal-lg m-0">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" #btn (click)="closeModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-100">
-            <div id="register" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center register">
-              <h1>Crie sua Conta</h1>
-              <p class="h5 w-75 text-center">Crie uma conta para fazer login na MokBeats, e poder comprar ou entao vender suas musicas!!!</p>
-              <input class="form-control mb-3 mt-3" type="email" formControlName="email"  placeholder="Email" [(ngModel)]="cadastro.email" />
-              <input class="form-control mb-3" type="password" formControlName="senha" placeholder="Senha" [(ngModel)]="cadastro.senha" />
-              <small>As senhas devem ter pelo menos 8 caracteres.</small>
-              <button type="submit" class="btn btn-primary w-50 mb-4 mt-4" (click)="onSubmit()">Criar Conta</button>
-              <p class="h6 w-75 text-center">Ao clicar, concordo com os <a href="#">Termos do site</a>, e a <a (click)="politica()">Política de privacidade</a></p>
-            </div>
-            <div id="login" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center login">
-              <h1>Login</h1>
-              <p class="h5 w-50 text-center">Faça login na MokBeats, e poder comprar ou entao vender suas musicas!!!</p>
-              <input class="form-control mb-3 mt-3" type="email" formControlName="emailLog"  placeholder="Email" [(ngModel)]="usuario.email" />
-              <input class="form-control mb-3" type="password" formControlName="senhaLog" placeholder="Senha" [(ngModel)]="usuario.senha" />
-              <button type="submit" class="btn btn-primary w-50 mb-3" (click)="fazerLogin()">Fazer Login</button>
-              <a (click)="resetPassword()" class="btn btnReset">Esquecia a senha</a>
-            </div>
-            <div id="resetPass" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center resetPass">
-              <h1>Esqueceu a Senha?</h1>
-              <p class="h5 w-50 text-center">Envie um email que lhe notificaremos com um link pra troca de senha.</p>
-              <input class="form-control mb-3 mt-3" type="email" formControlName="emailReset"  placeholder="Email" [(ngModel)]="resetPass.email" />
-              <button type="submit" class="btn btn-primary w-50 mb-3">Enviar</button>
-              <a (click)="back()" class="btn btnReset">voltar</a>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div id="mf" class="modal-footer justify-content-center align-items-center">
-        <p id="logCad" class="h4">Já tem uma conta?</p><a id="aLog" (click)="irProLogin($event)">Faça Login</a>
+<div class="modal-dialog modal-dialog-centered modal-lg m-0">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-100">
+          <div id="register" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center register">
+            <h1>Crie sua Conta</h1>
+            <p class="h5 w-75 text-center">Crie uma conta para fazer login na MokBeats, e poder comprar ou entao vender suas musicas!!!</p>
+            <input class="form-control mb-3 mt-3" type="email" formControlName="email"  placeholder="Email" [(ngModel)]="cadastro.email" />
+            <input class="form-control mb-3" type="password" formControlName="senha" placeholder="Senha" [(ngModel)]="cadastro.senha" />
+            <small>As senhas devem ter pelo menos 8 caracteres.</small>
+            <button type="submit" class="btn btn-primary w-50 mb-4 mt-4" (click)="onSubmit()">Criar Conta</button>
+            <p class="h6 w-75 text-center">Ao clicar, concordo com os <a href="#">Termos do site</a>, e a <a (click)="politica()">Política de privacidade</a></p>
+          </div>
+          <div id="login" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center login">
+            <h1>Login</h1>
+            <p class="h5 w-50 text-center">Faça login na MokBeats, e poder comprar ou entao vender suas musicas!!!</p>
+            <input class="form-control mb-3 mt-3" type="email" formControlName="emailLog"  placeholder="Email" [(ngModel)]="usuario.email" />
+            <input class="form-control mb-3" type="password" formControlName="senhaLog" placeholder="Senha" [(ngModel)]="usuario.senha" />
+            <button type="submit" class="btn btn-primary w-50 mb-3" (click)="fazerLogin()">Fazer Login</button>
+            <a (click)="resetPassword()" class="btn btnReset">Esquecia a senha</a>
+          </div>
+          <div id="resetPass" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center resetPass">
+            <h1>Esqueceu a Senha?</h1>
+            <p class="h5 w-50 text-center">Envie um email que lhe notificaremos com um link pra troca de senha.</p>
+            <input class="form-control mb-3 mt-3" type="email" formControlName="emailReset"  placeholder="Email" [(ngModel)]="resetPass.email" />
+            <button type="submit" class="btn btn-primary w-50 mb-3">Enviar</button>
+            <a (click)="back()" class="btn btnReset">voltar</a>
+          </div>
+        </form>
       </div>
     </div>
+    <div id="mf" class="modal-footer justify-content-center align-items-center">
+      <p id="logCad" class="h4">Já tem uma conta?</p><a id="aLog" (click)="irProLogin($event)">Faça Login</a>
+    </div>
   </div>
-<!--</div>-->
+</div>
 

@@ -19,5 +19,10 @@ a {
 .mat-checkbox-frame, .mat-checkbox-background {
   display: none !important;
 }
+
+a.btn.btn-warning:hover,
+button.btn.btn-warning:hover {
+  background-color: #c29441 !important;
+}
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';

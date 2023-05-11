@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import {AuthService} from "../login/auth.service";
+import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {LoginComponent} from "../login/login.component";
+import {AddPlaylistModalComponent} from "../add-playlist-modal/add-playlist-modal.component";
+import {DownloadAmostraComponent} from "../download-amostra/download-amostra.component";
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +12,10 @@ export class MusicasService {
 
   hearth: any;
   hearth1: any;
+  addMusicPlaylist: any;
+  downloadMusic: any[] = [];
+  convertida: Array<any> = [];
+  convertida2: Array<any> = [];
 
   public musicas: any = [
     {
@@ -375,12 +383,10 @@ export class MusicasService {
     "Wedding",
   ];
 
-  convertida: Array<any> = [];
-  convertida2: Array<any> = [];
-
-
   constructor(
     private authService: AuthService,
+    private modalService: NgbModal,
+    public activeModal: NgbActiveModal,
   ) {
     this.musicas.map((obj: any) => {
       Object.keys(obj).map((chave: any) => {
@@ -407,25 +413,37 @@ export class MusicasService {
     }
   }
 
-  public addPlayList(i: number) {
+  public addPlayList(i: number, m: any) {
     this.authService.verificaLogin();
-
+    console.log(m);
+    this.addMusicPlaylist = m;
     if(this.authService.userAutetic()) {
       document.querySelectorAll('.addPlaylist').forEach((e: any, index: any) => {
         if (i == index && e.classList.contains('amarelo')) {
           e.classList.remove('amarelo');
         } else if (i == index) {
           e.classList.add('amarelo');
+          this.modalService.open(AddPlaylistModalComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
         }
       });
     }
   }
 
   public copiarLink(i: number) {
-
+    console.log(i);
   }
 
-  public baixarAmostra(i: number) {
+  public baixarAmostra(i: number, md: any) {
+    this.authService.verificaLogin();
+    console.log(md);
+    this.downloadMusic = md;
+    if(this.authService.userAutetic()) {
+      this.modalService.open(DownloadAmostraComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
+    }
+  }
 
+  public comprarLicensa(i: number) {
+    this.authService.verificaLogin();
+    console.log(i);
   }
 }

@@ -1,7 +1,7 @@
 article.container-fluid {
-  background: url('../../assets/images/CDJ-3000.jpg');
+  background: url('../../assets/images/mokbeats_mb.jpeg');
   height: calc(100vh - 7.7vh);
-  background-position: top;
+  background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   margin-top: 7.7vh;
@@ -227,7 +227,7 @@ section.three {
   padding-bottom: 4.5% !important;
 }
 section.four {
-  background: url('../../assets/images/background.png');
+  background: url('../../assets/images/mokbeats_blue.jpeg');
   background-position: center;
   background-size: cover;
   height: 60vh;
@@ -243,11 +243,17 @@ section.four .container {
 section.four .container .row p.h5.win {
   display: none;
 }
+section.four .container .row p.h5.text-center {
+  color: #000;
+  font-weight: bold;
+  text-shadow: 1px 1px 7px rgba(0,0,0,.5);
+}
 section.four .container .row p.h1.text-center {
   font-size: 50px;
   font-weight: bold;
-  color: #dcad54;
+  color: #000;
   font-family: WalsheimBold !important;
+  text-shadow: 1px 1px 7px rgba(0,0,0,.5);
 }
 section.four .container .row form .inputInt {
   border-bottom: 1px solid #8c8c8c;
@@ -269,7 +275,7 @@ section.four .container .row form input {
   width: 68%;
   padding-left: 2%;
   font-size: 20px;
-  color: #FFF;
+  color: #000;
 }
 section.four .container .row form:focus-within .control .inputInt {
   border-bottom: 1px solid #FFF;

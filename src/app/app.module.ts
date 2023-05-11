@@ -17,12 +17,15 @@ import {FooterComponent} from './footer/footer.component';
 import {LoginComponent} from './login/login.component';
 import {PoliticaPrivacidadeComponent} from './politica-privacidade/politica-privacidade.component';
 import {AuthService} from "./login/auth.service";
-import { MusicasComponent } from './musicas/musicas.component';
+import {MusicasComponent} from './musicas/musicas.component';
 import {MusicasService} from "./musicas/musicas.service";
-import { GeneroComponent } from './genero/genero.component';
-import { FilterComponent } from './filter/filter.component';
+import {GeneroComponent} from './genero/genero.component';
+import {FilterComponent} from './filter/filter.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import { HumorComponent } from './humor/humor.component';
+import {HumorComponent} from './humor/humor.component';
+import {AddPlaylistModalComponent} from './add-playlist-modal/add-playlist-modal.component';
+import {DownloadAmostraComponent} from './download-amostra/download-amostra.component';
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -37,23 +40,26 @@ import { HumorComponent } from './humor/humor.component';
     GeneroComponent,
     FilterComponent,
     HumorComponent,
+    AddPlaylistModalComponent,
+    DownloadAmostraComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        FormsModule,
-        RouterOutlet,
-        RouterLinkWithHref,
-        RouterLinkActive,
-        MatSelectModule,
-        MatOptionModule,
-        MatIconModule,
-        NgbModule,
-        NgbTooltipModule,
-        MatCheckboxModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
+    RouterOutlet,
+    RouterLinkWithHref,
+    RouterLinkActive,
+    MatSelectModule,
+    MatOptionModule,
+    MatIconModule,
+    NgbModule,
+    NgbTooltipModule,
+    MatCheckboxModule,
+    MatButtonModule,
+  ],
   providers: [
     NgbTooltip,
     NgbActiveModal,

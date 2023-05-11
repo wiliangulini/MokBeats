@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "./auth.service";
@@ -11,8 +11,6 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
-  @ViewChild('btn') btn!: ElementRef;
 
   form: FormGroup;
   public cadastro: any = {};
@@ -82,7 +80,7 @@ export class LoginComponent implements OnInit {
   }
 
   fazerLogin() {
-    this.authService.fazerLogin(this.usuario, this.btn)
+    this.authService.fazerLogin(this.usuario)
   }
 
   onSubmit() {

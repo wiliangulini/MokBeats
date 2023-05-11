@@ -1,0 +1,31 @@
+.modal-body .card.border-0 {
+  padding: 0 54px 44px 54px;
+}
+.modal-body .card a.h6 {
+  color: rgba(0,0,0,.5);
+  transition: all .35s ease-in-out;
+}
+.modal-body .card a.h6:hover {
+  color: #000;
+}
+.modal-body .card .row.justify-content-between.align-items-center h1 {
+  font-size: 28px;
+}
+.modal-body .card .row.justify-content-between.align-items-center {
+  color: #101010;
+  padding-bottom: 20px;
+}
+.modal-body .card .newPlayList a.h6.font-weight-bold.text-uppercase {
+  font-size: 14px;
+}
+.modal-body .card .newPlayList button.btn:hover {
+  background-color: #e7e7e9;
+  color: #000;
+}
+.modal-body .card .newPlayList button.btn {
+  color: #535354;
+  border-top: 1px solid #dededf;
+  height: 55px;
+  transition: all .4s linear;
+  font-family: WalsheimBold;
+}

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MusicasService} from "./musicas.service";
 import {AuthService} from "../login/auth.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
@@ -10,11 +10,18 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 })
 export class MusicasComponent implements OnInit {
 
+  musicAdd: any;
+  musicDownload: any[] = [];
   icon: string = 'play_circle';
   titles: any[];
   music: any[];
   humor: any[];
+  musicas: any = {};
+  number!: number;
   formG!: FormGroup;
+  valor: any;
+  frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
+  select: any = 'Mais Relevantes';
 
   cantada: Array<any> = [
     "Amostras/Efeitos",
@@ -45,7 +52,7 @@ export class MusicasComponent implements OnInit {
     {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
     {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
   ];
-  produtores: Array<any> = [
+  arrMusic: Array<any> = [
     {value: 'The Funkster', viewValue: 'The Funkster'},
     {value: 'Code', viewValue: 'Code'},
     {value: 'Impertinent', viewValue: 'Impertinent'},
@@ -67,21 +74,55 @@ export class MusicasComponent implements OnInit {
     {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
     {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
   ];
+  arrFilter: Array<any> = [
+    "Popularidade",
+    "Mais relevantes",
+    "Mais recentes",
+    "Ordem alfabética",
+    "Artista",
+    "BPM (mais baixos primeiro)",
+    "BPM (mais altos primeiro)",
+    "Duração (mais curtas primeiro)",
+    "Duração (mais longas primeiro)",
+  ]
+  arrVExtendida: Array<any> = [
+    {value: "Baixo por sintetizador", viewValue: "Baixo por sintetizador"},
+    {value: "Chill", viewValue: "Chill"},
+    {value: "Dance", viewValue: "Dance"},
+    {value: "Dance Pop", viewValue: "Dance Pop"},
+    {value: "Dance/Tecno", viewValue: "Dance/Tecno"},
+    {value: "Electro pop", viewValue: "Electro pop"},
+    {value: "Exciting", viewValue: "Exciting"},
+    {value: "Futurista", viewValue: "Futurista"},
+    {value: "Futuristic", viewValue: "Futuristic"},
+    {value: "Groovy", viewValue: "Groovy"},
+    {value: "Guitarra", viewValue: "Guitarra"},
+    {value: "Hip", viewValue: "Hip"},
+    {value: "Mesmerizing", viewValue: "Mesmerizing"},
+    {value: "Moda/Estilo de vida", viewValue: "Moda/Estilo de vida"},
+    {value: "Pulsing", viewValue: "Pulsing"},
+    {value: "Sentimento bom", viewValue: "Sentimento bom"},
+    {value: "Sintetizador", viewValue: "Sintetizador"},
+    {value: "Smooth", viewValue: "Smooth"},
+    {value: "Technology", viewValue: "Technology"},
+    {value: "Trippy", viewValue: "Trippy"},
+  ]
+
+  @Output('ngModelChange') update: any = new EventEmitter();
 
   constructor(
     private musicService: MusicasService,
-    private authService: AuthService,
     private fb: FormBuilder,
   ) {
     this.formG = this.fb.group({
       checkbox: [],
-      checkbox1: [],
+      bpm: [],
+      duracao: [],
     });
     this.titles = this.musicService.convertida2;
     this.music = this.musicService.convertida;
     this.humor = this.musicService.humor;
-    console.log(this.dados.length);
-    console.log(this.produtores.length);
+    console.log(this.arrVExtendida)
   }
 
   ngOnInit(): void {
@@ -92,7 +133,8 @@ export class MusicasComponent implements OnInit {
   }
 
   addPlayList(i: number) {
-    this.musicService.addPlayList(i);
+    this.musicAdd = this.arrMusic[i].viewValue;
+    this.musicService.addPlayList(i, this.musicAdd);
   }
 
   copiarLink(i: number) {
@@ -100,15 +142,42 @@ export class MusicasComponent implements OnInit {
   }
 
   baixarAmostra(i: number) {
-    this.musicService.baixarAmostra(i);
+    this.musicDownload = [];
+    this.musicDownload.push(this.arrMusic[i].viewValue);
+    this.musicDownload.push(this.dados[i].viewValue);
+    this.musicService.baixarAmostra(i, this.musicDownload);
   }
 
-  verificaLogin() {
-    this.authService.verificaLogin();
+  comprarLicensa(i: number) {
+    this.musicService.comprarLicensa(i);
   }
 
   onChange(event: any) {
     console.log(event);
   }
+
+  filtroP(e: any) {
+    console.log(e);
+    this.select = e;
+  }
+
+  radio(e: any) {
+    console.log(e);
+    console.log(e.target.value);
+    this.valor = e.target.value;
+    this.getValor(this.valor);
+  }
+
+  getValor(elm: any) {
+    console.log(elm);
+    let valor = elm;
+    return valor;
+  }
+
+  onChangedEvent(event: any) {
+    this.number = event;
+    console.log(this.number)
+  }
+
 
 }

@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {UsuarioLogin} from "./usuarioLogin";
 import {LoginComponent} from "./login.component";
 import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -10,33 +9,47 @@ import {Router} from "@angular/router";
 export class AuthService {
 
   private usuarioAutenticado: boolean = false;
+  userEmail: any;
+  userPass: any;
 
   constructor(
     private modalService: NgbModal,
-    public activeModal: NgbActiveModal,
-    private router: Router,
-    ) { }
+    ) {
+  }
 
-  public fazerLogin(usuario: UsuarioLogin, btn: any) {
-    console.log(usuario);
-    if(usuario.email === 'gulini.dev@gmail.com' && usuario.senha === 'teste') {
+  public fazerLogin(usuario: UsuarioLogin) {
+    if(this.userEmail == null && this.userPass == null) {
+      localStorage.setItem('userEmail', usuario.email);
+      localStorage.setItem('userPass', usuario.senha);
+    }
+
+    this.userEmail = localStorage.getItem('userEmail');
+    this.userPass = localStorage.getItem('userPass');
+
+    if(this.userEmail === 'gulini.dev@gmail.com' && this.userPass === 'teste') {
       console.log('login enviado');
       this.usuarioAutenticado = true;
-      this.router.navigate(['/home']);
     } else {
       this.usuarioAutenticado = false;
     }
   }
 
   public verificaLogin() {
-    console.log('verificaLogin', this.usuarioAutenticado);
+    this.userAutetic();
     if(!this.usuarioAutenticado) {
       this.modalService.open(LoginComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
     }
   }
 
   public userAutetic() {
-    console.log('userAutetic', this.usuarioAutenticado);
+    this.userEmail = localStorage.getItem('userEmail');
+    this.userPass = localStorage.getItem('userPass');
+
+    if(this.userEmail != null && this.userPass != null) {
+      this.usuarioAutenticado = true;
+    } else {
+      this.usuarioAutenticado = false;
+    }
     return this.usuarioAutenticado;
   }
 }
