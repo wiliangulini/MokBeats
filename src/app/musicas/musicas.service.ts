@@ -434,12 +434,9 @@ export class MusicasService {
   }
 
   public baixarAmostra(i: number, md: any) {
-    this.authService.verificaLogin();
     console.log(md);
     this.downloadMusic = md;
-    if(this.authService.userAutetic()) {
-      this.modalService.open(DownloadAmostraComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
-    }
+    this.modalService.open(DownloadAmostraComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
   }
 
   public comprarLicensa(i: number) {

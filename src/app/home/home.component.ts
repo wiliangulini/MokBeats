@@ -95,6 +95,10 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.authService.verificaLogin();
   }
 
+  comprarLicensa(i: number) {
+    this.musicService.comprarLicensa(i);
+  }
+
   onSubmit(): void {
     console.log(this.mokbeats.search);
     console.log(this.mokbeats.genero);

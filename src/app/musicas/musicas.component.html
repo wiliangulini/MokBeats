@@ -126,11 +126,6 @@
                   <svg width="24" height="24" viewBox="0 0 24 24"><path d="M8 4.3h12v2H8zm-4 0h2v2H4zm4 4.5h12v2H8zm-4 0h2v2H4zm4 4.5h12v2H8zm-4 0h2v2H4zm4 4.5h12v2H8zm-4 0h2v2H4z"></path></svg>
                 </button>
               </div>
-              <div class="visualizacaoExtendida">
-                <button class="button" type="button" data-toggle="tooltip" data-placement="top" title="Visualização Extendida">
-                  <svg width="24" height="24" viewBox="0 0 24 24"><path d="M8 4.5h12v3H8zm-4 0h2v3H4zm4 6h12v3H8zm-4 0h2v3H4zm4 6h12v3H8zm-4 0h2v3H4z"></path></svg>
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -247,10 +242,10 @@
                   </svg>
                 </button>
               </div>
-              <div class="div w-100 mt-5 accordion"  id="accordionT1">
+              <div class="div w-100 accordion"  id="accordionT1">
                 <div class="row flex-column" id="collapseT" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion1">
                   <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 mb-3">{{frase}}</div>
-                  <div class="col-sm-12 col-md-12 col-lg-12 col-xl12 w-100 d-inline" >
+                  <div class="col-sm-12 col-md-12 col-lg-12 col-xl12 w-100 d-block" >
                     <div class="div2 float-left mt-4 mr-2" *ngFor="let vx of arrVExtendida; let i = index;">
                       <a id="arrve"  class="p-2 text-center">
                         {{vx.viewValue}}

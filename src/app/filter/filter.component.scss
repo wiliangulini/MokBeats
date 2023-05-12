@@ -59,10 +59,14 @@ section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-
 }
 section.filter .container-fluid form {
   padding: 0;
+  max-width: 28.4%;
 }
 section.filter .container-fluid form .inputFilter {
   position: relative;
   width: 81% !important;
+}
+#btnOutS {
+  font-size: 22px;
 }
 section.filter .container-fluid form .inputFilter input {
   border: 0;

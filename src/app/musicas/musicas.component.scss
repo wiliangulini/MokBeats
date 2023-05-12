@@ -90,25 +90,17 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao button.button {
   border: 2px solid rgba(255,255,255,.2);
-  border-radius: 999px 0px 0px 999px;
+  border-radius: 999px;
   border-right-width: 1px;
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacaoExtendida button.button {
-  border: 2px solid rgba(255,255,255,.2);
-  border-radius: 0px 999px 999px 0px;
-  border-left-width: 1px;
-}
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacaoExtendida button.button:focus,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao button.button:focus {
   outline: none;
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacaoExtendida button.button:focus,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao button.button:focus,
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacaoExtendida button.button:hover,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao button.button:hover {
   background: rgba(255,255,255,.13);
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacaoExtendida button.button,
+
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao button.button {
   fill: rgba(255,255,255,.5);
   outline: none;
@@ -270,6 +262,14 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
   border: 1px solid #FFF;
   border-radius: 999px;
   font-size: 12px;
+}
+.controlDivsInt.row {
+  width: 100%;
+}
+#collapseT .col-sm-7.col-md-7.col-lg-7.col-xl-7.mb-3 {
+  color: #FFF;
+  font-size: 12px;
+  margin-top: 2%;
 }
 div.control li.d-flex.align-items-center.justify-content-between.w-100 p.mb-0.position-relative,
 div.control li.d-flex.align-items-center.justify-content-between.w-100 p.mb-0.position-relative span#dur,

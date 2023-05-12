@@ -137,10 +137,10 @@ export class FilterComponent implements OnInit {
   filtrar() {
     let navleft = document.getElementById('navLeft');
     let cf = document.getElementById('cf');
-    if(navleft!.getAttribute('style') == 'width: 13vw;' || navleft!.getAttribute('style') == 'width: 15vw; opacity: 1;') {
+    if(navleft!.getAttribute('style') == 'width: 13vw;' || navleft!.getAttribute('style') == 'width: 13vw; opacity: 1;') {
       navleft!.style.width = '0vw';
       navleft!.style.opacity = '0';
-      cf!.style.width = '100vw';
+      cf!.style.width = '99vw';
     } else {
       navleft!.style.width = '13vw';
       navleft!.style.opacity = '1';
