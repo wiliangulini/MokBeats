@@ -3,29 +3,29 @@ nav.navbar {
   width: 100%;
   top: 0;
   z-index: 1020;
+  box-shadow: 0 0 10px 1px #000;
 }
 li.nav-item {
   position: relative;
 }
 li.nav-item a.nav-link:hover:before {
-  background-color: #00db7a;
+  background-color: #007bff;
 }
 a.navbar-brand img.logo {
   height: 7.7vh;
-  filter: invert(90%);
 }
 li.nav-item a.nav-link:hover:before,
 li.nav-item.active a:before {
   width: 100%;
 }
 li.nav-item a:before {
-  width: 0%;
+  width: 0;
   left: 0;
   position: absolute;
   top: auto;
   bottom: 0;
   height: 5px;
-  background-color: #dcad54;
+  background-color: #4B3A8F;
   transition: all 300ms linear;
   content: "";
 }
@@ -43,6 +43,7 @@ a.nav-link {
   font-size: 15px;
   text-transform: uppercase;
   font-weight: bolder;
+  text-shadow: 0 0 10px;
 }
 .dropdown-item:hover {
   color: black;

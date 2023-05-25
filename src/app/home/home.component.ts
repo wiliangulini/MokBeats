@@ -1,13 +1,5 @@
-import {
-  AfterViewChecked,
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild
-} from '@angular/core';
-import {FormBuilder, FormGroup, NgForm} from "@angular/forms";
+import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {AuthService} from "../login/auth.service";
 import {MusicasService} from "../musicas/musicas.service";
 
@@ -44,9 +36,8 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
   ];
   generoM: GeneroM[] = [
-    {value: 'Rock', viewValue: 'Rock'},
-    {value: 'Reggae', viewValue: 'Reggae'},
-    {value: 'Eletrônico', viewValue: 'Eletrônico'}
+    {value: 'Músicas', viewValue: 'Músicas'},
+    {value: 'Efeitos', viewValue: 'Efeitos'},
   ];
 
   constructor(

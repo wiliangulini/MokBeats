@@ -1,10 +1,16 @@
 article.container-fluid {
-  background: url('../../assets/images/mokbeats_mb.jpeg');
-  height: calc(100vh - 7.7vh);
-  background-position: center;
+  background: url('../../assets/images/mokbeats_mb.jpeg') center no-repeat;
+  height: 100vh;
   background-size: cover;
-  background-repeat: no-repeat;
-  margin-top: 7.7vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+article.container-fluid .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 button, a {
   transition: all .4s ease-in;
@@ -25,9 +31,6 @@ article input:focus {
 article input {
   border: none;
 }
-.col-sm-9.col-md-9.col-lg-9.col-xl-9.title {
-  padding-top: 13%;
-}
 form.form, #genero {
   height: 50px;
 }
@@ -35,9 +38,10 @@ form.form, #genero {
   color: black !important;
 }
 #genero {
-  background: #FFF;
-  color: #000;
-  border: 1px solid #FFF;
+  background: transparent;
+  color: #FFF;
+  font-size: 18px;
+  border: 0;
   border-radius: 999px 0 0 999px;
   width: 150px;
   font-weight: bold;
@@ -58,7 +62,7 @@ section.one .container .row.button button {
 a.btn.btn-warning,
 section.one .container .row.button button,
 button.btn.w-100.btn-warning {
-  background: #dcad54;
+  background: linear-gradient(45deg, #4B3A8F, #2f1ef1, #7b009c);
   font-weight: bold;
   color: #FFF;
   border: 0;
@@ -73,24 +77,31 @@ svg.hearth1 {
   display: block;
 }
 form .input-group button.btn.btn-warning {
-  background: #dcad54;
+  background: transparent;
   font-weight: bold;
-  color: #000;
+  color: #FFF;
   height: 27px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 0;
-  padding: 0px 12px;
+  border: 1px solid #FFF;
+  padding: 0 4%;
   margin-right: 10px;
 }
 .input-group.w-100 {
-  background: #FFF;
+  background: linear-gradient(45deg, #4B3A8F, #2f1ef1, #7b009c);
+  box-shadow: 0 1px 10px 4px #4B3A8F;
+}
+.form-control.mr-sm-2,
+input.form-control.mr-sm-2::placeholder {
+  color: #FFF;
+  font-weight: bold;
 }
 .form-control.mr-sm-2 {
   margin: 0 !important;
   height: inherit;
   border-right: 0 !important;
+  background: transparent;
 }
 .form-group {
   border-right: 1px solid #ddd;
@@ -99,14 +110,31 @@ button.btn-outline-success {
   height: 90%;
   font-weight: bold;
   border-radius: 999px !important;
-  margin: 6px 6px 0px !important;
+  margin: 6px 6px 0 !important;
 }
+
+section.one .container .row h2,
+section.one .container .row h3,
+section.one .material-icons,
+section.one .text p.h4 a,
+section.one .text p.h6 a,
+section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2 p,
+section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 button.btn.btn-primary,
+article h1, article h3,
+section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p,
+section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 a.btn,
+section.three .container .row.trusted p,
+section.four .container .row,
+section.three {
+  text-shadow: 0 0 8px #000;
+}
+
 article h1, article h3,
 section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p,
 section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 a.btn,
 section.three .container .row.trusted p,
 section.four .container .row {
-  color: #FFF !important;
+  color: #DDD !important;
 }
 section.one .container .row h2,
 section.one .container .row h3,
@@ -140,7 +168,7 @@ section.one .text p.h6 a {
   font-size: 14px;
 }
 section.one .material-icons {
-  font-size: 45px !important;
+  font-size: 37px !important;
   cursor: pointer;
 }
 section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 {
@@ -151,7 +179,7 @@ section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.c
   margin-bottom: 0;
 }
 section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.border-bottom {
-  padding: 1.5% 0%;
+  padding: 1.5% 0;
 }
 section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1.loops {
   flex: 0 0 10.333333%;
@@ -190,8 +218,8 @@ section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p.h5 {
   font-size: 20px;
 }
 section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 a.btn {
-  font-size: 18px;
-  width: 37%;
+  font-size: 15px;
+  width: 40%;
 }
 section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.txt {
   max-width: 40%;
@@ -216,7 +244,7 @@ section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p
   padding-right: 8%;
 }
 section.three .container .row.trusted {
-  background: #cfab5b;
+  background: linear-gradient(45deg, #4B3A8F, #2f1ef1, #7b009c);
 }
 section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn {
   width: 52%;
@@ -227,11 +255,9 @@ section.three {
   padding-bottom: 4.5% !important;
 }
 section.four {
-  background: url('../../assets/images/mokbeats_blue.jpeg');
-  background-position: center;
+  background: url('../../assets/images/mokbeats_roxo.jpeg') center no-repeat;
   background-size: cover;
-  height: 60vh;
-  background-repeat: no-repeat;
+  height: 70vh;
   padding: 7% 0;
   position: relative;
 }
@@ -252,12 +278,11 @@ section.four .container .row p.h1.text-center {
   font-size: 50px;
   font-weight: bold;
   color: #000;
-  font-family: WalsheimBold !important;
+  font-family: WalsheimBold, serif !important;
   text-shadow: 1px 1px 7px rgba(0,0,0,.5);
 }
 section.four .container .row form .inputInt {
-  border-bottom: 1px solid #8c8c8c;
-  color: #8c8c8c;
+  border-bottom: 1px solid #000;
   width: 70%;
   margin-right: 3%;
   padding-bottom: 1%;
@@ -268,6 +293,13 @@ section.four .container .row form {
 section.four .container .row form .btnSubmit {
   width: 27%;
 }
+section.four .container .row form input,
+section.four .container .row form .inputInt,
+section.four .container .row form:focus-within .control .inputInt,
+section.four .container .row form input::placeholder {
+  color: #000;
+  text-shadow: 0 0 8px;
+}
 section.four .container .row form input {
   background: transparent;
   outline: none;
@@ -275,9 +307,8 @@ section.four .container .row form input {
   width: 68%;
   padding-left: 2%;
   font-size: 20px;
-  color: #000;
+  font-weight: bold;
 }
 section.four .container .row form:focus-within .control .inputInt {
-  border-bottom: 1px solid #FFF;
-  color: #FFF;
+  border-bottom: 1px solid #000;
 }
