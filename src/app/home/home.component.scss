@@ -312,3 +312,73 @@ section.four .container .row form input {
 section.four .container .row form:focus-within .control .inputInt {
   border-bottom: 1px solid #000;
 }
+
+@media only screen and (min-width: 1000px) and (max-width: 1199px) {
+  section.one .container .row h2,
+  section.one .container .row h3 {
+    width: 100%;
+  }
+  section.one .container .row h2 {
+    font-size: 3rem;
+  }
+  .xdBUc {
+    width: 17px !important;
+    height: 17px !important;
+    position: relative;
+    left: 4%;
+  }
+  section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 button.btn.btn-primary {
+    font-size: 14px;
+    width: 100%;
+  }
+  section.one .material-icons {
+    font-size: 30px !important;
+  }
+  p.h6.mb-0,
+  p.h6.mr-3.mb-0 {
+    font-size: 14px;
+  }
+  section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1.loops p.h6 {
+    width: 25px;
+    height: 25px;
+    font-size: 13px;
+  }
+
+  section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p.h2 {
+    font-size: 35px;
+  }
+  section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p.h5 {
+    position: relative;
+    top: 5%;
+  }
+  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h1 {
+    font-size: 2.5rem;
+  }
+  section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p.h5,
+  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h5,
+  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn,
+  section.three .container .row .control .controlInt p.h5 {
+    font-size: 16px;
+  }
+  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn {
+    width: 70%;
+  }
+  section.three .container .row .control .controlInt span.material-icons {
+    font-size: 50px;
+  }
+
+  section.four {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  section.four .container {
+    position: initial;
+  }
+  section.four .container .row form .btnSubmit {
+    width: 40%;
+  }
+  section.four .container .row form .btnSubmit button.btn {
+    font-size: 14px;
+  }
+}
