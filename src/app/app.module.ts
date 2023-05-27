@@ -3,7 +3,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgbActiveModal, NgbModule, NgbTooltip, NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {AppComponent} from './app.component';
-import {LogoComponent} from "../assets/images/logo.component";
 import {MenuComponent} from './menu/menu.component';
 import {HomeComponent} from './home/home.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -30,7 +29,6 @@ import {MatButtonModule} from "@angular/material/button";
 @NgModule({
   declarations: [
     AppComponent,
-    LogoComponent,
     MenuComponent,
     HomeComponent,
     FooterComponent,

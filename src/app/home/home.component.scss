@@ -1,5 +1,5 @@
 article.container-fluid {
-  background: url('../../assets/images/mokbeats_mb.jpeg') center no-repeat;
+  background: url('../../assets/images/background01.webp') center no-repeat;
   height: 100vh;
   background-size: cover;
   display: flex;
@@ -255,7 +255,7 @@ section.three {
   padding-bottom: 4.5% !important;
 }
 section.four {
-  background: url('../../assets/images/mokbeats_roxo.jpeg') center no-repeat;
+  background: url('../../assets/images/background01.webp') center no-repeat;
   background-size: cover;
   height: 70vh;
   padding: 7% 0;
@@ -270,19 +270,17 @@ section.four .container .row p.h5.win {
   display: none;
 }
 section.four .container .row p.h5.text-center {
-  color: #000;
+  color: #fff;
   font-weight: bold;
-  text-shadow: 1px 1px 7px rgba(0,0,0,.5);
 }
 section.four .container .row p.h1.text-center {
   font-size: 50px;
   font-weight: bold;
-  color: #000;
+  color: #fff;
   font-family: WalsheimBold, serif !important;
-  text-shadow: 1px 1px 7px rgba(0,0,0,.5);
 }
 section.four .container .row form .inputInt {
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #fff;
   width: 70%;
   margin-right: 3%;
   padding-bottom: 1%;
@@ -297,7 +295,7 @@ section.four .container .row form input,
 section.four .container .row form .inputInt,
 section.four .container .row form:focus-within .control .inputInt,
 section.four .container .row form input::placeholder {
-  color: #000;
+  color: #fff;
   text-shadow: 0 0 8px;
 }
 section.four .container .row form input {
