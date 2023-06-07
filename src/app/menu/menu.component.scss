@@ -94,6 +94,44 @@ ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link 
     padding: 0 !important;
   }
 }
+@media only screen and (min-width: 768px) and (max-width: 999px) {
+  a.navbar-brand img.logo {
+    height: 10vh;
+    position: relative;
+    bottom: 2.5vh;
+  }
+  #navbarNavDropdown {
+    position: absolute;
+    top: 7.7vh;
+    right: -8px;
+    box-shadow: 0 0 10px 0;
+    border-radius: 10px;
+    border: 1px solid;
+    transition: all .45s ease-in;
+  }
+  #navbarNavDropdown.navbar-collapse.collapse.show {
+    background-color: #000000;
+    color: #FFF;
+  }
+  ul.navbar-nav.w-100 .col-sm-7.col-md-7.col-lg-7.col-xl-7 {
+    flex-direction: column;
+  }
+  button.navbar-toggler {
+    position: absolute;
+    top: 5%;
+    right: 0;
+    border: 0;
+    z-index: 1055;
+  }
+  ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6,
+  ul.navbar-nav.w-100 .col-sm-7.col-md-7.col-lg-7.col-xl-7 {
+    max-width: 100%;
+  }
+  ul.navbar-nav.w-100,
+  ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 {
+    flex-direction: column;
+  }
+}
 @media only screen and (min-width: 320px) and (max-width: 767px) {
   .col-sm-2.col-md-2.col-lg-2.col-xl-2 {
     width: 65%;
