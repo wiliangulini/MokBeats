@@ -380,3 +380,97 @@ section.four .container .row form:focus-within .control .inputInt {
     font-size: 14px;
   }
 }
+
+@media only screen and (min-width: 768px) and (max-width: 999px) {
+  section.one .container .row h3 {
+    font-size: 1.3rem !important;
+  }
+  section.one .container .row h2 {
+    font-size: 3.4rem;
+    width: 100%;
+  }
+  section.one .material-icons {
+    font-size: 25px !important;
+  }
+  section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 p.h4 {
+    font-size: 18px;
+  }
+  p.h6.mb-0,
+  p.h6.mr-3.mb-0 {
+    font-size: 14px;
+  }
+  button.btn.btn-icons {
+    padding: 4%;
+  }
+  section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 button.btn.btn-primary {
+    font-size: 12px;
+  }
+  section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 {
+    padding: 0;
+  }
+  section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.border-bottom {
+    justify-content: space-between !important;
+  }
+  section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1.loops {
+    flex: 0 0 14.333333%;
+    max-width: 14.333333%;
+  }
+  section.one .container .row.mt-3.justify-content-center.align-items-center.button a.btn.btn-warning.w-25.mb-3.mt-5 {
+    width: 40% !important;
+  }
+  section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p.h2 {
+    font-size: 28px;
+  }
+  section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p.h5 {
+    font-size: 16px;
+  }
+  section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 a.btn {
+    width: 80%;
+    margin-top: 8% !important;
+  }
+  section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.video {
+    padding: 0;
+  }
+
+  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h1 {
+    font-size: 2.3rem;
+    margin-bottom: 6%;
+  }
+  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h5 {
+    font-size: 16px;
+    padding-right: 0%;
+  }
+  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn {
+    width: 85%;
+  }
+  section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p.h5,
+  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn,
+  section.three .container .row .control .controlInt p.h5.mt-3,
+  section.three.pt-5.pb-5 .container .row p.h5.mb-0.d-flex {
+    font-size: 16px;
+  }
+  section.three .container .row .control .controlInt p.h5.mt-3 {
+    text-align: center;
+  }
+  section.three .container .row .control .controlInt span.material-icons {
+    font-size: 60px;
+  }
+  section.four,
+  section.four .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  section.four .container {
+    position: initial;
+  }
+  form.form {
+    width: 80% !important;
+  }
+  section.four .container .row p.h1.text-center {
+    font-size: 40px;
+  }
+  section.four .container .row p.h5.text-center {
+    font-size: 18px;
+  }
+}

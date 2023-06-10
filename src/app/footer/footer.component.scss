@@ -50,3 +50,17 @@ footer .container .row.creditCard,
 footer .container .row.directs {
   margin: 5.5% 0;
 }
+@media only screen and (min-width: 768px) and (max-width: 999px) {
+
+  footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li a,
+  footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 p.h5 ul p {
+    font-size: 14px;
+  }
+  footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 p.h5 {
+    font-size: 16px;
+    margin-bottom: 1.5rem;
+  }
+  footer .container .row.creditCard .col-sm-3.col-md-3.col-lg-3.col-xl-3 {
+    max-width: 25%;
+  }
+}
