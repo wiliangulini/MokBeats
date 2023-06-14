@@ -514,10 +514,10 @@ section.four .container .row form:focus-within .control .inputInt {
   }
   section.one .container .row h2.text-center {
     width: 100%;
-    font-size: 2.6rem !important;
+    font-size: 2rem !important;
   }
   section.one .container .row h3.text-center {
-    font-size: 20px !important;
+    font-size: 16px !important;
     width: 100%;
   }
   section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 {
@@ -574,6 +574,7 @@ section.four .container .row form:focus-within .control .inputInt {
     align-items: center !important;
     justify-content: center !important;
     margin-bottom: 7% !important;
+    padding: 0 5% !important;
   }
   section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h5 {
     font-size: 17px;
@@ -604,17 +605,33 @@ section.four .container .row form:focus-within .control .inputInt {
   section.four .container .row p.h1.text-center {
     font-size: 30px;
   }
-  form.form {
+  form.form.w-50 {
     width: 90% !important;
   }
   section.four .container .row form input {
     width: 100% !important;
   }
   section.four form.form .btnSubmit {
-    width: 35% !important;
+    width: 40% !important;
   }
   section.four .form .btnSubmit button.btn.w-100.btn-warning {
     font-size: 13px !important;
   }
 
+}
+@media only screen and (min-width: 375px) and (max-width: 424px) {
+  article.container-fluid .container {
+    padding: 0;
+  }
+  section.one .container .row h2.text-center {
+    font-size: 1.8rem !important;
+  }
+}
+@media only screen and (min-width: 320px) and (max-width: 374px) {
+  article.container-fluid .container {
+    padding: 0;
+  }
+  article.container-fluid {
+    padding: 0 5px;
+  }
 }

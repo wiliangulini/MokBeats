@@ -31,6 +31,8 @@ footer .container .row .col-sm-1.col-md-1.col-lg-1.col-xl-1 a {
 footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li {
   cursor: pointer;
 }
+footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li:focus a,
+footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li:active a,
 footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li:hover a {
   color: #FFFFFF;
   font-weight: bold;
@@ -62,5 +64,32 @@ footer .container .row.directs {
   }
   footer .container .row.creditCard .col-sm-3.col-md-3.col-lg-3.col-xl-3 {
     max-width: 25%;
+  }
+}
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 .m-0.p-0 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 {
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 p.h5 {
+    margin: 2rem 0 1.5rem 0;
+  }
+  .col-sm-1.col-md-1.col-lg-1.col-xl-1.d-flex.justify-content-center.align-items-center {
+    width: 25%;
+  }
+  footer .container .row.creditCard .col-sm-2.col-md-2.col-lg-2.col-xl-2 {
+    margin: 4% 0;
+  }
+  footer .container .row.creditCard .col-sm-3.col-md-3.col-lg-3.col-xl-3 {
+    max-width: 80%;
+  }
+  footer .container .row.directs p {
+    text-align: center;
   }
 }
