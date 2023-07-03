@@ -8,13 +8,13 @@ import {GeneroComponent} from "./genero/genero.component";
 import {HumorComponent} from "./humor/humor.component";
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'musicas', component: MusicasComponent },
   { path: 'politica-de-privacidade', component: PoliticaPrivacidadeComponent },
   { path: 'genero', component: GeneroComponent },
   { path: 'humor', component: HumorComponent },
+  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 
 @NgModule({

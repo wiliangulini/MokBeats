@@ -4,3 +4,17 @@
 .container {
   margin-top: 20vh;
 }
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+  .container {
+    margin-top: 10vh;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  h3 {
+    font-size: 1.25rem;
+  }
+  p {
+    font-size: 14px;
+  }
+}

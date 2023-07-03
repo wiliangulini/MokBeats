@@ -16,7 +16,7 @@ li.nav-item a.nav-link:hover:before {
   background-color: #007bff;
 }
 a.navbar-brand img.logo {
-  height: 80px;
+  height: 100px;
 }
 li.nav-item a.nav-link:hover:before,
 li.nav-item.active a:before {
@@ -99,13 +99,13 @@ ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link 
 }
 @media only screen and (min-width: 768px) and (max-width: 999px) {
   a.navbar-brand img.logo {
-    height: 10vh;
+    height: 80px;
     position: relative;
     bottom: 2.5vh;
   }
   #navbarNavDropdown {
     position: absolute;
-    top: 7.7vh;
+    top: 7vh;
     right: -8px;
     box-shadow: 0 0 10px 0;
     border-radius: 10px;
@@ -137,8 +137,14 @@ ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link 
 
 }
 @media only screen and (min-width: 320px) and (max-width: 767px) {
+  li.nav-item a:before {
+    background-color: #007bff;
+  }
   .col-sm-2.col-md-2.col-lg-2.col-xl-2 {
     width: 65%;
+  }
+  nav.navbar {
+    height: 70px;
   }
   li.nav-item.p-0 {
     display: flex;
@@ -152,9 +158,9 @@ ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link 
     padding: 0;
   }
   a.navbar-brand img.logo {
-    height: 10vh;
+    height: 90px;
     position: relative;
-    bottom: 2.5vh;
+    bottom: 21px;
   }
   li.nav-item {
     width: 100%;
@@ -164,7 +170,7 @@ ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link 
     position: absolute;
     top: -1vh;
     border-radius: 10px;
-    transition: all 0.25s ease-in;
+    transition: all 0.03s linear;
     border: 0;
     left: 25%;
     height: 100vh;
@@ -191,7 +197,7 @@ ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link 
   }
   button.navbar-toggler {
     position: absolute;
-    top: 0;
+    top: 10%;
     filter: invert(1);
     right: 0;
     border: 0;
@@ -208,4 +214,7 @@ ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link 
   ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 {
     flex-direction: column;
   }
+}
+@media only screen and (max-width: 370px) {
+
 }

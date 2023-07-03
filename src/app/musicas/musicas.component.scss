@@ -7,6 +7,10 @@ article.one {
 .amarelo {
   fill: #dcad54;
 }
+.nav-item.p-0.close,
+button.btn.btn-icons.mobile {
+  display: none;
+}
 #navLeft ul li span.text-uppercase {
   color: #dcad54;
   font-weight: bold;
@@ -663,11 +667,16 @@ nav ul.pagination li.page-item.next a span {
   display: none;
 }
 @media only screen and (min-width: 320px) and (max-width: 768px) {
-  #navLeft,
   article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao {
     display: none;
   }
-  .col-sm-3.col-md-3.col-lg-3.col-xl-3.d-flex.align-items-center.justify-content-end.licenca {
+  button.btn.btn-icons.rmv,
+  .col-sm-3.col-md-3.col-lg-3.col-xl-3.d-flex.align-items-center.justify-content-end.licenca,
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1.one.d-flex.align-items-center.justify-content-around.pl-2.pr-2.pt-0.pb-0,
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-around,
+  #accordionT1,
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.titlesMDiv,
+  section.atalhos {
     display: none !important;
   }
   .filterMobile .button {
@@ -701,6 +710,7 @@ nav ul.pagination li.page-item.next a span {
     align-items: flex-start !important;
     justify-content: flex-start !important;
     height: 20vh;
+    padding: 0 !important;
   }
   article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
     padding-left: 15px !important;
@@ -718,5 +728,68 @@ nav ul.pagination li.page-item.next a span {
     max-height: 10vh;
     flex-direction: row-reverse;
     justify-content: space-between !important;
+  }
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.d-flex.align-items-start.justify-content-start {
+    max-width: 70%;
+    flex: 0 0 70%;
+  }
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.border-bottom {
+    padding: 0 10px !important;
+    align-items: center;
+    justify-content: center;
+  }
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2 {
+    padding: 0;
+    position: initial;
+    max-width: 28%;
+  }
+  .nav-item.p-0.close,
+  button.btn.btn-icons.mobile {
+    display: flex;
+  }
+  article.one .text p.h4 {
+    font-size: 20px;
+  }
+  .svg {
+    width: 35px;
+    height: 35px;
+  }
+  .controlDivsInt.row {
+    margin: 0;
+    justify-content: space-around;
+  }
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 {
+    padding-left: 0;
+  }
+
+}
+@media only screen and (min-width: 375px) and (max-width: 400px) {
+
+}
+@media only screen and (min-width: 300px) and (max-width: 374px) {
+  .col-xl, .col-xl-auto, .col-xl-12, .col-xl-11, .col-xl-10, .col-xl-9, .col-xl-8, .col-xl-7, .col-xl-6, .col-xl-5, .col-xl-4, .col-xl-3, .col-xl-2, .col-xl-1, .col-lg, .col-lg-auto, .col-lg-12, .col-lg-11, .col-lg-10, .col-lg-9, .col-lg-8, .col-lg-7, .col-lg-6, .col-lg-5, .col-lg-4, .col-lg-3, .col-lg-2, .col-lg-1, .col-md, .col-md-auto, .col-md-12, .col-md-11, .col-md-10, .col-md-9, .col-md-8, .col-md-7, .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2, .col-md-1, .col-sm, .col-sm-auto, .col-sm-12, .col-sm-11, .col-sm-10, .col-sm-9, .col-sm-8, .col-sm-7, .col-sm-6, .col-sm-5, .col-sm-4, .col-sm-3, .col-sm-2, .col-sm-1, .col, .col-auto, .col-12, .col-11, .col-10, .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2, .col-1 {
+    padding: 0 !important;
+  }
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade {
+    left: 0;
+  }
+  article.one .container-fluid .row h4 {
+    font-size: 1.35rem;
+  }
+  article.one .container-fluid .row h6 {
+    width: 93%;
+  }
+  article.one .container-fluid .row h6,
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown button.bttn,
+  .filterMobile .button {
+    font-size: 14px;
+  }
+  .filterMobile .button svg {
+    width: 20px;
+    height: 20px;
+  }
+  .dropdown-menu.show {
+    left: -5% !important;
+    top: 4px !important;
   }
 }
