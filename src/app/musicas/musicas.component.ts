@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {MusicasService} from "./musicas.service";
 import {AuthService} from "../login/auth.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
@@ -24,7 +24,6 @@ export class MusicasComponent implements OnInit {
   valor: any;
   frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
   select: any = 'Mais Relevantes';
-
   cantada: Array<any> = [
     "Amostras/Efeitos",
     "Cantores principais",
@@ -128,6 +127,15 @@ export class MusicasComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // if (screen.width < 769) {
+    //   console.log(this.mobileBtn);
+    //   this.btnMobile = true;
+    //   this.mobileBtn.nativeElement.style.display = 'flex';
+    // } else {
+    //   console.log(this.mobileBtn);
+    //   this.btnMobile = false;
+    //   this.mobileBtn.nativeElement.style.display = 'none';
+    // }
   }
 
   curtir(i: number) {
@@ -188,5 +196,4 @@ export class MusicasComponent implements OnInit {
         console.log(this.durationAut)
       }
     }
-
 }

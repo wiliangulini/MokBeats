@@ -6,6 +6,9 @@ nav.navbar {
   box-shadow: 0 0 10px 1px #000;
   padding-left: 0;
 }
+li.nav-item.p-0 {
+  display: none;
+}
 li.nav-item {
   position: relative;
 }
@@ -13,7 +16,7 @@ li.nav-item a.nav-link:hover:before {
   background-color: #007bff;
 }
 a.navbar-brand img.logo {
-  height: 14vh;
+  height: 80px;
 }
 li.nav-item a.nav-link:hover:before,
 li.nav-item.active a:before {
@@ -137,10 +140,6 @@ ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link 
   .col-sm-2.col-md-2.col-lg-2.col-xl-2 {
     width: 65%;
   }
-  #navbarNavDropdown .col-sm-6.col-md-6.col-lg-6.col-xl-6 {
-    align-items: flex-end !important;
-    justify-content: flex-end !important;
-  }
   .col-sm-6.col-md-6.col-lg-6.col-xl-6 {
     flex-direction: column;
     align-items: flex-start !important;
@@ -152,14 +151,30 @@ ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link 
     position: relative;
     bottom: 2.5vh;
   }
+  li.nav-item {
+    width: 100%;
+    padding: 4% 0;
+  }
   #navbarNavDropdown {
     position: absolute;
-    top: 7.7vh;
-    right: -8px;
-    box-shadow: 0 0 10px 0;
+    top: -1vh;
     border-radius: 10px;
-    border: 1px solid;
-    transition: all .45s ease-in;
+    transition: all 0.45s ease-in;
+    border: 0;
+    left: 25%;
+    height: 100vh;
+    right: -15px;
+    z-index: 1100;
+  }
+  #navbarNavDropdown ul.navbar-nav .col-sm-6.col-md-6.col-lg-6.col-xl-6 .control.d-flex li.nav-item {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  #navbarNavDropdown ul.navbar-nav .col-sm-6.col-md-6.col-lg-6.col-xl-6 .control.d-flex {
+    flex-direction: column;
+    width: 100%;
   }
   #navbarNavDropdown.navbar-collapse.collapse.show {
     background-color: #594C63;
@@ -171,14 +186,18 @@ ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link 
   }
   button.navbar-toggler {
     position: absolute;
-    top: 5%;
+    top: 0;
+    filter: invert(1);
     right: 0;
     border: 0;
     z-index: 1055;
   }
+  #navbarNavDropdown .col-sm-6.col-md-6.col-lg-6.col-xl-6,
   ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6,
   ul.navbar-nav.w-100 .col-sm-7.col-md-7.col-lg-7.col-xl-7 {
     max-width: 100%;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
   }
   ul.navbar-nav.w-100,
   ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 {

@@ -523,6 +523,7 @@ section.four .container .row form:focus-within .control .inputInt {
   section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 {
     flex: 0 0 50% !important;
     max-width: 50% !important;
+    align-items: center !important;
   }
   p.h4 a {
     font-size: 18px;
@@ -633,5 +634,8 @@ section.four .container .row form:focus-within .control .inputInt {
   }
   article.container-fluid {
     padding: 0 5px;
+  }
+  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h1 {
+    font-size: 2rem;
   }
 }

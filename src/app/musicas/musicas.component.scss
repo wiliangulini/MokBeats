@@ -659,3 +659,61 @@ nav ul.pagination li.page-item.previous a span,
 nav ul.pagination li.page-item.next a span {
   font-size: 24px !important;
 }
+.filterMobile {
+  display: none;
+}
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+  #navLeft,
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao {
+    display: none !important;
+  }
+  .filterMobile .button {
+    background: transparent;
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+  .filterMobile .button svg {
+    fill: #FFF !important;
+  }
+  .filterMobile .button p.m-0 {
+    color: #FFF;
+  }
+  .filterMobile {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+  }
+  #cf {
+    width: 100vw !important;
+  }
+  article.one .container-fluid .row.mt-5 {
+    margin-top: 30% !important;
+  }
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    height: 20vh;
+  }
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
+    padding-left: 15px !important;
+  }
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4,
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-8.col-md-8.col-lg-8.col-xl-8.p-0 {
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade {
+    position: relative;
+    left: 7%;
+  }
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 {
+    max-height: 10vh;
+    flex-direction: row-reverse;
+    justify-content: space-between !important;
+  }
+}
