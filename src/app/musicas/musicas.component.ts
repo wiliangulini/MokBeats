@@ -123,7 +123,6 @@ export class MusicasComponent implements OnInit {
     this.titles = this.musicService.convertida2;
     this.music = this.musicService.convertida;
     this.humor = this.musicService.humor;
-    console.log(this.arrVExtendida)
   }
 
   ngOnInit(): void {
@@ -140,6 +139,22 @@ export class MusicasComponent implements OnInit {
 
   curtir(i: number) {
     this.musicService.curtir(i);
+  }
+
+  filtrar() {
+    let navleft = document.getElementById('navLeft');
+    console.log(navleft);
+    if(navleft!.getAttribute('style') == 'width: 96vw;' || navleft!.getAttribute('style') == 'width: 96vw; opacity: 1;') {
+      navleft!.style.width = '0vw';
+      navleft!.style.opacity = '0';
+      navleft!.style.display = 'flex';
+      navleft!.style.zIndex = '0';
+    } else {
+      navleft!.style.width = '96vw';
+      navleft!.style.opacity = '1';
+      navleft!.style.display = 'flex';
+      navleft!.style.zIndex = '99999';
+    }
   }
 
   addPlayList(i: number) {

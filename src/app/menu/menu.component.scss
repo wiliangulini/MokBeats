@@ -140,6 +140,11 @@ ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link 
   .col-sm-2.col-md-2.col-lg-2.col-xl-2 {
     width: 65%;
   }
+  li.nav-item.p-0 {
+    display: flex;
+    justify-content: flex-end !important;
+    align-items: flex-end !important;
+  }
   .col-sm-6.col-md-6.col-lg-6.col-xl-6 {
     flex-direction: column;
     align-items: flex-start !important;
@@ -153,13 +158,13 @@ ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link 
   }
   li.nav-item {
     width: 100%;
-    padding: 4% 0;
+    padding: 2% 0;
   }
   #navbarNavDropdown {
     position: absolute;
     top: -1vh;
     border-radius: 10px;
-    transition: all 0.45s ease-in;
+    transition: all 0.25s ease-in;
     border: 0;
     left: 25%;
     height: 100vh;
