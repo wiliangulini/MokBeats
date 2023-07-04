@@ -10,6 +10,8 @@ import {EfeitosSonorosComponent} from "./efeitos-sonoros/efeitosSonoros.componen
 import {LicencaValorComponent} from "./licenca-valor/licenca-valor.component";
 
 const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'musicas', component: MusicasComponent },
   { path: 'efeitos-sonoros', component: EfeitosSonorosComponent },
@@ -17,8 +19,6 @@ const routes: Routes = [
   { path: 'politica-de-privacidade', component: PoliticaPrivacidadeComponent },
   { path: 'genero', component: GeneroComponent },
   { path: 'humor', component: HumorComponent },
-  { path: 'home', component: HomeComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 
 @NgModule({
