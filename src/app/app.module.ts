@@ -25,6 +25,8 @@ import {HumorComponent} from './humor/humor.component';
 import {AddPlaylistModalComponent} from './add-playlist-modal/add-playlist-modal.component';
 import {DownloadAmostraComponent} from './download-amostra/download-amostra.component';
 import {MatButtonModule} from "@angular/material/button";
+import {EfeitosSonorosComponent} from "./efeitos-sonoros/efeitosSonoros.component";
+import {EfeitosSonorosService} from "./efeitos-sonoros/efeitosSonoros.service";
 
 @NgModule({
   declarations: [
@@ -40,6 +42,7 @@ import {MatButtonModule} from "@angular/material/button";
     HumorComponent,
     AddPlaylistModalComponent,
     DownloadAmostraComponent,
+    EfeitosSonorosComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,6 +66,7 @@ import {MatButtonModule} from "@angular/material/button";
     NgbActiveModal,
     AuthService,
     MusicasService,
+    EfeitosSonorosService,
   ],
   bootstrap: [AppComponent]
 })

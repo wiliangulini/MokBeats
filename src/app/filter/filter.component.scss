@@ -1,3 +1,6 @@
+#div1, #div2 {
+  display: flex;
+}
 section.filter {
   background-color: #101010;
 }
@@ -110,6 +113,7 @@ section.filter .container-fluid button {
   border: 0;
   background-color: #1b1b1b;
   height: 100%;
+  width: 13vw !important;
 }
 section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.p-0.d-flex.justify-content-center.align-items-center.h-100.position-relative {
   padding-right: 9% !important;
@@ -167,4 +171,5 @@ button.btn.btn-warning a {
   #cfilter {
     display: none !important;
   }
+
 }

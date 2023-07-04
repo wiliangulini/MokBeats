@@ -1,0 +1,316 @@
+<app-filter></app-filter>
+<article class="one pb-5">
+  <div class="container-fluid w-100 p-0">
+    <div class="position-absolute" id="navLeft" style="width: 13vw;" [formGroup]="formG">
+      <ul class="w-100">
+        <div class="control">
+          <li class="nav-item p-0 close border-0" (click)="filtrar()">
+            <a class="nav-link d-flex justify-content-center align-items-center p-0 border-0" type="button">
+              <svg clip-rule="evenodd" fill="#fff" fill-rule="evenodd" width="24px" height="24px" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"/></svg>
+            </a>
+          </li>
+          <li data-toggle="collapse" data-target="#collapse01" aria-expanded="true" aria-controls="collapse01" class="d-flex align-items-center justify-content-between w-100">Categorias <span class="ml-3 material-icons">add</span></li>
+          <div class="accordion w-100" id="accordion1">
+            <div class="card">
+              <div id="collapse01" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion1">
+                <div class="div2 pt-3" *ngFor="let g of titles; let i = index;">
+                  <mat-checkbox>{{g}}</mat-checkbox>
+                  <div *ngFor="let mus of music[i];" class="textMusic d-flex mt-3 mb-3 pl-3">
+                    <mat-checkbox>{{mus}}</mat-checkbox>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ul>
+    </div>
+    <div id="cf" class="container-fluid mr-0 pt-4">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column align-items-start justify-content-center">
+          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex p-0">
+            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 p-0">
+              <h4 class="mb-4">Efeitos sonoros livres de direitos - Efeitos sonoros incríveis para seus projetos</h4>
+              <h6>Descubra nossos efeitos sonoros livres de direitos exclusivas. Pesquise, ordene e filtre para encontrar o efeito ideal.</h6>
+            </div>
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 d-flex justify-content-end align-items-center">
+              <div class="popularidade">
+                <div class="dropdown">
+                  <button class="bttn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                    {{select}}
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" *ngFor="let p of arrFilter;" (click)="filtroP(p)">{{p}}</a>
+                  </div>
+                </div>
+              </div>
+              <div class="visualizacao" >
+                <button class="button" type="button"  data-toggle="collapse" data-target="#collapseT" aria-expanded="true" aria-controls="collapseT">
+                  <svg width="24" height="24" viewBox="0 0 24 24"><path d="M8 4.3h12v2H8zm-4 0h2v2H4zm4 4.5h12v2H8zm-4 0h2v2H4zm4 4.5h12v2H8zm-4 0h2v2H4zm4 4.5h12v2H8zm-4 0h2v2H4z"></path></svg>
+                </button>
+              </div>
+              <div class="filterMobile">
+                <button class="button" type="button" (click)="filtrar()">
+                  <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 8.5H5.9a3.2 3.2 0 0 0 6.2 0H20a1 1 0 0 0 0-2H12.1a3.2 3.2 0 0 0-6.2 0H4a1 1 0 0 0 0 2Zm5-2.2a1.3 1.3 0 1 1-1.2 1.3A1.3 1.3 0 0 1 9 6.3ZM20 15.5H17.9a3.2 3.2 0 0 0-6.2 0H4a1 1 0 0 0 0 2h7.8a3.2 3.2 0 0 0 6.2 0H20a1 1 0 0 0 0-2Zm-5.1 2.3a1.3 1.3 0 1 1 1.3-1.2A1.3 1.3 0 0 1 14.9 17.7Z"></path></svg>
+                  <p class="m-0">Filtros</p>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex titlesMDiv mb-3">
+          <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex align-items-start justify-content-start" >
+            <div class="titlesMusic position-relative pl-5">
+              <p>Nome</p>
+            </div>
+          </div>
+          <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 d-flex align-items-center justify-content-center">
+            <div class="titlesMusic one position-relative">
+              <p>Duração</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column border-bottom" id="array" *ngFor="let itens of arrMusic; let i = index;">
+          <div class="controlDivs d-flex flex-column w-100">
+            <div class="controlDivsInt row">
+              <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex align-items-start justify-content-start pr-5" >
+                <span class="svg">
+                  <svg width="24" fill="#FFF" height="24" viewBox="0 0 24 24"><path d="M20.7 12.4L7.9 20a.5.5 0 01-.8-.4v-15a.5.5 0 01.8-.4l12.8 7.5a.5.5 0 010 .8z"></path></svg>
+                </span>
+                <div class="text d-flex flex-column align-items-start justify-content-start">
+                  <p class="h4"><a href="#">{{itens.viewValue}}</a></p>
+                  <p class="h6">por <a href="#">{{dados[i].viewValue}}</a></p>
+                </div>
+              </div>
+              <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around pl-2 pr-2 pt-0 pb-0">
+                <p class="h6 mb-0">2:25</p>
+              </div>
+              <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 d-flex align-items-center justify-content-around">
+                <button type="button" data-toggle="tooltip" data-placement="bot" title="Adicionar aos favoritos" class="btn btn-icons" (click)="curtir(i)">
+                  <svg style="display: block;" class="hearth" width="24" height="24" fill="rgba(255,255,255,.5)" viewBox="0 0 24 24">
+                    <path d="M12 21a1 1 0 01-.6-.3l-.7-.5c-5.6-4.6-9-7.3-9-11.4 0-2.9 1.3-5 3.7-5.5A6.8 6.8 0 0112 5.5a6.7 6.7 0 016.5-2.2c2.4.6 3.9 2.6 3.9 5.5 0 4-3.5 6.8-9.1 11.4l-.7.5a1 1 0 01-.6.2zM6.8 5a3.7 3.7 0 00-.9.2c-1.5.4-2.3 1.7-2.3 3.6 0 3.1 3.2 5.6 8.4 9.8 5.2-4.2 8.4-6.7 8.4-9.8 0-2-.9-3.2-2.4-3.6a4.7 4.7 0 00-5.1 2.4 1 1 0 01-1.8 0 5 5 0 00-4.3-2.5z"></path>
+                  </svg>
+                  <svg style="display: none;" class="hearth1" width="24" height="24" fill="#dcad54" viewBox="0 0 24 24"><path d="M18.5 3.3A6.7 6.7 0 0012 5.4a6.8 6.8 0 00-6.6-2.1C3 3.9 1.6 5.9 1.6 8.8c0 4 3.5 6.8 9.1 11.4l.7.5a1 1 0 001.2 0l.7-.5c5.6-4.6 9-7.3 9-11.4 0-2.9-1.4-5-3.8-5.5z"></path></svg>
+                </button>
+
+              </div>
+              <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 d-flex align-items-center justify-content-end licenca">
+                <button class="btn btn-primary" (click)="comprarLicensa(i)">COMPRAR LICENÇA
+                  <svg width="24" height="24" fill="#fff" class="xdBUc" viewBox="0 0 24 24">
+                    <path d="M12 15.6a1 1 0 01-.6-.3l-5.5-5.1a1 1 0 011.3-1.5l4.9 4.5 4.8-4.5a1 1 0 111.4 1.5l-5.5 5a1 1 0 01-.7.4z"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="div w-100 accordion"  id="accordionT1">
+                <div class="row flex-column" id="collapseT" class="collapse mb-3" aria-labelledby="headingOne" data-parent="#accordion1">
+                  <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7">{{frase}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row justify-content-center align-items-center mt-5">
+      <nav aria-label="Page navigation example" class="d-flex justify-content-center align-items-center w-75">
+        <ul class="pagination mb-0 w-75 d-flex justify-content-center align-items-center">
+          <li class="page-item previous">
+            <a class="page-link" href="" aria-label="Previous">
+              <span aria-hidden="true" class="material-icons">navigate_next</span>
+            </a>
+          </li>
+          <li class="page-item active"><a class="page-link" href="">1</a></li>
+          <li class="page-item"><a class="page-link" href="">2</a></li>
+          <li class="page-item"><a class="page-link" href="">3</a></li>
+          <li class="page-item next">
+            <a class="page-link" href="" aria-label="Next">
+              <span aria-hidden="true" class="material-icons">navigate_next</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</article>
+<section class="atalhos">
+  <div class="container-fluid">
+    <div class="row titlesAtalhos d-flex justify-content-center align-items-center flex-column mb-5">
+      <p class="h3 font-weight-bold mb-0">Atalhos do teclado <span class="material-icons ml-2">expand_less</span></p>
+      <p class="h6">Descubra atalhos para uma experiência de navegação ainda melhor</p>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 keyboard">
+        <div class="SGetT">
+          <div class="_3wYPv">
+            <div class="aRe99"></div>
+            <div class="aRe99"></div>
+            <div class="aRe99"></div>
+            <div class="aRe99"></div>
+            <div class="aRe99"></div>
+            <div class="aRe99"></div>
+            <div class="aRe99"></div>
+            <div class="aRe99"></div>
+            <div class="aRe99"></div>
+            <div class="aRe99"></div>
+            <div class="aRe99"></div>
+            <div class="aRe99"></div>
+            <div class="aRe99"></div>
+            <div class="aRe99"></div>
+          </div>
+          <div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99"></div></div><div>
+          <div class="aRe99"></div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU EFBZV muXwN">
+            <div class="_0lMxa">P</div>
+          </div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU"></div></div><div>
+          <div class="aRe99"></div>
+          <div class="aRe99 +IBKU EFBZV muXwN">
+            <div class="_0lMxa">A</div>
+          </div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU EFBZV muXwN">
+            <div class="_0lMxa">F</div>
+          </div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU EFBZV muXwN">
+            <div class="_0lMxa">L</div>
+          </div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99 +IBKU"></div>
+          <div class="aRe99"></div></div>
+          <div>
+            <div class="aRe99"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU EFBZV muXwN">
+              <div class="_0lMxa">C</div>
+            </div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99"></div>
+          </div>
+          <div class="_6M7au">
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="aRe99"></div>
+            <div class="aRe99 EFBZV dMp8x muXwN">
+              <div class="_0lMxa"></div>
+            </div>
+            <div class="aRe99"></div>
+            <div class="aRe99 +IBKU"></div>
+            <div class="_7u7Wr">
+              <div class="aRe99 EFBZV yBBim muXwN">
+                <div class="_0lMxa">
+                  <svg width="6" height="6" viewBox="0 0 6 6"><path d="M-626-829v2422h800V-829zM10 10H-4V-4h14z"></path><path d="M3 1L1 5h4L3 1z"></path></svg>
+                </div>
+              </div>
+              <div class="OMcal">
+                <div class="aRe99 EFBZV QkWST muXwN">
+                  <div class="_0lMxa">
+                    <svg width="6" height="6" viewBox="0 0 6 6"><path d="M-626-829v2422h800V-829zM10 10H-4V-4h14z"></path><path d="M3 1L1 5h4L3 1z"></path></svg>
+                  </div>
+                </div>
+                <div class="aRe99 EFBZV kqNPF muXwN">
+                  <div class="_0lMxa">
+                    <svg width="6" height="6" viewBox="0 0 6 6"><path d="M-626-829v2422h800V-829zM10 10H-4V-4h14z"></path><path d="M3 1L1 5h4L3 1z"></path></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="aRe99 EFBZV -nJl- muXwN">
+                <div class="_0lMxa">
+                  <svg width="6" height="6" viewBox="0 0 6 6"><path d="M-626-829v2422h800V-829zM10 10H-4V-4h14z"></path><path d="M3 1L1 5h4L3 1z"></path></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex txt pl-5">
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 one">
+          <div class="line d-flex justify-content-between align-items-center">
+            <p class="h5 font-weight-bold">Esquerda/Direita</p>
+            <div class="lineInt"></div>
+            <p class="font12">Retroceder/Avançar</p>
+          </div>
+          <div class="line d-flex justify-content-between align-items-center">
+            <p class="h5 font-weight-bold">Para Cima/Para Baixo</p>
+            <div class="lineInt"></div>
+            <p class="font12">Música anterior/próxima</p>
+          </div>
+          <div class="line d-flex justify-content-between align-items-center">
+            <p class="h5 font-weight-bold">Barra de espaço</p>
+            <div class="lineInt"></div>
+            <p class="font12">Reproduzir/Pausar</p>
+          </div>
+          <div class="line d-flex justify-content-between align-items-center">
+            <p class="h5 font-weight-bold">C</p>
+            <div class="lineInt"></div>
+            <p class="font12">Finalizar a compra</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 two">
+          <div class="line d-flex justify-content-between align-items-center">
+            <p class="h5 font-weight-bold">F</p>
+            <div class="lineInt"></div>
+            <p class="font12">Adicionar aos favoritos</p>
+          </div>
+          <div class="line d-flex justify-content-between align-items-center">
+            <p class="h5 font-weight-bold">A</p>
+            <div class="lineInt"></div>
+            <p class="font12">Adicionar ao carrinho</p>
+          </div>
+          <div class="line d-flex justify-content-between align-items-center">
+            <p class="h5 font-weight-bold">P</p>
+            <div class="lineInt"></div>
+            <p class="font12">Adicionar a uma playlist</p>
+          </div>
+          <div class="line d-flex justify-content-between align-items-center">
+            <p class="h5 font-weight-bold">L</p>
+            <div class="lineInt"></div>
+            <p class="font12">Adicionar à playlist mais recente</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>

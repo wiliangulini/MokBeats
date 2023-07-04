@@ -1,13 +1,13 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {MusicasService} from "./musicas.service";
+import {EfeitosSonorosService} from "./efeitosSonoros.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
-  selector: 'app-musicas',
-  templateUrl: './musicas.component.html',
-  styleUrls: ['./musicas.component.scss']
+  selector: 'app-efeitos-sonoros',
+  templateUrl: './efeitosSonoros.component.html',
+  styleUrls: ['./efeitosSonoros.component.scss']
 })
-export class MusicasComponent implements OnInit {
+export class EfeitosSonorosComponent implements OnInit {
 
   musicAdd: any;
   duration: any;
@@ -16,7 +16,6 @@ export class MusicasComponent implements OnInit {
   icon: string = 'play_circle';
   titles: any[];
   music: any[];
-  humor: any[];
   musicas: any = {};
   number!: number;
   formG!: FormGroup;
@@ -77,13 +76,6 @@ export class MusicasComponent implements OnInit {
   arrFilter: Array<any> = [
     "Popularidade",
     "Mais relevantes",
-    "Mais recentes",
-    "Ordem alfabética",
-    "Artista",
-    "BPM (mais baixos primeiro)",
-    "BPM (mais altos primeiro)",
-    "Duração (mais curtas primeiro)",
-    "Duração (mais longas primeiro)",
   ]
   arrVExtendida: Array<any> = [
     {value: "Baixo por sintetizador", viewValue: "Baixo por sintetizador"},
@@ -111,7 +103,7 @@ export class MusicasComponent implements OnInit {
   @Output('ngModelChange') update: any = new EventEmitter();
 
   constructor(
-    private musicService: MusicasService,
+    private effectSoundService: EfeitosSonorosService,
     private fb: FormBuilder,
   ) {
     this.formG = this.fb.group({
@@ -119,19 +111,23 @@ export class MusicasComponent implements OnInit {
       bpm: [],
       duracao: [],
     });
-    this.titles = this.musicService.convertida2;
-    this.music = this.musicService.convertida;
-    this.humor = this.musicService.humor;
+    this.titles = this.effectSoundService.convertida2;
+    this.music = this.effectSoundService.convertida;
   }
 
   ngOnInit(): void {
+    let div1: any = document.getElementById('div1');
+    let div2: any = document.getElementById('div2');
+    div1.style.display = 'none';
+    div2.style.display = 'none';
+
     if (screen.width < 769) {
       document.getElementById('navLeft')!.style.width = '0';
     }
   }
 
   curtir(i: number): void {
-    this.musicService.curtir(i);
+    this.effectSoundService.curtir(i);
   }
 
   filtrar(): void {
@@ -148,28 +144,8 @@ export class MusicasComponent implements OnInit {
     }
   }
 
-  addPlayList(i: number): void {
-    this.musicAdd = this.arrMusic[i].viewValue;
-    this.musicService.addPlayList(i, this.musicAdd);
-  }
-
-  copiarLink(i: number): void {
-    this.musicService.copiarLink(i);
-  }
-
-  baixarAmostra(i: number): void {
-    this.musicDownload = [];
-    this.musicDownload.push(this.arrMusic[i].viewValue);
-    this.musicDownload.push(this.dados[i].viewValue);
-    this.musicService.baixarAmostra(i, this.musicDownload);
-  }
-
   comprarLicensa(i: number): void {
-    this.musicService.comprarLicensa(i);
-  }
-
-  onChange(event: any): void {
-    console.log(event);
+    this.effectSoundService.comprarLicensa(i);
   }
 
   filtroP(e: any): void {

@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AuthService} from "../login/auth.service";
 import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {LoginComponent} from "../login/login.component";
 import {AddPlaylistModalComponent} from "../add-playlist-modal/add-playlist-modal.component";
 import {DownloadAmostraComponent} from "../download-amostra/download-amostra.component";
 

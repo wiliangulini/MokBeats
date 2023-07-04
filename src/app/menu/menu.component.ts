@@ -23,20 +23,11 @@ export class MenuComponent implements OnInit {
   constructor(public modalService: NgbModal) { }
 
   ngOnInit(): void {
-    let navlink = document.querySelectorAll('#menu .menuInt li.nav-item a.nav-link');
-    console.log(navlink);
-    let close = document.getElementById('closeNav');
-    console.log(close);
-    navlink.forEach((e: any, index: number): void => {
-      console.log(e.innerText);
-      console.log(index);
-    })
   }
 
   closeNav(): void {
     if (screen.width < 769) {
       let close = document.getElementById('closeNav');
-      console.log(close);
       close!.click();
     }
   }
