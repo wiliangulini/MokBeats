@@ -27,6 +27,8 @@ import {DownloadAmostraComponent} from './download-amostra/download-amostra.comp
 import {MatButtonModule} from "@angular/material/button";
 import {EfeitosSonorosComponent} from "./efeitos-sonoros/efeitosSonoros.component";
 import {EfeitosSonorosService} from "./efeitos-sonoros/efeitosSonoros.service";
+import { LicencaValorComponent } from './licenca-valor/licenca-valor.component';
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 @NgModule({
   declarations: [
@@ -43,6 +45,7 @@ import {EfeitosSonorosService} from "./efeitos-sonoros/efeitosSonoros.service";
     AddPlaylistModalComponent,
     DownloadAmostraComponent,
     EfeitosSonorosComponent,
+    LicencaValorComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,6 +63,7 @@ import {EfeitosSonorosService} from "./efeitos-sonoros/efeitosSonoros.service";
     NgbTooltipModule,
     MatCheckboxModule,
     MatButtonModule,
+    MatButtonToggleModule,
   ],
   providers: [
     NgbTooltip,

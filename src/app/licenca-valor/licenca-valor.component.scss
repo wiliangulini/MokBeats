@@ -1,0 +1,31 @@
+main {
+  margin-top: 12vh;
+}
+#myTab {
+  visibility: visible;
+  animation-duration: 1s;
+  animation-delay: 0.4s;
+  width: 90%;
+  background-color: white;
+  box-shadow: 0 0 30px #dee2e6;
+  padding: 15px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
+#myTab .nav-item {
+  width: 48%;
+  text-align: center;
+}
+#myTab .nav-item a {
+  border-radius: 50px;
+  color: #233d63;
+  font-size: 20px;
+  font-weight: 700;
+  border: none;
+}
+#myTab .nav-item a.active {
+  background-color: #4B3A8F;
+  color: white;
+}
