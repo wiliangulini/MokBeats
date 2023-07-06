@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {UsuarioLogin} from "./usuarioLogin";
-import {LoginComponent} from "./login.component";
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import { Injectable } from '@angular/core';
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { LoginComponent } from "./login.component";
+import { UsuarioLogin } from "./usuarioLogin";
 
 @Injectable({
   providedIn: 'root'

@@ -1,13 +1,13 @@
-import {NgModule} from "@angular/core";
-import {RouterModule, Routes} from "@angular/router";
-import {HomeComponent} from "./home/home.component";
-import {LoginComponent} from "./login/login.component";
-import {PoliticaPrivacidadeComponent} from "./politica-privacidade/politica-privacidade.component";
-import {MusicasComponent} from "./musicas/musicas.component";
-import {GeneroComponent} from "./genero/genero.component";
-import {HumorComponent} from "./humor/humor.component";
-import {EfeitosSonorosComponent} from "./efeitos-sonoros/efeitosSonoros.component";
-import {LicencaValorComponent} from "./licenca-valor/licenca-valor.component";
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { EfeitosSonorosComponent } from "./efeitos-sonoros/efeitosSonoros.component";
+import { GeneroComponent } from "./genero/genero.component";
+import { HomeComponent } from "./home/home.component";
+import { HumorComponent } from "./humor/humor.component";
+import { LicencaValorComponent } from "./licenca-valor/licenca-valor.component";
+import { LoginComponent } from "./login/login.component";
+import { MusicasComponent } from "./musicas/musicas.component";
+import { PoliticaPrivacidadeComponent } from "./politica-privacidade/politica-privacidade.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },

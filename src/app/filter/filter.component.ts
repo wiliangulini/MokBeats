@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MusicasService} from "../musicas/musicas.service";
+import { MusicasService } from "../musicas/musicas.service";
 
 @Component({
   selector: 'app-filter',

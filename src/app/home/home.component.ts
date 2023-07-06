@@ -1,7 +1,8 @@
-import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {AuthService} from "../login/auth.service";
-import {MusicasService} from "../musicas/musicas.service";
+
+import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { AuthService } from "../login/auth.service";
+import { MusicasService } from "../musicas/musicas.service";
 
 interface GeneroM {
   value: string;
@@ -21,23 +22,23 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   musicAdd: any;
   musicDownload: any[] = [];
 
-  dados: Array<any> =  [
-    {value: 'Sweet Spot', viewValue: 'Sweet Spot'},
-    {value: 'Bonieky', viewValue: 'Bonieky'},
-    {value: 'Wilian', viewValue: 'Wilian'},
-    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
-    {value: 'HighFrenetic', viewValue: 'HighFrenetic'}
+  dados: Array<any> = [
+    { value: 'Sweet Spot', viewValue: 'Sweet Spot' },
+    { value: 'Bonieky', viewValue: 'Bonieky' },
+    { value: 'Wilian', viewValue: 'Wilian' },
+    { value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos' },
+    { value: 'HighFrenetic', viewValue: 'HighFrenetic' }
   ];
   arrMusic: Array<any> = [
-    {value: 'The Funkster', viewValue: 'The Funkster'},
-    {value: 'Code', viewValue: 'Code'},
-    {value: 'Impertinent', viewValue: 'Impertinent'},
-    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
-    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
+    { value: 'The Funkster', viewValue: 'The Funkster' },
+    { value: 'Code', viewValue: 'Code' },
+    { value: 'Impertinent', viewValue: 'Impertinent' },
+    { value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos' },
+    { value: 'HighFrenetic', viewValue: 'HighFrenetic' },
   ];
   generoM: GeneroM[] = [
-    {value: 'Músicas', viewValue: 'Músicas'},
-    {value: 'Efeitos', viewValue: 'Efeitos'},
+    { value: 'Músicas', viewValue: 'Músicas' },
+    { value: 'Efeitos', viewValue: 'Efeitos' },
   ];
 
   constructor(
@@ -53,7 +54,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewChecked() {
     this.cdRef.detectChanges();
@@ -64,7 +65,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   curtir(i: number) {
-   return this.musicService.curtir(i);
+    return this.musicService.curtir(i);
   }
 
   addPlayList(i: number) {

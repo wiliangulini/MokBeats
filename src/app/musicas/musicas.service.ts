@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {AuthService} from "../login/auth.service";
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {AddPlaylistModalComponent} from "../add-playlist-modal/add-playlist-modal.component";
-import {DownloadAmostraComponent} from "../download-amostra/download-amostra.component";
+import { Injectable } from '@angular/core';
+import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { AddPlaylistModalComponent } from "../add-playlist-modal/add-playlist-modal.component";
+import { DownloadAmostraComponent } from "../download-amostra/download-amostra.component";
+import { AuthService } from "../login/auth.service";
 
 @Injectable({
   providedIn: 'root'

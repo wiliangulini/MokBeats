@@ -1,6 +1,6 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {EfeitosSonorosService} from "./efeitosSonoros.service";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { EfeitosSonorosService } from "./efeitosSonoros.service";
 
 @Component({
   selector: 'app-efeitos-sonoros',

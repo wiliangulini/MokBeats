@@ -1,5 +1,5 @@
-import {AfterContentInit, Component, OnInit} from '@angular/core';
-import {MusicasService} from "../musicas/musicas.service";
+import { AfterContentInit, Component, OnInit } from '@angular/core';
+import { MusicasService } from "../musicas/musicas.service";
 
 @Component({
   selector: 'app-genero',

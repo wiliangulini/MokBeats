@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {Router} from "@angular/router";
-import {AuthService} from "./auth.service";
-import {UsuarioLogin} from "./usuarioLogin";
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { Router } from "@angular/router";
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { AuthService } from "./auth.service";
+import { UsuarioLogin } from "./usuarioLogin";
 
 @Component({
   selector: 'app-login',

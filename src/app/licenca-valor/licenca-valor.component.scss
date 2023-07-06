@@ -135,7 +135,14 @@ section.two {
 section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 span.material-icons.mr-2.p-0 {
   color: #FFF;
 }
+section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 p.h1 {
+  font-size: 45px;
+}
 section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 p {
   color: #FFF;
 }
-
+section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .control.d-flex {
+  padding: 0 4%;
+  position: relative;
+  right: .5%;
+}

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {MusicasService} from "../musicas/musicas.service";
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { MusicasService } from "../musicas/musicas.service";
 
 @Component({
   selector: 'app-download-amostra',

@@ -1,6 +1,6 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {MusicasService} from "./musicas.service";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { MusicasService } from "./musicas.service";
 
 @Component({
   selector: 'app-musicas',
