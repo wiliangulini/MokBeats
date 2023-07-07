@@ -91,7 +91,7 @@
       </div>
     </div>
     <div class="row mt-3 justify-content-center align-items-center button">
-      <a [routerLink]="['/musicas']" class="btn btn-warning w-25 mb-3 mt-5">Mostrar todas as tracks</a>
+      <a (click)="routeNav('musicas')" class="btn btn-warning w-25 mb-3 mt-5">Mostrar todas as tracks</a>
     </div>
   </div>
 </section>
@@ -139,7 +139,7 @@
       <div class="pl-5 col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex flex-column align-items-start justify-content-start">
         <p class="h1">Incredible Music Simple Licenses</p>
         <p class="h5">Our curated library of royalty free music gives you the polished feel of the big production houses. Plus, all our tracks are 100% exclusive and copyright clear.</p>
-        <a type="button" href="#" class="btn btn-warning">DISCOVER OUR LICENSES</a>
+        <a type="button" (click)="routeNav('precos')" class="btn btn-warning">DISCOVER OUR LICENSES</a>
       </div>
     </div>
     <div class="row m-0 pt-4 pb-4 trusted justify-content-center align-items-center">

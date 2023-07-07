@@ -3,6 +3,7 @@ import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit }
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { AuthService } from "../login/auth.service";
 import { MusicasService } from "../musicas/musicas.service";
+import {Router} from "@angular/router";
 
 interface GeneroM {
   value: string;
@@ -46,6 +47,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     private cdRef: ChangeDetectorRef,
     private authService: AuthService,
     private musicService: MusicasService,
+    private router: Router
   ) {
     this.form = this.fb.group({
       search: [],
@@ -62,6 +64,14 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   ngAfterViewInit() {
     this.form.get('genero')?.setValue(this.generoM[0].viewValue);
+  }
+
+  routeNav(txt: string): void {
+    if (txt === 'musicas') {
+      this.router.navigate(['/musicas']).then();
+    } else if (txt === 'precos') {
+      this.router.navigate(['/precos']).then();
+    }
   }
 
   curtir(i: number) {

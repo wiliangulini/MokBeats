@@ -22,8 +22,7 @@ export class MenuComponent implements OnInit {
 
   constructor(public modalService: NgbModal) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   closeNav(): void {
     if (screen.width < 769) {

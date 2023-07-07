@@ -1,6 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { MusicasService } from "./musicas.service";
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {MusicasService} from "./musicas.service";
+import {ScrollService} from "../service/scroll.service";
 
 @Component({
   selector: 'app-musicas',
@@ -13,14 +14,12 @@ export class MusicasComponent implements OnInit {
   duration: any;
   durationAut: any;
   musicDownload: any[] = [];
-  icon: string = 'play_circle';
   titles: any[];
   music: any[];
   humor: any[];
   musicas: any = {};
   number!: number;
   formG!: FormGroup;
-  valor: any;
   frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
   select: any = 'Mais Relevantes';
   cantada: Array<any> = [
@@ -112,6 +111,7 @@ export class MusicasComponent implements OnInit {
 
   constructor(
     private musicService: MusicasService,
+    private scrollService: ScrollService,
     private fb: FormBuilder,
   ) {
     this.formG = this.fb.group({
@@ -125,6 +125,8 @@ export class MusicasComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.scrollService.scrollUp();
+
     if (screen.width < 769) {
       document.getElementById('navLeft')!.style.width = '0';
     }
@@ -175,19 +177,6 @@ export class MusicasComponent implements OnInit {
   filtroP(e: any): void {
     console.log(e);
     this.select = e;
-  }
-
-  radio(e: any): void {
-    console.log(e);
-    console.log(e.target.value);
-    this.valor = e.target.value;
-    this.getValor(this.valor);
-  }
-
-  getValor(elm: any) {
-    console.log(elm);
-    let valor = elm;
-    return valor;
   }
 
   onChangedEvent(event: any, elem: any): void {

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ScrollService} from "../service/scroll.service";
 
 @Component({
   selector: 'app-licenca-valor',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LicencaValorComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private scrollService: ScrollService,
+  ) { }
 
   ngOnInit(): void {
+    this.scrollService.scrollUp();
   }
 
 }

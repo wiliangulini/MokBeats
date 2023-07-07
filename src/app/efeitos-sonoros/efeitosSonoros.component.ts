@@ -9,11 +9,6 @@ import { EfeitosSonorosService } from "./efeitosSonoros.service";
 })
 export class EfeitosSonorosComponent implements OnInit {
 
-  musicAdd: any;
-  duration: any;
-  durationAut: any;
-  musicDownload: any[] = [];
-  icon: string = 'play_circle';
   titles: any[];
   music: any[];
   musicas: any = {};
@@ -152,30 +147,4 @@ export class EfeitosSonorosComponent implements OnInit {
     console.log(e);
     this.select = e;
   }
-
-  radio(e: any): void {
-    console.log(e);
-    console.log(e.target.value);
-    this.valor = e.target.value;
-    this.getValor(this.valor);
-  }
-
-  getValor(elm: any) {
-    console.log(elm);
-    let valor = elm;
-    return valor;
-  }
-
-  onChangedEvent(event: any, elem: any): void {
-    elem == 'bpm' ? this.number = event : this.duration = event;
-
-    if(elem == 'duracao') {
-        let dateObj: any = new Date(this.duration * 1000);
-        let minutes: any = dateObj.getUTCMinutes();
-        let seconds: any = dateObj.getSeconds();
-
-        let timeString: any = minutes.toString().padStart(1) + ':' + seconds.toString().padStart(2, '0');
-        this.durationAut = timeString;
-      }
-    }
 }

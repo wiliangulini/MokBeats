@@ -48,7 +48,6 @@ section.one .container {
   left: 0;
   right: 0;
   background: #1b1b1b;
-  color: #FFF;
   font-weight: 900;
   font-family: WalsheimBold;
   display: flex;
@@ -101,21 +100,27 @@ small.small {
   color: #828282;
   font-weight: bold;
 }
+section.faq.access .container .row .col-sm-8.col-md-8.col-lg-10.col-xl-12 a.btn.btn-warning,
 section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body .cardInt.btn button.btn.btn-warning {
   background-color: #4B3A8F;
   border: 0;
-  color: #FFF;
   padding: 2% 0;
   border-radius: 30px;
   margin: 4% 0;
   transition: all .35s linear;
 }
+section.faq.access .container .row .col-sm-8.col-md-8.col-lg-10.col-xl-12 a.btn.btn-warning:hover {
+  padding: 18.5px 0 !important;
+}
+section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body .cardInt.btn button.btn.btn-warning:hover {
+  padding: 2.5% 0 !important;
+}
+section.faq.access .container .row .col-sm-8.col-md-8.col-lg-10.col-xl-12 a.btn.btn-warning:hover,
 section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body .cardInt.btn button.btn.btn-warning:hover {
   box-shadow: 0 0 10px 0 #4B3A8F !important;
   border: 1px solid #4B3A8F !important;
   background-color: #FFF !important;
   color: #4B3A8F !important;
-  padding: 2.5% 0 !important;
 }
 section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-footer {
   height: 65px;
@@ -132,17 +137,55 @@ section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-foot
 section.two {
   padding: 6% 0 0;
 }
-section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 span.material-icons.mr-2.p-0 {
-  color: #FFF;
+section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
+  margin-bottom: 2rem;
 }
+section.faq.access .container .row .col-sm-8.col-md-8.col-lg-10.col-xl-12 p.h1,
 section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 p.h1 {
   font-size: 45px;
 }
-section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 p {
+section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body .cardInt.btn button.btn.btn-warning,
+.blackBar,
+table.license,
+section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .control.d-flex .column.d-flex .material-icons.mr-2.p-0,
+section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 p,
+section.faq.access .container .row .col-sm-8.col-md-8.col-lg-10.col-xl-12 a.btn.btn-warning {
   color: #FFF;
 }
 section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .control.d-flex {
   padding: 0 4%;
   position: relative;
   right: .5%;
+}
+table.license th {
+  border-top: 0;
+}
+table.license .top.early {
+  border-right: 2px solid #dededf;
+}
+table.license .top {
+  border-top: 2px solid #dededf !important;
+}
+table.license .mid {
+  border-color: #dededf;
+  border-right: 2px solid;
+  border-left: 2px solid;
+}
+table.license .mid,
+table.license tbody th {
+  text-align: center;
+}
+table.license thead th,
+table.license tbody th,
+table.license tbody td {
+  padding: 20px;
+  vertical-align: middle;
+}
+section.faq.access {
+  background-color: #FFF;
+  padding: 6% 0;
+}
+section.faq.access .container .row .col-sm-8.col-md-8.col-lg-10.col-xl-12 a.btn.btn-warning {
+  width: 30%;
+  cursor: pointer;
 }

@@ -30,6 +30,7 @@ import { MenuComponent } from './menu/menu.component';
 import { MusicasComponent } from './musicas/musicas.component';
 import { MusicasService } from "./musicas/musicas.service";
 import { PoliticaPrivacidadeComponent } from './politica-privacidade/politica-privacidade.component';
+import {ScrollService} from "./service/scroll.service";
 
 
 @NgModule({
@@ -74,6 +75,7 @@ import { PoliticaPrivacidadeComponent } from './politica-privacidade/politica-pr
     AuthService,
     MusicasService,
     EfeitosSonorosService,
+    ScrollService,
   ],
   bootstrap: [AppComponent]
 })
