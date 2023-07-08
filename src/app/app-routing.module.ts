@@ -8,6 +8,7 @@ import { LicencaValorComponent } from "./licenca-valor/licenca-valor.component";
 import { LoginComponent } from "./login/login.component";
 import { MusicasComponent } from "./musicas/musicas.component";
 import { PoliticaPrivacidadeComponent } from "./politica-privacidade/politica-privacidade.component";
+import {FaqComponent} from "./faq/faq.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'politica-de-privacidade', component: PoliticaPrivacidadeComponent },
   { path: 'genero', component: GeneroComponent },
   { path: 'humor', component: HumorComponent },
+  { path: 'faq', component: FaqComponent },
 ];
 
 @NgModule({

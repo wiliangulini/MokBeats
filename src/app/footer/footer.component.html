@@ -29,7 +29,7 @@
         <p class="h5">SUPPORT</p>
         <ul class="m-0 p-0">
           <li *ngFor="let sup of support">
-            <a href="#">{{sup.viewValue}}</a>
+            <a (click)="infoFunction(sup.viewValue)">{{sup.viewValue}}</a>
           </li>
         </ul>
       </div>

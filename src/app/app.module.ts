@@ -31,6 +31,7 @@ import { MusicasComponent } from './musicas/musicas.component';
 import { MusicasService } from "./musicas/musicas.service";
 import { PoliticaPrivacidadeComponent } from './politica-privacidade/politica-privacidade.component';
 import {ScrollService} from "./service/scroll.service";
+import { FaqComponent } from './faq/faq.component';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import {ScrollService} from "./service/scroll.service";
     DownloadAmostraComponent,
     EfeitosSonorosComponent,
     LicencaValorComponent,
+    FaqComponent,
   ],
   imports: [
     BrowserModule,

@@ -28,18 +28,22 @@ export class FooterComponent implements OnInit {
     {value: 'Entre em Contato', viewValue: 'Entre em Contato'},
     {value: 'FAQ', viewValue: 'FAQ'},
     {value: 'Blog', viewValue: 'Blog'},
-    {value: 'Affiliate Program', viewValue: 'Affiliate Program'},
-    {value: 'Refer & get $25', viewValue: 'Refer & get $25'},
   ];
   constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
 
-  infoFunction(data: any) {
+  infoFunction(data: string) {
     console.log(data);
-    if(data == 'Política de Privacidade') {
-      this.router.navigate(['/politica-de-privacidade']);
+    if(data === 'Política de Privacidade') {
+      this.router.navigate(['/politica-de-privacidade']).then();
+    } else if(data === 'FAQ') {
+      this.router.navigate(['/faq']).then();
+    } else if(data === 'Entre em Contato') {
+      this.router.navigate(['/contato']).then();
+    } else if(data === 'Informações de Licença') {
+      this.router.navigate(['/preco']).then();
     }
   }
 

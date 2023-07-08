@@ -1,0 +1,94 @@
+section.faq {
+  margin-top: 7.7vh;
+  padding: 4% 0;
+  background-image: url("../../assets/images/mokbeats_roseta.webp");
+  background-position: center;
+  background-size: contain;
+  background-repeat: repeat;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+section.faq .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 h1 {
+  font-size: 60px;
+  width: 30%;
+}
+section.faq .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 p.h5 {
+  width: 37%;
+}
+section.faq .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
+  color: #000;
+  font-family: WalsheimBold;
+}
+section.faqTxt {
+  padding: 5% 0;
+}
+section.faqTxt .container .row .menuLeft.w-25 ul {
+  list-style: none;
+  height: 100%;
+}
+section.faqTxt .container .row .menuLeft.w-25 ul li {
+  margin-bottom: 15%;
+  font-weight: bold;
+}
+section.faqTxt .container .row .menuLeft.w-25 ul li a {
+  cursor: pointer;
+  font-size: 20px;
+}
+section.faqTxt .container .row .tecnicas.w-75,
+section.faqTxt .container .row .seguranca.w-75,
+section.faqTxt .container .row .musicasFree.w-75,
+section.faqTxt .container .row .resolucaoDeProblemas.w-75,
+section.faqTxt .container .row .programaDeIndicacao.w-75,
+section.faqTxt .container .row .assinatura.w-75,
+section.faqTxt .container .row .menuLeft.w-25 ul li a,
+table.license {
+  color: #FFF;
+}
+
+table.license th {
+  border-top: 0;
+}
+table.license .top.early {
+  border-right: 2px solid #dededf;
+}
+table.license .top {
+  border-top: 2px solid #dededf !important;
+}
+table.license .mid {
+  border-color: #dededf;
+  border-right: 2px solid;
+  border-left: 2px solid;
+}
+table.license .mid,
+table.license tbody th {
+  text-align: center;
+}
+table.license thead th,
+table.license tbody th,
+table.license tbody td {
+  padding: 20px;
+  vertical-align: middle;
+}
+
+section.faqTxt .container .row .tecnicas.w-75 p.h6,
+section.faqTxt .container .row .seguranca.w-75 p.h6,
+section.faqTxt .container .row .musicasFree.w-75 p.h6,
+section.faqTxt .container .row .resolucaoDeProblemas.w-75 p.h6,
+section.faqTxt .container .row .programaDeIndicacao.w-75 p.h6,
+section.faqTxt .container .row .assinatura.w-75 p.h6 {
+  font-size: 18px;
+  line-height: 1.5;
+}
+section.faqTxt .container .row .tecnicas.w-75 p.h1,
+section.faqTxt .container .row .seguranca.w-75 p.h1,
+section.faqTxt .container .row .musicasFree.w-75 p.h1,
+section.faqTxt .container .row .resolucaoDeProblemas.w-75 p.h1,
+section.faqTxt .container .row .programaDeIndicacao.w-75 p.h1,
+section.faqTxt .container .row .assinatura.w-75 p.h1 {
+  font-size: 50px;
+}
+.talk {
+  color: #007bff !important;
+}

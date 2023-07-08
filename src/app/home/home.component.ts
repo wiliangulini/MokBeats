@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { AuthService } from "../login/auth.service";
 import { MusicasService } from "../musicas/musicas.service";
 import {Router} from "@angular/router";
+import {ScrollService} from "../service/scroll.service";
 
 interface GeneroM {
   value: string;
@@ -47,6 +48,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     private cdRef: ChangeDetectorRef,
     private authService: AuthService,
     private musicService: MusicasService,
+    private scrollService: ScrollService,
     private router: Router
   ) {
     this.form = this.fb.group({
@@ -56,7 +58,9 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.scrollService.scrollUp();
+  }
 
   ngAfterViewChecked() {
     this.cdRef.detectChanges();

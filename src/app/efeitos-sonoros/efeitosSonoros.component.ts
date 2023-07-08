@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { EfeitosSonorosService } from "./efeitosSonoros.service";
+import {ScrollService} from "../service/scroll.service";
 
 @Component({
   selector: 'app-efeitos-sonoros',
@@ -100,6 +101,7 @@ export class EfeitosSonorosComponent implements OnInit {
   constructor(
     private effectSoundService: EfeitosSonorosService,
     private fb: FormBuilder,
+    private scrollService: ScrollService,
   ) {
     this.formG = this.fb.group({
       checkbox: [],
@@ -111,6 +113,8 @@ export class EfeitosSonorosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.scrollService.scrollUp();
+
     let div1: any = document.getElementById('div1');
     let div2: any = document.getElementById('div2');
     div1.style.display = 'none';
