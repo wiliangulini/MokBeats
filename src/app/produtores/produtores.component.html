@@ -1,0 +1,63 @@
+<section class="one d-flex justify-content-center align-items-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex justify-content-start align-items-center">
+        <h1>Venha Trabalhar Conosco!!!</h1>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 video d-flex justify-content-center align-items-center">
+        <video controls="controls" poster="assets/images/mokbeats_roxo.webp" class="w-100">
+          <source type="video/mp4" src="../../assets/videos/video1.mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="submit">
+  <div class="container">
+    <div class="row">
+      <div class="title">
+        <p class="h1 font-weight-bold mb-3">Envio de novos artistas</p>
+        <p class="h4 mb-5">Na Mokbeats, nós impulsionamos e apoiamos nossos artistas em seu trabalho criativo.</p>
+      </div>
+      <div class="beforeSubmit">
+        <p class="h2 font-weight-bold mb-4">Antes de enviar, verifique o seguinte:</p>
+        <div class="txt d-flex mb-3">
+          <span class="material-icons mr-2">done</span>
+          <p class="h6"><strong>A sua música é 100% original?</strong> Você deve deter 100% da propriedade e controle sobre os direitos autorais da composição e das matrizes da gravação da música. Versões e samples NÃO são permitidos.</p>
+        </div>
+        <div class="txt d-flex mb-3">
+          <span class="material-icons mr-2">done</span>
+          <p class="h6"><strong>A sua música está disponível com exclusividade?</strong> Não aceitamos nenhuma música que não seja exclusiva. Você pode enviar faixas que já tenham sido utilizadas em outro lugar como exemplos do seu trabalho, mas todas as músicas adicionadas à biblioteca devem ser obrigatoriamente exclusivas.</p>
+        </div>
+        <div class="txt d-flex mb-3">
+          <span class="material-icons mr-2">done</span>
+          <p class="h6"><strong>A sua música está livre de direitos de terceiros?</strong> Nós agimos como editora musical exclusiva das composições em nossa biblioteca, promovendo e autorizando o uso das mesmas para nossos clientes no mundo inteiro.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <form [formGroup]="form" class="w-100 mt-5 d-flex flex-column align-items-center justify-content-center">
+        <p class="h5 font-weight-bold mb-4">Envie sua música</p>
+        <input type="text" name="Nome" placeholder="Nome" class="w-100" />
+        <input type="text" name="Sobrenome" placeholder="Sobrenome" class="w-100" />
+        <input type="text" name="Artista/Nome da banda" placeholder="Artista/Nome da banda" class="w-100" />
+        <input type="text" name="Estilo musical" placeholder="Estilo musical" class="w-100" />
+        <input type="email" name="E-mail" placeholder="E-mail" class="w-100" />
+        <input type="email" name="confirmeEmail" placeholder="Confirme o e-mail" class="w-100" />
+        <input type="text" name="fonteAcesso" placeholder="Como você ficou sabendo sobre nós?" class="w-100" />
+        <div class="control w-100 d-flex flex-column align-items-start justify-content-start">
+          <label>Upload de arquivo</label>
+          <input type="file" name="upload" class="w-100" />
+        </div>
+        <div class="terms w-100 d-flex justify-content-center align-items-center">
+          <input type="checkbox" name="politicaDePrivacidade" class="mr-2 mb-0 p-0"/>
+          <p class="h6">Eu aceito os termos da <a [routerLink]="['/politica-de-privacidade']" class="color">Política de Privacidade</a></p>
+        </div>
+        <div class="submitForm w-100 d-flex justify-content-center align-items-center">
+          <button type="button" class="btnSubmit">ENVIAR</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>

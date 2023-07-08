@@ -1,0 +1,67 @@
+p {
+  margin-bottom: 0;
+}
+section.one,
+section.submit {
+  color: #FFF;
+}
+section.one {
+  margin-top: 8vh;
+  background-image: url("../../assets/images/mokbeats_mb.webp");
+  background-position: center;
+  background-size: contain;
+  background-repeat: repeat;
+  height: 50vh;
+}
+section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 h1 {
+  font-size: 60px;
+  font-weight: bold;
+  width: 30%;
+  padding-left: 1%;
+}
+section.submit {
+  padding: 4% 0;
+  background: #FFF;
+  color: #000;
+}
+section.submit .container .row .beforeSubmit .txt p.h6 {
+  font-size: 18px;
+}
+section.submit .container .row form {
+  padding: 5% 10%;
+  border: 1px solid #828282;
+  border-radius: 8px;
+}
+
+section.submit .container .row form input {
+  margin-bottom: 4%;
+  font-size: 18px;
+  padding: 1% 0 1% 1%;
+  border: 0;
+  border-bottom: 1px solid #DDD;
+  outline: none;
+}
+
+section.submit .container .row form .submitForm button {
+  background-color: #4B3A8F;
+  border: 0;
+  padding: 1.5% 0;
+  border-radius: 30px;
+  margin: 4% 0;
+  transition: all .35s linear;
+  color: #FFF;
+  width: 25%;
+  font-weight: bold;
+}
+section.submit .container .row form .submitForm button:hover {
+  padding: 18.5px 0 !important;
+}
+section.submit .container .row form .submitForm button:hover {
+  box-shadow: 0 0 10px 0 #4B3A8F !important;
+  border: 1px solid #4B3A8F !important;
+  background-color: #FFF !important;
+  color: #4B3A8F !important;
+}
+section.submit .container .row form p.h5 {
+  color: #000;
+}
