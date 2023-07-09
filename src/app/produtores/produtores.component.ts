@@ -1,6 +1,7 @@
 import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ScrollService} from "../service/scroll.service";
+import {empty} from "rxjs";
 
 @Component({
   selector: 'app-produtores',
@@ -36,20 +37,26 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
   uploadFile() {
     const $: any = document.querySelector.bind(document);
 
-    const previewFile = $('.uploaded-files');
-    const divPreview = $('.uploaded');
-    const previewSize = $('.size-file');
-    const fileChooser = $('.input-file');
+    let previewFile = $('.uploaded-files');
+    let divPreview = $('.uploaded');
+    let showFile = $('.showFile');
+    let previewSize = $('.size-file');
+    let fileChooser = $('.input-file');
 
     fileChooser.onchange = (e: any) => {
-      console.log(e)
+
       divPreview.style.display = 'flex';
-      const fileToUpload = e.target.files[0];
-      let s: number = fileToUpload.size/1000000;
-      let size = s.toFixed(1);
-      console.log(fileToUpload.name)
-      previewFile.innerText = fileToUpload.name;
-      previewSize.innerText = size + 'MB';
+      let arrayUpload: FileList = e.target.files;
+
+      for(let i: number = 0; i < arrayUpload.length; i++) {
+
+        let fileItem: any = divPreview.cloneNode(true);
+        i > 0 ? showFile.append(fileItem) : console.log(fileItem);
+        let s: number = arrayUpload[i].size/1000000;
+        let size = s.toFixed(1);
+        previewFile.innerText = arrayUpload[i].name;
+        previewSize.innerText = size + 'MB';
+      }
     };
   }
 
