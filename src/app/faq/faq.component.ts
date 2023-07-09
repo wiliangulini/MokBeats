@@ -38,39 +38,60 @@ export class FaqComponent implements OnInit {
     this.scrollService.scrollUp();
   }
 
+  array: any = [
+    "bottom: 4488.25",
+    "height: 519.59375",
+    "left: 667.5",
+    "right: 1308.75",
+    "top: 3968.65625",
+    "width: 641.25",
+    "x: 667.5",
+    "y: 3968.65625",
+  ]
+
+  private position(e: number) {
+    window.scrollTo({top: e, behavior: 'smooth'});
+  }
+
   //arrumar scroll ao clicar, funciona somente se tiver no inicio da pagina.
   infoValue(e: string) {
+
     if(e == 'Assinatura') {
+
       let assinatura = document.getElementById('assinatura');
       let scrollPosition: any = assinatura!.getBoundingClientRect();
-      console.log(scrollPosition);
-      let position: number = scrollPosition.top - 85;
-      window.scrollTo({top: position, behavior: 'smooth'});
+      this.position(scrollPosition.y + window.scrollY - 100);
+
     } else if(e == 'Programa de indicação') {
+
       let programaDeIndicacao = document.getElementById('programaDeIndicacao');
       let scrollPosition: any = programaDeIndicacao!.getBoundingClientRect();
-      let position: number = scrollPosition.top - 85;
-      window.scrollTo({top: position, behavior: 'smooth'});
+      this.position(scrollPosition.y + window.scrollY - 100);
+
     } else if(e == 'Resolução de problemas') {
+
       let resolucaoDeProblemas = document.getElementById('resolucaoDeProblemas');
       let scrollPosition: any = resolucaoDeProblemas!.getBoundingClientRect();
-      let position: number = scrollPosition.top - 85;
-      window.scrollTo({top: position, behavior: 'smooth'});
+      this.position(scrollPosition.y + window.scrollY - 100);
+
     } else if(e == 'Músicas livres de direitos') {
+
       let music = document.getElementById('musicasFree');
       let scrollPosition: any = music!.getBoundingClientRect();
-      let position: number = scrollPosition.top - 85;
-      window.scrollTo({top: position, behavior: 'smooth'});
+      this.position(scrollPosition.y + window.scrollY - 100);
+
     } else if(e == 'Técnicas') {
+
       let tecnicas = document.getElementById('tecnicas');
       let scrollPosition: any = tecnicas!.getBoundingClientRect();
-      let position: number = scrollPosition.top - 175;
-      window.scrollTo({top: position, behavior: 'smooth'});
+      this.position(scrollPosition.y + window.scrollY - 100);
+
     } else if(e == 'Segurança') {
+
       let seguranca = document.getElementById('seguranca');
       let scrollPosition: any = seguranca!.getBoundingClientRect();
-      let position: number = scrollPosition.top - 50;
-      window.scrollTo({top: position, behavior: 'smooth'});
+      this.position(scrollPosition.y + window.scrollY - 100);
+
     }
   }
 

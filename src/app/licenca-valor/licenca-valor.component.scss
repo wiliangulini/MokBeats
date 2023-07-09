@@ -129,13 +129,17 @@ section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-foot
   align-items: center;
   margin-right: 2%;
 }
+section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-footer .faq p.faqInt a {
+  color: #4B3A8F;
+  font-weight: bold;
+}
 section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-footer .faq p.faqInt {
-  border-bottom: 1px solid #000;
+  border-bottom: 2px solid #4B3A8F;
   margin-bottom: 0;
   font-size: 14px;
 }
 section.two {
-  padding: 6% 0 0;
+  padding: 6% 0 3%;
 }
 section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
   margin-bottom: 2rem;

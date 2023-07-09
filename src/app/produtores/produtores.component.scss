@@ -24,7 +24,7 @@ section.submit {
   background: #FFF;
   color: #000;
 }
-section.submit .container .row .beforeSubmit .txt p.h6 {
+section.submit .container .row .beforeSubmit .txt .h6 {
   font-size: 18px;
 }
 section.submit .container .row form {
@@ -64,4 +64,28 @@ section.submit .container .row form .submitForm button:hover {
 }
 section.submit .container .row form p.h5 {
   color: #000;
+}
+#upload {
+  width: 100%;
+  border: 1px dashed #b4b4b5;
+  padding: 20px;
+  border-radius: 10px;
+  color: #b4b4b5;
+  fill: #b4b4b5;
+  cursor: pointer;
+}
+#file {
+  display: none;
+}
+section.submit .container .row form .control .uploaded {
+  padding: 20px 10px;
+  background: #DDD;
+  border-radius: 8px;
+  display: none;
+}
+section.submit .container .row form .control .uploaded .size.d-flex {
+  color: #4B3A8F;
+}
+section.submit .container .row form .control .uploaded .size.d-flex .material-icons {
+  font-size: 21px;
 }
