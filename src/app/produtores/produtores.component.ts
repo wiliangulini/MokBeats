@@ -1,7 +1,7 @@
 import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ScrollService} from "../service/scroll.service";
-import {empty} from "rxjs";
+
 
 @Component({
   selector: 'app-produtores',
@@ -18,7 +18,17 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     private cdRef: ChangeDetectorRef,
   ) {
     this.form = this.fb.group({
-
+      trackNoStems: [],
+      trackWithStems: [],
+      nome: [],
+      sobrenome: [],
+      artista_banda: [],
+      estilo_musical: [],
+      email: [],
+      confirmEmail: [],
+      fonteAcesso: [],
+      upload: [],
+      politicaDePrivacidade: [],
     });
   }
 
@@ -44,7 +54,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     let fileChooser = $('.input-file');
 
     fileChooser.onchange = (e: any) => {
-
+      console.log(e);
       divPreview.style.display = 'flex';
       let arrayUpload: FileList = e.target.files;
 

@@ -1,13 +1,8 @@
 <section class="one d-flex justify-content-center align-items-center">
   <div class="container">
-    <div class="row">
-      <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex justify-content-start align-items-center">
-        <h1>Venha Trabalhar Conosco!!!</h1>
-      </div>
-      <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 video d-flex justify-content-center align-items-center">
-        <video controls="controls" poster="assets/images/mokbeats_roxo.webp" class="w-100">
-          <source type="video/mp4" src="../../assets/videos/video1.mp4">
-        </video>
+    <div class="row justify-content-center align-items-center">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <h1 class="d-flex justify-content-center align-items-center">Venha Trabalhar Conosco!!!</h1>
       </div>
     </div>
   </div>
@@ -15,11 +10,19 @@
 <section class="submit">
   <div class="container">
     <div class="row">
-      <div class="title">
-        <p class="h1 font-weight-bold mb-3">Envio de novos artistas</p>
-        <p class="h4 mb-5">Na Mokbeats, nós impulsionamos e apoiamos nossos artistas em seu trabalho criativo.</p>
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-center align-items-center p-0 m-0">
+        <div class="title col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <p class="h1 font-weight-bold mb-3">Envio de novos artistas</p>
+          <p class="h4">Na Mokbeats, nós impulsionamos e apoiamos nossos artistas em seu trabalho criativo.</p>
+          <p class="h4 mb-5">Venha ser um produtor Mokbeats.</p>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 video d-flex justify-content-center align-items-center">
+          <video controls="controls" poster="assets/images/mokbeats_roxo.webp">
+            <source type="video/mp4" src="../../assets/videos/video1.mp4">
+          </video>
+        </div>
       </div>
-      <div class="beforeSubmit">
+      <div class="beforeSubmit mt-3">
         <p class="h2 font-weight-bold mb-4">Antes de enviar, verifique o seguinte:</p>
         <div class="txt d-flex mb-3">
           <span class="material-icons mr-2">done</span>
@@ -38,19 +41,29 @@
     <div class="row">
       <form [formGroup]="form" class="w-100 mt-5 d-flex flex-column align-items-center justify-content-center">
         <p class="h5 font-weight-bold mb-4">Envie sua música</p>
-        <input type="text" name="Nome" placeholder="Nome" class="w-100" />
-        <input type="text" name="Sobrenome" placeholder="Sobrenome" class="w-100" />
-        <input type="text" name="Artista/Nome da banda" placeholder="Artista/Nome da banda" class="w-100" />
-        <input type="text" name="Estilo musical" placeholder="Estilo musical" class="w-100" />
-        <input type="email" name="E-mail" placeholder="E-mail" class="w-100" />
-        <input type="email" name="confirmeEmail" placeholder="Confirme o e-mail" class="w-100" />
-        <input type="text" name="fonteAcesso" placeholder="Como você ficou sabendo sobre nós?" class="w-100" />
+        <input type="text" formControlName="nome" name="Nome" placeholder="Nome" class="w-100" />
+        <input type="text" formControlName="sobrenome" name="Sobrenome" placeholder="Sobrenome" class="w-100" />
+        <input type="text" formControlName="artista_banda" name="Artista/Nome da banda" placeholder="Artista/Nome da banda" class="w-100" />
+        <input type="text" formControlName="estilo_musical" name="Estilo musical" placeholder="Estilo musical" class="w-100" />
+        <div class="d-flex w-100">
+          <div class="radioOption">
+            <input type="radio" name="trackNoStems" formControlName="trackNoStems" />
+            <label>Track sem Stems</label>
+          </div>
+          <div class="radioOption1">
+            <input type="radio" name="trackWithStems" formControlName="trackWithStems" />
+            <label>Track com Stems</label>
+          </div>
+        </div>
+        <input type="email" formControlName="email" name="E-mail" placeholder="E-mail" class="w-100" />
+        <input type="email" formControlName="confirmEmail" name="confirmeEmail" placeholder="Confirme o e-mail" class="w-100" />
+        <input type="text" formControlName="fonteAcesso" name="fonteAcesso" placeholder="Como você ficou sabendo sobre nós?" class="w-100" />
         <div class="control w-100 d-flex flex-column align-items-start justify-content-start">
           <p class="h5 font-weight-bold mb-2">Upload de arquivo</p>
           <label class="upload d-flex justify-content-center align-items-center" id="upload">
             <svg class="mr-3" width="24" height="24" viewBox="0 0 32 32"><path d="M27.25,28.953H4.75a1,1,0,0,1-1-1V21.221a1,1,0,0,1,2,0v5.732h20.5V21.221a1,1,0,1,1,2,0v6.732A1,1,0,0,1,27.25,28.953Z"></path><path d="M22.128,16.9a1,1,0,0,0-1.414,0L17,20.607V4.047a1,1,0,0,0-2,0v16.56L11.286,16.9A1,1,0,0,0,9.872,18.31l5.42,5.417a1,1,0,0,0,1.417,0l5.42-5.417A1,1,0,0,0,22.128,16.9Z"></path></svg>
             <span class="h6 m-0">Carregue seus arquivos aqui</span>
-            <input multiple type="file" name="upload" class="w-100 input-file" accept="*/*" id="file" />
+            <input multiple type="file" formControlName="upload" name="upload" class="w-100 input-file" min="2" max="5" accept="*/*" id="file" />
           </label>
           <div class="showFile w-100">
             <div class="uploaded mt-4 w-100 justify-content-between align-items-center">
@@ -66,7 +79,7 @@
           </div>
         </div>
         <div class="terms mt-5 w-100 d-flex justify-content-center align-items-center">
-          <input type="checkbox" name="politicaDePrivacidade" class="mr-2 mb-0 p-0"/>
+          <input type="checkbox" formControlName="politicaDePrivacidade" name="politicaDePrivacidade" class="mr-2 mb-0 p-0"/>
           <p class="h6">Eu aceito os termos da <a [routerLink]="['/politica-de-privacidade']" class="color">Política de Privacidade</a></p>
         </div>
         <div class="submitForm w-100 d-flex justify-content-center align-items-center">

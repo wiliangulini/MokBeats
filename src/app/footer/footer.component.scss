@@ -5,15 +5,17 @@ footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul {
   list-style: none;
 }
 footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 p.h5 {
-  color: #fff;
-  text-shadow: 0 0 8px;
   font-weight: bold;
   margin-bottom: 2rem;
 }
 a,
 footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li a,
 footer .container .row .col-sm-1.col-md-1.col-lg-1.col-xl-1 a {
-  transition: all .45s ease-in-out;
+  transition: all 0.45s ease-in-out;
+}
+footer .container .row svg {
+  fill: #FFFFFF;
+  filter: drop-shadow(0px 1px 2px #FFF);
 }
 footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li a {
   height:45px !important;
@@ -21,11 +23,11 @@ footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li a {
 }
 footer .container .row .col-sm-1.col-md-1.col-lg-1.col-xl-1 a {
   &:hover {
-    background: #252525;
-    color: #FFF;
+    color: #4B3A8F;
   }
   &:hover svg {
-    fill: #FFF;
+    fill: #4B3A8F;
+    filter: drop-shadow(0px 1px 2px #4B3A8F);
   }
 }
 footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li {
@@ -34,13 +36,16 @@ footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li {
 footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li:focus a,
 footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li:active a,
 footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li:hover a {
-  color: #FFFFFF;
+  color: #4B3A8F;
   font-weight: bold;
+  font-size: 18px;
 }
+footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 p.h5,
 footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li a,
 footer .container .row.creditCard .col-sm-3.col-md-3.col-lg-3.col-xl-3,
 footer .container .row.directs p {
-  color: #4B3A8F;
+  color: #FFFFFF;
+  text-shadow: 0 0 8px;
 }
 footer .container .row.creditCard .col-sm-3.col-md-3.col-lg-3.col-xl-3 {
   max-width: 23%;
