@@ -46,13 +46,27 @@
         <input type="text" formControlName="artista_banda" name="Artista/Nome da banda" placeholder="Artista/Nome da banda" class="w-100" />
         <input type="text" formControlName="estilo_musical" name="Estilo musical" placeholder="Estilo musical" class="w-100" />
         <div class="d-flex w-100">
-          <div class="radioOption">
-            <input type="radio" name="trackNoStems" formControlName="trackNoStems" />
-            <label>Track sem Stems</label>
-          </div>
-          <div class="radioOption1">
-            <input type="radio" name="trackWithStems" formControlName="trackWithStems" />
-            <label>Track com Stems</label>
+          <mat-radio-group
+            data-toggle="collapse"
+            data-target="#collapseWidthExample"
+            aria-expanded="true"
+            aria-controls="collapseWidthExample"
+            aria-label="Selecione o tipo de track"
+            formControlName="track_stems"
+            [(ngModel)]="producer"
+            (change)="changeTrack($event)"
+            color="primary"
+          >
+            <mat-radio-button [checked]="producer === 'trackNoStems'" value="trackNoStems">Track sem Stems</mat-radio-button>
+            <mat-radio-button [checked]="producer === 'trackWithStems'" value="trackWithStems">Track com Stems</mat-radio-button>
+          </mat-radio-group>
+
+          <div style="min-height: 120px;">
+            <div class="width collapse show" id="collapseWidthExample">
+              <div class="card card-body" style="width: 320px;">
+                This is some placeholder content for a horizontal collapse. It's hidden by default and shown when triggered.
+              </div>
+            </div>
           </div>
         </div>
         <input type="email" formControlName="email" name="E-mail" placeholder="E-mail" class="w-100" />

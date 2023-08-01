@@ -12,14 +12,16 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
 
   form: FormGroup;
 
+  producer: string = 'trackNoStems';
+
   constructor(
     private scrollService: ScrollService,
     private fb: FormBuilder,
     private cdRef: ChangeDetectorRef,
   ) {
     this.form = this.fb.group({
-      trackNoStems: [],
-      trackWithStems: [],
+      track_stems: [],
+      // trackWithStems: [],
       nome: [],
       sobrenome: [],
       artista_banda: [],
@@ -36,12 +38,29 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     this.scrollService.scrollUp();
   }
 
-  ngAfterViewChecked() {
+  ngAfterViewChecked(): void {
     this.cdRef.detectChanges();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.uploadFile();
+  }
+
+  changeTrack(elm: any): void {
+    console.log(elm);
+
+    let collapse: any = document.getElementById('collapseWidthExample');
+
+    if(elm.value == 'trackWithStems') {
+      console.log(collapse);
+      console.log(collapse.className);
+
+    } else if(elm.value == 'trackNoStems') {
+      console.log(collapse.className);
+      setTimeout(() => {
+        collapse.classList.remove('show');
+      }, 2000)
+    }
   }
 
   uploadFile() {

@@ -91,11 +91,6 @@ section.submit .container .row form .control .uploaded .size.d-flex {
 section.submit .container .row form .control .uploaded .size.d-flex .material-icons {
   font-size: 21px;
 }
-section.submit .container .row form .d-flex.w-100 .radioOption1,
-section.submit .container .row form .d-flex.w-100 .radioOption {
-  width: 17%;
-}
-section.submit .container .row form .d-flex.w-100 .radioOption1 input,
-section.submit .container .row form .d-flex.w-100 .radioOption input {
-  margin-right: 3%;
+section.submit .container .row form .d-flex.w-100 .mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px ;
 }
