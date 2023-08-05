@@ -79,6 +79,14 @@ section.submit .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .video v
 #file {
   display: none;
 }
+.CWE {
+  min-height: 140px;
+  display: none;
+}
+.CWE .card.card-body {
+  width: 730px;
+  max-width: 730px;
+}
 section.submit .container .row form .control .uploaded {
   padding: 20px 10px;
   background: #DDD;
@@ -91,6 +99,27 @@ section.submit .container .row form .control .uploaded .size.d-flex {
 section.submit .container .row form .control .uploaded .size.d-flex .material-icons {
   font-size: 21px;
 }
-section.submit .container .row form .d-flex.w-100 .mat-radio-button ~ .mat-radio-button {
-  margin-left: 16px ;
+#card .tracks10,
+#card .tracks40 {
+  width: auto;
+}
+#card .tracks10 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+#card .tracks40 {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+mat-radio-button.matRadioBtn {
+  font-size: 17px !important;
+  color: #787878 !important;
+}
+span.span.rules,
+span.span.rules1 {
+  font-size: 15px;
+  font-weight: 500;
+  color: #787878;
 }

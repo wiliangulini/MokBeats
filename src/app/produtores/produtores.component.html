@@ -45,26 +45,32 @@
         <input type="text" formControlName="sobrenome" name="Sobrenome" placeholder="Sobrenome" class="w-100" />
         <input type="text" formControlName="artista_banda" name="Artista/Nome da banda" placeholder="Artista/Nome da banda" class="w-100" />
         <input type="text" formControlName="estilo_musical" name="Estilo musical" placeholder="Estilo musical" class="w-100" />
-        <div class="d-flex w-100">
-          <mat-radio-group
-            data-toggle="collapse"
-            data-target="#collapseWidthExample"
-            aria-expanded="true"
-            aria-controls="collapseWidthExample"
-            aria-label="Selecione o tipo de track"
-            formControlName="track_stems"
-            [(ngModel)]="producer"
-            (change)="changeTrack($event)"
-            color="primary"
-          >
-            <mat-radio-button [checked]="producer === 'trackNoStems'" value="trackNoStems">Track sem Stems</mat-radio-button>
-            <mat-radio-button [checked]="producer === 'trackWithStems'" value="trackWithStems">Track com Stems</mat-radio-button>
-          </mat-radio-group>
+        <div class="control w-100">
 
-          <div style="min-height: 120px;">
-            <div class="width collapse show" id="collapseWidthExample">
-              <div class="card card-body" style="width: 320px;">
-                This is some placeholder content for a horizontal collapse. It's hidden by default and shown when triggered.
+          <div class="d-flex justify-content-start align-items-center">
+            <mat-radio-group
+              aria-label="Selecione o tipo de track"
+              formControlName="track_stems"
+              [(ngModel)]="producer"
+              (change)="changeTrack($event)"
+              class="d-flex flex-column align-items-center justify-content-start"
+            >
+              <mat-radio-button class="matRadioBtn mb-2" *ngFor="let vt of valueTrack;" [checked]="producer === vt.value" [value]="vt.value">{{vt["viewValue"]}}</mat-radio-button>
+            </mat-radio-group>
+            <div class="CWE ml-3 justify-content-start align-items-center w-100" #CWE>
+              <div id="card" class="card card-body ml-3">
+                <div class="tracks10" *ngIf="rulesVal === 0"><span class="span rules">{{ rules }}</span></div>
+                <div class="tracks40" *ngIf="rulesVal === 1">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Selecione Track ou Álbum</mat-label>
+                    <mat-select formControlName="selectOption"  [(ngModel)]="selectOption">
+                      <mat-option *ngFor="let food of oneOrAlbum" [value]="food.value" (click)="optionSelect(selectOption)">
+                        {{food["viewValue"]}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <span class="span rules1" id="rules1">{{ rules }}</span>
+                </div>
               </div>
             </div>
           </div>
