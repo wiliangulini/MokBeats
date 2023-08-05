@@ -7,7 +7,7 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ScrollService} from "../service/scroll.service";
 import {empty} from "rxjs";
 
@@ -28,13 +28,13 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
   selectOption: string = '';
   rulesVal: any;
 
-  oneOrAlbum: Array<any> = [
-    {value: '1 Track com 4 stems', viewValue: '1 Track com 4 stems'},
-    {value: '10 Tracks com 30 stems', viewValue: '10 Tracks com 30 stems'},
-  ]
   valueTrack: Array<any> = [
     {value: 'trackNoStems', viewValue: 'Track sem Stems'},
     {value: 'trackWithStems', viewValue: 'Track com Stems'},
+  ]
+  oneOrAlbum: Array<any> = [
+    {value: '1 Track com 4 stems', viewValue: '1 Track com 4 stems'},
+    {value: '10 Tracks com 30 Stems', viewValue: '10 Tracks com 30 Stems'},
   ]
   rulesTrackStems: Array<any> = [
     {value: '10Tracks', viewValue: 'Nesta opção você produtor poderá fazer upload de até dez tracks sem stems.'},
@@ -52,17 +52,17 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     private cdRef: ChangeDetectorRef,
   ) {
     this.form = this.fb.group({
-      track_stems: this.producer,
-      selectOption: this.selectOption,
-      nome: [],
-      sobrenome: [],
-      artista_banda: [],
-      estilo_musical: [],
-      email: [],
-      confirmEmail: [],
-      fonteAcesso: [],
-      upload: [],
-      politicaDePrivacidade: [],
+      track_stems: [this.producer, Validators.required],
+      selectOption: [this.selectOption, Validators.required],
+      nome: ['', Validators.required],
+      sobrenome: ['', Validators.required],
+      artista_banda: ['', Validators.required],
+      estilo_musical: ['', Validators.required],
+      email: ['', Validators.required],
+      confirmEmail: ['', Validators.required],
+      fonteAcesso: ['', Validators.required],
+      upload: ['', Validators.required],
+      politicaDePrivacidade: ['', Validators.required],
     });
   }
 
@@ -98,14 +98,12 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
 
   }
 
-  optionSelect(event: string): void {
+  optionSelect(event: any): void {
     let spanRules: any = document.getElementById('rules1');
     this.rulesTrackStems.forEach((e: any): void => {
-      if (e.value === '10Track30Stems' && event === '10 Tracks com 30 stems') {
-        spanRules.innerText = e.viewValue;
-      } else if (e.value === '5Tracks' && event === '1 Track com 4 stems') {
-        spanRules.innerText = e.viewValue;
-      }
+      console.log('e.value: ', e.value, 'event: ', event);
+      (e.value === '5Tracks' && event === '1 Track com 4 stems') ? (spanRules.innerText = e.viewValue) : empty();
+      (e.value === '10Track30Stems' && event === '10 Tracks com 30 Stems') ? (spanRules.innerText = e.viewValue) : empty();
     });
   }
 
@@ -119,14 +117,21 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     let fileChooser = $('.input-file');
 
     fileChooser.onchange = (e: any) => {
-      console.log(e);
+      //rulesTrackStems;
+      // console.log(this.rules);
+      if (this.selectOption == '1 Track com 4 stems') {
+        console.log(this.selectOption);
+
+      } else if (this.selectOption == '10 Tracks com 30 Stems') {
+        console.log(this.selectOption);
+
+      }
       divPreview.style.display = 'flex';
       let arrayUpload: FileList = e.target.files;
 
       for (let i: number = 0; i < arrayUpload.length; i++) {
-
         let fileItem: any = divPreview.cloneNode(true);
-        i > 0 ? showFile.append(fileItem) : console.log(fileItem);
+        i > 0 ? showFile.append(fileItem) : null;
         let s: number = arrayUpload[i].size / 1000000;
         let size = s.toFixed(1);
         previewFile.innerText = arrayUpload[i].name;
