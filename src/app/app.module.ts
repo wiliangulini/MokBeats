@@ -33,8 +33,9 @@ import {PoliticaPrivacidadeComponent} from './politica-privacidade/politica-priv
 import {ScrollService} from "./service/scroll.service";
 import {FaqComponent} from './faq/faq.component';
 import {ProdutoresComponent} from './produtores/produtores.component';
-import {MatRadioModule, MAT_RADIO_DEFAULT_OPTIONS} from "@angular/material/radio";
+import {MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule} from "@angular/material/radio";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 @NgModule({
@@ -76,6 +77,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     MatButtonToggleModule,
     MatTableModule,
     MatRadioModule,
+    MatSnackBarModule,
   ],
   providers: [
     NgbTooltip,

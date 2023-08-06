@@ -19,7 +19,16 @@ a {
 .mat-checkbox-frame, .mat-checkbox-background {
   display: none !important;
 }
-
+.mat-snack-bar-container {
+  background-color: #FFF !important;
+  font-weight: bold !important;
+  border: 1px solid red !important;
+  color: red !important;
+  border-radius: 8px !important;
+  position: absolute !important;
+  top: 42% !important;
+  right: 34% !important;
+}
 a.btn.btn-warning:hover,
 button.btn.btn-warning:hover {
   background-color: #c29441 !important;

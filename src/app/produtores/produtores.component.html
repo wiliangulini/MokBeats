@@ -44,32 +44,41 @@
         <input type="text" formControlName="nome" name="Nome" placeholder="Nome" class="w-100" />
         <input type="text" formControlName="sobrenome" name="Sobrenome" placeholder="Sobrenome" class="w-100" />
         <input type="text" formControlName="artista_banda" name="Artista/Nome da banda" placeholder="Artista/Nome da banda" class="w-100" />
-        <input type="text" formControlName="estilo_musical" name="Estilo musical" placeholder="Estilo musical" class="w-100" />
-        <div class="control w-100">
-
-          <div class="d-flex justify-content-start align-items-center">
-            <mat-radio-group
-              aria-label="Selecione o tipo de track"
-              formControlName="track_stems"
-              [(ngModel)]="producer"
-              (change)="changeTrack($event)"
-              class="d-flex flex-column align-items-center justify-content-start"
-            >
-              <mat-radio-button class="matRadioBtn mb-2" *ngFor="let vt of valueTrack;" [checked]="producer === vt.value" [value]="vt.value">{{vt["viewValue"]}}</mat-radio-button>
-            </mat-radio-group>
-            <div class="CWE ml-3 justify-content-start align-items-center w-100" #CWE>
-              <div id="card" class="card card-body ml-3">
-                <div class="tracks10" *ngIf="rulesVal === 0"><span class="span rules">{{ rules }}</span></div>
-                <div class="tracks40" *ngIf="rulesVal === 1">
-                  <mat-form-field appearance="fill">
-                    <mat-label>Selecione Track ou Álbum</mat-label>
-                    <mat-select formControlName="selectOption"  [(ngModel)]="selectOption">
-                      <mat-option *ngFor="let food of oneOrAlbum" [value]="food.value" (click)="optionSelect(selectOption)">
-                        {{food["viewValue"]}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <span class="span rules1" id="rules1">{{ rules }}</span>
+        <div class="controlPai w-100 d-flex">
+          <div class="controlInt w-50 d-flex">
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>Escolher gênero da track(s)</mat-label>
+              <mat-select formControlName="generoMusic">
+                <mat-option *ngFor="let gen of generoMusic" [value]="gen">
+                  {{gen}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="control w-50 d-flex">
+            <div class="d-flex justify-content-start align-items-center mb-3 w-100">
+              <mat-radio-group
+                aria-label="Selecione o tipo de track"
+                formControlName="track_stems" [(ngModel)]="producer"
+                (change)="changeTrack($event)"
+                class="d-flex align-items-center justify-content-around w-100"
+              >
+                <mat-radio-button class="matRadioBtn mb-2" *ngFor="let vt of valueTrack;" [checked]="producer === vt.value" [value]="vt.value">{{vt["viewValue"]}}</mat-radio-button>
+              </mat-radio-group>
+              <div class="CWE ml-3 justify-content-start align-items-center w-100" #CWE>
+                <div id="card" class="card card-body ml-3">
+                  <div class="tracks10" *ngIf="rulesVal === 0"><span class="span rules">{{ rules }}</span></div>
+                  <div class="tracks40" *ngIf="rulesVal === 1">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Selecione Track ou Álbum</mat-label>
+                      <mat-select formControlName="selectOption"  [(ngModel)]="selectOption">
+                        <mat-option *ngFor="let food of oneOrAlbum" [value]="food.value" (click)="optionSelect(selectOption)">
+                          {{food["viewValue"]}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <span class="span rules1" id="rules1">{{ rules }}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -85,18 +94,8 @@
             <span class="h6 m-0">Carregue seus arquivos aqui</span>
             <input multiple type="file" formControlName="upload" name="upload" class="w-100 input-file" min="2" max="5" accept="*/*" id="file" />
           </label>
-          <div class="showFile w-100">
-            <div class="uploaded mt-4 w-100 justify-content-between align-items-center">
-              <div class="files d-flex">
-                <span class="material-icons">music_note</span>
-                <span class="uploaded-files pl-1"></span>
-              </div>
-              <div class="size d-flex">
-                <span class="size-file pr-1"></span>
-                <span class="material-icons">done</span>
-              </div>
-            </div>
-          </div>
+
+          <div id="controlFile" class="showFile w-100"></div>
         </div>
         <div class="terms mt-5 w-100 d-flex justify-content-center align-items-center">
           <input type="checkbox" formControlName="politicaDePrivacidade" name="politicaDePrivacidade" class="mr-2 mb-0 p-0"/>

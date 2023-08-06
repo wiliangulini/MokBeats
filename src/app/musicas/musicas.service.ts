@@ -16,7 +16,7 @@ export class MusicasService {
   convertida: Array<any> = [];
   convertida2: Array<any> = [];
 
-  public musicas: any = [
+  public genero: any = [
     {
       "Blues": [
         "Aleatória",
@@ -387,7 +387,7 @@ export class MusicasService {
     private modalService: NgbModal,
     public activeModal: NgbActiveModal,
   ) {
-    this.musicas.map((obj: any) => {
+    this.genero.map((obj: any) => {
       Object.keys(obj).map((chave: any) => {
         this.convertida2.push(chave);
         this.convertida.push(obj[chave]);

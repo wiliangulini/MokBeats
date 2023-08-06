@@ -1,15 +1,9 @@
-import {
-  AfterViewChecked,
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ScrollService} from "../service/scroll.service";
 import {empty} from "rxjs";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {MusicasService} from "../musicas/musicas.service";
 
 
 @Component({
@@ -27,7 +21,10 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
   producer: string = '';
   selectOption: string = '';
   rulesVal: any;
-
+  numero: number = 0;
+  durationInSeconds: number = 5;
+  $$: any
+  generoMusic: any[] = [];
   valueTrack: Array<any> = [
     {value: 'trackNoStems', viewValue: 'Track sem Stems'},
     {value: 'trackWithStems', viewValue: 'Track com Stems'},
@@ -39,7 +36,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
   rulesTrackStems: Array<any> = [
     {value: '10Tracks', viewValue: 'Nesta opção você produtor poderá fazer upload de até dez tracks sem stems.'},
     {
-      value: '5Tracks',
+      value: '1Track4Stems',
       viewValue: 'Nesta opção você produtor poderá fazer upload de uma track completa com mais quatro stems, totalizando em cinco uploads.'
     },
     { value: '10Track30Stems', viewValue: 'Nesta opção você produtor poderá fazer upload de até dez tracks completas com mais trinta stems ( no caso quatro stems por track ), totalizando em quarenta uploads.' },
@@ -47,9 +44,11 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
 
 
   constructor(
+    private snackBar: MatSnackBar,
     private scrollService: ScrollService,
     private fb: FormBuilder,
     private cdRef: ChangeDetectorRef,
+    private musicService: MusicasService,
   ) {
     this.form = this.fb.group({
       track_stems: [this.producer, Validators.required],
@@ -57,12 +56,12 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       nome: ['', Validators.required],
       sobrenome: ['', Validators.required],
       artista_banda: ['', Validators.required],
-      estilo_musical: ['', Validators.required],
       email: ['', Validators.required],
       confirmEmail: ['', Validators.required],
       fonteAcesso: ['', Validators.required],
       upload: ['', Validators.required],
       politicaDePrivacidade: ['', Validators.required],
+      generoMusic: ['', Validators.required],
     });
   }
 
@@ -75,10 +74,28 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
   }
 
   ngAfterViewInit(): void {
+    console.log(this.musicService.convertida)
+    console.log(this.musicService.convertida2)
+    this.generoMusic = this.musicService.convertida2;
+    this.$$ = document.querySelector.bind(document);
     this.uploadFile();
   }
 
+  private removeTracks(): void {
+
+    let divPreview: any = this.$$('.uploaded');
+    if (divPreview !== null) {
+      if (divPreview.parentNode && divPreview.innerText.length > 0) {
+        document.querySelectorAll('.uploaded').forEach((e: any): void => {
+          console.log(e);
+          e.parentNode.removeChild(e);
+        });
+      }
+    }
+  }
+ // ao selecionar uma track com ou sem stems o conteudo explicativo ta sendo exibido bugado devido ao mat-select do genero q foi adicionado, corrigir;
   changeTrack(elm: any): void {
+    console.log(elm);
     (elm.value == 'trackWithStems' || elm == 'trackWithStems' || elm.value == 'trackNoStems' || elm == 'trackNoStems') ? this.CWE.nativeElement.style.display = 'inline-grid' : empty();
     let card: any;
     this.rulesTrackStems.forEach((e: any, i: number): void => {
@@ -88,11 +105,13 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
         card.style.width = 'auto';
         this.rules = e.viewValue;
         this.rulesVal = i;
-      } else if (e.value === '5Tracks' && (elm.value == 'trackWithStems' || elm == 'trackWithStems')) {
+        this.removeTracks();
+      } else if (e.value === '1Track4Stems' && (elm.value == 'trackWithStems' || elm == 'trackWithStems')) {
         card = document.getElementById('card');
         card.style.height = '150px';
         this.rules = e.viewValue;
         this.rulesVal = i;
+        this.removeTracks();
       }
     })
 
@@ -101,41 +120,68 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
   optionSelect(event: any): void {
     let spanRules: any = document.getElementById('rules1');
     this.rulesTrackStems.forEach((e: any): void => {
-      console.log('e.value: ', e.value, 'event: ', event);
-      (e.value === '5Tracks' && event === '1 Track com 4 stems') ? (spanRules.innerText = e.viewValue) : empty();
-      (e.value === '10Track30Stems' && event === '10 Tracks com 30 Stems') ? (spanRules.innerText = e.viewValue) : empty();
+      (e.value === '1Track4Stems' && event === '1 Track com 4 stems') ? (spanRules.innerText = e.viewValue) : this.removeTracks();
+      (e.value === '10Track30Stems' && event === '10 Tracks com 30 Stems') ? (spanRules.innerText = e.viewValue) : this.removeTracks();
     });
   }
 
-  uploadFile(): void {
-    const $: any = document.querySelector.bind(document);
-
-    let previewFile = $('.uploaded-files');
-    let divPreview = $('.uploaded');
-    let showFile = $('.showFile');
-    let previewSize = $('.size-file');
-    let fileChooser = $('.input-file');
-
-    fileChooser.onchange = (e: any) => {
-      //rulesTrackStems;
-      // console.log(this.rules);
-      if (this.selectOption == '1 Track com 4 stems') {
-        console.log(this.selectOption);
-
-      } else if (this.selectOption == '10 Tracks com 30 Stems') {
-        console.log(this.selectOption);
-
-      }
+  private loop(event: any, num: number): void {
+    this.numero = num;
+    let showFile = this.$$('.showFile');
+    let arrayUpload: FileList = event.target.files;
+    let div: any = `
+        <div class='uploaded mt-4 w-100 d-flex justify-content-between align-items-center'>
+          <div class='files d-flex justify-content-start align-items-center  h6 m-0'>
+            <span class='material-icons'>music_note</span>
+            <span class='uploaded-files pl-1'></span>
+          </div>
+          <div class='size d-flex justify-content-end align-items-center h6 m-0'>
+            <span class='size-file pr-1'></span>
+            <span class='material-icons'>done</span>
+          </div>
+        </div>`;
+    console.log(typeof arrayUpload);
+    console.log(arrayUpload);
+    if(arrayUpload.length > num) {
+      console.log(arrayUpload);
+      this.snackBar.open(`A OPÇÃO QUE VOCÊ SELECIONOU PERMITE UM NÚMERO MÁXIMO DE ${num} UPLOADS!`, '', {duration: 5000});
+      this.uploadFile();
+    } else {
+      showFile.innerHTML = div;
+      let divPreview: any = this.$$('.uploaded');
+      let previewFile = this.$$('.uploaded-files');
+      let previewSize = this.$$('.size-file');
+      let controlF: any = this.$$('#controlFile .uploaded.mt-4 .size.d-flex');
+      let controlFMaterial: any = this.$$('#controlFile .uploaded.mt-4 .size.d-flex .material-icons');
       divPreview.style.display = 'flex';
-      let arrayUpload: FileList = e.target.files;
-
+      divPreview.style.padding = '20px 10px';
+      divPreview.style.background = '#DDD';
+      divPreview.style.borderRadius = '8px';
+      controlF.style.color = '#4B3A8F';
+      controlFMaterial.style.fontSize = '21px';
       for (let i: number = 0; i < arrayUpload.length; i++) {
         let fileItem: any = divPreview.cloneNode(true);
-        i > 0 ? showFile.append(fileItem) : null;
+        (i > 0) ? showFile.append(fileItem) : null;
         let s: number = arrayUpload[i].size / 1000000;
         let size = s.toFixed(1);
         previewFile.innerText = arrayUpload[i].name;
         previewSize.innerText = size + 'MB';
+      }
+    }
+  }
+
+  uploadFile(): void {
+    let fileChooser = this.$$('.input-file');
+
+    fileChooser.onchange = (e: any): void => {
+      console.log(this.selectOption)
+      console.log(this.producer)
+      if (this.selectOption == '1 Track com 4 stems') {
+        this.loop(e, 5);
+      } else if (this.selectOption == '10 Tracks com 30 Stems') {
+        this.loop(e, 40);
+      } else if (this.producer == 'trackNoStems') {
+        this.loop(e, 10);
       }
     };
   }
