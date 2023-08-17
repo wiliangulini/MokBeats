@@ -39,6 +39,7 @@ section.submit .container .row form input {
   border: 0;
   border-bottom: 1px solid #DDD;
   outline: none;
+  text-decoration: none;
 }
 
 section.submit .container .row form .submitForm button {
@@ -79,26 +80,24 @@ section.submit .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .video v
 #file {
   display: none;
 }
+.w-33 {
+  width: 33% !important;
+}
 .CWE {
   min-height: 140px;
   display: none;
 }
 .CWE .card.card-body {
-  width: 730px;
-  max-width: 730px;
+  width: 47vw;
+  max-width: 65vw;
 }
-//section.submit .container .row form .uploaded {
-//  padding: 20px 10px;
-//  background: #DDD;
-//  border-radius: 8px;
-//  display: none;
-//}
-//section.submit .container .row form #controlFile .uploaded .size.d-flex {
-//  color: #4B3A8F;
-//}
-//section.submit .container .row form #controlFile .uploaded .size.d-flex .material-icons {
-//  font-size: 21px;
-//}
+#card {
+  max-height: 150px !important;
+}
+.CWE,
+#card {
+  transition: all 0.5s ease-in;
+}
 #card .tracks10,
 #card .tracks40 {
   width: auto;
@@ -114,12 +113,79 @@ section.submit .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .video v
   flex-direction: column;
 }
 mat-radio-button.matRadioBtn {
-  font-size: 17px !important;
+  font-size: 16px !important;
   color: #787878 !important;
+  margin-right: 8%;
 }
 span.span.rules,
 span.span.rules1 {
   font-size: 15px;
   font-weight: 500;
   color: #787878;
+}.control.col-sm-4.col-md-4.col-lg-4.col-xl-4.m-0.d-flex.justify-content-center.align-items-center {
+   max-width: 36%;
+   flex: 0 0 36%;
+ }
+.controlInt.col-sm-4.col-md-4.col-lg-4.col-xl-4.m-0.d-flex {
+  max-width: 30%;
+}
+.textarea {
+  padding: 5px 10px !important;
+  height: 180px !important;
+  border-radius: 10px !important;
+  border: .5px solid #DDD;
+}
+button.btn.btn-success {
+  background: rgba(0,0,0,.04);
+  color: #28a745;
+  border: 1px solid #28a745;
+  transition: all 500s ease-in !important;
+}
+button.btn.btn-success:focus,
+button.btn.btn-success:hover {
+  background-color: #28a745 !important;
+  color: #FFF !important;
+  font-weight: bold !important;
+  zoom: 105% !important;
+
+}
+mat-label.ml-2 {
+  font-size: 16px;
+  color: #787878 !important;
+}
+div#collapseWidthExample .card.card-body,
+div#collapseWidthExample {
+  min-height: 120px !important;
+  height: 130px !important;
+  justify-content: center;
+  align-items: center;
+}
+div#collapseWidthExample .card.card-body {
+  width: 100%;
+  text-align: center;
+}
+form .row.w-100.justify-content-between.align-items-center {
+  flex-direction: row;
+  height: 130px;
+  margin-bottom: 4%;
+}
+mat-form-field {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+
+
+.example-h2 {
+  margin: 10px;
+}
+
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.example-margin {
+  margin: 0 10px;
 }

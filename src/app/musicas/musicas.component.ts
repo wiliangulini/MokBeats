@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {MusicasService} from "./musicas.service";
 import {ScrollService} from "../service/scroll.service";
+import {AuthService} from "../login/auth.service";
 
 @Component({
   selector: 'app-musicas',
@@ -111,6 +112,7 @@ export class MusicasComponent implements OnInit {
 
   constructor(
     private musicService: MusicasService,
+    private authService: AuthService,
     private scrollService: ScrollService,
     private fb: FormBuilder,
   ) {
@@ -160,10 +162,14 @@ export class MusicasComponent implements OnInit {
   }
 
   baixarAmostra(i: number): void {
-    this.musicDownload = [];
-    this.musicDownload.push(this.arrMusic[i].viewValue);
-    this.musicDownload.push(this.dados[i].viewValue);
-    this.musicService.baixarAmostra(i, this.musicDownload);
+    this.authService.verificaLogin();
+    if(this.authService.userAutetic()) {
+      this.musicDownload = [];
+      this.musicDownload.push(this.arrMusic[i].viewValue);
+      this.musicDownload.push(this.dados[i].viewValue);
+      this.musicService.baixarAmostra(i, this.musicDownload);
+    }
+
   }
 
   comprarLicensa(i: number): void {
@@ -183,12 +189,12 @@ export class MusicasComponent implements OnInit {
     elem == 'bpm' ? this.number = event : this.duration = event;
 
     if(elem == 'duracao') {
-        let dateObj: any = new Date(this.duration * 1000);
-        let minutes: any = dateObj.getUTCMinutes();
-        let seconds: any = dateObj.getSeconds();
+      let dateObj: any = new Date(this.duration * 1000);
+      let minutes: any = dateObj.getUTCMinutes();
+      let seconds: any = dateObj.getSeconds();
 
-        let timeString: any = minutes.toString().padStart(1) + ':' + seconds.toString().padStart(2, '0');
-        this.durationAut = timeString;
-      }
+      let timeString: any = minutes.toString().padStart(1) + ':' + seconds.toString().padStart(2, '0');
+      this.durationAut = timeString;
     }
+  }
 }

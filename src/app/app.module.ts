@@ -7,7 +7,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
-import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MAT_CHECKBOX_DEFAULT_OPTIONS, MatCheckboxDefaultOptions, MatCheckboxModule} from "@angular/material/checkbox";
 import {MatOptionModule} from "@angular/material/core";
 import {MatIconModule} from "@angular/material/icon";
 import {MatSelectModule} from "@angular/material/select";
@@ -36,6 +36,7 @@ import {ProdutoresComponent} from './produtores/produtores.component';
 import {MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule} from "@angular/material/radio";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatInputModule} from "@angular/material/input";
 
 
 @NgModule({
@@ -78,6 +79,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     MatTableModule,
     MatRadioModule,
     MatSnackBarModule,
+    MatInputModule,
   ],
   providers: [
     NgbTooltip,
@@ -89,7 +91,11 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     {
       provide: MAT_RADIO_DEFAULT_OPTIONS,
       useValue: { color: 'accent' },
-    }
+    },
+    {
+      provide: MAT_CHECKBOX_DEFAULT_OPTIONS,
+      useValue: { clickAction: 'noop' } as MatCheckboxDefaultOptions
+    },
   ],
   bootstrap: [AppComponent]
 })

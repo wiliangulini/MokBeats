@@ -5,7 +5,6 @@ import {empty} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MusicasService} from "../musicas/musicas.service";
 
-
 @Component({
   selector: 'app-produtores',
   templateUrl: './produtores.component.html',
@@ -22,7 +21,13 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
   selectOption: string = '';
   rulesVal: any;
   numero: number = 0;
-  durationInSeconds: number = 5;
+  card: any;
+  typeStems: any[] = [
+    { value: 'Druns', viewValue: 'Druns' },
+    { value:  'Melodia', viewValue:  'Melodia' },
+    { value: 'Harmonia', viewValue: 'Harmonia' },
+    { value: 'Efeitos/Vozes', viewValue: 'Efeitos/Vozes' },
+  ]
   $$: any
   generoMusic: any[] = [];
   valueTrack: Array<any> = [
@@ -41,7 +46,8 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     },
     { value: '10Track30Stems', viewValue: 'Nesta opção você produtor poderá fazer upload de até dez tracks completas com mais trinta stems ( no caso quatro stems por track ), totalizando em quarenta uploads.' },
   ];
-
+  checkBoxProducer: boolean = false;
+  checked = false;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -62,11 +68,26 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       upload: ['', Validators.required],
       politicaDePrivacidade: ['', Validators.required],
       generoMusic: ['', Validators.required],
+      textarea: ['', Validators.required],
+      pepperoni: [false, Validators.required],
+      extracheese: [false, Validators.required],
+      mushroom: [false, Validators.required],
+      checkBoxProducer: [this.checkBoxProducer, Validators.required],
     });
   }
 
   ngOnInit(): void {
     this.scrollService.scrollUp();
+    let matForm: any = document.querySelector('.mat-form-field-wrapper.ng-tns-c178-4');
+    let matFormInt: any = document.querySelector('.mat-form-field-infix.ng-tns-c178-4');
+    let matFormInt1: any = document.querySelector('.mat-form-field-flex.ng-tns-c178-4');
+    matForm!.style.width = '100%';
+    matForm!.style.height = '100%';
+    matFormInt!.style.width = '100%';
+    matFormInt!.style.height = '100%';
+    matFormInt1!.style.width = '100%';
+    matFormInt1!.style.height = '100%';
+    this.$$ = document.querySelector.bind(document);
   }
 
   ngAfterViewChecked(): void {
@@ -74,10 +95,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
   }
 
   ngAfterViewInit(): void {
-    console.log(this.musicService.convertida)
-    console.log(this.musicService.convertida2)
     this.generoMusic = this.musicService.convertida2;
-    this.$$ = document.querySelector.bind(document);
     this.uploadFile();
   }
 
@@ -87,34 +105,102 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     if (divPreview !== null) {
       if (divPreview.parentNode && divPreview.innerText.length > 0) {
         document.querySelectorAll('.uploaded').forEach((e: any): void => {
-          console.log(e);
           e.parentNode.removeChild(e);
         });
       }
     }
   }
- // ao selecionar uma track com ou sem stems o conteudo explicativo ta sendo exibido bugado devido ao mat-select do genero q foi adicionado, corrigir;
+
+  markCheckbox(e: any) {
+    console.log(this.checkBoxProducer);
+    if(e.target.checked == undefined) {
+      this.checkBoxProducer ? this.checkBoxProducer = false : this.checkBoxProducer = true;
+    }
+    if (e.target.checked == true) {
+      this.checkBoxProducer = true;
+    } else if (e.target.checked == false) {
+      this.checkBoxProducer = false;
+    }
+    console.log(this.checkBoxProducer);
+    console.log(e.target.checked)
+    // let input: any = document.querySelector('.btn.btn-success.font-weight-bold');
+    // let collapseWidthExample: any = document.getElementById('collapseWidthExample');
+
+    // collapseWidthExample?.setAttribute('style', 'width collapse show');
+    // input?.setAttribute('class', 'btn btn-success font-weight-bold active');
+    // input?.setAttribute('class', 'btn btn-success font-weight-bold active collapsed"');
+    //
+    // console.log(collapseWidthExample);
+    // console.log(input);
+    // console.log(input!.target);
+    // console.log(input!.target.checked);
+
+    // if((input!.classList.value).classList.add('active')) {
+    //   input!.target.checked = false;
+    //   input!.classList.remove = 'show';
+    //   input!.setAttribute('class', 'active');
+    // } else {
+    //   input!.target.checked = true;
+    //   input!.classList.add = 'show';
+    //   collapseWidthExample!.removeAttribute('style', 'show');
+    //   input!.setAttribute('class', 'active');
+    // }
+  }
+
   changeTrack(elm: any): void {
-    console.log(elm);
     (elm.value == 'trackWithStems' || elm == 'trackWithStems' || elm.value == 'trackNoStems' || elm == 'trackNoStems') ? this.CWE.nativeElement.style.display = 'inline-grid' : empty();
-    let card: any;
+
+    this.cardAnimate();
     this.rulesTrackStems.forEach((e: any, i: number): void => {
       if (e.value === '10Tracks' && (elm.value == 'trackNoStems' || elm == 'trackNoStems')) {
-        card = document.getElementById('card');
-        card.style.height = '62px';
-        card.style.width = 'auto';
         this.rules = e.viewValue;
         this.rulesVal = i;
         this.removeTracks();
       } else if (e.value === '1Track4Stems' && (elm.value == 'trackWithStems' || elm == 'trackWithStems')) {
-        card = document.getElementById('card');
-        card.style.height = '150px';
         this.rules = e.viewValue;
         this.rulesVal = i;
-        this.removeTracks();
       }
     })
+  }
 
+  onCommentChange(e: any) {
+    console.log(e)
+  }
+
+  cardRepeat() {
+    return this.card!.style.width = '0vw';
+  }
+
+  cardAnimate(): void {
+    this.card = document.getElementById('card');
+    if (this.producer == 'trackNoStems') {
+      console.log(this.card.getAttribute('style'));
+      this.cardRepeat();
+      setTimeout((): void => {
+        this.card!.style.height = '62px';
+        this.card!.style.width = 'auto';
+        this.card!.style.maxWidth = '65vw';
+        this.card!.style.opacity = 1;
+        this.card!.style.marginBottom = '2rem';
+        console.log(this.card.getAttribute('style'));
+      }, 150);
+    } else if (this.producer == 'trackWithStems') {
+      console.log(this.card.getAttribute('style'));
+      this.cardRepeat();
+      window.innerWidth > 2000 ? this.card!.style.width = '23vw' : this.card!.style.width = '47.3vw';
+      this.card!.style.height = '150px';
+      this.card!.style.maxWidth = '65vw';
+      this.card!.style.opacity = 1;
+      this.card!.style.marginBottom = '2rem';
+      setTimeout((): void => {
+
+        console.log(this.card.getAttribute('style'));
+      }, 150);
+    }
+
+    if (this.producer == 'trackNoStems' || this.producer == 'trackWithStems') {
+
+    }
   }
 
   optionSelect(event: any): void {
@@ -140,10 +226,9 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
             <span class='material-icons'>done</span>
           </div>
         </div>`;
-    console.log(typeof arrayUpload);
     console.log(arrayUpload);
+    console.log(num);
     if(arrayUpload.length > num) {
-      console.log(arrayUpload);
       this.snackBar.open(`A OPÇÃO QUE VOCÊ SELECIONOU PERMITE UM NÚMERO MÁXIMO DE ${num} UPLOADS!`, '', {duration: 5000});
       this.uploadFile();
     } else {
@@ -174,8 +259,6 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     let fileChooser = this.$$('.input-file');
 
     fileChooser.onchange = (e: any): void => {
-      console.log(this.selectOption)
-      console.log(this.producer)
       if (this.selectOption == '1 Track com 4 stems') {
         this.loop(e, 5);
       } else if (this.selectOption == '10 Tracks com 30 Stems') {

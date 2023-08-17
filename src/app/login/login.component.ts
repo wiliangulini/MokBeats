@@ -19,6 +19,16 @@ export class LoginComponent implements OnInit {
   log: any;
   resetP: any;
   mf: any;
+  person: any[] = [
+    {value: 'Pessoa Física', viewValue: 'Pessoa Física'},
+    {value: 'Pessoa Jurídica', viewValue: 'Pessoa Jurídica'},
+  ];
+  typeStems: any[] = [
+    { value: 'Druns', viewValue: 'Druns' },
+    { value:  'Melodia', viewValue:  'Melodia' },
+    { value: 'Harmonia', viewValue: 'Harmonia' },
+    { value: 'Efeitos/Vozes', viewValue: 'Efeitos/Vozes' },
+  ]
 
   constructor(
     private fb: FormBuilder,
@@ -29,6 +39,7 @@ export class LoginComponent implements OnInit {
     this.form = this.fb.group({
       email: [],
       senha: [],
+      typePerson: [],
       emailLog: [],
       senhaLog: [],
       emailReset: [],

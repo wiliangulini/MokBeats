@@ -25,8 +25,14 @@ a {
   font-size: 18px;
   color: #007bff;
 }
-input {
+input, select {
   width: 60%;
+}
+select {
+  height: 40px;
+  border-radius: 10px;
+  outline: none;
+  padding: 1%;
 }
 input, input:focus {
   outline: none !important;
@@ -44,7 +50,7 @@ input, input:focus {
     width: 90% !important;
     font-size: 17px;
   }
-  input {
+  input, select {
     width: 70%;
   }
   a.btn.btnReset {
@@ -53,7 +59,7 @@ input, input:focus {
 }
 
 @media only screen and (max-width: 370px) {
-  input {
+  input, select {
     width: 80%;
   }
 }
