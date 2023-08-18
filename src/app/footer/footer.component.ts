@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import { Router } from "@angular/router";
 
 @Component({
@@ -7,6 +7,14 @@ import { Router } from "@angular/router";
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
+
+  @ViewChild('footer', {static: true}) footer!:ElementRef;
+
+
+  @HostListener('window:scroll') onWindowScroll() {
+    let btnWhats: any = document.getElementById('btnWhats');
+    this.isScrolledIntoView(this.footer.nativeElement) ? btnWhats.style.display = 'none' : btnWhats.style.display = 'flex';
+  }
 
   collections: Array<any> = [
     {value: 'Most Popular Music', viewValue: 'Most Popular Music'},
@@ -45,6 +53,19 @@ export class FooterComponent implements OnInit {
     } else if(data === 'Informações de Licença') {
       this.router.navigate(['/preco']).then();
     }
+  }
+
+  isScrolledIntoView(elem: any) {
+    let docViewTop = window.scrollY;
+    let docViewBottom = docViewTop + window.innerHeight;
+    console.log(docViewTop)
+    console.log(docViewBottom)
+    let elemTop = elem.offsetTop;
+    let elemBottom = elemTop + elem.offsetHeight;
+    console.log(elemTop)
+    console.log(elemBottom)
+
+    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
   }
 
 }

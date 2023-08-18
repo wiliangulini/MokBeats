@@ -37,6 +37,7 @@ import {MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule} from "@angular/material/radio
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatInputModule} from "@angular/material/input";
+import { MenuProdutorComponent } from './menu-produtor/menu-produtor.component';
 
 
 @NgModule({
@@ -57,6 +58,7 @@ import {MatInputModule} from "@angular/material/input";
     LicencaValorComponent,
     FaqComponent,
     ProdutoresComponent,
+    MenuProdutorComponent,
   ],
   imports: [
     BrowserModule,

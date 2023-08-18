@@ -1,6 +1,9 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbNavbar} from "@ng-bootstrap/ng-bootstrap";
 import { LoginComponent } from "../login/login.component";
+import {AuthService} from "../login/auth.service";
+import {MusicasService} from "../musicas/musicas.service";
+import {MenuProdutorComponent} from "../menu-produtor/menu-produtor.component";
 
 @Component({
   selector: 'app-menu',
@@ -20,7 +23,10 @@ export class MenuComponent implements OnInit {
     }
   }
 
-  constructor(public modalService: NgbModal) { }
+  constructor(
+    public modalService: NgbModal,
+    private authService: AuthService,
+) { }
 
   ngOnInit(): void {}
 
@@ -33,7 +39,13 @@ export class MenuComponent implements OnInit {
 
   modalOpen() {
     this.closeNav();
-    return  this.modalService.open(LoginComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
+    this.authService.verificaLogin();
+    if (!this.authService.userAutetic()) {
+      return  this.modalService.open(LoginComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
+    } else {
+      return  this.modalService.open(MenuProdutorComponent, {size: 'md', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: undefined, keyboard: false});
+    }
+
   }
 
 }

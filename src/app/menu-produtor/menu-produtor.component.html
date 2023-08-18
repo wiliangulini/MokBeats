@@ -1,0 +1,55 @@
+
+<div class="modal-content">
+  <div class="modal-header flex-column justify-content-center align-items-center">
+    <p class="h6">Sua Conta</p>
+    <div class="modal-title w-100 d-flex">
+      <h2 class="mb-0 font-weight-bold" id="exampleModalLabel">Olá, {{ nome }}</h2>
+      <button type="button" class="close" data-dismiss="modal" (click)="closeModal()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="card pl-4 pr-4 pb-3 pt-3 flex-column">
+      <div class="indique d-flex justify-content-between align-items-center mb-3 w-100">
+        <span class="material-icons">redeem</span>
+        <p class="h5 mb-0">Ganhe R$25 ao indicar um amigo!</p>
+      </div>
+      <a href="" class="h6 saiba">Saiba mais</a>
+    </div>
+    <div class="controlCard d-flex justify-content-around align-items-center mt-4 mb-5">
+      <div class="card likes">
+        <a class="d-flex flex-column justify-content-center align-items-center btn">
+          <svg _ngcontent-elk-c110="" width="80" height="80" fill="#212121" viewBox="0 0 24 24" class="favorite" style="display: block;"><path _ngcontent-elk-c110="" d="M12 21a1 1 0 01-.6-.3l-.7-.5c-5.6-4.6-9-7.3-9-11.4 0-2.9 1.3-5 3.7-5.5A6.8 6.8 0 0112 5.5a6.7 6.7 0 016.5-2.2c2.4.6 3.9 2.6 3.9 5.5 0 4-3.5 6.8-9.1 11.4l-.7.5a1 1 0 01-.6.2zM6.8 5a3.7 3.7 0 00-.9.2c-1.5.4-2.3 1.7-2.3 3.6 0 3.1 3.2 5.6 8.4 9.8 5.2-4.2 8.4-6.7 8.4-9.8 0-2-.9-3.2-2.4-3.6a4.7 4.7 0 00-5.1 2.4 1 1 0 01-1.8 0 5 5 0 00-4.3-2.5z"></path></svg>
+          <p class="h6 text-center m-0 text-uppercase mt-2">Nenhuma curtida ainda</p>
+        </a>
+      </div>
+      <div class="card playlist">
+        <a class="d-flex flex-column justify-content-center align-items-center btn">
+          <svg class="playLists" width="80" fill="#212121" height="80" viewBox="0 0 24 24"><path d="M19.6 7.9h2.2a1 1 0 000-2H18a31.1 31.1 0 01-2.4-.2 7 7 0 01-.9-.2 4.8 4.8 0 01-.8-.3 4.5 4.5 0 01-.8-.5 5.9 5.9 0 01-.7-.6 9.8 9.8 0 01-.7-.9 2.3 2.3 0 00-.5-.6 1 1 0 00-.6-.1 1 1 0 00-.6.2 1.1 1.1 0 00-.3.5 3.4 3.4 0 000 .9v9.1a5.6 5.6 0 00-3.3-1c-2.9 0-5.2 2.1-5.2 4.7s2.3 4.6 5.2 4.6 5.3-2 5.3-4.6V6c2 1.7 4.1 1.7 7.9 1.8zM6.4 19.5c-1.8 0-3.2-1.2-3.2-2.6s1.4-2.7 3.2-2.7 3.3 1.2 3.3 2.7-1.5 2.6-3.3 2.6z"></path><path d="M21.8 10.3H15a1 1 0 000 2h6.8a1 1 0 000-2zm-1.9 8h-5a1 1 0 100 2h5a1 1 0 000-2zm1.9-4H15a1 1 0 000 2h6.8a1 1 0 100-2z"></path></svg>
+          <p class="h6 text-center m-0 text-uppercase mt-2">Nenhuma playlist ainda</p>
+        </a>
+      </div>
+    </div>
+    <nav class="navbar navbar-expand-lg">
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav flex-column w-100">
+          <li class="nav-item active">
+            <a class="nav-link h5" href="#">Assinatura <span class="material-icons">chevron_right</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link h5" href="#">Pedidos <span class="material-icons">chevron_right</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link h5" href="#">Atualizar Informações <span class="material-icons">chevron_right</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link h5" href="#">Cartões de Crédito <span class="material-icons">chevron_right</span></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <button type="button" class="btn btn-secondary w-75" data-dismiss="modal" (click)="closeModal()">Sair</button>
+  </div>
+</div>
