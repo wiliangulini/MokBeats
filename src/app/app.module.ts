@@ -38,6 +38,13 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatInputModule} from "@angular/material/input";
 import { MenuProdutorComponent } from './menu-produtor/menu-produtor.component';
+import { ButtonWhatsComponent } from './button-whats/button-whats.component';
+import { FavoritosComponent } from './favoritos/favoritos.component';
+import { PlaylistsComponent } from './playlists/playlists.component';
+import { AssinaturaComponent } from './assinatura/assinatura.component';
+import { PedidosComponent } from './pedidos/pedidos.component';
+import { FormasDePagamentoComponent } from './formas-de-pagamento/formas-de-pagamento.component';
+import { AtualizarInformacoesComponent } from './atualizar-informacoes/atualizar-informacoes.component';
 
 
 @NgModule({
@@ -59,6 +66,13 @@ import { MenuProdutorComponent } from './menu-produtor/menu-produtor.component';
     FaqComponent,
     ProdutoresComponent,
     MenuProdutorComponent,
+    ButtonWhatsComponent,
+    FavoritosComponent,
+    PlaylistsComponent,
+    AssinaturaComponent,
+    PedidosComponent,
+    FormasDePagamentoComponent,
+    AtualizarInformacoesComponent,
   ],
   imports: [
     BrowserModule,

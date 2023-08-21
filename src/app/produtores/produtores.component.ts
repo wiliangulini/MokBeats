@@ -1,4 +1,12 @@
-import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef, HostListener,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ScrollService} from "../service/scroll.service";
 import {empty} from "rxjs";
@@ -15,6 +23,8 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
   form: FormGroup;
 
   @ViewChild('CWE') CWE: any;
+
+
 
   rules: string = '';
   producer: string = '';
@@ -122,29 +132,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       this.checkBoxProducer = false;
     }
     console.log(this.checkBoxProducer);
-    console.log(e.target.checked)
-    // let input: any = document.querySelector('.btn.btn-success.font-weight-bold');
-    // let collapseWidthExample: any = document.getElementById('collapseWidthExample');
-
-    // collapseWidthExample?.setAttribute('style', 'width collapse show');
-    // input?.setAttribute('class', 'btn btn-success font-weight-bold active');
-    // input?.setAttribute('class', 'btn btn-success font-weight-bold active collapsed"');
-    //
-    // console.log(collapseWidthExample);
-    // console.log(input);
-    // console.log(input!.target);
-    // console.log(input!.target.checked);
-
-    // if((input!.classList.value).classList.add('active')) {
-    //   input!.target.checked = false;
-    //   input!.classList.remove = 'show';
-    //   input!.setAttribute('class', 'active');
-    // } else {
-    //   input!.target.checked = true;
-    //   input!.classList.add = 'show';
-    //   collapseWidthExample!.removeAttribute('style', 'show');
-    //   input!.setAttribute('class', 'active');
-    // }
+    console.log(e.target.checked);
   }
 
   changeTrack(elm: any): void {

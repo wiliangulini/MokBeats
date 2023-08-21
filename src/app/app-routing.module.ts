@@ -10,6 +10,12 @@ import { MusicasComponent } from "./musicas/musicas.component";
 import { PoliticaPrivacidadeComponent } from "./politica-privacidade/politica-privacidade.component";
 import {FaqComponent} from "./faq/faq.component";
 import {ProdutoresComponent} from "./produtores/produtores.component";
+import {FavoritosComponent} from "./favoritos/favoritos.component";
+import {PlaylistsComponent} from "./playlists/playlists.component";
+import {AssinaturaComponent} from "./assinatura/assinatura.component";
+import {PedidosComponent} from "./pedidos/pedidos.component";
+import {FormasDePagamentoComponent} from "./formas-de-pagamento/formas-de-pagamento.component";
+import {AtualizarInformacoesComponent} from "./atualizar-informacoes/atualizar-informacoes.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -23,6 +29,12 @@ const routes: Routes = [
   { path: 'humor', component: HumorComponent },
   { path: 'faq', component: FaqComponent },
   { path: 'produtores', component: ProdutoresComponent },
+  { path: 'favoritos', component: FavoritosComponent },
+  { path: 'playlists', component: PlaylistsComponent },
+  { path: 'assinatura', component: AssinaturaComponent },
+  { path: 'pedidos', component: PedidosComponent },
+  { path: 'formasDePagamento', component: FormasDePagamentoComponent },
+  { path: 'atualizarInformacoes', component: AtualizarInformacoesComponent },
 ];
 
 @NgModule({

@@ -1,6 +1,9 @@
 #div1, #div2 {
   display: flex;
 }
+a.favorite, a.minhasPlayLists {
+  cursor: pointer;
+}
 section.filter {
   background-color: #101010;
 }

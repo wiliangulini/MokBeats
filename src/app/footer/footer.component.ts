@@ -1,5 +1,6 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
-import { Router } from "@angular/router";
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Router} from "@angular/router";
+import {ScrollService} from "../service/scroll.service";
 
 @Component({
   selector: 'app-footer',
@@ -9,12 +10,8 @@ import { Router } from "@angular/router";
 export class FooterComponent implements OnInit {
 
   @ViewChild('footer', {static: true}) footer!:ElementRef;
-
-
-  @HostListener('window:scroll') onWindowScroll() {
-    let btnWhats: any = document.getElementById('btnWhats');
-    this.isScrolledIntoView(this.footer.nativeElement) ? btnWhats.style.display = 'none' : btnWhats.style.display = 'flex';
-  }
+  @ViewChild('btnW', {static: true}) btnW!:ElementRef;
+  @ViewChild('button', {static: true}) button!:ElementRef;
 
   collections: Array<any> = [
     {value: 'Most Popular Music', viewValue: 'Most Popular Music'},
@@ -34,10 +31,18 @@ export class FooterComponent implements OnInit {
   ];
   support: Array<any> = [
     {value: 'Entre em Contato', viewValue: 'Entre em Contato'},
+    {value: 'Fale Conosco via WhatsApp', viewValue: 'Fale Conosco via WhatsApp'},
     {value: 'FAQ', viewValue: 'FAQ'},
     {value: 'Blog', viewValue: 'Blog'},
   ];
-  constructor(private router: Router) { }
+
+  url: string = 'https://api.whatsapp.com/send?phone=5546991161666&text=Entre+em+contato+agora';
+  // ao clicar no botao do rodape deve redirecionar o link, fazer evento de click com addEventListener
+
+  constructor(
+    private router: Router,
+    private scrollService: ScrollService,
+  ) { }
 
   ngOnInit(): void {
   }
@@ -52,20 +57,12 @@ export class FooterComponent implements OnInit {
       this.router.navigate(['/contato']).then();
     } else if(data === 'Informações de Licença') {
       this.router.navigate(['/preco']).then();
+    } else if(data === 'Fale Conosco via WhatsApp') {
+      this.scrollService.scrollUp();
+      setTimeout(() => {
+        location.reload();
+      }, 750);
     }
-  }
-
-  isScrolledIntoView(elem: any) {
-    let docViewTop = window.scrollY;
-    let docViewBottom = docViewTop + window.innerHeight;
-    console.log(docViewTop)
-    console.log(docViewBottom)
-    let elemTop = elem.offsetTop;
-    let elemBottom = elemTop + elem.offsetHeight;
-    console.log(elemTop)
-    console.log(elemBottom)
-
-    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
   }
 
 }

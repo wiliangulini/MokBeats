@@ -391,7 +391,7 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
 // teclado
 
 
-.SGetT {
+.sgtt {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -407,7 +407,7 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
   transition: border-color 200ms ease-out
 }
 
-.SGetT>div {
+.sgtt>div {
   width: 100%;
   height: 36px;
   display: -webkit-box;
@@ -422,27 +422,27 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
   flex-grow: 1
 }
 
-.SGetT>div._3wYPv {
+.sgtt>div.exception {
   height: 25px
 }
 
-.SGetT>div._6M7au {
+.sgtt>div.base {
   height: 40px
 }
 
-.SGetT:hover {
+.sgtt:hover {
   border-color: rgba(88,88,88,.5)
 }
 
-.SGetT:hover .aRe99 {
+.sgtt:hover .teclas {
   opacity: .5
 }
 
-.SGetT:hover .aRe99.EFBZV {
+.sgtt:hover .teclas.controlInt {
   opacity: 1
 }
 
-.aRe99 {
+.teclas {
   cursor: default;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -464,25 +464,25 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
   font-weight: 200
 }
 
-.aRe99.\+IBKU {
+.teclas.\+CONTROL {
   max-width: 32px
 }
 
-._6M7au .aRe99.\+IBKU {
+.base .teclas.\+CONTROL {
   max-width: 34px
 }
 
-.aRe99.EFBZV {
+.teclas.controlInt {
   color: #dcad54;
   border-color: #dcad54
 }
 
-.aRe99.dMp8x {
+.teclas.dMp8x {
   width: 184px;
   max-width: 184px
 }
 
-.aRe99 ._0lMxa {
+.teclas .letras {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -494,7 +494,7 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
   justify-content: center
 }
 
-._7u7Wr {
+.setas {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -508,14 +508,14 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
   align-items: flex-end
 }
 
-._7u7Wr .aRe99 {
+.setas .teclas {
   margin: 0;
   height: 50%;
   margin-left: 1.5px;
   margin-right: 1.5px
 }
 
-._7u7Wr .OMcal {
+.setas .div {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -529,28 +529,28 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
   height: 100%
 }
 
-._7u7Wr .QkWST {
+.setas .one {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   margin-bottom: -1px
 }
 
-._7u7Wr .kqNPF {
+.setas .two {
   border-top-left-radius: 0;
   border-top-right-radius: 0
 }
 
-._7u7Wr .kqNPF svg {
+.setas .two svg {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg)
 }
 
-._7u7Wr .yBBim svg {
+.setas .int svg {
   -webkit-transform: rotate(270deg);
   transform: rotate(270deg)
 }
 
-._7u7Wr .-nJl- svg {
+.setas .three svg {
   -webkit-transform: rotate(90deg);
   transform: rotate(90deg)
 }

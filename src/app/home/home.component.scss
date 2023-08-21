@@ -6,6 +6,10 @@ article.container-fluid {
   justify-content: center;
   align-items: center;
 }
+article h1.font-weight-bold {
+  font-size: 60px;
+  line-height: 1;
+}
 article.container-fluid .container {
   display: flex;
   flex-direction: column;
@@ -149,6 +153,7 @@ section.one .container .row h2 {
   font-size: 4rem;
   font-weight: bold;
   width: 70%;
+  line-height: 1;
 }
 section.one .container .row h3 {
   width: 75%;
