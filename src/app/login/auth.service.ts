@@ -42,10 +42,8 @@ export class AuthService {
   }
 
   public userAutetic() {
-    this.userEmail = localStorage.getItem('userEmail');
-    this.userPass = localStorage.getItem('userPass');
-    console.log(this.userEmail)
-    console.log(this.userPass)
+    this.userEmail = localStorage.getItem('userEmail'); // email em localStorage
+    this.userPass = localStorage.getItem('userPass'); // senha em localStorage
 
     if(this.userEmail != null && this.userPass != null) {
       this.usuarioAutenticado = true;

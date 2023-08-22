@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { EfeitosSonorosService } from "./efeitosSonoros.service";
 import {ScrollService} from "../service/scroll.service";
@@ -8,7 +8,7 @@ import {ScrollService} from "../service/scroll.service";
   templateUrl: './efeitosSonoros.component.html',
   styleUrls: ['./efeitosSonoros.component.scss']
 })
-export class EfeitosSonorosComponent implements OnInit {
+export class EfeitosSonorosComponent implements OnInit, AfterViewInit {
 
   titles: any[];
   music: any[];
@@ -123,6 +123,11 @@ export class EfeitosSonorosComponent implements OnInit {
     if (screen.width < 769) {
       document.getElementById('navLeft')!.style.width = '0';
     }
+  }
+  ngAfterViewInit() {
+    document.querySelectorAll('.mat-checkbox-frame')?.forEach((e: any) => {
+      e.style.borderColor = "#FFF";
+    })
   }
 
   curtir(i: number): void {

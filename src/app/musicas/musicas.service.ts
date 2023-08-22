@@ -1,8 +1,18 @@
-import { Injectable } from '@angular/core';
-import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { AddPlaylistModalComponent } from "../add-playlist-modal/add-playlist-modal.component";
-import { DownloadAmostraComponent } from "../download-amostra/download-amostra.component";
-import { AuthService } from "../login/auth.service";
+import {Injectable} from '@angular/core';
+import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {AddPlaylistModalComponent} from "../add-playlist-modal/add-playlist-modal.component";
+import {DownloadAmostraComponent} from "../download-amostra/download-amostra.component";
+import {AuthService} from "../login/auth.service";
+import {FavoritosService} from "../favoritos/favoritos.service";
+
+export interface Music {
+  nome_musica: string;
+  nome_produtor: string;
+  duracao: number;
+  bpm: number;
+  trechos: number;
+  loops: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -381,11 +391,38 @@ export class MusicasService {
     "Uplifting",
     "Wedding",
   ];
+  public arrMusica: Music[] = [
+    {nome_musica: 'HighFrenetic', nome_produtor: 'Xalaika', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'Maleficus Chaos', nome_produtor: 'Luan Bolico', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'Impertinent', nome_produtor: 'Hagy Fantasy', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'The Funkster', nome_produtor: 'Sweet Spot', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'Code', nome_produtor: 'Bonieky', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'The Funkster', nome_produtor: 'Sweet Spot', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'HighFrenetic', nome_produtor: 'Xalaika', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'Maleficus Chaos', nome_produtor: 'Luan Bolico', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'Impertinent', nome_produtor: 'Hagy Fantasy', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'The Funkster', nome_produtor: 'Sweet Spot', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'Code', nome_produtor: 'Bonieky', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'The Funkster', nome_produtor: 'Sweet Spot', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'HighFrenetic', nome_produtor: 'Xalaika', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'Maleficus Chaos', nome_produtor: 'Luan Bolico', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'Impertinent', nome_produtor: 'Hagy Fantasy', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'The Funkster', nome_produtor: 'Sweet Spot', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'Code', nome_produtor: 'Bonieky', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'The Funkster', nome_produtor: 'Sweet Spot', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'HighFrenetic', nome_produtor: 'Xalaika', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'Maleficus Chaos', nome_produtor: 'Luan Bolico', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'Impertinent', nome_produtor: 'Hagy Fantasy', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'The Funkster', nome_produtor: 'Sweet Spot', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'Code', nome_produtor: 'Bonieky', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+    {nome_musica: 'The Funkster', nome_produtor: 'Sweet Spot', duracao: 180000, bpm: 95, trechos: 60, loops: 7},
+  ]
 
   constructor(
     private authService: AuthService,
     private modalService: NgbModal,
     public activeModal: NgbActiveModal,
+    private likeService: FavoritosService,
   ) {
     this.genero.map((obj: any) => {
       Object.keys(obj).map((chave: any) => {
@@ -395,9 +432,27 @@ export class MusicasService {
     });
   }
 
+
   public curtir(i: number) {
     this.authService.verificaLogin();
 
+    if(this.authService.userAutetic()) {
+      this.hearth = document.querySelectorAll('.hearth');
+      this.hearth1 = document.querySelectorAll('.hearth1');
+
+      if(this.hearth[i].style.display == 'block') {
+        this.hearth[i].style.display = 'none';
+        this.hearth1[i].style.display = 'block';
+      } else {
+        this.hearth[i].style.display = 'block';
+        this.hearth1[i].style.display = 'none';
+      }
+    }
+  }
+  public curtir1(i: number, favorite: any) {
+    this.authService.verificaLogin();
+    console.log(favorite);
+    this.likeService.sendFavorite(favorite);
     if(this.authService.userAutetic()) {
       this.hearth = document.querySelectorAll('.hearth');
       this.hearth1 = document.querySelectorAll('.hearth1');

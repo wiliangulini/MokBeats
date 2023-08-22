@@ -79,6 +79,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       politicaDePrivacidade: ['', Validators.required],
       generoMusic: ['', Validators.required],
       textarea: ['', Validators.required],
+      matCheckbox: ['', Validators.required],
       pepperoni: [false, Validators.required],
       extracheese: [false, Validators.required],
       mushroom: [false, Validators.required],

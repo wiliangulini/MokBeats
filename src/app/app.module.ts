@@ -37,14 +37,15 @@ import {MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule} from "@angular/material/radio
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatInputModule} from "@angular/material/input";
-import { MenuProdutorComponent } from './menu-produtor/menu-produtor.component';
-import { ButtonWhatsComponent } from './button-whats/button-whats.component';
-import { FavoritosComponent } from './favoritos/favoritos.component';
-import { PlaylistsComponent } from './playlists/playlists.component';
-import { AssinaturaComponent } from './assinatura/assinatura.component';
-import { PedidosComponent } from './pedidos/pedidos.component';
-import { FormasDePagamentoComponent } from './formas-de-pagamento/formas-de-pagamento.component';
-import { AtualizarInformacoesComponent } from './atualizar-informacoes/atualizar-informacoes.component';
+import {MenuProdutorComponent} from './menu-produtor/menu-produtor.component';
+import {ButtonWhatsComponent} from './button-whats/button-whats.component';
+import {FavoritosComponent} from './favoritos/favoritos.component';
+import {PlaylistsComponent} from './playlists/playlists.component';
+import {AssinaturaComponent} from './assinatura/assinatura.component';
+import {PedidosComponent} from './pedidos/pedidos.component';
+import {FormasDePagamentoComponent} from './formas-de-pagamento/formas-de-pagamento.component';
+import {AtualizarInformacoesComponent} from './atualizar-informacoes/atualizar-informacoes.component';
+import {FavoritosService} from "./favoritos/favoritos.service";
 
 
 @NgModule({
@@ -104,13 +105,14 @@ import { AtualizarInformacoesComponent } from './atualizar-informacoes/atualizar
     MusicasService,
     EfeitosSonorosService,
     ScrollService,
+    FavoritosService,
     {
       provide: MAT_RADIO_DEFAULT_OPTIONS,
       useValue: { color: 'accent' },
     },
     {
       provide: MAT_CHECKBOX_DEFAULT_OPTIONS,
-      useValue: { clickAction: 'noop' } as MatCheckboxDefaultOptions
+      useValue: { clickAction: 'check-indeterminate' } as MatCheckboxDefaultOptions
     },
   ],
   bootstrap: [AppComponent]

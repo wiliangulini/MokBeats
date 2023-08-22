@@ -1,8 +1,8 @@
-<main id="article">
+<main id="article" [formGroup]="formG">
   <app-filter></app-filter>
   <article class="one pb-5">
     <div class="container-fluid w-100 p-0">
-      <div class="position-absolute" id="navLeft" style="width: 13vw;" [formGroup]="formG">
+      <div class="position-absolute" id="navLeft" style="width: 13vw;" >
         <ul class="w-100">
           <div class="control">
             <li class="nav-item p-0 close border-0" (click)="filtrar()">
@@ -157,7 +157,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column border-bottom" id="array" *ngFor="let itens of arrMusic; let i = index;">
+          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column border-bottom" id="array" *ngFor="let itens of arrMusica; let i = index;">
             <div class="controlDivs d-flex flex-column w-100">
               <div class="controlDivsInt row">
                 <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start pr-5" >
@@ -165,22 +165,20 @@
                   <svg width="24" fill="#FFF" height="24" viewBox="0 0 24 24"><path d="M20.7 12.4L7.9 20a.5.5 0 01-.8-.4v-15a.5.5 0 01.8-.4l12.8 7.5a.5.5 0 010 .8z"></path></svg>
                 </span>
                   <div class="text d-flex flex-column align-items-start justify-content-start">
-                    <p class="h4"><a href="#">{{itens.viewValue}}</a></p>
-                    <p class="h6">por <a href="#">{{dados[i].viewValue}}</a></p>
+                    <p class="h4"><a href="#">{{itens.nome_musica}}</a></p>
+                    <p class="h6 mt-1">por <a href="#">{{itens.nome_produtor}}</a></p>
                   </div>
                 </div>
                 <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around pl-2 pr-2 pt-0 pb-0">
-                  <p class="h6 mb-0">2:25</p>
-                  <p class="h6 mb-0">95</p>
+                  <p class="h6 mb-0" id="duracao">{{this.msToMinute(itens.duracao)}}</p>
+                  <p class="h6 mb-0" id="bpm">{{itens.bpm}}</p>
                 </div>
                 <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 p-0 loops d-flex align-items-center justify-content-around">
                   <span class="svgInstrumental span">
                     <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 9.2h-.3l1.8-1.7v.3c0 .8-.7 1.4-1.5 1.4M6.5 7.8V3.5c0-.7.7-1.4 1.5-1.4s1.5.7 1.5 1.4v2.2L6.7 8.4l-.2-.6M8 10.4c1.5 0 2.7-1.2 2.7-2.6V6.4l3.1-3c.3-.2.3-.6 0-.9a.7.7 0 00-1 0l-2.1 2.1v-1C10.7 2 9.5 1 8 1 6.5 1 5.3 2.1 5.3 3.5v4.3c0 .6.2 1 .5 1.4l-.4.4c-.3-.5-.5-1-.5-1.7l-.1-.2H3.7l-.1.2a4 4 0 00.9 2.5l-2.3 2.2c-.3.2-.3.6 0 .9.3.2.7.2 1 0l2.2-2.2c.6.4 1.2.6 2 .7v1.8H5.8l-.1.3v.8l.3.1h4.2l.1-.3v-.9l-.3-.1H8.6V12c2.2-.3 3.8-2 3.8-4v-.3h-1.2v.2c0 .8-.4 1.6-1 2.1a3.2 3.2 0 01-3.8.4l.4-.3c.3.1.7.3 1.2.3"></path></svg>
                   </span>
                   <div class="trechos d-flex align-items-center justify-content-around w-50">
-                    <span class="h6 span">15</span>
-                    <span class="h6 span">30</span>
-                    <span class="h6 span">60</span>
+                    <span class="h6 span" *ngFor="let t of trecho;">{{t}}</span>
                   </div>
                   <div class="controlLoops">
                     <span class="span loopsIcon" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -188,27 +186,9 @@
                       <span class="material-icons arrow">expand_more</span>
                     </span>
                     <div class="dropdown-menu">
-                      <div class="PsznC"></div>
-                      <a class="dropdown-item" href="#">
-                        <span class="span">1</span>
-                      </a>
-                      <a class="dropdown-item" href="#">
-                        <span class="span">2</span>
-                      </a>
-                      <a class="dropdown-item" href="#">
-                        <span class="span">3</span>
-                      </a>
-                      <a class="dropdown-item" href="#">
-                        <span class="span">4</span>
-                      </a>
-                      <a class="dropdown-item" href="#">
-                        <span class="span">5</span>
-                      </a>
-                      <a class="dropdown-item" href="#">
-                        <span class="span">6</span>
-                      </a>
-                      <a class="dropdown-item" href="#">
-                        <span class="span">7</span>
+                      <div class="dropInt"></div>
+                      <a class="dropdown-item" *ngFor="let l of loop;">
+                        <span class="span">{{l}}</span>
                       </a>
                     </div>
                   </div>

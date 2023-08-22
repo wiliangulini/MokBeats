@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   public usuario: UsuarioLogin = new UsuarioLogin();
   public resetPass: any = {};
   log: any;
+  register: any;
   resetP: any;
   mf: any;
   person: any[] = [
@@ -59,17 +60,23 @@ export class LoginComponent implements OnInit {
   }
 
   irProLogin(data: any) {
-    let register = document.getElementById('register');
+    console.log(data);
+    this.register = document.getElementById('register');
     this.log = document.getElementById('login');
-    let logCad = document.getElementById('logCad');
-    let aLog = document.getElementById('aLog');
+    let logCad: any = document.getElementById('logCad');
+    let aLog: any = document.getElementById('aLog');
+    console.log(logCad);
+    console.log(aLog);
+    console.log(data.target.innerText);
+    console.log(this.log);
+    console.log(this.register);
     if(data.target.innerText == 'Faça Login') {
-      register!.style.display = 'none'
+      this.register!.style.display = 'none'
       this.log!.style.display = 'flex';
       logCad!.innerHTML = `Não tem uma conta?`;
       aLog!.innerHTML = `Crie a Sua`;
     } else if(data.target.innerText == 'Crie a Sua') {
-      register!.style.display = 'flex'
+      this.register!.style.display = 'flex'
       this.log!.style.display = 'none';
       logCad!.innerHTML = `Já tem uma conta?`;
       aLog!.innerHTML = `Faça Login`;

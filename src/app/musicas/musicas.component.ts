@@ -1,17 +1,31 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {MusicasService} from "./musicas.service";
+import {Music, MusicasService} from "./musicas.service";
 import {ScrollService} from "../service/scroll.service";
 import {AuthService} from "../login/auth.service";
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {Router} from "@angular/router";
+
+type Musicaa = {
+  nome_musica?: string;
+  nome_produtor?: string;
+  duracao?: number;
+  bpm?: number;
+  trechos?: number;
+  loops?: number;
+}
 
 @Component({
   selector: 'app-musicas',
   templateUrl: './musicas.component.html',
   styleUrls: ['./musicas.component.scss']
 })
-export class MusicasComponent implements OnInit {
+export class MusicasComponent implements OnInit, AfterViewInit {
 
+  public favorite: Musicaa = {};
   musicAdd: any;
+  trecho: any[] = [15, 30, 60];
+  loop: any[] = [1, 2, 3, 4, 5, 6, 7];
   duration: any;
   durationAut: any;
   musicDownload: any[] = [];
@@ -23,6 +37,7 @@ export class MusicasComponent implements OnInit {
   formG!: FormGroup;
   frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
   select: any = 'Mais Relevantes';
+
   cantada: Array<any> = [
     "Amostras/Efeitos",
     "Cantores principais",
@@ -30,50 +45,6 @@ export class MusicasComponent implements OnInit {
     "Oohs e Aahs",
     "Todos os Cantores",
   ]
-  dados: Array<any> =  [
-    {value: 'Sweet Spot', viewValue: 'Sweet Spot'},
-    {value: 'Bonieky', viewValue: 'Bonieky'},
-    {value: 'Wilian', viewValue: 'Wilian'},
-    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
-    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
-    {value: 'Sweet Spot', viewValue: 'Sweet Spot'},
-    {value: 'Bonieky', viewValue: 'Bonieky'},
-    {value: 'Wilian', viewValue: 'Wilian'},
-    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
-    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
-    {value: 'Sweet Spot', viewValue: 'Sweet Spot'},
-    {value: 'Bonieky', viewValue: 'Bonieky'},
-    {value: 'Wilian', viewValue: 'Wilian'},
-    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
-    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
-    {value: 'Sweet Spot', viewValue: 'Sweet Spot'},
-    {value: 'Bonieky', viewValue: 'Bonieky'},
-    {value: 'Wilian', viewValue: 'Wilian'},
-    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
-    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
-  ];
-  arrMusic: Array<any> = [
-    {value: 'The Funkster', viewValue: 'The Funkster'},
-    {value: 'Code', viewValue: 'Code'},
-    {value: 'Impertinent', viewValue: 'Impertinent'},
-    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
-    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
-    {value: 'The Funkster', viewValue: 'The Funkster'},
-    {value: 'Code', viewValue: 'Code'},
-    {value: 'Impertinent', viewValue: 'Impertinent'},
-    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
-    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
-    {value: 'The Funkster', viewValue: 'The Funkster'},
-    {value: 'Code', viewValue: 'Code'},
-    {value: 'Impertinent', viewValue: 'Impertinent'},
-    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
-    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
-    {value: 'The Funkster', viewValue: 'The Funkster'},
-    {value: 'Code', viewValue: 'Code'},
-    {value: 'Impertinent', viewValue: 'Impertinent'},
-    {value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos'},
-    {value: 'HighFrenetic', viewValue: 'HighFrenetic'},
-  ];
   arrFilter: Array<any> = [
     "Popularidade",
     "Mais relevantes",
@@ -107,6 +78,7 @@ export class MusicasComponent implements OnInit {
     {value: "Technology", viewValue: "Technology"},
     {value: "Trippy", viewValue: "Trippy"},
   ]
+  arrMusica: Music[] = [];
 
   @Output('ngModelChange') update: any = new EventEmitter();
 
@@ -120,6 +92,10 @@ export class MusicasComponent implements OnInit {
       checkbox: [],
       bpm: [],
       duracao: [],
+      inputCheckbox: [],
+      inputCheckbox1: [],
+      inputCheckbox2: [],
+      inputCheckbox3: [],
     });
     this.titles = this.musicService.convertida2;
     this.music = this.musicService.convertida;
@@ -128,14 +104,34 @@ export class MusicasComponent implements OnInit {
 
   ngOnInit(): void {
     this.scrollService.scrollUp();
-
+    this.arrMusica = this.musicService.arrMusica;
     if (screen.width < 769) {
       document.getElementById('navLeft')!.style.width = '0';
     }
   }
 
+  ngAfterViewInit() {
+    document.querySelectorAll('.mat-checkbox-frame')?.forEach((e: any) => {
+      e.style.borderColor = "#FFF";
+    })
+  }
+
+  msToMinute(ms: any) {
+    let minutes: any = Math.floor(ms / 60000);
+    let seconds: any = ((ms % 60000) / 1000).toFixed(0);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
+
   curtir(i: number): void {
-    this.musicService.curtir(i);
+    this.favorite.nome_musica = this.arrMusica[i].nome_musica;
+    this.favorite.nome_produtor = this.arrMusica[i].nome_produtor;
+    this.favorite.duracao = this.arrMusica[i].duracao;
+    this.favorite.bpm = this.arrMusica[i].bpm;
+    this.favorite.trechos = this.arrMusica[i].trechos;
+    this.favorite.loops = this.arrMusica[i].loops;
+    console.log(this.favorite);
+    this.musicService.curtir1(i, this.favorite);
+
   }
 
   filtrar(): void {
@@ -153,37 +149,25 @@ export class MusicasComponent implements OnInit {
   }
 
   addPlayList(i: number): void {
-    this.musicAdd = this.arrMusic[i].viewValue;
+    this.musicAdd = this.arrMusica[i].nome_musica;
     this.musicService.addPlayList(i, this.musicAdd);
   }
 
-  copiarLink(i: number): void {
-    this.musicService.copiarLink(i);
-  }
+  copiarLink(i: number): void { this.musicService.copiarLink(i); }
 
   baixarAmostra(i: number): void {
     this.authService.verificaLogin();
     if(this.authService.userAutetic()) {
       this.musicDownload = [];
-      this.musicDownload.push(this.arrMusic[i].viewValue);
-      this.musicDownload.push(this.dados[i].viewValue);
+      this.musicDownload.push(this.arrMusica[i].nome_musica);
+      this.musicDownload.push(this.arrMusica[i].nome_produtor);
       this.musicService.baixarAmostra(i, this.musicDownload);
     }
-
   }
 
-  comprarLicensa(i: number): void {
-    this.musicService.comprarLicensa(i);
-  }
+  comprarLicensa(i: number): void { this.musicService.comprarLicensa(i); }
 
-  onChange(event: any): void {
-    console.log(event);
-  }
-
-  filtroP(e: any): void {
-    console.log(e);
-    this.select = e;
-  }
+  filtroP(e: any): void { this.select = e; }
 
   onChangedEvent(event: any, elem: any): void {
     elem == 'bpm' ? this.number = event : this.duration = event;

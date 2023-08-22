@@ -39,7 +39,7 @@ export class MenuComponent implements OnInit {
 
   modalOpen() {
     this.closeNav();
-    this.authService.verificaLogin();
+
     if (!this.authService.userAutetic()) {
       return  this.modalService.open(LoginComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
     } else {
