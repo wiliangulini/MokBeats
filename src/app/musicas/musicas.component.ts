@@ -7,6 +7,7 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {Router} from "@angular/router";
 
 type Musicaa = {
+  id?: number;
   nome_musica?: string;
   nome_produtor?: string;
   duracao?: number;
@@ -123,14 +124,14 @@ export class MusicasComponent implements OnInit, AfterViewInit {
   }
 
   curtir(i: number): void {
+    this.favorite.id = this.arrMusica[i].id;
     this.favorite.nome_musica = this.arrMusica[i].nome_musica;
     this.favorite.nome_produtor = this.arrMusica[i].nome_produtor;
     this.favorite.duracao = this.arrMusica[i].duracao;
     this.favorite.bpm = this.arrMusica[i].bpm;
     this.favorite.trechos = this.arrMusica[i].trechos;
     this.favorite.loops = this.arrMusica[i].loops;
-    console.log(this.favorite);
-    this.musicService.curtir1(i, this.favorite);
+    this.musicService.sendFavorite(i, this.favorite);
 
   }
 
