@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-atualizar-informacoes',
@@ -7,7 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AtualizarInformacoesComponent implements OnInit {
 
-  constructor() { }
+  form: FormGroup;
+  constructor(
+    private fb: FormBuilder,
+  ) {
+    this.form = this.fb.group({
+      nomeContato: ['', Validators.required],
+      nomeEmpresa: ['', Validators.required],
+      numberPhone: ['', Validators.required],
+      pais: ['', Validators.required],
+      estado: ['', Validators.required],
+      endereco: ['', Validators.required],
+      cidade: ['', Validators.required],
+      cep: ['', Validators.required],
+    });
+  }
 
   ngOnInit(): void {
   }

@@ -1,1 +1,30 @@
-<p>atualizar-informacoes works!</p>
+<app-sub-menu></app-sub-menu>
+<section>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 d-flex flex-column align-items-center justify-content-center">
+        <div class="title mb-5">
+          <h1 class="titleInt font-weight-bold">Informações de Contato</h1>
+        </div>
+        <form class="d-flex flex-column justify-content-center align-items-center w-100" [formGroup]="form">
+          <div class="card mb-4">
+            <input type="text" formControlName="nomeContato" placeholder="Nome de Contato" class="w-100" required/>
+            <input type="text" formControlName="nomeEmpresa" placeholder="Nome da Empresa" class="w-100" />
+            <input type="number" formControlName="numberPhone" placeholder="Número de Telefone" class="w-100" required/>
+            <div class="controlInt d-flex justify-content-center align-items-center w-100">
+              <input type="text" formControlName="pais" placeholder="País" class="w-50 mr-2" required/>
+              <input type="text" formControlName="estado" placeholder="Estado" class="w-50 ml-2" required/>
+            </div>
+            <input type="text" formControlName="endereco" placeholder="Endereço" class="w-100" required/>
+            <div class="controlInt d-flex justify-content-center align-items-center w-100">
+              <input type="text" formControlName="cidade" placeholder="Cidade" class="w-50 mr-2" required/>
+              <input type="text" formControlName="cep" placeholder="CEP" class="w-50 ml-2" required/>
+            </div>
+            <button type="submit" class="btn-warning font-weight-bold text-uppercase text-center">atualizar informações</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>

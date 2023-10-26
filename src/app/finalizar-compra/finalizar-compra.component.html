@@ -1,0 +1,59 @@
+<section>
+  <div class="container-fluid d-flex justify-content-center">
+    <div class="row w-75 justify-content-between">
+      <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <div class="title mb-5">
+          <h1 class="titleInt font-weight-bold mb-3">Finalizar a Compra</h1>
+          <p class="h6">Verifique as suas informações de pagamento</p>
+        </div>
+        <form class="d-flex flex-column justify-content-center align-items-center" [formGroup]="form">
+          <div class="card mb-4">
+            <p class="h4 font-weight-bold mb-4">Endereço de cobrança</p>
+            <input type="text" formControlName="nomeContato" placeholder="Nome de Contato" class="w-100" required/>
+            <input type="text" formControlName="nomeEmpresa" placeholder="Nome da Empresa" class="w-100" />
+            <input type="number" formControlName="numberPhone" placeholder="Número de Telefone" class="w-100" required/>
+            <input type="text" formControlName="endereco" placeholder="Endereço" class="w-100" required/>
+            <input type="text" formControlName="cidade" placeholder="Cidade" class="w-100" required/>
+            <input type="text" formControlName="cep" placeholder="CEP" class="w-100" required/>
+          </div>
+          <div class="card mb-5">
+            <p class="h4 font-weight-bold mb-4">Forma de Pagamento</p>
+            <mat-radio-group
+              aria-label="Cartão de Crédito"
+              formControlName="formaDePagamento"
+              (change)="changeCard($event)"
+              [(ngModel)]="formaPagamento"
+              class="d-flex align-items-center justify-content-between w-100"
+            >
+              <mat-radio-button class="matRadioBtn" *ngFor="let fp of formaPag;" [checked]="formaPagamento === fp.value" [value]="fp.value">{{fp["viewValue"]}}</mat-radio-button>
+            </mat-radio-group>
+            <div *ngIf="formaPagamento === cartao" class="control d-flex flex-column justify-content-center align-items-center mt-4">
+              <input class="w-100" type="text" formControlName="nomeCartao" placeholder="Nome no cartão" required/>
+              <div class="controlInt d-flex justify-content-center align-items-center">
+                <input class="col-sm-8 col-md-8 col-lg-8 col-xl-8 ml-0 mt-0 mb-0 mr-1 p-0 numeroCartao" type="text" formControlName="numeroCartao" placeholder="Número no cartão" required/>
+                <input class="col-sm-2 col-md-2 col-lg-2 col-xl-2 p-0 mr-2 ml-2 mb-0 mt-0" type="text" formControlName="mes_ano" placeholder="MM/AA" required/>
+                <input class="col-sm-2 col-md-2 col-lg-2 col-xl-2 mr-0 mt-0 mb-0 ml-1 p-0" type="text" formControlName="cvc" placeholder="CVC" required/>
+              </div>
+            </div>
+          </div>
+
+          <div class="mat-checkbox mb-3">
+            <mat-checkbox formControlName="termos_licenca">Eu li e aceito os termos do Contrato de licença da MokBeats</mat-checkbox>
+          </div>
+          <button class="btn-warning font-weight-bold text-center text-uppercase">Conclua Seu Pedido</button>
+        </form>
+      </div>
+      <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 m-0 p-0">
+        <p class="h2 mb-3">Resumo do pedido</p>
+        <p class="h5 mb-5">No Seu Carrinho</p>
+        <p class="h6 mb-4 w-50">Assinatura mensal de músicas 5 Licenças Padrão por mês</p>
+        <hr>
+        <small>Você será cobrado mensalmente até que a assinatura seja cancelada. Cancele quando quiser nas configurações da sua conta. Os créditos de download não utilizados não são acumulados para o mês seguinte. Consulte as <a [routerLink]="['/faq']" >Perguntas frequentes para mais detalhes</a>.</small>
+        <div class="total d-flex justify-content-end align-items-center mt-4">
+          <p class="h5 font-weight-bold text-uppercase">total em R$ {{ total }}</p>
+        </div>
+        <p class="h6 mt-5 d-flex justify-content-center align-items-center mb-0 p-0"><span class="material-icons mr-1">check_circle</span> Compras 100% Seguras</p>
+      </div>
+    </div>
+  </div>
+</section>

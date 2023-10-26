@@ -25,6 +25,8 @@
     "@ng-bootstrap/ng-bootstrap": "^13.0.0",
     "@popperjs/core": "^2.10.2",
     "bootstrap": "^4.6.2",
+    "firebase": "^10.3.0",
+    "inputmask": "^5.0.8",
     "jquery": "^3.6.3",
     "moment": "^2.18.1",
     "rxjs": "~7.4.0",

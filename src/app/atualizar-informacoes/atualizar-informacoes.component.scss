@@ -1,0 +1,43 @@
+section {
+  padding: 3.5% 0;
+  background-color: #f3f3f4;
+}
+.card {
+  border: 0;
+  box-shadow: 0px 0px 10px 5px #ddd;
+  padding: 5%;
+  width: 100%;
+}
+input {
+  margin-bottom: 4%;
+  font-size: 18px;
+  padding: 1% 0 1% 1%;
+  border: 0;
+  border-bottom: 1px solid #DDD;
+  outline: none;
+  text-decoration: none;
+}
+input.numeroCartao {
+  max-width: 62% !important;
+}
+h1.titleInt {
+  font-size: 35px;
+}
+form button.btn-warning {
+  background-color: #4B3A8F;
+  border: 0;
+  padding: 1.25% 0;
+  border-radius: 30px;
+  margin: 4% 0;
+  transition: all .35s linear;
+  color: #FFF;
+  width: 50%;
+  font-weight: bold;
+}
+form button.btn-warning:hover {
+  box-shadow: 0 0 10px 0 #4B3A8F !important;
+  border: 1px solid #4B3A8F !important;
+  background-color: #FFF !important;
+  color: #4B3A8F !important;
+  padding: 1.5% 0 !important;
+}

@@ -16,6 +16,7 @@ import {AssinaturaComponent} from "./assinatura/assinatura.component";
 import {PedidosComponent} from "./pedidos/pedidos.component";
 import {FormasDePagamentoComponent} from "./formas-de-pagamento/formas-de-pagamento.component";
 import {AtualizarInformacoesComponent} from "./atualizar-informacoes/atualizar-informacoes.component";
+import {FinalizarCompraComponent} from "./finalizar-compra/finalizar-compra.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -33,8 +34,9 @@ const routes: Routes = [
   { path: 'playlists', component: PlaylistsComponent },
   { path: 'assinatura', component: AssinaturaComponent },
   { path: 'pedidos', component: PedidosComponent },
-  { path: 'formasDePagamento', component: FormasDePagamentoComponent },
-  { path: 'atualizarInformacoes', component: AtualizarInformacoesComponent },
+  { path: 'formas-de-pagamento', component: FormasDePagamentoComponent },
+  { path: 'atualizar-informacoes', component: AtualizarInformacoesComponent },
+  { path: 'finalizar-compra', component: FinalizarCompraComponent },
 ];
 
 @NgModule({

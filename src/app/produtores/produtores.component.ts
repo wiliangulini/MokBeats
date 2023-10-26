@@ -79,6 +79,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       politicaDePrivacidade: ['', Validators.required],
       generoMusic: ['', Validators.required],
       textarea: ['', Validators.required],
+      textarea1: ['', Validators.required],
       matCheckbox: ['', Validators.required],
       pepperoni: [false, Validators.required],
       extracheese: [false, Validators.required],
@@ -176,7 +177,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     } else if (this.producer == 'trackWithStems') {
       console.log(this.card.getAttribute('style'));
       this.cardRepeat();
-      window.innerWidth > 2000 ? this.card!.style.width = '23vw' : this.card!.style.width = '47.3vw';
+      window.innerWidth < 2000 ? this.card!.style.width = '47.3vw' : this.card!.style.width = '23vw';
       this.card!.style.height = '150px';
       this.card!.style.maxWidth = '65vw';
       this.card!.style.opacity = 1;

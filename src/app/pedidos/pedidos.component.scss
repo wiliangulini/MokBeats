@@ -1,0 +1,45 @@
+section {
+  padding: 5% 0;
+  background-color: #f3f3f4;
+}
+form {
+  box-shadow: 0 0 10px rgba(0,0,0,.2);
+  border-radius: 999px;
+}
+h1 {
+  font-size: 35px;
+}
+section .container .row .titleSearch form span,
+section .container .row .titleSearch form input {
+  height: 40px;
+}
+section .container .row .titleSearch form input {
+  border-radius: 0px 999px 999px 0px;
+  border: 0;
+}
+section .container .row .titleSearch form span {
+  border-radius: 999px 0px 0px 999px;
+  width: 9%;
+  position: relative;
+  right: -1%;
+  padding-left: 2%;
+}
+section .container .row .div2 .navMusicas {
+  box-shadow: 0 0 10px 0 #4B3A8F !important;
+  background-color: #4B3A8F;
+  border: 0;
+  font-size: 18px;
+  padding: 1.25% 0;
+  border-radius: 30px;
+  margin: 4% 0;
+  transition: all .35s linear;
+  color: #FFF;
+  width: 30%;
+  font-weight: bold;
+}
+section .container .row .div2 .navMusicas:hover {
+  border: 1px solid #4B3A8F !important;
+  background-color: #FFF !important;
+  color: #4B3A8F !important;
+  padding: 1.5% 0 !important;
+}

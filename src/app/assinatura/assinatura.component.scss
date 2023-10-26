@@ -1,0 +1,40 @@
+section {
+  background-color: #f3f3f4;
+  padding: 3.5% 0;
+}
+body {
+  background-color: #FFF !important;
+}
+h1 {
+  font-size: 45px;
+}
+section .container .row .assinatura p.h5.text-center {
+  width: 75%;
+  color: #828282;
+  line-height: 1.35;
+}
+section .container .row .assinatura a.h6 {
+  border-bottom: 1px solid #000;
+  color: #000;
+}
+section .container .row .assinatura .btn-warning {
+  background-color: #4B3A8F;
+  border: 0;
+  padding: 1% 0;
+  border-radius: 30px;
+  margin: 4% 0;
+  transition: all .35s linear;
+  color: #FFF;
+  width: 25%;
+  font-weight: bold;
+}
+section .container .row .assinatura .btn-warning:hover {
+  box-shadow: 0 0 10px 0 #4B3A8F !important;
+  border: 1px solid #4B3A8F !important;
+  background-color: #FFF !important;
+  color: #4B3A8F !important;
+  padding: 1.25% 0 !important;
+}
+section .container .row .contato a.h5 {
+  color: #4B3A8F;
+}
