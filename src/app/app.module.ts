@@ -46,6 +46,9 @@ import {PedidosComponent} from './pedidos/pedidos.component';
 import {FormasDePagamentoComponent} from './formas-de-pagamento/formas-de-pagamento.component';
 import {AtualizarInformacoesComponent} from './atualizar-informacoes/atualizar-informacoes.component';
 import {FavoritosService} from "./favoritos/favoritos.service";
+import { SubMenuComponent } from './sub-menu/sub-menu.component';
+import { FinalizarCompraComponent } from './finalizar-compra/finalizar-compra.component';
+import { ContatoComponent } from './contato/contato.component';
 
 
 @NgModule({
@@ -74,6 +77,9 @@ import {FavoritosService} from "./favoritos/favoritos.service";
     PedidosComponent,
     FormasDePagamentoComponent,
     AtualizarInformacoesComponent,
+    SubMenuComponent,
+    FinalizarCompraComponent,
+    ContatoComponent,
   ],
   imports: [
     BrowserModule,

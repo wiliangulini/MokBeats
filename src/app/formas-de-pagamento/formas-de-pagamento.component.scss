@@ -1,0 +1,852 @@
+section {
+  padding: 5% 0 3.5% 0;
+  background-color: #FFF;
+}
+section .container .row form .card.cart input::placeholder {
+  color: #777;
+  font-weight: 300;
+  font-size: 16px;
+}
+#chavepix {
+  width: 89% !important;
+}
+#btn {
+  background-color: #4B3A8F;
+  border: 0;
+  padding: 1.5% 0;
+  border-radius: 30px;
+  margin: 4% 0;
+  transition: all .35s linear;
+  color: #FFF;
+  width: 25%;
+  font-weight: bold;
+}
+#btn:hover {
+  padding: 18.5px 0 !important;
+}
+#btn:hover {
+  box-shadow: 0 0 10px 0 #4B3A8F !important;
+  border: 1px solid #4B3A8F !important;
+  background-color: #FFF !important;
+  color: #4B3A8F !important;
+}
+.card {
+  border: 0;
+}
+.background {
+  background-color: #007bff !important
+}
+#imgCard img {
+  width: 14%;
+}
+#imgBol, #imgPix {
+  width: 32px;
+}
+#imgCred, #imgDeb {
+  width: 35px;
+}
+#valor, #pagamento, #confirm {
+  cursor: pointer;
+}
+#layout-wrapper section .container .row form {
+  max-width: 68%;
+  width: 100%;
+}
+label {
+  margin-bottom: 0px !important;
+}
+#cardDeb,
+#cardPix,
+#seven .option.three .boleto,
+#seven .option.one,
+#bolGer {
+  display: none;
+}
+#conf.button {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 7%;
+  margin-right: 2%;
+}
+#pix1 .d-flex.w-100 {
+  justify-content: center;
+  margin-top: 7%;
+  margin-right: 2%;
+}
+/* Hide the browser's default radio button */
+.radiocontainer input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+#pix1 {
+  padding: 0px 10px;
+}
+#pix1 .card.cart {
+  width: 100%;
+}
+#pix1 .card.cart h2 {
+  text-align: center;
+  margin-bottom: 18px;
+}
+#pix1 .card.cart div.d-flex.justify-content-center.align-items-center img {
+  width: 35%;
+}
+#pix1 .card.cart div.d-flex.justify-content-center.align-items-center {
+  margin-bottom: 12%;
+}
+#amount .d-flex.justify-content-center.align-items-center {
+  margin-top: 7%;
+  justify-content: flex-end !important;
+  margin-right: 2%;
+}
+input[name="chavepix"], #cpfBol {
+  background-color: #E5E5E5;
+  border: none;
+  height: 46px;
+  border-radius: 6px;
+  padding-left: 7%;
+  font-size: 14px;
+  width: 100%;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+}
+#step {
+  width: 100% !important;
+}
+section .container .row form .title {
+  margin-top: 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 400;
+}
+section .container .row form .title p.h4 {
+  color: #4B4B4B;
+  font-size: 22px;
+}
+section .container .row form .title.prenc #preencher_dados {
+  color: #A9A9A9;
+}
+section .container .row form .title.prenc img {
+  width: 20px;
+  height: 12px;
+}
+section .container .row form .card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+section .container .row form #amount .d-flex.flex-column input.cpf {
+  border: 1px solid #DDD;
+  border-radius:5px;
+  padding: .47rem .75rem;
+  -webkit-border-radius:5px;
+  -moz-border-radius:5px;
+  -ms-border-radius:5px;
+  -o-border-radius:5px;
+}
+section .container .row form .resumo p.txt {
+  font-size: 14px;
+}
+section .container .row form .resumo {
+  margin-top: 8%;
+  display: none !important;
+}
+section .container .row form .line {
+  border-bottom: 1px solid #BF9E9E;
+  margin-top: 6%;
+}
+section .container .row form .resumo p.txt,
+section .container .row form .resumo .control p {
+  color:#727272;
+  margin-bottom: 14px;
+}
+section .container .row form .resumo .control.one p {
+  font-size: 16px;
+}
+section .container .row form .resumo .control.one {
+  margin-top: 0%;
+}
+section .container .row form .resumo .control.two {
+  margin-top: 5%;
+}
+section .container .row form .resumo .control .txt p {
+  font-size: 20px;
+  margin-right: 4%;
+}
+section .container .row form .resumo .control p.green {
+  color: #2EA68D;
+}
+section .container .row form .resumo .control {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid #C4C4C4;
+}
+section .container .row form .resumo .control .input {
+  position: relative;
+  bottom: 2px;
+}
+section .container .row form .resumo .control .input #cupom {
+  position: absolute;
+  top: 11%;
+  left: 4%;
+}
+section .container .row form .resumo .control .input input {
+  color: #9C9DA3;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 9px -1px rgb(0 0 0 / 15%);
+  border-radius: 5px;
+  border: 0;
+  padding: 3% 3% 3% 23%;
+  width: 100%;
+  font-style: italic;
+  -webkit-border-radius:5px;
+  -moz-border-radius:5px;
+  -ms-border-radius:5px;
+  -o-border-radius:5px;
+}
+section .container .row form .resumo .control .input input::placeholder {
+  color: #9C9DA3;
+}
+section .container .row form #method .d-flex.justify-content-center.align-items-center.financial {
+  margin-top: 10%;
+  justify-content: flex-end !important;
+}
+section .container .row form #method .d-flex.justify-content-center.align-items-center.financial a.btn {
+  width: 63%;
+}
+section .container .row form #method .d-flex .cred label {
+  cursor: pointer;
+}
+a.btn.btn-grey {
+  color: #727272;
+  background-color: #D8D8D8;
+}
+p.bonus {
+  background-color: #D5FFD9;
+  color: #00DB16;
+  padding: 7px;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  margin-left: 8px;
+  font-size: 13px;
+  width: 35%;
+  text-align: center;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+section .container .row #form-recarga-geral #amount .card .d-flex.flex-column .d-flex.justify-content-start p.bonus {
+  display: none;
+}
+#cred div div.d-flex.justify-content-center img {
+  width: auto !important;
+  margin: 10px 0px 16px;
+}
+section .container .row form .card {
+  background: transparent;
+  box-shadow: none;
+}
+section .container .row form .card .d-flex.flex-column .input-group.mb-3 .input-group-prepend span.input-group-text {
+  background-color: #2f90ff;
+  color: #FFF;
+  border: none;
+}
+#boleto1 .card.cart div.d-flex.justify-content-center {
+  margin: 10% 0%;
+}
+section .container .row form .card .d-flex.justify-content-between {
+  margin-top: 20px;
+  padding: 0px 5px;
+  height: 100px;
+  width: 49.3%;
+}
+section .container .row form .card.cart {
+  flex-direction: column;
+}
+section .container .row form .card .d-flex.justify-content-between .control p {
+  margin-top: 5%;
+  margin-bottom: 0;
+}
+section .container .row form .card .d-flex.justify-content-between .control input {
+  border: 1px solid #f2f2f2;
+  border-radius: 5px;
+  padding: .47rem .75rem;
+  text-align: center;
+  font-weight: bold;
+  background: #f2f2f2;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+section .container .row form .card .d-flex.justify-content-between .control input,
+section .container .row form .card .d-flex.justify-content-between .control {
+  width: 100%;
+}
+section .container .row form .card .d-flex.justify-content-between .control1 {
+  width: 40%;
+}
+section .container .row form .card .d-flex.justify-content-between .control .divCash {
+  padding: 8px 16px;
+  background-color: #F2F2F2;
+  border-radius: 5px;
+  border: 2px solid;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+section .container .row form .card .d-flex.justify-content-between .control .divCash p.cash {
+  margin-bottom: 0;
+}
+section .container .row form .card .d-flex.justify-content-between .control1 .divCash1 {
+  padding: 8px 16px;
+  border: 2px solid #00DB16;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+section .container .row form .card .d-flex.justify-content-between .control1 .divCash1 p.cash {
+  margin-bottom: 0;
+  color: #00DB16;
+}
+#credito, #pix, #boleto, #debito {
+  width: 100%;
+  background-color:#FFF;
+  border-radius: 7px;
+  box-shadow: 0px 0px 10.4062px -1.15625px rgba(0, 0, 0, 0.15);
+  height: 100%;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  -ms-border-radius: 7px;
+  -o-border-radius: 7px;
+}
+#credito, #pix, #debito {
+  padding: 15px 8px;
+}
+#boleto {
+  padding: 8.5px 8px;
+}
+#credit.card.cart .input-group.mb-3, #debit .input-group.mb-3,
+#pix1 .card.cart .input-group.mb-3, #boleto1 .card.cart .input-group.mb-3 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8% !important;
+}
+#credit.card.cart .input-group.mb-3 .input-group-prepend span, #debit .input-group.mb-3 .input-group-prepend span, #pix1 .card.cart .input-group.mb-3 .input-group-prepend .input-group-text span, #boleto1 .card.cart .input-group.mb-3 .input-group-prepend span {
+  background-color: #2f90ff;
+  color: #FFF;
+  border: none;
+  height: 35px;
+}
+#number1, #debitNumber, #pixNumber, #bolNumber {
+  width: 90% !important;
+  margin-bottom: 0;
+  border-radius: 0px 5px 5px 0px;
+  padding: 10px;
+  height: 35px;
+  -webkit-border-radius: 0px 5px 5px 0px;
+  -moz-border-radius: 0px 5px 5px 0px;
+  -ms-border-radius: 0px 5px 5px 0px;
+  -o-border-radius: 0px 5px 5px 0px;
+}
+section .container .row form .card.method .d-flex.justify-content-between .cred {
+  width: 46%;
+  position: relative;
+}
+section .container .row form .card.method .d-flex .cred label p {
+  margin-bottom: 0;
+  margin-top: 8%;
+  color: #727272;
+  font-size: 18px;
+  text-align: center;
+}
+section .container .row form .card.cart input {
+  width: 100%;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  padding: 8px 5px 8px 8px;
+  border: 1px solid #CECECE;
+  height: 52px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+}
+#divbtn {
+  margin-right: 5%;
+}
+section .container .row form .card.cart input.valor {
+  background-color: #DCDCDC;
+  font-weight: bold;
+}
+section .container .row form .card.cart .input.d-flex.justify-content-between input {
+  width: 48.5%;
+}
+section .container .row form .card.cart .input.d-flex.justify-content-between {
+  margin-top: 0px;
+  padding: 0;
+  width: 100%;
+}
+
+/* card seven */
+
+#seven .button input[type='submit'] {
+  color: #FFF;
+  background: #B5C0BE;
+  box-shadow: 0px 2px 10px rgb(0 0 0 / 16%);
+  border-radius: 6px;
+  border: 0;
+  font-weight: 600;
+  font-size: 18px;
+  width: 30%;
+  padding: 1%;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+}
+#seven {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0;
+  margin-top: 3%;
+}
+#seven .button.w-100 {
+  margin-top: 38%;
+}
+#seven .option.two {
+  flex-direction: column;
+}
+#seven .option.two .pix {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  padding-bottom: 4%;
+}
+#seven .option.two .button {
+  margin-top: 5%;
+}
+#seven .option.two .button a.btn-gradient {
+  font-size: 18px;
+  font-weight: 600;
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1%;
+}
+#seven .option.two .pix .pixInt .input .control {
+  position: relative;
+}
+#seven .option.two .pix .pixInt .input .control img {
+  position: absolute;
+  top: 2%;
+  right: 5%;
+}
+#seven .option.two .pix .pixInt {
+  margin: 0% 0% 2% 3%;
+  width: 50%;
+}
+#seven .option.two .pix .pixInt p.h4 {
+  margin-bottom: 19%;
+  font-size: 24px;
+  font-weight: 400;
+  color: #4B4B4B;
+}
+#seven .option.two .pix .pixInt p.h6 {
+  color: #636363;
+  font-weight: 300;
+  font-size: 18px;
+}
+#seven .option {
+  width: 100%;
+  flex-direction: row-reverse;
+}
+#seven .option #cred #divbtn {
+  padding: 0;
+}
+#seven .option .cartao.pic {
+  background: #F8F8F8;
+  box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.15);
+  border-radius: 14.5075px;
+  width: 55%;
+  height: 235px;
+  margin-top: 1%;
+  -webkit-border-radius: 14.5075px;
+  -moz-border-radius: 14.5075px;
+  -ms-border-radius: 14.5075px;
+  -o-border-radius: 14.5075px;
+}
+#numCard p.h3 {
+  width: 100%;
+  display: flex;
+}
+#seven .option .cartao.pic .cred {
+  height: 100%;
+}
+#seven .option .cartao.pic .cred #numCard p.h3 strong {
+  width: 25% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #2EA68D;
+}
+#seven .option .cartao.pic .cred #imgCard {
+  position: relative;
+  top: 15%;
+  left: 6%;
+}
+#seven .option .cartao.pic .cred #numCard {
+  position: relative;
+  top: 18%;
+  left: 2.5%;
+  width: 95%;
+  padding: 0;
+  margin-top: 0;
+}
+#seven .option .cartao.pic .cred #nameCard {
+  display: flex;
+  position: relative;
+  bottom: -18%;
+  width: 83%;
+  justify-content: space-between;
+  left: 8%;
+}
+#seven .option .cartao.pic .cred #nameCard p {
+  margin-bottom: 0;
+  color: #2EA68D;
+}
+#seven .option .pag .d-flex.justify-content-between .d-flex {
+  width: 48%;
+  box-shadow: 1px 1px 8px 3px #ddd;
+  padding: 2% 1%;
+  border-radius: 3.5%;
+}
+#seven .option .pag .d-flex.justify-content-between.margin .credito,
+#seven .option .pag .d-flex.justify-content-between.margin .debito,
+#seven .option .pag .d-flex.justify-content-between .pix,
+#seven .option .pag .d-flex.justify-content-between .boleto {
+  cursor: pointer;
+}
+#seven .option .pag .d-flex.justify-content-between .d-flex img {
+  margin-right: 5%;
+}
+#seven .option .pag .d-flex.justify-content-between.margin {
+  margin-bottom: 4%;
+}
+#seven .option .pag .d-flex.justify-content-between .d-flex p {
+  margin-bottom: 0;
+}
+#seven .option.three .boleto .bolDados {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  width: 100%;
+  padding-left: 1%;
+  padding-bottom: 5%;
+}
+#seven .option.three .boleto .bolDados .boletoImg {
+  margin-right: 4%;
+}
+#seven .option.three .boleto {
+  width: 100%;
+}
+#seven .option.three .boleto .bolDados .bolInt {
+  position: relative;
+  bottom: 4px;
+  width: 45%;
+}
+#seven .option.three .boleto .bolDados .bolInt .input {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+#seven .option.three .boleto .bolDados .bolInt .input p.h6 {
+  font-size: 16px;
+  color: #4B4B4B;
+}
+#seven .option.three .boleto .bolGer.two .control ul {
+  padding-left: 8%;
+}
+#seven .option.three .boleto .bolGer.two .control ul li {
+  margin: 4% 0%;
+}
+#seven .option.three .boleto .bolGer.two .openBol {
+  width: 45%;
+  padding-right: 2%;
+}
+#seven .option.three .boleto .bolGer.two .openBol .control.one {
+  background: #EFEFEF;
+  box-shadow: 0px 2px 6px -1px rgb(0 0 0 / 25%);
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5% 7%;
+  cursor: pointer;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+}
+#seven .option.three .boleto .bolGer.two .openBol .control.one p.h6 {
+  margin-bottom: 0;
+  font-weight: 300;
+  font-size: 14px;
+  color: #777777;
+}
+#seven .option.three .boleto .bolGer.two .openBol .control.two {
+  position: relative;
+  margin-top: 5%;
+}
+input[name="boleto"] {
+  background-color: #EFEFEF;
+  border: none;
+  height: 46px;
+  border-radius: 6px;
+  padding-left: 7%;
+  font-size: 14px;
+  width: 100%;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+}
+#boletoCopy {
+  position: absolute;
+  right: 5%;
+  top: 23%;
+  cursor: pointer;
+}
+#bolGer {
+  margin-bottom: 5%;
+  width: 100%;
+}
+#bolGer img {
+  margin-right: 4%;
+  padding-left: 1%;
+}
+
+/* card seven */
+
+#seven .option.two .pix .qrcode p.h4.mob {
+  display: none;
+}
+
+footer {
+  background: transparent !important;
+}
+
+@media only screen and (min-width:320px) and (max-width:768px) {
+  section .container .row form .card.method .d-flex .cred label p {
+    font-size: 16px;
+  }
+  #cardFix, header {
+    display: none;
+  }
+  #select {
+    width: 70% !important;
+  }
+  #number1, #debitNumber, #pixNumber, #bolNumber {
+    width: 80% !important;
+  }
+  section {
+    padding: 20px 0px 10px 0px !important;
+  }
+  #layout-wrapper section .container .row form {
+    max-width: 95%;
+  }
+  section .container .row form .line {
+    display: none;
+  }
+  section .container .row form .resumo {
+    display: flex !important;
+  }
+  section .container .row form .resumo .control .input {
+    width: 49%;
+  }
+  section .container .row form .resumo .control.one p {
+    font-size: 14px;
+    font-weight: 300;
+  }
+  section .container .row form .resumo .control .txt p {
+    font-size: 18px;
+  }
+  section .container {
+    width: 100% !important;
+    height: auto !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  #pagar-credito {
+    margin: -15px ​0px 0px;
+  }
+  section .container .row form #method .d-flex.justify-content-center.align-items-center.financial {
+    margin-top: 6%;
+    justify-content: center !important;
+  }
+  #amount .d-flex.justify-content-center.align-items-center {
+    margin-top: 4%;
+    justify-content: center !important;
+  }
+  #pix1 .d-flex.w-100 {
+    margin-top: 10px;
+    justify-content: center;
+  }
+  #conf.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #seven .option .cartao.pic {
+    padding: 5%;
+    margin-top: 7%;
+    box-shadow: 0px 0px 5px 0.5px #ddd;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+  }
+  .card.eight img {
+    margin-bottom: 7%;
+  }
+  #seven .option form #cred #debit .input input {
+    width: 49%;
+  }
+  #seven .option {
+    flex-direction: column;
+  }
+  #seven .option .cartao.pic {
+    width: 100%;
+    height: 190px;
+    margin-bottom: 9%;
+  }
+  #seven .option .cartao.pic .cred #imgCard {
+    left: 3%;
+  }
+  #seven .option .cartao.pic .cred #numCard {
+    top: 16%;
+  }
+  #seven .option .cartao.pic .cred #nameCard {
+    bottom: -7%;
+    width: 89%;
+    left: 5%;
+  }
+  #seven .button.w-100 {
+    display: flex;
+    justify-content: center;
+    margin-top: 4%;
+  }
+  #seven .option.two .pix {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  #seven .option.two .pix .pixInt {
+    margin: 0% 0% 5% 0%;
+    width: 95%;
+  }
+  #seven .option.two .pix .pixInt p.h4 {
+    display: none;
+  }
+  #seven .option.two .pix .qrcode p.h4.mob {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+  }
+  #seven .button input[type='submit'] {
+    width: 80%;
+  }
+  #seven .option.three .boleto .bolDados {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8%;
+  }
+  #seven .option.three .boleto .bolDados .boletoImg {
+    margin-right: 0;
+  }
+  #seven .option.three .boleto .bolDados .bolInt {
+    width: 95%;
+    margin-top: 15%;
+  }
+  #seven .option.three #divBoleto #bolGer {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  #bolGer img {
+    margin: 0% 0% 6% 0%;
+    padding-left: 0;
+  }
+  #seven .option.three .boleto .bolGer.two .control {
+    width: 80%;
+  }
+  #seven .option.three .boleto .bolGer.two .openBol {
+    width: 95%;
+  }
+  #seven .option.three .boleto .bolGer.two .openBol .control {
+    height: 46px;
+  }
+  #seven .option.three .boleto .bolGer.two .openBol .control.one,
+  #seven .option.three .boleto .bolGer.two .openBol .control.two {
+    width: 100%;
+  }
+  #seven .option.three .boleto .bolGer.two .openBol .control.one img,
+  #seven .option.three .boleto .bolGer.two .openBol .control.two img {
+    margin-bottom: 0;
+  }
+  #seven .option.three .boleto .bolGer.two .control ul {
+    padding-left: 13%;
+  }
+
+  /* seven card */
+  section .container .row form .card {
+    flex-direction: column;
+  }
+  section .container .row form .card .d-flex.justify-content-between {
+    width: 100%;
+  }
+  section .container .row form .title {
+    margin-top: 10%;
+  }
+  #divbtn {
+    margin-right: 0;
+    padding: 0;
+  }
+  section .container .row form .card.cart input {
+    padding: 8px 5px 8px 15px;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  section .container .row form .resumo .control .input {
+    bottom: 11px !important;
+  }
+  #seven .option .cartao.pic .cred #nameCard {
+    bottom: -15%;
+  }
+  #seven .option .cartao.pic {
+    height: 240px;
+  }
+}

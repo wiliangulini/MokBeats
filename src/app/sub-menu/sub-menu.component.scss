@@ -1,0 +1,19 @@
+section {
+  height: 6vh;
+  margin-top: 7.7vh;
+  background-color: #FFF;
+  border: 0;
+  border-radius: 0;
+  z-index: 1021;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,.07);
+}
+li {
+  list-style: none;
+  cursor: pointer;
+}
+a.nav-link.h5.mb-0 {
+  color: #000;
+}
+.talk {
+  border-bottom: 1px solid;
+}

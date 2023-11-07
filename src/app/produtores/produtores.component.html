@@ -118,9 +118,18 @@
         <mat-form-field class="d-flex justify-content-center align-items-center w-100 textarea mb-4">
           <mat-label class="h6 m-0 p-0">#Tambores, #Pratos, #Instrumental. Tags p/ otimizar a busca da track</mat-label>
           <textarea
+            class="h-100 w-100"
+            matInput
+            formControlName="textarea"
+            (change)="onCommentChange($event)">
+          </textarea>
+        </mat-form-field>
+        <mat-form-field class="d-flex justify-content-center align-items-center w-100 textarea mb-4">
+          <mat-label class="h6 m-0 p-0">Release</mat-label>
+          <textarea
               class="h-100 w-100"
               matInput
-              formControlName="textarea"
+              formControlName="textarea1"
               (change)="onCommentChange($event)">
           </textarea>
         </mat-form-field>

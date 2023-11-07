@@ -1,5 +1,5 @@
 footer {
-  margin: 10% 0 0;
+  margin: 4% 0 0;
 }
 footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul {
   list-style: none;
@@ -15,7 +15,6 @@ footer .container .row .col-sm-1.col-md-1.col-lg-1.col-xl-1 a {
 }
 footer .container .row svg {
   fill: #FFFFFF;
-  filter: drop-shadow(0px 1px 2px #FFF);
 }
 footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li a {
   height:45px !important;
@@ -45,7 +44,7 @@ footer .container .row .col-sm-3.col-md-3.col-lg-3.col-xl-3 ul li a,
 footer .container .row.creditCard .col-sm-3.col-md-3.col-lg-3.col-xl-3,
 footer .container .row.directs p {
   color: #FFFFFF;
-  text-shadow: 0 0 8px;
+  //text-shadow: 0 0 8px;
 }
 footer .container .row.creditCard .col-sm-3.col-md-3.col-lg-3.col-xl-3 {
   max-width: 23%;

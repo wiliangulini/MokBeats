@@ -1,1 +1,169 @@
-<p>formas-de-pagamento works!</p>
+<app-sub-menu></app-sub-menu>
+<section>
+  <div class="container">
+    <div class="row justify-content-between align-items-center">
+      <h1 class="font-weight-bold text-center m-0 p-0">Formas de Pagamento</h1>
+      <span class="material-icons">keyboard_arrow_down</span>
+    </div>
+    <hr>
+    <div class="row mt-3">
+      <form [formGroup]="form" class="w-75">
+        <div class="card method p-3 mb-4" id="method">
+          <div class="d-flex justify-content-between">
+            <div class="cred">
+              <label id="credito" class="radiocontainer minCard d-flex flex-column align-items-center justify-content-center">
+                <input type='radio' class="radio" formControlName='cred' id='3' />
+                <div class="control d-flex flex-column-reverse align-items-center justify-content-center">
+                  <p class="colCred">Cartão Crédito</p>
+                  <img id="imgCred" src="assets/images/financeiro/credit-card.webp" />
+                </div>
+              </label>
+            </div>
+            <div class="cred">
+              <label id="debito" class="radiocontainer minCard d-flex flex-column align-items-center justify-content-center">
+                <input type='radio' formControlName='cred' id='2' />
+                <div class="control d-flex flex-column-reverse align-items-center justify-content-center">
+                  <p class="colDeb">Cartão Débito</p>
+                  <img id="imgDeb" src="assets/images/financeiro/debito.webp" />
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <div class="cred">
+              <label id="pix" class="radiocontainer minCard d-flex flex-column align-items-center justify-content-center">
+                <input type='radio' class="radio" formControlName='cred' id='4' />
+                <div class="control d-flex flex-column-reverse align-items-center justify-content-center">
+                  <p class="colPix">Pix</p>
+                  <img id="imgPix" src="assets/images/financeiro/pix.webp" />
+                </div>
+              </label>
+            </div>
+            <div class="cred">
+              <label id="boleto" class="radiocontainer minCard d-flex flex-column align-items-center justify-content-center">
+                <input type='radio' class="radio" formControlName='cred' id='1' />
+                <div class="control d-flex flex-column-reverse align-items-center justify-content-center">
+                  <p class="colBol">Boleto Bancário</p>
+                  <img id="imgBol" src="assets/images/financeiro/boleto.webp" class="boleto" />
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="title prenc">
+          <p id="preencher_dados" class="h4">2. Preencha os dados</p>
+          <img src="assets/images/checkout/arrowUpGrey.webp" id="arrowUp" alt="seta pra baixo" />
+        </div>
+        <div id="seven" class="card seven">
+          <div class="option one">
+            <div class="cartao pic">
+              <div class="cred">
+                <div id="imgCard">
+                  <img src="assets/images/financeiro/visa.webp" alt="imagem da bandeira do cartao" />
+                </div>
+                <div id="numCard" class="d-flex justify-content-between">
+                  <p id="numeroCartao" class="h3">
+                    <strong id="n_one">XXXX</strong>
+                    <strong id="n_two">XXXX</strong>
+                    <strong id="n_three">XXXX</strong>
+                    <strong id="n_four">2431</strong>
+                  </p>
+                </div>
+                <div id="nameCard">
+                  <p class="nome"><strong>SEU NOME AQUI </strong></p>
+                  <p id="date">07/19</p>
+                </div>
+              </div>
+            </div>
+            <div class="cartao flex-column" id="cred">
+              <div id="divbtn" class="btn flex-column align-items-center">
+                <div class="card cart">
+                  <input required type="text" formControlName="nomecartao" id="nometitularCred" placeholder="Nome Títular do Cartão" />
+                  <input required type="tel" formControlName="numero_cartao" data-inputmask="'mask': '9999 9999 9999 9999'" id="numerocartao1" placeholder="Número do Cartão" />
+                  <input required type="text" formControlName="cpf" id="cpf" data-inputmask="'mask': '999.999.999-99'" placeholder="CPF Títular do Cartão" />
+                  <div class="input d-flex justify-content-between">
+                    <input required type="text" id="expiracaoCred" formControlName="expiracao" data-inputmask="'mask': '99/99'" placeholder="MM/AA ex: 08/28" />
+                    <input required type="number" maxlength="7" id="codigo" formControlName="codseguranca" placeholder="CVV" />
+                  </div>
+                  <br/>
+                </div>
+              </div>
+            </div>
+            <div class="cartao flex-column" id="cardDeb">
+              <div id="divbtn1" class="btn flex-column align-items-center">
+                <div class="card cart">
+                  <input required type="text" formControlName="nomecartao" id="nometitular1" placeholder="Nome Títular do Cartão" />
+                  <input required type="tel" formControlName="numero_cartao" data-inputmask="'mask': '9999 9999 9999 9999'" id="numerocartao2" placeholder="Número do Cartão" />
+                  <input required type="text" formControlName="cpf" id="cpf1" data-inputmask="'mask': '999.999.999-99'" placeholder="CPF Títular do Cartão" />
+                  <div class="input d-flex justify-content-between">
+                    <input required type="text" id="expiracaoDeb" formControlName="expiracao" data-inputmask="'mask': '99/99'" placeholder="MM/AA ex: 08/28" />
+                    <input required type="number" maxlength="7" id="codigo1" formControlName="codseguranca" placeholder="CVV" />
+                  </div>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="option two" id="cardPix">
+            <div class="pix">
+              <div class="qrcode">
+                <p class="h4 mob">Pix QRCode</p>
+                <img src="assets/images/checkout/qrcode.webp" />
+              </div>
+              <div class="pixInt">
+                <p class="h4">Pix QRCode</p>
+                <div class="input">
+                  <p class="h6">Chave pix:</p>
+                  <div class="control">
+                    <img src="assets/images/checkout/copy.webp" id="copyPix" alt="icon copy" />
+                    <input type="text" id="chavepix" formControlName="chavepix" placeholder="231412-21112412-12220000" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="option three">
+            <div class="boleto" id="divBoleto">
+              <div class="bolDados" id="bolDados">
+                <div class="boletoImg">
+                  <img src="assets/images/financeiro/boletoGrande.webp" alt="icon boleto" />
+                </div>
+                <div class="bolInt">
+                  <div class="input">
+                    <p class="h6">Para gerar o boleto prencha:</p>
+                    <input type="text" id="cpfBol" formControlName="cpf" placeholder="Digite seu CPF:" />
+                  </div>
+                </div>
+              </div>
+              <div class="bolGer two" id="bolGer">
+                <img src="assets/images/financeiro/boletoGrande.webp" alt="icon boleto" />
+                <div class="control">
+                  <p class="h4">Boleto gerado com sucesso!</p>
+                  <ul>
+                    <li>Boleto é validado em até 5 dias</li>
+                    <li>Sua conta será creditada após confirmar o pagamento</li>
+                  </ul>
+                </div>
+                <div class="openBol">
+                  <div class="control one">
+                    <p class="h6">Abrir boleto</p>
+                    <img src="assets/images/checkout/open.webp" alt="open icon" />
+                  </div>
+                  <div class="control two">
+                    <img src="assets/images/checkout/copy.webp" id="boletoCopy" alt="icon copy" />
+                    <input type="text" id="numBol" formControlName="boleto" placeholder="231412-21112412-12220000" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="button w-100" id='btnProx'>
+            <button class="btn-grey" type="submit" id="btn">Próximo</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>
