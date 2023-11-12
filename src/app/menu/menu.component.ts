@@ -47,5 +47,15 @@ export class MenuComponent implements OnInit {
     }
 
   }
-
+  
+  mouseOver(event: any) {
+    let li: any = document.querySelector('li.nav-item.active');
+    event.target.innerText == li.innerText ? li.classList.remove('remove') : li.classList.add('remove');
+  }
+  
+  mouseOut() {
+    let li: any = document.querySelector('li.nav-item.active');
+    li.classList.remove('remove');
+  }
+  
 }

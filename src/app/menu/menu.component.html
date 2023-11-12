@@ -17,19 +17,19 @@
             </a>
           </li>
           <li routerLinkActive="active" class="nav-item pt-0">
-            <a class="nav-link" [routerLink]="['/home']" (click)="closeNav()" href="">Home</a>
+            <a class="nav-link" [routerLink]="['/home']" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()" (click)="closeNav()" href="">Home</a>
           </li>
           <li routerLinkActive="active" class="nav-item">
-            <a class="nav-link" [routerLink]="['/musicas']" (click)="closeNav()" href="">Músicas</a>
+            <a class="nav-link" [routerLink]="['/musicas']" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()" (click)="closeNav()" href="">Músicas</a>
           </li>
           <li routerLinkActive="active" class="nav-item">
-            <a class="nav-link" [routerLink]="['/efeitos-sonoros']" (click)="closeNav()" href="">Efeitos Sonoros</a>
+            <a class="nav-link" [routerLink]="['/efeitos-sonoros']" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()" (click)="closeNav()" href="">Efeitos Sonoros</a>
           </li>
           <li routerLinkActive="active" class="nav-item">
-            <a class="nav-link" [routerLink]="['/produtores']" (click)="closeNav()" href="">Produtores</a>
+            <a class="nav-link" [routerLink]="['/produtores']" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()" (click)="closeNav()" href="">Produtores</a>
           </li>
           <li routerLinkActive="active" class="nav-item">
-            <a class="nav-link" (click)="closeNav()" href="">Blog</a>
+            <a class="nav-link" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()" (click)="closeNav()" href="">Blog</a>
           </li>
         </div>
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex justify-content-end align-items-end menuInt">

@@ -1,12 +1,4 @@
-import {
-  AfterViewChecked,
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ElementRef, HostListener,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ScrollService} from "../service/scroll.service";
 import {empty} from "rxjs";
@@ -19,46 +11,50 @@ import {MusicasService} from "../musicas/musicas.service";
   styleUrls: ['./produtores.component.scss']
 })
 export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChecked {
-
-  form: FormGroup;
-
+  
   @ViewChild('CWE') CWE: any;
-
-
-
+  
+  form: FormGroup;
   rules: string = '';
   producer: string = '';
   selectOption: string = '';
-  rulesVal: any;
+  
+  checkBoxProducer: boolean = false;
+  checked: boolean = false;
+  
   numero: number = 0;
+  rulesVal: any;
   card: any;
+  $$: any;
+  generoMusic: any[] = [];
   typeStems: any[] = [
     { value: 'Druns', viewValue: 'Druns' },
     { value:  'Melodia', viewValue:  'Melodia' },
     { value: 'Harmonia', viewValue: 'Harmonia' },
     { value: 'Efeitos/Vozes', viewValue: 'Efeitos/Vozes' },
   ]
-  $$: any
-  generoMusic: any[] = [];
   valueTrack: Array<any> = [
-    {value: 'trackNoStems', viewValue: 'Track sem Stems'},
-    {value: 'trackWithStems', viewValue: 'Track com Stems'},
+    { value: 'trackNoStems', viewValue: 'Track sem Stems' },
+    { value: 'trackWithStems', viewValue: 'Track com Stems' },
   ]
   oneOrAlbum: Array<any> = [
-    {value: '1 Track com 4 stems', viewValue: '1 Track com 4 stems'},
-    {value: '10 Tracks com 30 Stems', viewValue: '10 Tracks com 30 Stems'},
+    { value: '1 Track com 4 stems', viewValue: '1 Track com 4 stems' },
+    { value: '10 Tracks com 30 Stems', viewValue: '10 Tracks com 30 Stems' },
   ]
   rulesTrackStems: Array<any> = [
-    {value: '10Tracks', viewValue: 'Nesta opção você produtor poderá fazer upload de até dez tracks sem stems.'},
+    {
+      value: '10Tracks',
+      viewValue: 'Nesta opção você produtor poderá fazer upload de até dez tracks sem stems.' },
     {
       value: '1Track4Stems',
-      viewValue: 'Nesta opção você produtor poderá fazer upload de uma track completa com mais quatro stems, totalizando em cinco uploads.'
+      viewValue: 'Nesta opção você produtor poderá fazer upload de uma track completa com mais quatro stems, totalizando em cinco uploads. Stems precisam ter o mesmo duração da full track.'
     },
-    { value: '10Track30Stems', viewValue: 'Nesta opção você produtor poderá fazer upload de até dez tracks completas com mais trinta stems ( no caso quatro stems por track ), totalizando em quarenta uploads.' },
+    {
+      value: '10Track30Stems',
+      viewValue: 'Nesta opção você produtor poderá fazer upload de até dez tracks completas com mais trinta stems ( no caso quatro stems por track ), totalizando em quarenta uploads. Stems precisam ter o mesmo duração da full track.'
+    },
   ];
-  checkBoxProducer: boolean = false;
-  checked = false;
-
+  
   constructor(
     private snackBar: MatSnackBar,
     private scrollService: ScrollService,
@@ -87,32 +83,38 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       checkBoxProducer: [this.checkBoxProducer, Validators.required],
     });
   }
-
+  
   ngOnInit(): void {
     this.scrollService.scrollUp();
-    let matForm: any = document.querySelector('.mat-form-field-wrapper.ng-tns-c178-4');
-    let matFormInt: any = document.querySelector('.mat-form-field-infix.ng-tns-c178-4');
-    let matFormInt1: any = document.querySelector('.mat-form-field-flex.ng-tns-c178-4');
-    matForm!.style.width = '100%';
-    matForm!.style.height = '100%';
-    matFormInt!.style.width = '100%';
-    matFormInt!.style.height = '100%';
-    matFormInt1!.style.width = '100%';
-    matFormInt1!.style.height = '100%';
     this.$$ = document.querySelector.bind(document);
   }
-
+  
   ngAfterViewChecked(): void {
     this.cdRef.detectChanges();
   }
-
+  
   ngAfterViewInit(): void {
     this.generoMusic = this.musicService.convertida2;
     this.uploadFile();
+    let matForm: any = document.querySelectorAll('.mat-form-field-wrapper');
+    let matFormInt: any = document.querySelectorAll('.mat-form-field-infix');
+    let matFormInt1: any = document.querySelectorAll('.mat-form-field-flex');
+    matForm.forEach((e: any) => {
+      e!.style.width = '100%';
+      e!.style.height = '100%';
+    });
+    matFormInt.forEach((e: any) => {
+      e!.style.width = '100%';
+      e!.style.height = '100%';
+    });
+    matFormInt1.forEach((e: any) => {
+      e!.style.width = '100%';
+      e!.style.height = '100%';
+    });
   }
-
+  
   private removeTracks(): void {
-
+    
     let divPreview: any = this.$$('.uploaded');
     if (divPreview !== null) {
       if (divPreview.parentNode && divPreview.innerText.length > 0) {
@@ -122,7 +124,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       }
     }
   }
-
+  
   markCheckbox(e: any) {
     console.log(this.checkBoxProducer);
     if(e.target.checked == undefined) {
@@ -136,35 +138,38 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     console.log(this.checkBoxProducer);
     console.log(e.target.checked);
   }
-
+  
   changeTrack(elm: any): void {
-    (elm.value == 'trackWithStems' || elm == 'trackWithStems' || elm.value == 'trackNoStems' || elm == 'trackNoStems') ? this.CWE.nativeElement.style.display = 'inline-grid' : empty();
-
+    (elm.value == 'trackWithStems' || elm == 'trackWithStems' || this.producer == 'trackWithStems' || elm.value == 'trackNoStems' || elm == 'trackNoStems' || this.producer == 'trackNoStems') ? this.CWE.nativeElement.style.display = 'inline-grid' : empty();
+    
     this.cardAnimate();
-    this.rulesTrackStems.forEach((e: any, i: number): void => {
-      if (e.value === '10Tracks' && (elm.value == 'trackNoStems' || elm == 'trackNoStems')) {
+    this.rulesTrackStems.forEach((e: any): void => {
+      if (e.value === '10Tracks' && (elm.value == 'trackNoStems' || elm == 'trackNoStems' || this.producer == 'trackNoStems')) {
         this.rules = e.viewValue;
-        this.rulesVal = i;
+        this.rulesVal = 0;
         this.removeTracks();
-      } else if (e.value === '1Track4Stems' && (elm.value == 'trackWithStems' || elm == 'trackWithStems')) {
-        this.rules = e.viewValue;
-        this.rulesVal = i;
+      } else if ((elm.value == 'trackWithStems' || elm == 'trackWithStems' || this.producer == 'trackWithStems')) {
+        this.rulesVal = 1;
+        if(e.value === '1Track4Stems') {
+          this.rules = e.viewValue;
+        } else if(e.value === '10Track30Stems') {
+          this.rules = e.viewValue;
+        }
       }
     })
   }
-
+  
   onCommentChange(e: any) {
     console.log(e)
   }
-
+  
   cardRepeat() {
     return this.card!.style.width = '0vw';
   }
-
+  
   cardAnimate(): void {
     this.card = document.getElementById('card');
     if (this.producer == 'trackNoStems') {
-      console.log(this.card.getAttribute('style'));
       this.cardRepeat();
       setTimeout((): void => {
         this.card!.style.height = '62px';
@@ -172,35 +177,30 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
         this.card!.style.maxWidth = '65vw';
         this.card!.style.opacity = 1;
         this.card!.style.marginBottom = '2rem';
-        console.log(this.card.getAttribute('style'));
       }, 150);
     } else if (this.producer == 'trackWithStems') {
-      console.log(this.card.getAttribute('style'));
       this.cardRepeat();
       window.innerWidth < 2000 ? this.card!.style.width = '47.3vw' : this.card!.style.width = '23vw';
       this.card!.style.height = '150px';
       this.card!.style.maxWidth = '65vw';
       this.card!.style.opacity = 1;
       this.card!.style.marginBottom = '2rem';
-      setTimeout((): void => {
-
-        console.log(this.card.getAttribute('style'));
-      }, 150);
     }
-
+    
     if (this.producer == 'trackNoStems' || this.producer == 'trackWithStems') {
-
+      console.log('producer: ', this.producer);
+      console.log('selectOption: ', this.selectOption);
     }
   }
-
+  
   optionSelect(event: any): void {
     let spanRules: any = document.getElementById('rules1');
     this.rulesTrackStems.forEach((e: any): void => {
-      (e.value === '1Track4Stems' && event === '1 Track com 4 stems') ? (spanRules.innerText = e.viewValue) : this.removeTracks();
-      (e.value === '10Track30Stems' && event === '10 Tracks com 30 Stems') ? (spanRules.innerText = e.viewValue) : this.removeTracks();
+      (e.value === '1Track4Stems' && (event === '1 Track com 4 stems' || this.selectOption === '1 Track com 4 stems')) ? (spanRules.innerText = e.viewValue) : this.removeTracks();
+      (e.value === '10Track30Stems' && (event === '10 Tracks com 30 Stems' || this.selectOption === '10 Tracks com 30 Stems')) ? (spanRules.innerText = e.viewValue) : this.removeTracks();
     });
   }
-
+  
   private loop(event: any, num: number): void {
     this.numero = num;
     let showFile = this.$$('.showFile');
@@ -216,8 +216,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
             <span class='material-icons'>done</span>
           </div>
         </div>`;
-    console.log(arrayUpload);
-    console.log(num);
+    
     if(arrayUpload.length > num) {
       this.snackBar.open(`A OPÇÃO QUE VOCÊ SELECIONOU PERMITE UM NÚMERO MÁXIMO DE ${num} UPLOADS!`, '', {duration: 5000});
       this.uploadFile();
@@ -244,10 +243,10 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       }
     }
   }
-
+  
   uploadFile(): void {
     let fileChooser = this.$$('.input-file');
-
+    
     fileChooser.onchange = (e: any): void => {
       if (this.selectOption == '1 Track com 4 stems') {
         this.loop(e, 5);

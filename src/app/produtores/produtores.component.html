@@ -144,11 +144,9 @@
           <div id="controlFile" class="showFile w-100"></div>
         </div>
         <div class="terms mt-5 w-100 d-flex justify-content-center align-items-center">
-          <input type="checkbox" formControlName="politicaDePrivacidade" name="politicaDePrivacidade" class="mr-2 mb-0 p-0"/>
-          <p class="h6">Eu aceito os termos da <a [routerLink]="['/politica-de-privacidade']" class="color">Política de Privacidade</a></p>
-        </div>
-        <div class="mat-checkbox">
-          <mat-checkbox formControlName="matCheckbox">Teste Checkbox</mat-checkbox>
+          <mat-checkbox formControlName="politicaDePrivacidade" class="mr-2 mb-0 p-0">
+            <p class="h6">Eu aceito os termos da <a [routerLink]="['/politica-de-privacidade']" class="color">Política de Privacidade</a></p>
+          </mat-checkbox>
         </div>
         <div class="submitForm w-100 d-flex justify-content-center align-items-center">
           <button type="button" class="btnSubmit">ENVIAR</button>
