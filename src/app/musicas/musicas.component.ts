@@ -1,10 +1,8 @@
-import {AfterContentInit, AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Music, MusicasService} from "./musicas.service";
 import {ScrollService} from "../service/scroll.service";
 import {AuthService} from "../login/auth.service";
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {Router} from "@angular/router";
 
 type Musicaa = {
   id?: number;
@@ -25,6 +23,7 @@ export class MusicasComponent implements OnInit, AfterViewInit {
 
   public favorite: Musicaa = {};
   musicAdd: any;
+  musicProducerAdd: any;
   trecho: any[] = [15, 30, 60];
   loop: any[] = [1, 2, 3, 4, 5, 6, 7];
   duration: any;
@@ -151,7 +150,12 @@ export class MusicasComponent implements OnInit, AfterViewInit {
 
   addPlayList(i: number): void {
     this.musicAdd = this.arrMusica[i].nome_musica;
-    this.musicService.addPlayList(i, this.musicAdd);
+    this.musicProducerAdd = this.arrMusica[i].nome_produtor;
+    let music: any[] = [];
+    music.push(this.musicAdd);
+    music.push(this.musicProducerAdd);
+    console.log(music)
+    this.musicService.addPlayList(i, music);
   }
 
   copiarLink(i: number): void { this.musicService.copiarLink(i); }

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MusicasService } from "../musicas/musicas.service";
+import {Component, OnInit} from '@angular/core';
+import {MusicasService} from "../musicas/musicas.service";
 
 @Component({
   selector: 'app-filter',
@@ -7,7 +7,7 @@ import { MusicasService } from "../musicas/musicas.service";
   styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent implements OnInit {
-
+  
   generos: Array<any> = [
     "Blues",
     "Clássica",
@@ -124,19 +124,20 @@ export class FilterComponent implements OnInit {
     "Hip Hop",
   ];
   humor: any[];
-
+  
   constructor(
     private musicService: MusicasService,
   ) {
     this.humor = this.musicService.humor;
   }
-
+  
   ngOnInit(): void {
   }
-
+  
   filtrar() {
     let navleft = document.getElementById('navLeft');
     let cf = document.getElementById('cf');
+    
     if(navleft!.getAttribute('style') == 'width: 13vw;' || navleft!.getAttribute('style') == 'width: 13vw; opacity: 1;') {
       navleft!.style.width = '0vw';
       navleft!.style.opacity = '0';
@@ -146,5 +147,6 @@ export class FilterComponent implements OnInit {
       navleft!.style.opacity = '1';
       cf!.style.width = '86vw';
     }
+    
   }
 }

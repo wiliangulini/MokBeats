@@ -23,7 +23,7 @@ section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4.p-0 {
   color: #FFF !important;
 }
 section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-sm-6.col-md-6.col-lg-6.col-xl-6 .btn.h-100:hover {
-  color: #dcad54;
+  color: #007bff;
 }
 section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-sm-6.col-md-6.col-lg-6.col-xl-6 .btn.h-100:hover:before{
   right: 5%;
@@ -32,7 +32,7 @@ section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-
   top: auto;
   bottom: 0;
   height: 5px;
-  background-color: #dcad54;
+  background-color: #007bff;
   content: "";
 }
 section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-flex.justify-content-end.align-items-center button.btn:hover:before {
@@ -42,11 +42,11 @@ section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-fle
   top: auto;
   bottom: 0;
   height: 5px;
-  background-color: #dcad54;
+  background-color: #007bff;
   content: "";
 }
 section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-sm-6.col-md-6.col-lg-6.col-xl-6 .btn.h-100:hover svg {
-  fill: #dcad54;
+  fill: #007bff;
 }
 section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-flex.justify-content-end.align-items-center .controlTwo,
 section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-flex.justify-content-end.align-items-center button.btn,
@@ -113,7 +113,7 @@ section.filter .container-fluid form .inputFilter span {
   padding-left: 2%;
 }
 section.filter .container-fluid button {
-  color: #dcad54;
+  color: #007bff;
   border: 0;
   background-color: #1b1b1b;
   height: 100%;
@@ -123,7 +123,7 @@ section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.p-0.d-flex.
   padding-right: 9% !important;
 }
 section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-flex.justify-content-end.align-items-center button:hover svg {
-  fill: #dcad54;
+  fill: #007bff;
 }
 .card,
 #humorAccordion,
@@ -140,7 +140,7 @@ section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-fle
 }
 #humorAccordion .container-fluid .row button.btn.btn-warning,
 #generoAccordion .container-fluid .row button.btn.btn-warning {
-  background: #dcad54;
+  background: #007bff;
   font-weight: bold;
   display: flex;
   justify-content: center;
@@ -158,7 +158,7 @@ button.btn.btn-warning a {
   border: 0;
 }
 .card .card-body a.h5:hover {
-  color: #dcad54;
+  color: #007bff;
 }
 .card .card-body a.h5 {
   transition: all .5s ease-in-out;

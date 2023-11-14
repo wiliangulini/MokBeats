@@ -1,20 +1,20 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {AfterContentInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {MusicasService} from "../musicas/musicas.service";
 import {FavoritosService} from "../favoritos/favoritos.service";
 import {AuthService} from "../login/auth.service";
 import {ScrollService} from "../service/scroll.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-playlists',
   templateUrl: './playlists.component.html',
   styleUrls: ['./playlists.component.scss']
 })
-export class PlaylistsComponent implements OnInit {
+export class PlaylistsComponent implements OnInit, AfterContentInit {
 
-  trecho: any[] = [15, 30, 60];
-  loop: any[] = [1, 2, 3, 4, 5, 6, 7];
-  arrMusic: any = [];
+  arrMusic: any[] = [];
+  insert: boolean = false;
   numF: number = 0;
   musicAdd: any;
   duration: any;
@@ -26,7 +26,6 @@ export class PlaylistsComponent implements OnInit {
   musicas: any = {};
   number!: number;
   formG!: FormGroup;
-  frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
   select: string = 'Adicionada em';
   cantada: Array<any> = [
     "Amostras/Efeitos",
@@ -34,7 +33,7 @@ export class PlaylistsComponent implements OnInit {
     "Coro/Grupo",
     "Oohs e Aahs",
     "Todos os Cantores",
-  ]
+  ];
   arrFilter: Array<any> = [
     "Adicionada em",
     "Popularidade",
@@ -46,29 +45,7 @@ export class PlaylistsComponent implements OnInit {
     "BPM (mais altos primeiro)",
     "Duração (mais curtas primeiro)",
     "Duração (mais longas primeiro)",
-  ]
-  arrVExtendida: Array<any> = [
-    {value: "Baixo por sintetizador", viewValue: "Baixo por sintetizador"},
-    {value: "Chill", viewValue: "Chill"},
-    {value: "Dance", viewValue: "Dance"},
-    {value: "Dance Pop", viewValue: "Dance Pop"},
-    {value: "Dance/Tecno", viewValue: "Dance/Tecno"},
-    {value: "Electro pop", viewValue: "Electro pop"},
-    {value: "Exciting", viewValue: "Exciting"},
-    {value: "Futurista", viewValue: "Futurista"},
-    {value: "Futuristic", viewValue: "Futuristic"},
-    {value: "Groovy", viewValue: "Groovy"},
-    {value: "Guitarra", viewValue: "Guitarra"},
-    {value: "Hip", viewValue: "Hip"},
-    {value: "Mesmerizing", viewValue: "Mesmerizing"},
-    {value: "Moda/Estilo de vida", viewValue: "Moda/Estilo de vida"},
-    {value: "Pulsing", viewValue: "Pulsing"},
-    {value: "Sentimento bom", viewValue: "Sentimento bom"},
-    {value: "Sintetizador", viewValue: "Sintetizador"},
-    {value: "Smooth", viewValue: "Smooth"},
-    {value: "Technology", viewValue: "Technology"},
-    {value: "Trippy", viewValue: "Trippy"},
-  ]
+  ];
 
   @Output('ngModelChange') update: any = new EventEmitter();
 
@@ -79,7 +56,6 @@ export class PlaylistsComponent implements OnInit {
     private scrollService: ScrollService,
     private fb: FormBuilder,
   ) {
-    // this.arrMusic = this.musicService.arrMusica;
     this.formG = this.fb.group({
       checkbox: [],
       bpm: [],
@@ -97,6 +73,18 @@ export class PlaylistsComponent implements OnInit {
       document.getElementById('navLeft')!.style.width = '0';
     }
     this.arrMusic = this.likeService.addFavorite();
+    console.log(this.arrMusic)
+  }
+  
+  ngAfterContentInit() {
+    
+    setTimeout(() => {
+      let form = document.getElementById('form');
+      document.getElementById('btnOutS')!.style.display = 'none';
+      document.getElementById('cf')!.style.justifyContent = 'flex-end';
+      form!.style.marginRight = '1%';
+      form!.style.maxWidth = '33.3%';
+    }, 25);
   }
 
   curtir(i: number): void {
@@ -117,8 +105,12 @@ export class PlaylistsComponent implements OnInit {
   }
 
   addPlayList(i: number): void {
+    console.log(i)
+    console.log(this.arrMusic)
     this.musicAdd = this.arrMusic[i].viewValue;
+    console.log(this.musicAdd)
     this.musicService.addPlayList(i, this.musicAdd);
+    
   }
 
   copiarLink(i: number): void {

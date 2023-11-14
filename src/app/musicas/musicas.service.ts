@@ -487,3 +487,5 @@ export class MusicasService {
     console.log(i);
   }
 }
+
+//json-server --watch db.json (startar o json server

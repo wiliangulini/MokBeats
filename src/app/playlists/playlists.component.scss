@@ -1,3 +1,18 @@
+.btn.btnPlaylist {
+  width: 25%;
+  font-size: 20px;
+  font-weight: bold;
+  border: 1px solid #FFF;
+  border-radius: 30px;
+}
+.row.noplaylist .col-sm-9.col-md-9.col-lg-9.col-xl-9 p.h2,
+.btn.btnPlaylist {
+  color: #FFF;
+}
+.row.noplaylist .col-sm-9.col-md-9.col-lg-9.col-xl-9 p.h5 {
+  width: 50%;
+  color: #FFFDDD;
+}
 #article {
   height: auto;
 }
@@ -6,75 +21,9 @@
 }
 article.one {
   background-color: #101010;
-  height: 84vh;
-}
-.amarelo {
-  fill: #dcad54;
-}
-.nav-item.p-0.close,
-button.btn.btn-icons.mobile {
-  display: none;
-}
-#navLeft ul li span.text-uppercase {
-  color: #dcad54;
-  font-weight: bold;
-  font-size: 13.5px !important;
-}
-#navLeft ul li span.ml-3.material-icons.position-absolute {
-  position: absolute;
-  right: 0;
-}
-#navLeft ul li span {
-  font-size: 18px !important;
-}
-#navLeft ul li {
-  border-bottom: 1px solid rgba(255,255,255,.1);
-  height: 70px;
-  transition: all .1ms linear !important;
-}
-#navLeft ul li {
-  color: #FFF !important;
-}
-#navLeft {
-  position: absolute;
-  background: #1b1b1b;
-  height: 100%;
-  transition: all .5s ease-in-out;
-  overflow-y: scroll;
-}
-#navLeft::-webkit-scrollbar {
-  width: 8px;               /* width of the entire scrollbar */
-}
-#navLeft::-webkit-scrollbar-track {
-  background: #ddd;        /* color of the tracking area */
-}
-#navLeft::-webkit-scrollbar-thumb {
-  background-color: #000;    /* color of the scroll thumb */
-  border-radius: 20px;       /* roundness of the scroll thumb */
-  border: .5px solid #ddd;  /* creates padding around scroll thumb */
-}
-#navLeft ul {
-  list-style: none;
-  padding: 20px;
-  margin-bottom: 0;
-  width: inherit;
-}
-.svg {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 45px;
-  height: 45px;
-  border: 1px solid #FFF;
-  border-radius: 50%;
-  cursor: pointer;
 }
 button, a {
   transition: all .25s ease-in-out;
-}
-article.one .container-fluid {
-  width: calc(100vw - 14vw);
-  transition: all .5s ease-in-out;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu.show {
   display: flex !important;
@@ -123,7 +72,6 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
   max-width: 33.3%;
   flex: 0 0 33.3%;
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-between,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-around {
   max-width: 16%;
   flex: 0 0 16%;
@@ -349,11 +297,6 @@ button.btn.btn-icons {
   background: transparent;
   border: 0;
   padding: 0;
-}
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2 {
-  padding: 0 3.4%;
-  position: relative;
-  left: 3%;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 button.btn.btn-primary .xdBUc {
   position: relative;
