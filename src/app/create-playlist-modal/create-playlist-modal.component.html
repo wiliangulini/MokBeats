@@ -14,7 +14,7 @@
           <form [formGroup]="form" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-center align-items-center flex-column pt-2 pb-2">
             <input type="text" formControlName="playlist_name" placeholder="Nome da Playlist" [(ngModel)]="playlist.name" required />
             <input type="text" formControlName="playlist_description" placeholder="Descrição (Opcional)" [(ngModel)]="playlist.description" />
-            <a type="submit" (click)="createPlaylist()" class="font-weight-bold p-1 w-50 submit d-flex justify-content-center align-items-center">Criar Playlist</a>
+            <a type="submit" (click)="save()" class="font-weight-bold p-1 w-50 submit d-flex justify-content-center align-items-center">Criar Playlist</a>
           </form>
         </div>
       </div>

@@ -21,14 +21,14 @@ export interface Music {
   providedIn: 'root'
 })
 export class MusicasService {
-
+  
   hearth: any;
   hearth1: any;
   addMusicPlaylist: any;
   downloadMusic: any[] = [];
   convertida: Array<any> = [];
   convertida2: Array<any> = [];
-
+  
   public genero: any = [
     {
       "Blues": [
@@ -395,9 +395,9 @@ export class MusicasService {
     "Wedding",
   ];
   public arrMusica!: Music[];
- 
+  
   private readonly API_MUSIC = `${environment.API}arrMusica`
-
+  
   constructor(
     private authService: AuthService,
     private modalService: NgbModal,
@@ -416,14 +416,14 @@ export class MusicasService {
   public listMusic() {
     return this.http.get<Music>(`${this.API_MUSIC}`).pipe();
   }
-
+  
   public curtir(i: number) {
     this.authService.verificaLogin();
-
+    
     if(this.authService.userAutetic()) {
       this.hearth = document.querySelectorAll('.hearth');
       this.hearth1 = document.querySelectorAll('.hearth1');
-
+      
       if(this.hearth[i].style.display == 'block') {
         this.hearth[i].style.display = 'none';
         this.hearth1[i].style.display = 'block';
@@ -433,12 +433,12 @@ export class MusicasService {
       }
     }
   }
-
+  
   sendFavorite(i: number, favorite: any) {
     this.curtir(i);
     this.likeService.sendFavorite(favorite);
   }
-
+  
   public addPlayList(music: Music) {
     this.authService.verificaLogin();
     if(this.authService.userAutetic()) {
@@ -446,7 +446,6 @@ export class MusicasService {
         this.arrMusica = data;
         this.addMusicPlaylist = music;
         document.querySelectorAll('.addPlaylist').forEach((e: any, index: any) => {
-          console.log(this.arrMusica[index]);
           if (this.arrMusica[index].id == this.addMusicPlaylist.id && e.classList.contains('amarelo')) {
             e.classList.remove('amarelo');
           } else if (this.arrMusica[index].id == this.addMusicPlaylist.id) {
@@ -455,20 +454,19 @@ export class MusicasService {
           }
         });
       })
-      
     }
   }
-
+  
   public copiarLink(i: number) {
     console.log(i);
   }
-
+  
   public baixarAmostra(i: number, md: any) {
     console.log(md);
     this.downloadMusic = md;
     this.modalService.open(DownloadAmostraComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
   }
-
+  
   public comprarLicensa(i: number) {
     this.authService.verificaLogin();
     console.log(i);

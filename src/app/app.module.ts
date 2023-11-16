@@ -46,10 +46,10 @@ import {PedidosComponent} from './pedidos/pedidos.component';
 import {FormasDePagamentoComponent} from './formas-de-pagamento/formas-de-pagamento.component';
 import {AtualizarInformacoesComponent} from './atualizar-informacoes/atualizar-informacoes.component';
 import {FavoritosService} from "./favoritos/favoritos.service";
-import { SubMenuComponent } from './sub-menu/sub-menu.component';
-import { FinalizarCompraComponent } from './finalizar-compra/finalizar-compra.component';
-import { ContatoComponent } from './contato/contato.component';
-import { CreatePlaylistModalComponent } from './create-playlist-modal/create-playlist-modal.component';
+import {SubMenuComponent} from './sub-menu/sub-menu.component';
+import {FinalizarCompraComponent} from './finalizar-compra/finalizar-compra.component';
+import {ContatoComponent} from './contato/contato.component';
+import {CreatePlaylistModalComponent} from './create-playlist-modal/create-playlist-modal.component';
 
 
 @NgModule({

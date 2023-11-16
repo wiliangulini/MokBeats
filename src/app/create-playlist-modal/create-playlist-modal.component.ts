@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Music} from "../musicas/musicas.service";
+import {empty} from "rxjs";
 
 @Component({
   selector: 'app-create-playlist-modal',
@@ -33,18 +34,22 @@ export class CreatePlaylistModalComponent implements OnInit {
   
   public dataNewPlaylist(event: Music) {
     this.musicAddPlaylist = event;
+    return this.musicAddPlaylist;
   }
   
-  namePlaylist: any;
-  descriptionPlaylist: any;
+  private createPlaylist() {
+    (this.form.valid && this.playlist.name.length >= 3) ? this.playlist.musica = this.musicAddPlaylist : empty();
+  }
   
-  public createPlaylist() {
-    console.log(this.playlist);
-    console.log(this.musicAddPlaylist);
-    if (this.form.valid && this.playlist.name.length >= 3) {
-      return this.playlist
+  save() {
+    if (this.form.valid) {
+      this.createPlaylist();
+      console.log(this.playlist);
+      this.activeModal.close(this.playlist);
+    } else {
+      console.log('error');
+      alert('Erro ao criar Playlist');
     }
-    this.closeModal();
   }
   
 }
