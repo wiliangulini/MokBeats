@@ -3,5 +3,20 @@ Accept: application/json
 
 ###
 
+GET http://localhost:3000/arrMusica/4
+
+###
+
 POST http://localhost:3000/arrMusica HTTP/1.1
-content-type: application/json
+Content-Type: application/json
+
+###
+
+PUT http://localhost:3000/arrMusica/4
+Content-Type: application/json
+
+{ "nome_musica": "The FunksterEdit" }
+
+###
+
+DELETE http://localhost:3000/arrMusica/4

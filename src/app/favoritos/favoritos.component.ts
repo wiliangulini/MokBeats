@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {MusicasService} from "../musicas/musicas.service";
+import {Music, MusicasService} from "../musicas/musicas.service";
 import {AuthService} from "../login/auth.service";
 import {ScrollService} from "../service/scroll.service";
 import {ActivatedRoute} from "@angular/router";
@@ -118,9 +118,9 @@ export class FavoritosComponent implements OnInit {
     }
   }
 
-  addPlayList(i: number): void {
-    this.musicAdd = this.arrMusic[i].viewValue;
-    this.musicService.addPlayList(i, this.musicAdd);
+  addPlayList(music: Music): void {
+    // this.musicAdd = this.arrMusic[i].viewValue;
+    this.musicService.addPlayList(music);
   }
 
   copiarLink(i: number): void {

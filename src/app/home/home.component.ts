@@ -2,7 +2,7 @@
 import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { AuthService } from "../login/auth.service";
-import { MusicasService } from "../musicas/musicas.service";
+import {Music, MusicasService} from "../musicas/musicas.service";
 import {Router} from "@angular/router";
 import {ScrollService} from "../service/scroll.service";
 
@@ -82,9 +82,8 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     return this.musicService.curtir(i);
   }
 
-  addPlayList(i: number) {
-    this.musicAdd = this.dados[i].viewValue;
-    return this.musicService.addPlayList(i, this.musicAdd);
+  addPlayList(music: Music) {
+    return this.musicService.addPlayList(music);
   }
 
   copiarLink(i: number) {

@@ -3,6 +3,8 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {Music, MusicasService} from "./musicas.service";
 import {ScrollService} from "../service/scroll.service";
 import {AuthService} from "../login/auth.service";
+import {HttpClient} from "@angular/common/http";
+import {environment} from "../../environments/environment";
 
 type Musicaa = {
   id?: number;
@@ -87,6 +89,7 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private scrollService: ScrollService,
     private fb: FormBuilder,
+    private http: HttpClient,
   ) {
     this.formG = this.fb.group({
       checkbox: [],
@@ -104,13 +107,16 @@ export class MusicasComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.scrollService.scrollUp();
-    this.arrMusica = this.musicService.arrMusica;
     if (screen.width < 769) {
       document.getElementById('navLeft')!.style.width = '0';
     }
   }
-
+  
   ngAfterViewInit() {
+    this.musicService.listMusic().subscribe((data: any) => {
+      console.log(data);
+      this.arrMusica = data;
+    })
     document.querySelectorAll('.mat-checkbox-frame')?.forEach((e: any) => {
       e.style.borderColor = "#FFF";
     })
@@ -148,14 +154,14 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     }
   }
 
-  addPlayList(i: number): void {
-    this.musicAdd = this.arrMusica[i].nome_musica;
-    this.musicProducerAdd = this.arrMusica[i].nome_produtor;
-    let music: any[] = [];
-    music.push(this.musicAdd);
-    music.push(this.musicProducerAdd);
+  addPlayList(music: Music): void {
+    // this.musicAdd = this.arrMusica[i].nome_musica;
+    // this.musicProducerAdd = this.arrMusica[i].nome_produtor;
+    
+    // music.push(this.musicAdd);
+    // music.push(this.musicProducerAdd);
     console.log(music)
-    this.musicService.addPlayList(i, music);
+    this.musicService.addPlayList(music);
   }
 
   copiarLink(i: number): void { this.musicService.copiarLink(i); }

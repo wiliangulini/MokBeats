@@ -1,6 +1,6 @@
 import {AfterContentInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {MusicasService} from "../musicas/musicas.service";
+import {Music, MusicasService} from "../musicas/musicas.service";
 import {FavoritosService} from "../favoritos/favoritos.service";
 import {AuthService} from "../login/auth.service";
 import {ScrollService} from "../service/scroll.service";
@@ -16,9 +16,7 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
   arrMusic: any[] = [];
   insert: boolean = false;
   numF: number = 0;
-  musicAdd: any;
   duration: any;
-  durationAut: any;
   musicDownload: any[] = [];
   titles: any[];
   music: any[];
@@ -80,10 +78,14 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
     
     setTimeout(() => {
       let form = document.getElementById('form');
+      let div1 = document.getElementById('div1');
       document.getElementById('btnOutS')!.style.display = 'none';
       document.getElementById('cf')!.style.justifyContent = 'flex-end';
       form!.style.marginRight = '1%';
+      form!.style.paddingLeft = '0.5%';
       form!.style.maxWidth = '33.3%';
+      div1!.style.flex = '0 0 40%';
+      div1!.style.maxWidth = '40%';
     }, 25);
   }
 
@@ -104,12 +106,9 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
     }
   }
 
-  addPlayList(i: number): void {
-    console.log(i)
-    console.log(this.arrMusic)
-    this.musicAdd = this.arrMusic[i].viewValue;
-    console.log(this.musicAdd)
-    this.musicService.addPlayList(i, this.musicAdd);
+  addPlayList(music: Music): void {
+    console.log(music)
+    this.musicService.addPlayList(music);
     
   }
 
@@ -131,16 +130,5 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
 
   filtroP(e: any): void { this.select = e; }
 
-  onChangedEvent(event: any, elem: any): void {
-
-    elem == 'bpm' ? this.number = event : this.duration = event;
-    if(elem == 'duracao') {
-      let dateObj: any = new Date(this.duration * 1000);
-      let minutes: any = dateObj.getUTCMinutes();
-      let seconds: any = dateObj.getSeconds();
-      let timeString: any = minutes.toString().padStart(1) + ':' + seconds.toString().padStart(2, '0');
-      this.durationAut = timeString;
-    }
-  }
 
 }

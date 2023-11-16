@@ -49,6 +49,7 @@ import {FavoritosService} from "./favoritos/favoritos.service";
 import { SubMenuComponent } from './sub-menu/sub-menu.component';
 import { FinalizarCompraComponent } from './finalizar-compra/finalizar-compra.component';
 import { ContatoComponent } from './contato/contato.component';
+import { CreatePlaylistModalComponent } from './create-playlist-modal/create-playlist-modal.component';
 
 
 @NgModule({
@@ -80,6 +81,7 @@ import { ContatoComponent } from './contato/contato.component';
     SubMenuComponent,
     FinalizarCompraComponent,
     ContatoComponent,
+    CreatePlaylistModalComponent,
   ],
   imports: [
     BrowserModule,

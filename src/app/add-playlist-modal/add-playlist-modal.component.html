@@ -9,10 +9,10 @@
       <div class="card border-0">
         <div class="row justify-content-between align-items-center">
           <h1 class="font-weight-bold">Adicionar à playlist</h1>
-          {{addMusicPlaylist}}
+          {{addMusicPlaylist.nome_musica}}
         </div>
         <div class="row flex-column newPlayList">
-          <a href="" class="h6 font-weight-bold text-uppercase d-flex justify-content-start align-items-center mb-3"><span class="material-icons">add</span> Nova Playlist</a>
+          <a (click)="openModal()" class="h6 font-weight-bold text-uppercase d-flex justify-content-start align-items-center mb-3"><span class="material-icons">add</span> Nova Playlist</a>
           <button class="btn d-flex justify-content-between align-items-center w-100">
             <p class="h6 mb-0">teste <span>(1)</span></p>
             <span class="material-icons">done</span>
