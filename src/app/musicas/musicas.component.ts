@@ -114,7 +114,6 @@ export class MusicasComponent implements OnInit, AfterViewInit {
   
   ngAfterViewInit() {
     this.musicService.listMusic().subscribe((data: any) => {
-      console.log(data);
       this.arrMusica = data;
     })
     document.querySelectorAll('.mat-checkbox-frame')?.forEach((e: any) => {
@@ -155,12 +154,6 @@ export class MusicasComponent implements OnInit, AfterViewInit {
   }
 
   addPlayList(music: Music): void {
-    // this.musicAdd = this.arrMusica[i].nome_musica;
-    // this.musicProducerAdd = this.arrMusica[i].nome_produtor;
-    
-    // music.push(this.musicAdd);
-    // music.push(this.musicProducerAdd);
-    console.log(music)
     this.musicService.addPlayList(music);
   }
 

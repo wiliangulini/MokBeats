@@ -7,9 +7,9 @@ export class CrudService<T> {
 	
 	public list() {
 		return this.http.get<T[]>(this.API_URL).pipe(
-			delay(2000),
+			delay(250),
 			tap(console.log)
-		)
+		);
 	}
 	
 	public loadByID(id: number) {

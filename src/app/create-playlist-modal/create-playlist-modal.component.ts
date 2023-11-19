@@ -3,6 +3,15 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Music} from "../musicas/musicas.service";
 import {empty} from "rxjs";
+import {PlaylistService} from "./playlist.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+
+export interface playlists {
+  id?: number;
+  name?: string;
+  description?: string;
+  music?: any;
+}
 
 @Component({
   selector: 'app-create-playlist-modal',
@@ -11,17 +20,19 @@ import {empty} from "rxjs";
 })
 export class CreatePlaylistModalComponent implements OnInit {
   
-  musicAddPlaylist!: Music;
-  playlist: any = {};
+  musicAddPlaylist!: Music[];
+  playlist: playlists = {};
   form: FormGroup;
   
   constructor(
     private activeModal: NgbActiveModal,
     private fb: FormBuilder,
+    private createPlaylistService: PlaylistService,
+    private snackBar: MatSnackBar,
   ) {
     this.form = this.fb.group({
-      playlist_name: [null, Validators.required],
-      playlist_description: [null],
+      name: [null, Validators.required],
+      description: [null],
     })
   }
   
@@ -32,19 +43,26 @@ export class CreatePlaylistModalComponent implements OnInit {
     return this.activeModal.close();
   }
   
-  public dataNewPlaylist(event: Music) {
+  public dataNewPlaylist(event: Music[]) {
     this.musicAddPlaylist = event;
     return this.musicAddPlaylist;
   }
   
   private createPlaylist() {
-    (this.form.valid && this.playlist.name.length >= 3) ? this.playlist.musica = this.musicAddPlaylist : empty();
+    (this.form.valid && this.form.get('name')?.value.length >= 3) ? this.playlist.music = this.musicAddPlaylist : empty();
   }
   
   save() {
     if (this.form.valid) {
       this.createPlaylist();
-      console.log(this.playlist);
+      this.createPlaylistService.save(this.playlist).subscribe((data: any) => {
+        if (data.id !== undefined) {
+          console.log(data);
+          this.snackBar.open('Playlist criada com SUCESSO!!!', '', {duration: 5000});
+        } else {
+          this.snackBar.open('ERRO ao criar Playlist!!!', '', {duration: 5000});
+        }
+      })
       this.activeModal.close(this.playlist);
     } else {
       console.log('error');

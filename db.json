@@ -218,6 +218,147 @@
     }
   ],
   "playlists": [
-
+    {
+      "name": "teste",
+      "description": "desc",
+      "music": [
+        {
+          "id": 1,
+          "nome_musica": "HighFrenetic",
+          "nome_produtor": "Xalaika",
+          "duracao": 180000,
+          "bpm": 95,
+          "trechos": 60,
+          "loops": 7
+        },
+        {
+          "id": 2,
+          "nome_musica": "Maleficus Chaos",
+          "nome_produtor": "Luan Bolico",
+          "duracao": 180000,
+          "bpm": 95,
+          "trechos": 60,
+          "loops": 7
+        }
+      ],
+      "id": 1
+    },
+    {
+      "name": "New Playlist",
+      "description": "description playlist",
+      "music": [
+        {
+          "id": 1,
+          "nome_musica": "HighFrenetic",
+          "nome_produtor": "Xalaika",
+          "duracao": 180000,
+          "bpm": 95,
+          "trechos": 60,
+          "loops": 7
+        }
+      ],
+      "id": 2
+    },
+    {
+      "name": "HighBPM",
+      "description": "acelero",
+      "music": [
+        {
+          "id": 2,
+          "nome_musica": "Maleficus Chaos",
+          "nome_produtor": "Luan Bolico",
+          "duracao": 180000,
+          "bpm": 95,
+          "trechos": 60,
+          "loops": 7
+        }
+      ],
+      "id": 3
+    },
+    {
+      "name": "novaP",
+      "description": "descricao",
+      "music": [
+        {
+          "id": 1,
+          "nome_musica": "HighFrenetic",
+          "nome_produtor": "Xalaika",
+          "duracao": 180000,
+          "bpm": 95,
+          "trechos": 60,
+          "loops": 7
+        }
+      ],
+      "id": 4
+    },
+    {
+      "name": "hagy",
+      "description": "impertinent",
+      "music": [
+        {
+          "id": 3,
+          "nome_musica": "Impertinent",
+          "nome_produtor": "Hagy Fantasy",
+          "duracao": 180000,
+          "bpm": 95,
+          "trechos": 60,
+          "loops": 7
+        }
+      ],
+      "id": 5
+    },
+    {
+      "name": "test1",
+      "description": "desc1",
+      "music": {
+        "id": 2,
+        "nome_musica": "Maleficus Chaos",
+        "nome_produtor": "Luan Bolico",
+        "duracao": 180000,
+        "bpm": 95,
+        "trechos": 60,
+        "loops": 7
+      },
+      "id": 6
+    },
+    {
+      "name": "test2",
+      "description": "desc2",
+      "music": {
+        "id": 1,
+        "nome_musica": "HighFrenetic",
+        "nome_produtor": "Xalaika",
+        "duracao": 180000,
+        "bpm": 95,
+        "trechos": 60,
+        "loops": 7
+      },
+      "id": 7
+    },
+    {
+      "name": "testEnd",
+      "description": "descEnd",
+      "music": [
+        {
+          "id": 1,
+          "nome_musica": "HighFrenetic",
+          "nome_produtor": "Xalaika",
+          "duracao": 180000,
+          "bpm": 95,
+          "trechos": 60,
+          "loops": 7
+        },
+        {
+          "id": 2,
+          "nome_musica": "Maleficus Chaos",
+          "nome_produtor": "Luan Bolico",
+          "duracao": 180000,
+          "bpm": 95,
+          "trechos": 60,
+          "loops": 7
+        }
+      ],
+      "id": 8
+    }
   ]
 }
