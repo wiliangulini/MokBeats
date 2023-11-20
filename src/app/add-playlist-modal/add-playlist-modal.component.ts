@@ -34,7 +34,7 @@ export class AddPlaylistModalComponent implements OnInit, AfterContentInit {
     this.createPlaylist();
   }
   
-  public createPlaylist() {
+  private createPlaylist() {
     this.playlistService.list().subscribe((data: any) => {
       this.arrPlaylist = data;
       this.arrPlaylist.length > 0 ? this.insert = true : this.insert = false;

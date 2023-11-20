@@ -11,7 +11,7 @@ export interface playlists {
   name?: string;
   data_alteracao?: string;
   description?: string;
-  music?: any;
+  music?: any | undefined;
 }
 
 @Component({
@@ -24,7 +24,6 @@ export class CreatePlaylistModalComponent implements OnInit {
   musicAddPlaylist!: Music[];
   playlist: playlists = {};
   form: FormGroup;
-  data_alteracao!: string;
   
   constructor(
     private activeModal: NgbActiveModal,
@@ -50,6 +49,10 @@ export class CreatePlaylistModalComponent implements OnInit {
     return this.musicAddPlaylist;
   }
   
+  public identificationPage(e: any) {
+    console.log(e);
+  }
+  
   private formatDate(date: any) {
     const _date = new Date(date);
     const day = ('0' + _date.getDate()).slice(-2);
@@ -61,12 +64,19 @@ export class CreatePlaylistModalComponent implements OnInit {
   
   private createPlaylist() {
     this.playlist.data_alteracao = this.formatDate(new Date());
-    (this.form.valid && this.form.get('name')?.value.length >= 3) ? this.playlist.music = this.musicAddPlaylist : empty();
+    if (this.musicAddPlaylist == undefined) {
+      if(this.form.valid && this.form.get('name')?.value.length >= 3) {
+        this.playlist.music = [];
+      }
+    } else if (this.form.valid && this.form.get('name')?.value.length >= 3) {
+      this.playlist.music = this.musicAddPlaylist;
+    }
   }
   
   save() {
     if (this.form.valid) {
       this.createPlaylist();
+      console.log(this.playlist)
       this.createPlaylistService.save(this.playlist).subscribe((data: any) => {
         if (data.id !== undefined) {
           console.log(data);

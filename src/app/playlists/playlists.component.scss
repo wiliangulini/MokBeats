@@ -1,6 +1,39 @@
 p.h5.font-weight-bold.playlist {
   color: #FFF;
 }
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists,
+.titlesMDiv {
+  border-bottom: 1px solid;
+}
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists {
+  width: 100% !important;
+  cursor: pointer !important;
+  padding: 0.25% 0 !important;
+  height: 65px !important;
+  transition: all 0.5s ease-in-out !important;
+}
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists:hover {
+  background-color: #FFF !important;
+  box-shadow: 0 0 10px 1px #007bff;
+  border: none;
+}
+.titlesMusic.nomePlaylist.position-relative {
+  padding-left: 5rem !important;
+}
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists p.h6.font-weight-bold.playlist {
+  color: #FFF;
+}
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists:hover p.h6.font-weight-bold.playlist {
+  color: #007bff;
+  font-size: 19px;
+}
+.col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.pl-Number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 10% !important;
+}
+
 .btn.btnPlaylist {
   width: 25%;
   font-size: 20px;
@@ -28,11 +61,11 @@ article.one {
 button, a {
   transition: all .25s ease-in-out;
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu.show {
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6 .popularidade .dropdown .dropdown-menu.show {
   display: flex !important;
   flex-direction: column;
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown button.bttn {
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6 .popularidade .dropdown button.bttn {
   background: transparent;
   border-radius: 999px;
   border: 2px solid rgba(255,255,255,.2);
@@ -41,27 +74,27 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
   position: relative;
   right: 46%;
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu {
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6 .popularidade .dropdown .dropdown-menu {
   background: #FFF !important;
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu .dropdown-item {
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6 .popularidade .dropdown .dropdown-menu .dropdown-item {
   color: #585858;
   cursor: pointer;
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao button.button {
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6 .visualizacao button.button {
   border: 2px solid rgba(255,255,255,.2);
   border-radius: 999px;
   border-right-width: 1px;
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao button.button:focus {
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6 .visualizacao button.button:focus {
   outline: none;
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao button.button:focus,
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao button.button:hover {
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6 .visualizacao button.button:focus,
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6 .visualizacao button.button:hover {
   background: rgba(255,255,255,.13);
 }
 
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao button.button {
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6 .visualizacao button.button {
   fill: rgba(255,255,255,.5);
   outline: none;
   background: transparent;
@@ -199,33 +232,14 @@ article.one .text p.h6 {
   color: #828282;
   font-weight: 200 !important;
 }
-article.one .material-icons {
-  font-size: 45px !important;
+article.one button span.material-icons.mr-2 {
+  font-size: 30px !important;
+  color: #b4b4b5 !important;
   cursor: pointer;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.titlesMDiv {
   height: auto;
   min-height: auto;
-}
-.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists.mb-3 {
-  width: 100% !important;
-  cursor: pointer !important;
-  padding: 0.25% 0 !important;
-  height: 45px !important;
-  transition: all .45s ease-in-out !important;
-}
-.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists.mb-3:hover {
-  background-color: #FFF !important;
-  color: #000 !important;
-}
-.titlesMusic.nomePlaylist.position-relative {
-  padding-left: 5rem !important;
-}
-.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists.mb-3 p.h6.font-weight-bold.playlist {
-  color: #FFF;
-}
-.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists.mb-3:hover p.h6.font-weight-bold.playlist {
-  color: #000;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
   height: auto;
@@ -326,13 +340,16 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
   border: 2px solid rgba(255,255,255,.2);
   background: transparent;
   font-weight: bold;
-  width: 70%;
+  width: 55%;
+  color: #b4b4b5 !important;
+  height: 45px !important;
 }
 .dropdown-item:hover, .dropdown-item:focus {
   background-color: transparent;
 }
 span.span.numFavorite {
   color: #fff;
+  font-size: 1.25rem;
 }
 .dropInt {
   width: 0;
@@ -355,7 +372,7 @@ span.span.numFavorite {
   display: none;
 }
 @media only screen and (min-width: 320px) and (max-width: 768px) {
-  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao {
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6 .visualizacao {
     display: none;
   }
   button.btn.btn-icons.rmv,
@@ -403,16 +420,16 @@ span.span.numFavorite {
   article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
     padding-left: 15px !important;
   }
-  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4,
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6,
   article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-8.col-md-8.col-lg-8.col-xl-8.p-0 {
     max-width: 100%;
     flex: 0 0 100%;
   }
-  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade {
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6 .popularidade {
     position: relative;
     left: 7%;
   }
-  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 {
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6 {
     max-height: 10vh;
     flex-direction: row-reverse;
     justify-content: space-between !important;
@@ -446,7 +463,7 @@ span.span.numFavorite {
     margin: 0;
     justify-content: space-around;
   }
-  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 {
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6 {
     padding-left: 0;
   }
 
@@ -455,7 +472,7 @@ span.span.numFavorite {
   .col-xl, .col-xl-auto, .col-xl-12, .col-xl-11, .col-xl-10, .col-xl-9, .col-xl-8, .col-xl-7, .col-xl-6, .col-xl-5, .col-xl-4, .col-xl-3, .col-xl-2, .col-xl-1, .col-lg, .col-lg-auto, .col-lg-12, .col-lg-11, .col-lg-10, .col-lg-9, .col-lg-8, .col-lg-7, .col-lg-6, .col-lg-5, .col-lg-4, .col-lg-3, .col-lg-2, .col-lg-1, .col-md, .col-md-auto, .col-md-12, .col-md-11, .col-md-10, .col-md-9, .col-md-8, .col-md-7, .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2, .col-md-1, .col-sm, .col-sm-auto, .col-sm-12, .col-sm-11, .col-sm-10, .col-sm-9, .col-sm-8, .col-sm-7, .col-sm-6, .col-sm-5, .col-sm-4, .col-sm-3, .col-sm-2, .col-sm-1, .col, .col-auto, .col-12, .col-11, .col-10, .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2, .col-1 {
     padding: 0 !important;
   }
-  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade {
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6 .popularidade {
     left: 0;
   }
   article.one .container-fluid .row h4 {
@@ -465,7 +482,7 @@ span.span.numFavorite {
     width: 93%;
   }
   article.one .container-fluid .row h6,
-  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown button.bttn,
+  article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-6.col-md-6.col-lg-6.col-xl-6 .popularidade .dropdown button.bttn,
   .filterMobile .button {
     font-size: 14px;
   }

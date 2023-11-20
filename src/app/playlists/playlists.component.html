@@ -6,10 +6,16 @@
       <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column align-items-start justify-content-center">
           <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex p-0">
-            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 p-0">
-              <h4 class="mb-4">Playlists <span class="span numFavorite">({{numF}})</span></h4>
+            
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 pl-Number p-0">
+              <h4 class="mb-0">Playlists <span class="span numFavorite">({{numF}})</span></h4>
             </div>
-            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 d-flex justify-content-end align-items-center">
+            
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 p-0">
+              <button type="button" class="btn btn-primary" (click)="createPlaylistModal()"><span class="material-icons mr-2">add</span>Criar nova playlist</button>
+            </div>
+            
+            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex justify-content-end align-items-center">
               <div class="popularidade">
                 <div class="dropdown">
                   <button class="bttn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -46,7 +52,7 @@
       </div>
       
       <div class="row mt-5" *ngIf="insert">
-        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex titlesMDiv mb-3">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex titlesMDiv pb-4">
           <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 d-flex flex-column align-items-start justify-content-start" >
             <div class="titlesMusic position-relative pl-5">
               <p>Nome da playlist</p>
@@ -64,7 +70,7 @@
           </div>
         </div>
         
-        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex playlists mb-3" *ngFor="let playlist of playlists; let i = index;">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex playlists" *ngFor="let playlist of playlists; let i = index;">
           <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 d-flex flex-column align-items-start justify-content-center" >
             <div class="titlesMusic nomePlaylist position-relative">
               <p class="h6 font-weight-bold playlist">{{ playlist["name"] }}</p>

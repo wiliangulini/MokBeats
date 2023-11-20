@@ -6,6 +6,9 @@ import {AuthService} from "../login/auth.service";
 import {ScrollService} from "../service/scroll.service";
 import {Router} from "@angular/router";
 import {PlaylistService} from "../create-playlist-modal/playlist.service";
+import {CreatePlaylistModalComponent, playlists} from "../create-playlist-modal/create-playlist-modal.component";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {empty} from "rxjs";
 
 @Component({
   selector: 'app-playlists',
@@ -52,7 +55,7 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
   constructor(
     private musicService: MusicasService,
     private likeService: FavoritosService,
-    private authService: AuthService,
+    private modalService: NgbModal,
     private scrollService: ScrollService,
     private fb: FormBuilder,
     private playlistService: PlaylistService,
@@ -74,7 +77,6 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
       document.getElementById('navLeft')!.style.width = '0';
     }
     this.arrMusic = this.likeService.addFavorite();
-    console.log(this.arrMusic)
   }
   
   numMusics: any[] = [];
@@ -95,7 +97,9 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
     
     this.playlistService.list().subscribe((data: any) => {
       data.forEach((e: any) => {
-        (e.music.length == undefined && e.music.id > 0) ? this.numMusics.push(1) : this.numMusics.push(e.music.length);
+        console.log(e.music)
+        e.music == undefined ? this.numMusics.push(0) : empty();
+        (e.music?.length == undefined && e.music.id > 0) ? this.numMusics.push(1) : this.numMusics.push(e.music?.length);
       })
       this.numF = this.numMusics.length;
       this.insert = true;
@@ -124,9 +128,22 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
     this.musicService.copiarLink(i);
   }
 
-  comprarLicensa(i: number): void { this.musicService.comprarLicensa(i); }
-
   filtroP(e: any): void { this.select = e; }
-
+  
+  public createPlaylist() {
+    this.playlistService.list().subscribe((data: any) => {
+      console.log(data);
+      this.playlists = data;
+    })
+  }
+  
+  createPlaylistModal() {
+      const activeModal = this.modalService.open(CreatePlaylistModalComponent, {size: 'md', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
+      activeModal.result.then((res: any) => {
+        console.log(res);
+        this.insert = true;
+        this.createPlaylist();
+      })
+  }
 
 }
