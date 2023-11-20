@@ -59,11 +59,14 @@ export class AddPlaylistModalComponent implements OnInit, AfterContentInit {
       let musicas: any[] = [];
       musicas.push(evt.music);
       musicas.forEach((e: any) => {
-        e.id !== this.addMusicPL.id ? musicas.push(this.addMusicPL) : alert('Erro ao adicionar música');
+        e.id !== this.addMusicPL.id ? musicas.push(this.addMusicPL) : alert('Error, Música já existente na playlist');
       })
       this.playlist.music = musicas;
     } else if (this.playlist.music.length > 0) {
-      this.playlist.music.push(this.addMusicPL);
+      this.playlist.music.forEach((e: any) => {
+        console.log(e)
+        e.id !== this.addMusicPL.id ? this.playlist.music.push(this.addMusicPL) : alert('Error, Música já existente na playlist');
+      })
     }
     
     this.playlistService.save(this.playlist).subscribe((data: any) => {

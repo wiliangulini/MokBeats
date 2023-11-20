@@ -9,6 +9,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 export interface playlists {
   id?: number;
   name?: string;
+  data_alteracao?: string;
   description?: string;
   music?: any;
 }
@@ -23,6 +24,7 @@ export class CreatePlaylistModalComponent implements OnInit {
   musicAddPlaylist!: Music[];
   playlist: playlists = {};
   form: FormGroup;
+  data_alteracao!: string;
   
   constructor(
     private activeModal: NgbActiveModal,
@@ -48,7 +50,17 @@ export class CreatePlaylistModalComponent implements OnInit {
     return this.musicAddPlaylist;
   }
   
+  private formatDate(date: any) {
+    const _date = new Date(date);
+    const day = ('0' + _date.getDate()).slice(-2);
+    const month = ('0' + (_date.getMonth() + 1)).slice(-2);
+    const year = _date.getFullYear();
+    console.log(`${day}/${month}/${year}`);
+    return `${day}/${month}/${year}`;
+  }
+  
   private createPlaylist() {
+    this.playlist.data_alteracao = this.formatDate(new Date());
     (this.form.valid && this.form.get('name')?.value.length >= 3) ? this.playlist.music = this.musicAddPlaylist : empty();
   }
   

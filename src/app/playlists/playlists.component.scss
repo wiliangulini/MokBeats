@@ -1,3 +1,6 @@
+p.h5.font-weight-bold.playlist {
+  color: #FFF;
+}
 .btn.btnPlaylist {
   width: 25%;
   font-size: 20px;
@@ -161,13 +164,8 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.titlesMDiv .titlesMusic p {
   color: #b4b4b5 !important;
-  font-size: 12px !important;
-}
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.titlesMDiv .titlesMusic.one {
-  right: 15%;
-}
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.titlesMDiv .titlesMusic.two {
-  right: 19%;
+  font-size: 13px !important;
+  font-weight: bold;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1 p {
   font-size: 13px;
@@ -206,11 +204,30 @@ article.one .material-icons {
   cursor: pointer;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.titlesMDiv {
-  height: auto !important;
-  min-height: auto !important;
+  height: auto;
+  min-height: auto;
+}
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists.mb-3 {
+  width: 100% !important;
+  cursor: pointer !important;
+  padding: 0.25% 0 !important;
+  height: 45px !important;
+  transition: all .45s ease-in-out !important;
+}
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists.mb-3:hover {
+  background-color: #FFF !important;
+  color: #000 !important;
+}
+.titlesMusic.nomePlaylist.position-relative {
+  padding-left: 5rem !important;
+}
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists.mb-3 p.h6.font-weight-bold.playlist {
+  color: #FFF;
+}
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists.mb-3:hover p.h6.font-weight-bold.playlist {
+  color: #000;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
-  min-height: 95px;
   height: auto;
 }
 #arrve {
@@ -315,7 +332,7 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
   background-color: transparent;
 }
 span.span.numFavorite {
-  color: #828282;
+  color: #fff;
 }
 .dropInt {
   width: 0;

@@ -220,6 +220,7 @@
   "playlists": [
     {
       "name": "teste",
+      "data_alteracao": "18/11/2023",
       "description": "desc",
       "music": [
         {
@@ -245,6 +246,7 @@
     },
     {
       "name": "New Playlist",
+      "data_alteracao": "18/11/2023",
       "description": "description playlist",
       "music": [
         {
@@ -261,6 +263,7 @@
     },
     {
       "name": "HighBPM",
+      "data_alteracao": "18/11/2023",
       "description": "acelero",
       "music": [
         {
@@ -277,6 +280,7 @@
     },
     {
       "name": "novaP",
+      "data_alteracao": "18/11/2023",
       "description": "descricao",
       "music": [
         {
@@ -293,6 +297,7 @@
     },
     {
       "name": "hagy",
+      "data_alteracao": "18/11/2023",
       "description": "impertinent",
       "music": [
         {
@@ -309,6 +314,7 @@
     },
     {
       "name": "test1",
+      "data_alteracao": "18/11/2023",
       "description": "desc1",
       "music": {
         "id": 2,
@@ -323,6 +329,7 @@
     },
     {
       "name": "test2",
+      "data_alteracao": "18/11/2023",
       "description": "desc2",
       "music": {
         "id": 1,
@@ -337,6 +344,7 @@
     },
     {
       "name": "testEnd",
+      "data_alteracao": "18/11/2023",
       "description": "descEnd",
       "music": [
         {
@@ -356,9 +364,48 @@
           "bpm": 95,
           "trechos": 60,
           "loops": 7
+        },
+        {
+          "id": 1,
+          "nome_musica": "HighFrenetic",
+          "nome_produtor": "Xalaika",
+          "duracao": 180000,
+          "bpm": 95,
+          "trechos": 60,
+          "loops": 7
         }
       ],
       "id": 8
+    },
+    {
+      "name": "1teste",
+      "data_alteracao": "19/11/2023",
+      "description": "1desc",
+      "music": {
+        "id": 1,
+        "nome_musica": "HighFrenetic",
+        "nome_produtor": "Xalaika",
+        "duracao": 180000,
+        "bpm": 95,
+        "trechos": 60,
+        "loops": 7
+      },
+      "id": 9
+    },
+    {
+      "name": "data_alteracao",
+      "description": "data_alteracao",
+      "data_alteracao": "19/11/2023",
+      "music": {
+        "id": 1,
+        "nome_musica": "HighFrenetic",
+        "nome_produtor": "Xalaika",
+        "duracao": 180000,
+        "bpm": 95,
+        "trechos": 60,
+        "loops": 7
+      },
+      "id": 10
     }
   ]
 }

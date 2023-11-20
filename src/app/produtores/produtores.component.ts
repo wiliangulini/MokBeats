@@ -218,7 +218,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
         </div>`;
     
     if(arrayUpload.length > num) {
-      this.snackBar.open(`A OPÇÃO QUE VOCÊ SELECIONOU PERMITE UM NÚMERO MÁXIMO DE ${num} UPLOADS!`, '', {duration: 5000});
+      this.snackBar.open(`A OPÇÃO QUE VOCÊ SELECIONOU PERMITE UM NÚMERO MÁXIMO DE ${num} UPLOADS!`, '', {duration: 20000});
       this.uploadFile();
     } else {
       showFile.innerHTML = div;

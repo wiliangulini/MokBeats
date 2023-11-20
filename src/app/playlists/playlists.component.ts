@@ -5,6 +5,7 @@ import {FavoritosService} from "../favoritos/favoritos.service";
 import {AuthService} from "../login/auth.service";
 import {ScrollService} from "../service/scroll.service";
 import {Router} from "@angular/router";
+import {PlaylistService} from "../create-playlist-modal/playlist.service";
 
 @Component({
   selector: 'app-playlists',
@@ -12,7 +13,8 @@ import {Router} from "@angular/router";
   styleUrls: ['./playlists.component.scss']
 })
 export class PlaylistsComponent implements OnInit, AfterContentInit {
-
+  
+  playlists: any;
   arrMusic: any[] = [];
   insert: boolean = false;
   numF: number = 0;
@@ -53,6 +55,7 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
     private authService: AuthService,
     private scrollService: ScrollService,
     private fb: FormBuilder,
+    private playlistService: PlaylistService,
   ) {
     this.formG = this.fb.group({
       checkbox: [],
@@ -74,6 +77,8 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
     console.log(this.arrMusic)
   }
   
+  numMusics: any[] = [];
+  
   ngAfterContentInit() {
     
     setTimeout(() => {
@@ -87,6 +92,15 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
       div1!.style.flex = '0 0 40%';
       div1!.style.maxWidth = '40%';
     }, 25);
+    
+    this.playlistService.list().subscribe((data: any) => {
+      data.forEach((e: any) => {
+        (e.music.length == undefined && e.music.id > 0) ? this.numMusics.push(1) : this.numMusics.push(e.music.length);
+      })
+      this.numF = this.numMusics.length;
+      this.insert = true;
+      this.playlists = data;
+    })
   }
 
   curtir(i: number): void {
@@ -106,24 +120,8 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
     }
   }
 
-  addPlayList(music: Music): void {
-    console.log(music)
-    this.musicService.addPlayList(music);
-    
-  }
-
   copiarLink(i: number): void {
     this.musicService.copiarLink(i);
-  }
-
-  baixarAmostra(i: number): void {
-    this.authService.verificaLogin();
-    if(this.authService.userAutetic()) {
-      this.musicDownload = [];
-      this.musicDownload.push(this.arrMusic[i].nome_musica);
-      this.musicDownload.push(this.arrMusic[i].nome_produtor);
-      this.musicService.baixarAmostra(i, this.musicDownload);
-    }
   }
 
   comprarLicensa(i: number): void { this.musicService.comprarLicensa(i); }
