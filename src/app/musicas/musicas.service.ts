@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AddPlaylistModalComponent} from "../add-playlist-modal/add-playlist-modal.component";
 import {DownloadAmostraComponent} from "../download-amostra/download-amostra.component";
 import {AuthService} from "../login/auth.service";
@@ -401,7 +401,6 @@ export class MusicasService {
   constructor(
     private authService: AuthService,
     private modalService: NgbModal,
-    public activeModal: NgbActiveModal,
     private likeService: FavoritosService,
     private http: HttpClient,
   ) {

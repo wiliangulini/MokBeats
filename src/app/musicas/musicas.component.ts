@@ -5,8 +5,11 @@ import {ScrollService} from "../service/scroll.service";
 import {AuthService} from "../login/auth.service";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
+import {PlaylistService} from "../create-playlist-modal/playlist.service";
+import {AddPlaylistModalComponent} from "../add-playlist-modal/add-playlist-modal.component";
+import {empty} from "rxjs";
 
-type Musicaa = {
+type Musica = {
   id?: number;
   nome_musica?: string;
   nome_produtor?: string;
@@ -22,8 +25,8 @@ type Musicaa = {
   styleUrls: ['./musicas.component.scss']
 })
 export class MusicasComponent implements OnInit, AfterViewInit {
-
-  public favorite: Musicaa = {};
+  
+  public favorite: Musica = {};
   musicAdd: any;
   musicProducerAdd: any;
   trecho: any[] = [15, 30, 60];
@@ -39,7 +42,7 @@ export class MusicasComponent implements OnInit, AfterViewInit {
   formG!: FormGroup;
   frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
   select: any = 'Mais Relevantes';
-
+  
   cantada: Array<any> = [
     "Amostras/Efeitos",
     "Cantores principais",
@@ -81,15 +84,15 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     {value: "Trippy", viewValue: "Trippy"},
   ]
   arrMusica: Music[] = [];
-
+  
   @Output('ngModelChange') update: any = new EventEmitter();
-
+  
   constructor(
     private musicService: MusicasService,
     private authService: AuthService,
     private scrollService: ScrollService,
     private fb: FormBuilder,
-    private http: HttpClient,
+    private playlistService: PlaylistService,
   ) {
     this.formG = this.fb.group({
       checkbox: [],
@@ -104,7 +107,7 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     this.music = this.musicService.convertida;
     this.humor = this.musicService.humor;
   }
-
+  
   ngOnInit(): void {
     this.scrollService.scrollUp();
     if (screen.width < 769) {
@@ -113,20 +116,42 @@ export class MusicasComponent implements OnInit, AfterViewInit {
   }
   
   ngAfterViewInit() {
+    let playlist: any[] = [];
+    const setPlaylist = new Set();
     this.musicService.listMusic().subscribe((data: any) => {
       this.arrMusica = data;
+      this.playlistService.list().subscribe((data: any) => {
+        data.forEach((e: any) => {
+          if(e.music.length > 0) {
+            for(let i: number = 0; i < e.music.length; i++) {
+              playlist.push(e.music[i]);
+            }
+          } else if(e.music.length == undefined && e.music.id > 0) {
+            playlist.push(e.music);
+          }
+        });
+        const filterMusicPlaylist = playlist.filter((data: any) => {
+          const duplicatePlaylist = setPlaylist.has(data.id);
+          setPlaylist.add(data.id);
+          return !duplicatePlaylist;
+        })
+        
+        document.querySelectorAll('.addPlaylist').forEach((e: any, index: any) => {
+          (this.arrMusica[index]?.id == filterMusicPlaylist[index]?.id || this.arrMusica[index]?.id == undefined) ? e.classList.add('amarelo') : empty();
+        });
+      })
     })
     document.querySelectorAll('.mat-checkbox-frame')?.forEach((e: any) => {
       e.style.borderColor = "#FFF";
     })
   }
-
+  
   msToMinute(ms: any) {
     let minutes: any = Math.floor(ms / 60000);
     let seconds: any = ((ms % 60000) / 1000).toFixed(0);
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
-
+  
   curtir(i: number): void {
     this.favorite.id = this.arrMusica[i].id;
     this.favorite.nome_musica = this.arrMusica[i].nome_musica;
@@ -136,9 +161,9 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     this.favorite.trechos = this.arrMusica[i].trechos;
     this.favorite.loops = this.arrMusica[i].loops;
     this.musicService.sendFavorite(i, this.favorite);
-
+    
   }
-
+  
   filtrar(): void {
     let navleft = document.getElementById('navLeft');
     console.log(navleft);
@@ -152,13 +177,13 @@ export class MusicasComponent implements OnInit, AfterViewInit {
       navleft!.style.zIndex = '0';
     }
   }
-
+  
   addPlayList(music: Music): void {
     this.musicService.addPlayList(music);
   }
-
+  
   copiarLink(i: number): void { this.musicService.copiarLink(i); }
-
+  
   baixarAmostra(i: number): void {
     this.authService.verificaLogin();
     if(this.authService.userAutetic()) {
@@ -168,19 +193,19 @@ export class MusicasComponent implements OnInit, AfterViewInit {
       this.musicService.baixarAmostra(i, this.musicDownload);
     }
   }
-
+  
   comprarLicensa(i: number): void { this.musicService.comprarLicensa(i); }
-
+  
   filtroP(e: any): void { this.select = e; }
-
+  
   onChangedEvent(event: any, elem: any): void {
     elem == 'bpm' ? this.number = event : this.duration = event;
-
+    
     if(elem == 'duracao') {
       let dateObj: any = new Date(this.duration * 1000);
       let minutes: any = dateObj.getUTCMinutes();
       let seconds: any = dateObj.getSeconds();
-
+      
       let timeString: any = minutes.toString().padStart(1) + ':' + seconds.toString().padStart(2, '0');
       this.durationAut = timeString;
     }
