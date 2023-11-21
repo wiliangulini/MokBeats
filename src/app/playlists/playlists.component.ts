@@ -9,6 +9,7 @@ import {PlaylistService} from "../create-playlist-modal/playlist.service";
 import {CreatePlaylistModalComponent, playlists} from "../create-playlist-modal/create-playlist-modal.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {empty} from "rxjs";
+import {PagPlaylistComponent} from "../pag-playlist/pag-playlist.component";
 
 @Component({
   selector: 'app-playlists',
@@ -22,7 +23,6 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
   insert: boolean = false;
   numF: number = 0;
   duration: any;
-  musicDownload: any[] = [];
   titles: any[];
   music: any[];
   humor: any[];
@@ -49,9 +49,9 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
     "Duração (mais curtas primeiro)",
     "Duração (mais longas primeiro)",
   ];
-
+  
   @Output('ngModelChange') update: any = new EventEmitter();
-
+  
   constructor(
     private musicService: MusicasService,
     private likeService: FavoritosService,
@@ -59,6 +59,7 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
     private scrollService: ScrollService,
     private fb: FormBuilder,
     private playlistService: PlaylistService,
+    private router: Router,
   ) {
     this.formG = this.fb.group({
       checkbox: [],
@@ -69,10 +70,10 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
     this.music = this.musicService.convertida;
     this.humor = this.musicService.humor;
   }
-
+  
   ngOnInit(): void {
     this.scrollService.scrollUp();
-
+    
     if (screen.width < 769) {
       document.getElementById('navLeft')!.style.width = '0';
     }
@@ -97,7 +98,6 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
     
     this.playlistService.list().subscribe((data: any) => {
       data.forEach((e: any) => {
-        console.log(e.music)
         e.music == undefined ? this.numMusics.push(0) : empty();
         (e.music?.length == undefined && e.music.id > 0) ? this.numMusics.push(1) : this.numMusics.push(e.music?.length);
       })
@@ -106,11 +106,11 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
       this.playlists = data;
     })
   }
-
+  
   curtir(i: number): void {
     this.musicService.curtir(i);
   }
-
+  
   filtrar(): void {
     let navleft: any = document.getElementById('navLeft');
     if(navleft!.getAttribute('style') == 'width: 0px;' || navleft!.getAttribute('style') == 'width: 0px; opacity: 0; z-index: 0;') {
@@ -123,27 +123,32 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
       navleft!.style.zIndex = '0';
     }
   }
-
+  
   copiarLink(i: number): void {
     this.musicService.copiarLink(i);
   }
-
+  
   filtroP(e: any): void { this.select = e; }
   
   public createPlaylist() {
     this.playlistService.list().subscribe((data: any) => {
-      console.log(data);
       this.playlists = data;
     })
   }
   
   createPlaylistModal() {
-      const activeModal = this.modalService.open(CreatePlaylistModalComponent, {size: 'md', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
-      activeModal.result.then((res: any) => {
-        console.log(res);
-        this.insert = true;
-        this.createPlaylist();
-      })
+    const activeModal = this.modalService.open(CreatePlaylistModalComponent, {size: 'md', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
+    activeModal.result.then((res: any) => {
+      console.log(res);
+      this.insert = true;
+      this.createPlaylist();
+    })
   }
-
+  
+  
+  pagPlaylist() {
+    console.log('abrir atraves de rotas o componente pag-playlist');
+    this.router.navigate(['/pagina-playlist']).then();
+  }
+  
 }

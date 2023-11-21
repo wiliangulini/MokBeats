@@ -49,10 +49,6 @@ export class CreatePlaylistModalComponent implements OnInit {
     return this.musicAddPlaylist;
   }
   
-  public identificationPage(e: any) {
-    console.log(e);
-  }
-  
   private formatDate(date: any) {
     const _date = new Date(date);
     const day = ('0' + _date.getDate()).slice(-2);

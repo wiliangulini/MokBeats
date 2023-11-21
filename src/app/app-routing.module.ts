@@ -18,6 +18,7 @@ import {FormasDePagamentoComponent} from "./formas-de-pagamento/formas-de-pagame
 import {AtualizarInformacoesComponent} from "./atualizar-informacoes/atualizar-informacoes.component";
 import {FinalizarCompraComponent} from "./finalizar-compra/finalizar-compra.component";
 import {ContatoComponent} from "./contato/contato.component";
+import {PagPlaylistComponent} from "./pag-playlist/pag-playlist.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -39,6 +40,7 @@ const routes: Routes = [
   { path: 'atualizar-informacoes', component: AtualizarInformacoesComponent },
   { path: 'finalizar-compra', component: FinalizarCompraComponent },
   { path: 'contato', component: ContatoComponent },
+  { path: 'pagina-playlist', component: PagPlaylistComponent },
 ];
 
 @NgModule({

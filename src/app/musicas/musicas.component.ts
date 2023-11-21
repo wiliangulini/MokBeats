@@ -166,7 +166,6 @@ export class MusicasComponent implements OnInit, AfterViewInit {
   
   filtrar(): void {
     let navleft = document.getElementById('navLeft');
-    console.log(navleft);
     if(navleft!.getAttribute('style') == 'width: 0px;' || navleft!.getAttribute('style') == 'width: 0px; opacity: 0; z-index: 0;') {
       navleft!.style.width = '96vw';
       navleft!.style.opacity = '1';
