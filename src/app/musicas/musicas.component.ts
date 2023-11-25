@@ -3,13 +3,10 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {Music, MusicasService} from "./musicas.service";
 import {ScrollService} from "../service/scroll.service";
 import {AuthService} from "../login/auth.service";
-import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment";
 import {PlaylistService} from "../create-playlist-modal/playlist.service";
-import {AddPlaylistModalComponent} from "../add-playlist-modal/add-playlist-modal.component";
 import {empty} from "rxjs";
 
-type Musica = {
+export type Musica = {
   id?: number;
   nome_musica?: string;
   nome_produtor?: string;
@@ -27,8 +24,6 @@ type Musica = {
 export class MusicasComponent implements OnInit, AfterViewInit {
   
   public favorite: Musica = {};
-  musicAdd: any;
-  musicProducerAdd: any;
   trecho: any[] = [15, 30, 60];
   loop: any[] = [1, 2, 3, 4, 5, 6, 7];
   duration: any;
@@ -119,6 +114,7 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     let playlist: any[] = [];
     const setPlaylist = new Set();
     this.musicService.listMusic().subscribe((data: any) => {
+      console.log(data);
       this.arrMusica = data;
       this.playlistService.list().subscribe((data: any) => {
         data.forEach((e: any) => {

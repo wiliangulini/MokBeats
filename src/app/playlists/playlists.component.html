@@ -70,7 +70,7 @@
           </div>
         </div>
         
-        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex playlists" (click)="pagPlaylist()" *ngFor="let playlist of playlists; let i = index;">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex playlists" (click)="pagPlaylist(playlist)" *ngFor="let playlist of playlists; let i = index;">
           <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 d-flex flex-column align-items-start justify-content-center" >
             <div class="titlesMusic nomePlaylist position-relative">
               <p class="h6 font-weight-bold playlist">{{ playlist["name"] }}</p>

@@ -146,9 +146,8 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
   }
   
   
-  pagPlaylist() {
-    console.log('abrir atraves de rotas o componente pag-playlist');
-    this.router.navigate(['/pagina-playlist']).then();
+  pagPlaylist(data: any) {
+    this.router.navigate(['/pagina-playlist'], {queryParams: {id: data.id}});
   }
   
 }
