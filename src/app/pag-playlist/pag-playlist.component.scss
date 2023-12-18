@@ -226,10 +226,21 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.title
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1 p {
   font-size: 13px;
 }
-article.one .container-fluid .row h4 {
+article.one .container-fluid .row h1 {
   font-size: 1.5rem;
   width: 100%;
-  font-weight: bold
+  font-weight: bold;
+  color: #FFF;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+}
+article.one .container-fluid .row p.description {
+  font-size: 1.5rem;
+  width: 100%;
+  color: #FFF;
+  display: flex;
+  justify-content: center;
 }
 article.one .container-fluid .row h6 {
   width: 100%;

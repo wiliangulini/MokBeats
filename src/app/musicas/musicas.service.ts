@@ -445,11 +445,11 @@ export class MusicasService {
         this.arrMusica = data;
         this.addMusicPlaylist = music;
         document.querySelectorAll('.addPlaylist').forEach((e: any, index: any) => {
-          if (this.arrMusica[index].id == this.addMusicPlaylist.id && e.classList.contains('amarelo')) {
-            e.classList.remove('amarelo');
-          } else if (this.arrMusica[index].id == this.addMusicPlaylist.id) {
+          if (this.arrMusica[index].id == this.addMusicPlaylist.id) {
             e.classList.add('amarelo');
-            this.modalService.open(AddPlaylistModalComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
+            const activeModal = this.modalService.open(AddPlaylistModalComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
+            activeModal.componentInstance.addNewMusicPlaylist(this.addMusicPlaylist);
+            activeModal.result.then();
           }
         });
       })

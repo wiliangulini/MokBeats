@@ -147,6 +147,7 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
   
   
   pagPlaylist(data: any) {
+    console.log(data);
     this.router.navigate(['/pagina-playlist'], {queryParams: {id: data.id}});
   }
   

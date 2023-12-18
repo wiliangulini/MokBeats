@@ -28,10 +28,19 @@ input.input {
   background-color: #e7e7e9;
   color: #000;
 }
+.modal-body .card .newPlayList button.btn.filtragem:focus {
+  text-decoration: none !important;
+  //outline: none !important;
+  outline: 0 !important;
+}
 .modal-body .card .newPlayList button.btn {
   color: #535354;
   border-top: 1px solid #dededf;
   height: 55px;
   transition: all .4s linear;
   font-family: WalsheimBold;
+}
+.filtragem {
+  background-color: #e7e7e9;
+  cursor: auto !important;
 }

@@ -15,8 +15,6 @@ Content-Type: application/json
 PUT http://localhost:3000/arrMusica/4
 Content-Type: application/json
 
-{ "nome_musica": "The FunksterEdit" }
-
 ###
 
-DELETE http://localhost:3000/arrMusica/4
+DELETE http://localhost:3000/playlists/11

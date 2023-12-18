@@ -72,10 +72,10 @@ export class PagPlaylistComponent implements OnInit, AfterViewInit {
     {value: "Trippy", viewValue: "Trippy"},
   ]
   arrMusica: any = [];
-  arrPagPlaylist: playlists[] = [];
   playlist!: playlists;
   _playlist: any;
   namePlaylist: any;
+  descriptionPlaylist: any;
   
   @Output('ngModelChange') update: any = new EventEmitter();
   
@@ -109,12 +109,15 @@ export class PagPlaylistComponent implements OnInit, AfterViewInit {
     
     this.route.queryParams.subscribe((data: any) => {
       this._playlist = data;
+      console.log(this._playlist)
       this.playlistService.list().subscribe((data: any) => {
         console.log(data);
         data.forEach((e: playlists) => {
           if (e.id == this._playlist.id) {
             console.log(e);
             this.playlist = e;
+            this.namePlaylist = this.playlist.name;
+            this.descriptionPlaylist = this.playlist.description;
             let musicas: any[];
             musicas = this.playlist.music;
             console.log(musicas)

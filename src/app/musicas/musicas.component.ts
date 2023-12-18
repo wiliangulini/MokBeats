@@ -114,9 +114,10 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     let playlist: any[] = [];
     const setPlaylist = new Set();
     this.musicService.listMusic().subscribe((data: any) => {
-      console.log(data);
+      // console.log('musicService: ', data);
       this.arrMusica = data;
       this.playlistService.list().subscribe((data: any) => {
+        // console.log('playlistService: ', data);
         data.forEach((e: any) => {
           if(e.music.length > 0) {
             for(let i: number = 0; i < e.music.length; i++) {
@@ -131,7 +132,11 @@ export class MusicasComponent implements OnInit, AfterViewInit {
           setPlaylist.add(data.id);
           return !duplicatePlaylist;
         })
-        
+        filterMusicPlaylist.sort((a, b) => {
+          if(a.id > b.id) return 1;
+          if(a.id < b.id) return -1;
+          return 0;
+        });
         document.querySelectorAll('.addPlaylist').forEach((e: any, index: any) => {
           (this.arrMusica[index]?.id == filterMusicPlaylist[index]?.id || this.arrMusica[index]?.id == undefined) ? e.classList.add('amarelo') : empty();
         });
@@ -173,7 +178,7 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     }
   }
   
-  addPlayList(music: Music): void {
+  addMusicPlayList(music: Music): void {
     this.musicService.addPlayList(music);
   }
   

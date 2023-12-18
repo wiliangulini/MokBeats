@@ -13,25 +13,64 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class AddPlaylistModalComponent implements OnInit, AfterContentInit {
   
-  addMusicPL: Music;
+  newMusicPlaylist!: Music;
   insert: boolean = false;
   playlist: playlists = {};
   arrPlaylist: any[] = [];
   
   constructor(
     private activeModal: NgbActiveModal,
-    private musicService: MusicasService,
     private modalService: NgbModal,
     private playlistService: PlaylistService,
     private snackBar: MatSnackBar,
-  ) {
-    this.addMusicPL = this.musicService.addMusicPlaylist;
-  }
+  ) {}
   
   ngOnInit(): void {}
   
   ngAfterContentInit() {
     this.createPlaylist();
+    this.musicExistsPlaylist();
+  }
+
+  private musicExistsPlaylist() {
+    let playMusicExist: any[] = [];
+    this.playlistService.list().subscribe((playlist: any) => {
+      console.log(playlist)
+      playlist.forEach((e: any) => {
+        if(e.music.length > 0) {
+          for(let i: number = 0; i < e.music.length; i++) {
+            if(e.music[i].id === this.newMusicPlaylist.id) {
+              playMusicExist.push(e.name)
+            }
+          }
+        } else if(e.music.length == undefined && e.music.id > 0) {
+          console.log(e.music.id)
+          for(let i: number = 0; i < playlist.length; i++) {
+            if(e.music.id === this.newMusicPlaylist.id) {
+              playMusicExist.push(e.name);
+              break;
+            }
+          }
+        }
+      });
+      setTimeout(() => {
+        document.querySelectorAll('.buttonPlaylist').forEach((e: any, i) => {
+          let nome: any = e.children[0].innerText.slice(0, -4);
+          for(let i in playMusicExist) {
+            if(playMusicExist[i] === nome) {
+              e.classList.add('filtragem');
+              e.setAttribute('data-toogle','tooltip');
+              e.setAttribute('data-placement','top');
+              e.setAttribute('title','Música já existente na playlist');
+              e.addEventListener('click', (ev: any) => {
+                ev.preventDefault();
+                ev.stopPropagation();
+              })
+            }
+          }
+        })
+      }, 250);
+    });
   }
   
   private createPlaylist() {
@@ -46,29 +85,40 @@ export class AddPlaylistModalComponent implements OnInit, AfterContentInit {
   }
   public openModal() {
     const activeModal = this.modalService.open(CreatePlaylistModalComponent, {size: 'md', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
-    activeModal.componentInstance.dataNewPlaylist(this.addMusicPL);
+    activeModal.componentInstance.dataNewPlaylist(this.newMusicPlaylist);
     activeModal.result.then((res: any) => {
+      console.log(res);
       this.playlist = res;
       this.createPlaylist();
     })
   }
   
+  public addNewMusicPlaylist(element: Music) {
+    this.newMusicPlaylist = element;
+    return this.newMusicPlaylist;
+  }
+  
   addMusicPlaylist(evt: any) {
     this.playlist = evt;
-    if (this.playlist.music.length == undefined) {
-      let musicas: any[] = [];
-      musicas.push(evt.music);
-      musicas.forEach((e: any) => {
-        e.id !== this.addMusicPL.id ? musicas.push(this.addMusicPL) : alert('Error, Música já existente na playlist');
-      })
-      this.playlist.music = musicas;
-    } else if (this.playlist.music.length > 0) {
-      this.playlist.music.forEach((e: any) => {
-        console.log(e)
-        e.id !== this.addMusicPL.id ? this.playlist.music.push(this.addMusicPL) : alert('Error, Música já existente na playlist');
-      })
+    console.log(this.insert)
+    if(this.insert) {
+      if (evt.music.length === undefined) {
+        let musicas: any[] = [];
+        musicas.push(evt.music);
+        musicas.forEach((e: any) => {
+          e.id !== this.newMusicPlaylist.id ? musicas.push(this.newMusicPlaylist) : alert('Error, Música já existente na playlist');
+        });
+        this.playlist.music = musicas;
+      } else if(evt.music.length > 0) {
+        this.playlist.music.push(this.newMusicPlaylist);
+        console.log(this.playlist)
+      }
+      this.save();
     }
-    
+  }
+  
+  
+  save() {
     this.playlistService.save(this.playlist).subscribe((data: any) => {
       if (data.id !== undefined) {
         console.log(data);
@@ -76,6 +126,7 @@ export class AddPlaylistModalComponent implements OnInit, AfterContentInit {
       } else {
         this.snackBar.open('ERRO ao adicionar música a playlist!!!', '', {duration: 5000});
       }
+      this.closeModal();
     });
   }
 }
