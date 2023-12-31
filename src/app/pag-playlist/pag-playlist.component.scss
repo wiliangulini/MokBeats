@@ -1,5 +1,3 @@
-
-
 #article {
   height: auto;
 }
@@ -7,7 +5,8 @@
   white-space: pre;
 }
 article.one {
-  background-color: #101010;
+  background: linear-gradient(45deg, #57443D, #423338, #292130);
+  position: relative;
 }
 .amarelo {
   fill: #dcad54;
@@ -77,6 +76,9 @@ button, a {
 article.one .container-fluid {
   width: calc(100vw - 14vw);
   transition: all .5s ease-in-out;
+}
+article.one .container-fluid #cf .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.p-0 .col-sm-8.col-md-8.col-lg-8.col-xl-8.p-0 {
+  left: 18%;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu.show {
   display: flex !important;
@@ -209,6 +211,12 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
 button.btn.btn-warning {
   color: #fff !important;
 }
+article.one span.material-icons.removePlaylist {
+  color: #9B959A !important;
+  font-size: 35px !important;
+  position: relative;
+  top: 5px;
+ }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.titlesMDiv .col-sm-1.col-md-1.col-lg-1.col-xl-1.d-flex.align-items-center.justify-content-between,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1.one.d-flex.align-items-center.justify-content-around.pl-2.pr-2.pt-0.pb-0 {
   right: 2%;
@@ -317,9 +325,6 @@ article.one .container-fluid #cf .row #array .controlDivs .controlDivsInt .contr
 }
 #li {
   justify-content: space-between;
-}
-article.one {
-  position: relative;
 }
 .dropdown-menu {
   background-color: #1b1b1b !important;

@@ -7,14 +7,14 @@ import {FavoritosService} from "../favoritos/favoritos.service";
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 
-export interface Music {
-  id: number;
-  nome_musica: string;
-  nome_produtor: string;
-  duracao: number;
-  bpm: number;
-  trechos: number;
-  loops: number;
+export type Musica = {
+  id?: number;
+  nome_musica?: string;
+  nome_produtor?: string;
+  duracao?: number;
+  bpm?: number;
+  trechos?: number;
+  loops?: number;
 }
 
 @Injectable({
@@ -394,7 +394,7 @@ export class MusicasService {
     "Uplifting",
     "Wedding",
   ];
-  public arrMusica!: Music[];
+  public arrMusica!: Musica[];
   
   private readonly API_MUSIC = `${environment.API}arrMusica`
   
@@ -413,7 +413,7 @@ export class MusicasService {
   }
   
   public listMusic() {
-    return this.http.get<Music>(`${this.API_MUSIC}`).pipe();
+    return this.http.get<Musica>(`${this.API_MUSIC}`).pipe();
   }
   
   public curtir(i: number) {
@@ -438,7 +438,7 @@ export class MusicasService {
     this.likeService.sendFavorite(favorite);
   }
   
-  public addPlayList(music: Music) {
+  public addPlayList(music: Musica) {
     this.authService.verificaLogin();
     if(this.authService.userAutetic()) {
       this.listMusic().subscribe((data: any) => {
@@ -458,6 +458,9 @@ export class MusicasService {
   
   public copiarLink(i: number) {
     console.log(i);
+    // let urlMontagem: string = 'pagina-playlist?id=';
+    // let url = window.location.href.slice(0, -9) + urlMontagem + i;
+    // return url;
   }
   
   public baixarAmostra(i: number, md: any) {

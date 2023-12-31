@@ -1,15 +1,14 @@
 import {AfterContentInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {Music, MusicasService} from "../musicas/musicas.service";
+import {MusicasService} from "../musicas/musicas.service";
 import {FavoritosService} from "../favoritos/favoritos.service";
-import {AuthService} from "../login/auth.service";
 import {ScrollService} from "../service/scroll.service";
 import {Router} from "@angular/router";
 import {PlaylistService} from "../create-playlist-modal/playlist.service";
 import {CreatePlaylistModalComponent, playlists} from "../create-playlist-modal/create-playlist-modal.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {empty} from "rxjs";
-import {PagPlaylistComponent} from "../pag-playlist/pag-playlist.component";
+import {EMPTY} from "rxjs";
+import {EditPlaylistModalComponent} from "../create-playlist-modal/edit-playlist-modal/edit-playlist-modal.component";
 
 @Component({
   selector: 'app-playlists',
@@ -29,25 +28,14 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
   musicas: any = {};
   number!: number;
   formG!: FormGroup;
-  select: string = 'Adicionada em';
-  cantada: Array<any> = [
-    "Amostras/Efeitos",
-    "Cantores principais",
-    "Coro/Grupo",
-    "Oohs e Aahs",
-    "Todos os Cantores",
-  ];
+  select: string;
   arrFilter: Array<any> = [
-    "Adicionada em",
-    "Popularidade",
-    "Mais relevantes",
-    "Mais recentes",
-    "Ordem alfabética",
-    "Artista",
-    "BPM (mais baixos primeiro)",
-    "BPM (mais altos primeiro)",
-    "Duração (mais curtas primeiro)",
-    "Duração (mais longas primeiro)",
+    "Data de criação (mais recente)",
+    "Data de criação (mais antiga)",
+    "Data de alteração (mais recente)",
+    "Data de alteração (mais antiga)",
+    "Ordem alfabética (a-z)",
+    "Ordem alfabética (z-a)",
   ];
   
   @Output('ngModelChange') update: any = new EventEmitter();
@@ -69,6 +57,7 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
     this.titles = this.musicService.convertida2;
     this.music = this.musicService.convertida;
     this.humor = this.musicService.humor;
+    this.select = this.arrFilter[0];
   }
   
   ngOnInit(): void {
@@ -98,7 +87,7 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
     
     this.playlistService.list().subscribe((data: any) => {
       data.forEach((e: any) => {
-        e.music == undefined ? this.numMusics.push(0) : empty();
+        e.music == undefined ? this.numMusics.push(0) : EMPTY;
         (e.music?.length == undefined && e.music.id > 0) ? this.numMusics.push(1) : this.numMusics.push(e.music?.length);
       })
       this.numF = this.numMusics.length;
@@ -124,11 +113,26 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
     }
   }
   
-  copiarLink(i: number): void {
-    this.musicService.copiarLink(i);
+  link: any;
+  
+  copiarLink(i: any): void {
+    let id = i.id;
+    this.link = this.playlistService.copiarLink(id);
+    this.execCopy().then();
+  }
+  async execCopy(): Promise<void> {
+    await navigator.clipboard.writeText(this.link);
   }
   
   filtroP(e: any): void { this.select = e; }
+  
+  editPlaylist(data: playlists) {
+    const activeModal = this.modalService.open(EditPlaylistModalComponent, {size: 'md', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
+    activeModal.componentInstance.editarPlaylist(data)
+    activeModal.result.then((res: any) => {
+      console.log(res);
+    })
+  }
   
   public createPlaylist() {
     this.playlistService.list().subscribe((data: any) => {
@@ -145,9 +149,7 @@ export class PlaylistsComponent implements OnInit, AfterContentInit {
     })
   }
   
-  
   pagPlaylist(data: any) {
-    console.log(data);
     this.router.navigate(['/pagina-playlist'], {queryParams: {id: data.id}});
   }
   

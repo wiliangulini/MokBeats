@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Music} from "../musicas/musicas.service";
-import {empty} from "rxjs";
 import {PlaylistService} from "./playlist.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {Musica} from "../musicas/musicas.service";
 
 export interface playlists {
   id?: number;
@@ -21,7 +20,7 @@ export interface playlists {
 })
 export class CreatePlaylistModalComponent implements OnInit {
   
-  musicAddPlaylist!: Music[];
+  musicAddPlaylist: Musica[] = [];
   playlist: playlists = {};
   form: FormGroup;
   
@@ -44,16 +43,18 @@ export class CreatePlaylistModalComponent implements OnInit {
     return this.activeModal.close();
   }
   
-  public dataNewPlaylist(event: Music[]) {
-    this.musicAddPlaylist = event;
+  public dataNewPlaylist(event: any): Musica[] {
+    console.log(event)
+    this.musicAddPlaylist.push(event);
+    console.log(this.musicAddPlaylist)
     return this.musicAddPlaylist;
   }
   
-  private formatDate(date: any) {
-    const _date = new Date(date);
-    const day = ('0' + _date.getDate()).slice(-2);
-    const month = ('0' + (_date.getMonth() + 1)).slice(-2);
-    const year = _date.getFullYear();
+  private formatDate(date: any): string {
+    const _date: Date = new Date(date);
+    const day: string = ('0' + _date.getDate()).slice(-2);
+    const month: string = ('0' + (_date.getMonth() + 1)).slice(-2);
+    const year: number = _date.getFullYear();
     console.log(`${day}/${month}/${year}`);
     return `${day}/${month}/${year}`;
   }
@@ -76,7 +77,7 @@ export class CreatePlaylistModalComponent implements OnInit {
       this.createPlaylistService.save(this.playlist).subscribe((data: any) => {
         if (data.id !== undefined) {
           console.log(data);
-          this.snackBar.open('Playlist criada com SUCESSO!!!', '', {duration: 5000});
+          this.snackBar.open('Playlist criada com SUCESSO!!!', '', {duration: 10000});
         } else {
           this.snackBar.open('ERRO ao criar Playlist!!!', '', {duration: 5000});
         }

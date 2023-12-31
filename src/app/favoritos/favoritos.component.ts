@@ -1,9 +1,8 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {Music, MusicasService} from "../musicas/musicas.service";
+import {Musica, MusicasService} from "../musicas/musicas.service";
 import {AuthService} from "../login/auth.service";
 import {ScrollService} from "../service/scroll.service";
-import {ActivatedRoute} from "@angular/router";
 import {FavoritosService} from "./favoritos.service";
 
 @Component({
@@ -18,7 +17,6 @@ export class FavoritosComponent implements OnInit {
   loop: any[] = [1, 2, 3, 4, 5, 6, 7];
   arrMusic: any = [];
   numF: number = 0;
-  musicAdd: any;
   duration: any;
   durationAut: any;
   musicDownload: any[] = [];
@@ -81,7 +79,6 @@ export class FavoritosComponent implements OnInit {
     private scrollService: ScrollService,
     private fb: FormBuilder,
   ) {
-    // this.arrMusic = this.musicService.arrMusica;
     this.formG = this.fb.group({
       checkbox: [],
       bpm: [],
@@ -118,8 +115,7 @@ export class FavoritosComponent implements OnInit {
     }
   }
 
-  addPlayList(music: Music): void {
-    // this.musicAdd = this.arrMusic[i].viewValue;
+  addPlayList(music: Musica): void {
     this.musicService.addPlayList(music);
   }
 

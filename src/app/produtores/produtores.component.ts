@@ -1,7 +1,7 @@
 import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ScrollService} from "../service/scroll.service";
-import {empty} from "rxjs";
+import {EMPTY} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MusicasService} from "../musicas/musicas.service";
 
@@ -140,7 +140,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
   }
   
   changeTrack(elm: any): void {
-    (elm.value == 'trackWithStems' || elm == 'trackWithStems' || this.producer == 'trackWithStems' || elm.value == 'trackNoStems' || elm == 'trackNoStems' || this.producer == 'trackNoStems') ? this.CWE.nativeElement.style.display = 'inline-grid' : empty();
+    (elm.value == 'trackWithStems' || elm == 'trackWithStems' || this.producer == 'trackWithStems' || elm.value == 'trackNoStems' || elm == 'trackNoStems' || this.producer == 'trackNoStems') ? this.CWE.nativeElement.style.display = 'inline-grid' : EMPTY;
     
     this.cardAnimate();
     this.rulesTrackStems.forEach((e: any): void => {

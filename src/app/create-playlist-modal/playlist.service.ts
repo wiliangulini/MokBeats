@@ -10,6 +10,7 @@ import {Observable} from "rxjs";
 })
 export class PlaylistService extends CrudService<playlists>{
 
+  
   constructor(
     protected override http: HttpClient,
   ) {
@@ -26,5 +27,16 @@ export class PlaylistService extends CrudService<playlists>{
   
   override save(record: playlists): Observable<playlists> {
     return super.save(record);
+  }
+  
+  override remove(id: number): Observable<playlists> {
+    console.log(id);
+    return super.remove(id);
+  }
+  
+  public copiarLink(i: number): string {
+    let urlMontagem: string = 'pagina-playlist?id=';
+    let url = window.location.href.slice(0, -9) + urlMontagem + i;
+    return url;
   }
 }

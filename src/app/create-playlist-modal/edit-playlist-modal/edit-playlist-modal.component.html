@@ -1,0 +1,24 @@
+<div class="modal-dialog modal-dialog-centered modal-lg m-0">
+  <div class="modal-content">
+    <div class="modal-header border-0 pb-0">
+      <button type="button" class="close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="card border-0">
+        <div class="row justify-content-center align-items-center">
+          <h1 class="font-weight-bold mb-3 text-center">Editar Playlist</h1>
+        </div>
+        <div class="row flex-column newPlayListInt edit">
+          <form [formGroup]="form" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-center align-items-center flex-column pt-2 pb-2">
+            <input type="text" formControlName="name" placeholder="Nome da Playlist" [(ngModel)]="playlist['name']" required />
+            <input type="text" formControlName="description" placeholder="Descrição (Opcional)" [(ngModel)]="playlist.description" />
+            <a type="submit" (click)="save()" class="font-weight-bold p-1 w-50 submit d-flex justify-content-center align-items-center">Editar Playlist</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

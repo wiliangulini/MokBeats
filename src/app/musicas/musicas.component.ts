@@ -1,20 +1,10 @@
 import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {Music, MusicasService} from "./musicas.service";
+import {Musica, MusicasService} from "./musicas.service";
 import {ScrollService} from "../service/scroll.service";
 import {AuthService} from "../login/auth.service";
 import {PlaylistService} from "../create-playlist-modal/playlist.service";
-import {empty} from "rxjs";
-
-export type Musica = {
-  id?: number;
-  nome_musica?: string;
-  nome_produtor?: string;
-  duracao?: number;
-  bpm?: number;
-  trechos?: number;
-  loops?: number;
-}
+import {EMPTY, filter} from "rxjs";
 
 @Component({
   selector: 'app-musicas',
@@ -78,7 +68,7 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     {value: "Technology", viewValue: "Technology"},
     {value: "Trippy", viewValue: "Trippy"},
   ]
-  arrMusica: Music[] = [];
+  arrMusica: Musica[] = [];
   
   @Output('ngModelChange') update: any = new EventEmitter();
   
@@ -114,10 +104,8 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     let playlist: any[] = [];
     const setPlaylist = new Set();
     this.musicService.listMusic().subscribe((data: any) => {
-      // console.log('musicService: ', data);
       this.arrMusica = data;
       this.playlistService.list().subscribe((data: any) => {
-        // console.log('playlistService: ', data);
         data.forEach((e: any) => {
           if(e.music.length > 0) {
             for(let i: number = 0; i < e.music.length; i++) {
@@ -137,8 +125,13 @@ export class MusicasComponent implements OnInit, AfterViewInit {
           if(a.id < b.id) return -1;
           return 0;
         });
-        document.querySelectorAll('.addPlaylist').forEach((e: any, index: any) => {
-          (this.arrMusica[index]?.id == filterMusicPlaylist[index]?.id || this.arrMusica[index]?.id == undefined) ? e.classList.add('amarelo') : empty();
+        let addplaylist: any = document.querySelectorAll('.addPlaylist');
+        addplaylist.forEach((e: any, index: any) => {
+          for(let i of filterMusicPlaylist){
+            if(i.id === this.arrMusica[index]?.id) {
+              e.classList.add('amarelo')
+            }
+          }
         });
       })
     })
@@ -178,7 +171,7 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     }
   }
   
-  addMusicPlayList(music: Music): void {
+  addMusicPlayList(music: Musica): void {
     this.musicService.addPlayList(music);
   }
   

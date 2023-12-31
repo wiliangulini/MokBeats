@@ -215,13 +215,16 @@
       "bpm": 95,
       "trechos": 60,
       "loops": 7
+    },
+    {
+      "id": 25
     }
   ],
   "playlists": [
     {
-      "name": "testeInit",
-      "data_alteracao": "18/11/2023",
-      "description": "desc",
+      "name": "testeINIT2",
+      "data_alteracao": "30/12/2023",
+      "description": "testeinit2Description",
       "music": [
         {
           "id": 1,
@@ -236,15 +239,6 @@
           "id": 2,
           "nome_musica": "Maleficus Chaos",
           "nome_produtor": "Luan Bolico",
-          "duracao": 180000,
-          "bpm": 95,
-          "trechos": 60,
-          "loops": 7
-        },
-        {
-          "id": 4,
-          "nome_musica": "The Funkster",
-          "nome_produtor": "Sweet Spot",
           "duracao": 180000,
           "bpm": 95,
           "trechos": 60,
@@ -435,19 +429,72 @@
       "id": 9
     },
     {
-      "name": "data_alteracao",
-      "description": "data_alteracao",
-      "data_alteracao": "19/11/2023",
-      "music": {
-        "id": 1,
-        "nome_musica": "HighFrenetic",
-        "nome_produtor": "Xalaika",
-        "duracao": 180000,
-        "bpm": 95,
-        "trechos": 60,
-        "loops": 7
-      },
-      "id": 10
+      "name": "Code",
+      "description": "bonieky",
+      "data_alteracao": "28/12/2023",
+      "music": [
+        {
+          "id": 5,
+          "nome_musica": "Code",
+          "nome_produtor": "Bonieky",
+          "duracao": 180000,
+          "bpm": 95,
+          "trechos": 60,
+          "loops": 7
+        }
+      ],
+      "id": 13
+    },
+    {
+      "name": "code2",
+      "description": "boniekylacerda",
+      "data_alteracao": "28/12/2023",
+      "music": [
+        {
+          "id": 5,
+          "nome_musica": "Code",
+          "nome_produtor": "Bonieky",
+          "duracao": 180000,
+          "bpm": 95,
+          "trechos": 60,
+          "loops": 7
+        }
+      ],
+      "id": 14
+    },
+    {
+      "name": "AFudrica",
+      "description": "theFunkester",
+      "data_alteracao": "28/12/2023",
+      "music": [
+        {
+          "id": 6,
+          "nome_musica": "The Funkster",
+          "nome_produtor": "Sweet Spot",
+          "duracao": 180000,
+          "bpm": 95,
+          "trechos": 60,
+          "loops": 7
+        }
+      ],
+      "id": 15
+    },
+    {
+      "name": "foraDeOrdemPlaylist",
+      "description": "testando icone amarelo fora de ordem",
+      "data_alteracao": "31/12/2023",
+      "music": [
+        {
+          "id": 9,
+          "nome_musica": "Impertinent",
+          "nome_produtor": "Hagy Fantasy",
+          "duracao": 180000,
+          "bpm": 95,
+          "trechos": 60,
+          "loops": 7
+        }
+      ],
+      "id": 16
     }
   ]
 }

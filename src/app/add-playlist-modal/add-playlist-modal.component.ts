@@ -1,9 +1,10 @@
 import {AfterContentInit, Component, OnInit} from '@angular/core';
 import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {Music, MusicasService} from "../musicas/musicas.service";
 import {CreatePlaylistModalComponent, playlists} from "../create-playlist-modal/create-playlist-modal.component";
 import {PlaylistService} from "../create-playlist-modal/playlist.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {EMPTY} from "rxjs";
+import {Musica} from "../musicas/musicas.service";
 
 
 @Component({
@@ -13,10 +14,11 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class AddPlaylistModalComponent implements OnInit, AfterContentInit {
   
-  newMusicPlaylist!: Music;
+  newMusicPlaylist!: Musica;
   insert: boolean = false;
   playlist: playlists = {};
   arrPlaylist: any[] = [];
+  numMusics: any[] = [];
   
   constructor(
     private activeModal: NgbActiveModal,
@@ -31,11 +33,17 @@ export class AddPlaylistModalComponent implements OnInit, AfterContentInit {
     this.createPlaylist();
     this.musicExistsPlaylist();
   }
-
+  
+  private numMusicPlaylist(data: any) {
+    data.forEach((e: any) => {
+      e.music === undefined ? this.numMusics.push(0) : EMPTY;
+      (e.music?.length === undefined && e.music.id > 0) ? this.numMusics.push(1) : this.numMusics.push(e.music?.length);
+    })
+  }
+  
   private musicExistsPlaylist() {
     let playMusicExist: any[] = [];
     this.playlistService.list().subscribe((playlist: any) => {
-      console.log(playlist)
       playlist.forEach((e: any) => {
         if(e.music.length > 0) {
           for(let i: number = 0; i < e.music.length; i++) {
@@ -53,9 +61,11 @@ export class AddPlaylistModalComponent implements OnInit, AfterContentInit {
           }
         }
       });
+      this.numMusicPlaylist(playlist);
       setTimeout(() => {
-        document.querySelectorAll('.buttonPlaylist').forEach((e: any, i) => {
+        document.querySelectorAll('.buttonPlaylist').forEach((e: any) => {
           let nome: any = e.children[0].innerText.slice(0, -4);
+          console.log(nome)
           for(let i in playMusicExist) {
             if(playMusicExist[i] === nome) {
               e.classList.add('filtragem');
@@ -90,10 +100,11 @@ export class AddPlaylistModalComponent implements OnInit, AfterContentInit {
       console.log(res);
       this.playlist = res;
       this.createPlaylist();
+      this.closeModal();
     })
   }
   
-  public addNewMusicPlaylist(element: Music) {
+  public addNewMusicPlaylist(element: Musica) {
     this.newMusicPlaylist = element;
     return this.newMusicPlaylist;
   }
@@ -116,7 +127,6 @@ export class AddPlaylistModalComponent implements OnInit, AfterContentInit {
       this.save();
     }
   }
-  
   
   save() {
     this.playlistService.save(this.playlist).subscribe((data: any) => {

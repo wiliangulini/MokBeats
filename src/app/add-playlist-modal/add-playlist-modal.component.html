@@ -15,8 +15,8 @@
           <a (click)="openModal()" class="h6 font-weight-bold text-uppercase d-flex justify-content-start align-items-center mb-3"><span class="material-icons">add</span> Nova Playlist</a>
           <div *ngIf="insert" class="d-flex flex-column justify-content-between align-items-start mb-2 w-100">
             <div class="controlButton w-100" >
-              <button class="btn control buttonPlaylist d-flex align-items-center justify-content-between w-100" *ngFor="let playlist of arrPlaylist" (click)="addMusicPlaylist(playlist)">
-                <p class="h6 mb-0 border-0" >{{playlist.name}} <span>(1)</span></p>
+              <button class="btn control buttonPlaylist d-flex align-items-center justify-content-between w-100" *ngFor="let playlist of arrPlaylist; let i = index;" (click)="addMusicPlaylist(playlist)">
+                <p class="h6 mb-0 border-0" >{{ playlist.name }} (<span>{{ numMusics[i] }}</span>)</p>
                 <span class="material-icons">done</span>
               </button>
             </div>

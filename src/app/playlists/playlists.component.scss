@@ -12,16 +12,37 @@ p.h5.font-weight-bold.playlist {
   height: 65px !important;
   transition: all 0.5s ease-in-out !important;
 }
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists .controlPlaylist {
+  cursor: pointer !important;
+}
 .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists:hover {
   background-color: #FFF !important;
   box-shadow: 0 0 10px 1px #007bff;
   border: none;
 }
 .titlesMusic.nomePlaylist.position-relative {
-  padding-left: 5rem !important;
+  padding-left: 2rem !important;
 }
 .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists p.h6.font-weight-bold.playlist {
   color: #FFF;
+}
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists .col-sm-2.col-md-2.col-lg-2.col-xl-2.d-flex.flex-column.align-items-center.justify-content-center {
+  z-index: 10 !important;
+  cursor: auto !important;
+}
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists button.btn.btn-icons:hover {
+  border-radius: 15px;
+  box-shadow: 0 0 8px 0 #007bff;
+}
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists:hover button.btn.btn-icons.rmv svg {
+  width: 27px !important;
+  height: 27px !important;
+}
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists:hover button.btn.btn-icons.rmv svg,
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists:hover button.btn.btn-icons.rmv span.material-icons {
+  font-size: 30px !important;
+  color: #007bff !important;
+  fill: #007bff !important;
 }
 .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists:hover p.h6.font-weight-bold.playlist {
   color: #007bff;
@@ -31,9 +52,15 @@ p.h5.font-weight-bold.playlist {
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 10% !important;
+  max-width: 20% !important;
+  padding-left: 1.25% !important;
 }
-
+.titlesMusic.numberMusicPlaylist.d-flex.justify-content-end.align-items-center.w-100 {
+  padding-right: 7%;
+}
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.playlists .col-sm-2.col-md-2.col-lg-2.col-xl-2.dataAlteracao.d-flex.flex-column.align-items-center.justify-content-center {
+  padding-left: 5%;
+}
 .btn.btnPlaylist {
   width: 25%;
   font-size: 20px;
@@ -329,6 +356,9 @@ button.btn.btn-icons {
   border: 0;
   padding: 0;
 }
+button.btn.btn-icons.rmv span.material-icons {
+  color: rgba(255,255,255, 0.5) !important;
+}
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 button.btn.btn-primary .xdBUc {
   position: relative;
   left: 5%;
@@ -340,7 +370,6 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
   border: 2px solid rgba(255,255,255,.2);
   background: transparent;
   font-weight: bold;
-  width: 55%;
   color: #b4b4b5 !important;
   height: 45px !important;
 }

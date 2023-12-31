@@ -1,20 +1,20 @@
 import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {Music, MusicasService} from "../musicas/musicas.service";
+import {Musica, MusicasService} from "../musicas/musicas.service";
 import {AuthService} from "../login/auth.service";
 import {ScrollService} from "../service/scroll.service";
 import {PlaylistService} from "../create-playlist-modal/playlist.service";
-import {empty} from "rxjs";
-import {Musica} from "../musicas/musicas.component";
+import {EMPTY} from "rxjs";
 import {playlists} from "../create-playlist-modal/create-playlist-modal.component";
 import {ActivatedRoute} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-pag-playlist',
   templateUrl: './pag-playlist.component.html',
   styleUrls: ['./pag-playlist.component.scss']
 })
-export class PagPlaylistComponent implements OnInit, AfterViewInit {
+export class PagPlaylistComponent implements OnInit {
   
   public favorite: Musica = {};
   trecho: any[] = [15, 30, 60];
@@ -86,6 +86,7 @@ export class PagPlaylistComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private playlistService: PlaylistService,
     private route: ActivatedRoute,
+    private snackBar: MatSnackBar,
   ) {
     this.formG = this.fb.group({
       checkbox: [],
@@ -103,64 +104,23 @@ export class PagPlaylistComponent implements OnInit, AfterViewInit {
   
   ngOnInit(): void {
     this.scrollService.scrollUp();
-    if (screen.width < 769) {
-      document.getElementById('navLeft')!.style.width = '0';
-    }
+    if (screen.width < 769) document.getElementById('navLeft')!.style.width = '0';
     
     this.route.queryParams.subscribe((data: any) => {
       this._playlist = data;
-      console.log(this._playlist)
       this.playlistService.list().subscribe((data: any) => {
-        console.log(data);
         data.forEach((e: playlists) => {
           if (e.id == this._playlist.id) {
-            console.log(e);
             this.playlist = e;
             this.namePlaylist = this.playlist.name;
             this.descriptionPlaylist = this.playlist.description;
-            let musicas: any[];
+            let musicas: Musica[];
             musicas = this.playlist.music;
-            console.log(musicas)
             this.arrMusica = musicas;
-            // musicas repetidas na playlist verificar se ainda é possivel ao criar uma playlist adicionar musicas repetidas nela, se for possivel, fazer verficacao pra isso nao ocrrer.
           }
         });
       });
     });
-  }
-  
-  ngAfterViewInit() {
-    
-    // let playlist: any[] = [];
-    // const setPlaylist = new Set();
-    // this.musicService.listMusic().subscribe((data: any) => {
-    //   this.arrMusica = data;
-    //   this.playlistService.list().subscribe((data: any) => {
-    //
-    //     data.forEach((e: any) => {
-    //       // verificar nome da playlist clicada se bater entao apresenta as musicas da playlist em questao
-    //       if(e.music.length > 0) {
-    //         for(let i: number = 0; i < e.music.length; i++) {
-    //           playlist.push(e.music[i]);
-    //         }
-    //       } else if(e.music.length == undefined && e.music.id > 0) {
-    //         playlist.push(e.music);
-    //       }
-    //     });
-    //     const filterMusicPlaylist = playlist.filter((data: any) => {
-    //       const duplicatePlaylist = setPlaylist.has(data.id);
-    //       setPlaylist.add(data.id);
-    //       return !duplicatePlaylist;
-    //     })
-    //
-    //     document.querySelectorAll('.addPlaylist').forEach((e: any, index: any) => {
-    //       (this.arrMusica[index]?.id == filterMusicPlaylist[index]?.id || this.arrMusica[index]?.id == undefined) ? e.classList.add('amarelo') : empty();
-    //     });
-    //   })
-    // })
-    // document.querySelectorAll('.mat-checkbox-frame')?.forEach((e: any) => {
-    //   e.style.borderColor = "#FFF";
-    // })
   }
   
   msToMinute(ms: any) {
@@ -194,8 +154,26 @@ export class PagPlaylistComponent implements OnInit, AfterViewInit {
     }
   }
   
-  addPlayList(music: Music): void {
-    this.musicService.addPlayList(music);
+  removeMusicPlayList(i: any): void {
+    let idRemove: number = this.playlist.music[i].id;
+    this.playlist.music = this.playlist.music.filter((obj: any) => obj.id !== idRemove);
+    console.log(this.playlist);
+    this.save();
+    setTimeout(() => {
+      document.location.reload();
+    }, 5500)
+  }
+  
+  save() {
+    console.log(this.playlist);
+    this.playlistService.save(this.playlist).subscribe((data: any) => {
+      if (data.id !== undefined) {
+        console.log(data);
+        this.snackBar.open('Música removida da playlist com SUCESSO!!!', '', {duration: 5000});
+      } else {
+        this.snackBar.open('ERRO ao remover música da playlist!!!', '', {duration: 5000});
+      }
+    });
   }
   
   copiarLink(i: number): void { this.musicService.copiarLink(i); }

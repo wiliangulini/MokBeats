@@ -26,8 +26,11 @@
       </div>
       <div class="card playlist">
         <a class="d-flex flex-column justify-content-center align-items-center btn" [routerLink]="['/playlists']" (click)="closeModal()" href="">
-          <svg class="playLists" width="80" fill="#212121" height="80" viewBox="0 0 24 24"><path d="M19.6 7.9h2.2a1 1 0 000-2H18a31.1 31.1 0 01-2.4-.2 7 7 0 01-.9-.2 4.8 4.8 0 01-.8-.3 4.5 4.5 0 01-.8-.5 5.9 5.9 0 01-.7-.6 9.8 9.8 0 01-.7-.9 2.3 2.3 0 00-.5-.6 1 1 0 00-.6-.1 1 1 0 00-.6.2 1.1 1.1 0 00-.3.5 3.4 3.4 0 000 .9v9.1a5.6 5.6 0 00-3.3-1c-2.9 0-5.2 2.1-5.2 4.7s2.3 4.6 5.2 4.6 5.3-2 5.3-4.6V6c2 1.7 4.1 1.7 7.9 1.8zM6.4 19.5c-1.8 0-3.2-1.2-3.2-2.6s1.4-2.7 3.2-2.7 3.3 1.2 3.3 2.7-1.5 2.6-3.3 2.6z"></path><path d="M21.8 10.3H15a1 1 0 000 2h6.8a1 1 0 000-2zm-1.9 8h-5a1 1 0 100 2h5a1 1 0 000-2zm1.9-4H15a1 1 0 000 2h6.8a1 1 0 100-2z"></path></svg>
-          <p class="h6 text-center m-0 text-uppercase mt-2">Nenhuma playlist ainda</p>
+          <svg id="svgPlaylist" class="playLists" width="80" fill="#212121" height="80" viewBox="0 0 24 24"><path d="M19.6 7.9h2.2a1 1 0 000-2H18a31.1 31.1 0 01-2.4-.2 7 7 0 01-.9-.2 4.8 4.8 0 01-.8-.3 4.5 4.5 0 01-.8-.5 5.9 5.9 0 01-.7-.6 9.8 9.8 0 01-.7-.9 2.3 2.3 0 00-.5-.6 1 1 0 00-.6-.1 1 1 0 00-.6.2 1.1 1.1 0 00-.3.5 3.4 3.4 0 000 .9v9.1a5.6 5.6 0 00-3.3-1c-2.9 0-5.2 2.1-5.2 4.7s2.3 4.6 5.2 4.6 5.3-2 5.3-4.6V6c2 1.7 4.1 1.7 7.9 1.8zM6.4 19.5c-1.8 0-3.2-1.2-3.2-2.6s1.4-2.7 3.2-2.7 3.3 1.2 3.3 2.7-1.5 2.6-3.3 2.6z"></path><path d="M21.8 10.3H15a1 1 0 000 2h6.8a1 1 0 000-2zm-1.9 8h-5a1 1 0 100 2h5a1 1 0 000-2zm1.9-4H15a1 1 0 000 2h6.8a1 1 0 100-2z"></path></svg>
+          <div class="controlTXT d-flex flex-column align-items-center">
+            <p class="h6 text-center m-0 text-uppercase mt-2 position-relative">{{numberPlaylist}}</p>
+            <p *ngIf="insert" class="h5 text-center text-uppercase mt-2">{{txt}}</p>
+          </div>
         </a>
       </div>
     </div>

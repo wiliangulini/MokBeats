@@ -51,6 +51,7 @@ import {FinalizarCompraComponent} from './finalizar-compra/finalizar-compra.comp
 import {ContatoComponent} from './contato/contato.component';
 import {CreatePlaylistModalComponent} from './create-playlist-modal/create-playlist-modal.component';
 import { PagPlaylistComponent } from './pag-playlist/pag-playlist.component';
+import { EditPlaylistModalComponent } from './create-playlist-modal/edit-playlist-modal/edit-playlist-modal.component';
 
 
 @NgModule({
@@ -84,6 +85,7 @@ import { PagPlaylistComponent } from './pag-playlist/pag-playlist.component';
     ContatoComponent,
     CreatePlaylistModalComponent,
     PagPlaylistComponent,
+    EditPlaylistModalComponent,
   ],
   imports: [
     BrowserModule,
