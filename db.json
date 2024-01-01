@@ -252,6 +252,15 @@
           "bpm": 95,
           "trechos": 60,
           "loops": 7
+        },
+        {
+          "id": 4,
+          "nome_musica": "The Funkster",
+          "nome_produtor": "Sweet Spot",
+          "duracao": 180000,
+          "bpm": 95,
+          "trechos": 60,
+          "loops": 7
         }
       ],
       "id": 1

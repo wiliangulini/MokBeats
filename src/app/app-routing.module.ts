@@ -21,7 +21,7 @@ import {ContatoComponent} from "./contato/contato.component";
 import {PagPlaylistComponent} from "./pag-playlist/pag-playlist.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'musicas', component: MusicasComponent },
@@ -41,6 +41,7 @@ const routes: Routes = [
   { path: 'finalizar-compra', component: FinalizarCompraComponent },
   { path: 'contato', component: ContatoComponent },
   { path: 'pagina-playlist', component: PagPlaylistComponent },
+  { path: 'upload', loadChildren: () => import('./upload-file/upload-file.module').then(m => m.UploadFileModule) },
 ];
 
 @NgModule({

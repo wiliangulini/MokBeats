@@ -138,7 +138,7 @@
           <label class="upload d-flex justify-content-center align-items-center" id="upload">
             <svg class="mr-3" width="24" height="24" viewBox="0 0 32 32"><path d="M27.25,28.953H4.75a1,1,0,0,1-1-1V21.221a1,1,0,0,1,2,0v5.732h20.5V21.221a1,1,0,1,1,2,0v6.732A1,1,0,0,1,27.25,28.953Z"></path><path d="M22.128,16.9a1,1,0,0,0-1.414,0L17,20.607V4.047a1,1,0,0,0-2,0v16.56L11.286,16.9A1,1,0,0,0,9.872,18.31l5.42,5.417a1,1,0,0,0,1.417,0l5.42-5.417A1,1,0,0,0,22.128,16.9Z"></path></svg>
             <span class="h6 m-0">Carregue seus arquivos aqui</span>
-            <input multiple type="file" formControlName="upload" name="upload" class="w-100 input-file" min="2" max="5" accept="*/*" id="file" />
+            <input multiple type="file" formControlName="upload" name="upload" class="w-100 input-file" (change)="onChange($event)" min="2" max="5" accept="*/*" id="file" />
           </label>
 
           <div id="controlFile" class="showFile w-100"></div>
@@ -149,7 +149,7 @@
           </mat-checkbox>
         </div>
         <div class="submitForm w-100 d-flex justify-content-center align-items-center">
-          <button type="button" class="btnSubmit">ENVIAR</button>
+          <button type="button" class="btn btn-primary btnSubmit" (click)="onUpload()" [disabled]="!files">ENVIAR</button>
         </div>
       </form>
     </div>

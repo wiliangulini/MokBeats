@@ -4,6 +4,7 @@ import {ScrollService} from "../service/scroll.service";
 import {EMPTY} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MusicasService} from "../musicas/musicas.service";
+import {UploadFileService} from "../upload-file/upload-file.service";
 
 @Component({
   selector: 'app-produtores',
@@ -18,10 +19,8 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
   rules: string = '';
   producer: string = '';
   selectOption: string = '';
-  
   checkBoxProducer: boolean = false;
   checked: boolean = false;
-  
   numero: number = 0;
   rulesVal: any;
   card: any;
@@ -61,6 +60,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     private fb: FormBuilder,
     private cdRef: ChangeDetectorRef,
     private musicService: MusicasService,
+    private uploadFileService: UploadFileService,
   ) {
     this.form = this.fb.group({
       track_stems: [this.producer, Validators.required],
@@ -243,6 +243,31 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       }
     }
   }
+  
+  
+  files!: Set<File>;
+  onChange(event: any) {
+    console.log(event)
+    document.querySelector('.btnSubmit')!.classList.add('hover');
+    const selectedFiles: FileList = event.srcElement.files;
+    console.log(selectedFiles);
+    const fileNames: any[] = [];
+    this.files = new Set();
+    for(let i = 0; i < selectedFiles.length; i++) {
+      fileNames.push(selectedFiles[i].name);
+      this.files.add(selectedFiles[i]);
+    }
+    console.log(fileNames);
+  }
+  onUpload() {
+    if (this.files && this.files.size > 0) {
+      this.uploadFileService.upload(this.files, 'http://localhost:8000/upload').subscribe((data: any) => {
+        console.log(data)
+        console.log('"Upload CONCLUIDO"')
+      })
+    }
+  }
+  
   
   uploadFile(): void {
     let fileChooser = this.$$('.input-file');
