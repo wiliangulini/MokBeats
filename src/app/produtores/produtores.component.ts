@@ -5,6 +5,7 @@ import {EMPTY} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MusicasService} from "../musicas/musicas.service";
 import {UploadFileService} from "../upload-file/upload-file.service";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-produtores',
@@ -12,9 +13,9 @@ import {UploadFileService} from "../upload-file/upload-file.service";
   styleUrls: ['./produtores.component.scss']
 })
 export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChecked {
-  
+
   @ViewChild('CWE') CWE: any;
-  
+
   form: FormGroup;
   rules: string = '';
   producer: string = '';
@@ -53,7 +54,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       viewValue: 'Nesta opção você produtor poderá fazer upload de até dez tracks completas com mais trinta stems ( no caso quatro stems por track ), totalizando em quarenta uploads. Stems precisam ter o mesmo duração da full track.'
     },
   ];
-  
+
   constructor(
     private snackBar: MatSnackBar,
     private scrollService: ScrollService,
@@ -83,17 +84,28 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       checkBoxProducer: [this.checkBoxProducer, Validators.required],
     });
   }
-  
+
   ngOnInit(): void {
     this.scrollService.scrollUp();
     this.$$ = document.querySelector.bind(document);
   }
-  
+
   ngAfterViewChecked(): void {
     this.cdRef.detectChanges();
   }
-  
+
   ngAfterViewInit(): void {
+    // this.uploadFileService.list().subscribe(data => console.log(data));
+
+    this.uploadFileService.list2().subscribe(data => console.log(data));
+    
+    this.uploadFileService.loadById(4).subscribe(data => console.log(data));
+    /*
+    esta listando no console, verificar se outros metodos alem da listagem estao funcionando, se sim, mudar_todo o nosso crud atual para esse novo back end.
+    
+    remover enviroment e criar as urls.
+    */
+    
     this.generoMusic = this.musicService.convertida2;
     this.uploadFile();
     let matForm: any = document.querySelectorAll('.mat-form-field-wrapper');
@@ -112,9 +124,9 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       e!.style.height = '100%';
     });
   }
-  
+
   private removeTracks(): void {
-    
+
     let divPreview: any = this.$$('.uploaded');
     if (divPreview !== null) {
       if (divPreview.parentNode && divPreview.innerText.length > 0) {
@@ -124,7 +136,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       }
     }
   }
-  
+
   markCheckbox(e: any) {
     console.log(this.checkBoxProducer);
     if(e.target.checked == undefined) {
@@ -138,10 +150,10 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     console.log(this.checkBoxProducer);
     console.log(e.target.checked);
   }
-  
+
   changeTrack(elm: any): void {
     (elm.value == 'trackWithStems' || elm == 'trackWithStems' || this.producer == 'trackWithStems' || elm.value == 'trackNoStems' || elm == 'trackNoStems' || this.producer == 'trackNoStems') ? this.CWE.nativeElement.style.display = 'inline-grid' : EMPTY;
-    
+
     this.cardAnimate();
     this.rulesTrackStems.forEach((e: any): void => {
       if (e.value === '10Tracks' && (elm.value == 'trackNoStems' || elm == 'trackNoStems' || this.producer == 'trackNoStems')) {
@@ -158,15 +170,15 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       }
     })
   }
-  
+
   onCommentChange(e: any) {
     console.log(e)
   }
-  
+
   cardRepeat() {
     return this.card!.style.width = '0vw';
   }
-  
+
   cardAnimate(): void {
     this.card = document.getElementById('card');
     if (this.producer == 'trackNoStems') {
@@ -186,13 +198,13 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       this.card!.style.opacity = 1;
       this.card!.style.marginBottom = '2rem';
     }
-    
+
     if (this.producer == 'trackNoStems' || this.producer == 'trackWithStems') {
       console.log('producer: ', this.producer);
       console.log('selectOption: ', this.selectOption);
     }
   }
-  
+
   optionSelect(event: any): void {
     let spanRules: any = document.getElementById('rules1');
     this.rulesTrackStems.forEach((e: any): void => {
@@ -200,7 +212,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       (e.value === '10Track30Stems' && (event === '10 Tracks com 30 Stems' || this.selectOption === '10 Tracks com 30 Stems')) ? (spanRules.innerText = e.viewValue) : this.removeTracks();
     });
   }
-  
+
   private loop(event: any, num: number): void {
     this.numero = num;
     let showFile = this.$$('.showFile');
@@ -216,7 +228,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
             <span class='material-icons'>done</span>
           </div>
         </div>`;
-    
+
     if(arrayUpload.length > num) {
       this.snackBar.open(`A OPÇÃO QUE VOCÊ SELECIONOU PERMITE UM NÚMERO MÁXIMO DE ${num} UPLOADS!`, '', {duration: 20000});
       this.uploadFile();
@@ -243,8 +255,8 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       }
     }
   }
-  
-  
+
+
   files!: Set<File>;
   onChange(event: any) {
     console.log(event)
@@ -261,17 +273,17 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
   }
   onUpload() {
     if (this.files && this.files.size > 0) {
-      this.uploadFileService.upload(this.files, 'http://localhost:8000/upload').subscribe((data: any) => {
+      this.uploadFileService.upload(this.files, environment.API + '/upload').subscribe((data: any) => {
         console.log(data)
         console.log('"Upload CONCLUIDO"')
       })
     }
   }
-  
-  
+
+
   uploadFile(): void {
     let fileChooser = this.$$('.input-file');
-    
+
     fileChooser.onchange = (e: any): void => {
       if (this.selectOption == '1 Track com 4 stems') {
         this.loop(e, 5);

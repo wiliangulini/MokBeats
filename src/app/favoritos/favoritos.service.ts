@@ -9,7 +9,7 @@ import {environment} from "../../environments/environment";
 export class FavoritosService {
 
   favorit: any[];
-  
+
   arrMusica: Musica[] = [];
 
   constructor(
@@ -20,13 +20,13 @@ export class FavoritosService {
       this.arrMusica = data;
     })
   }
-  
-  private readonly API_MUSIC = `${environment.API}arrMusica`
-  
+
+  private readonly API_MUSIC = `${environment.API}MUSICAS`
+
   private listMusic() {
     return this.http.get<Musica>(`${this.API_MUSIC}`).pipe();
   }
-  
+
   sendFavorite(elm: any) {
 
     for (let i= 0; i < this.arrMusica.length; i++) {

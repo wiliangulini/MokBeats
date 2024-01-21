@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --proxy-config proxy.config.js",
     "build": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -28,7 +28,6 @@
     "firebase": "^10.3.0",
     "inputmask": "^5.0.8",
     "jquery": "^3.6.3",
-    "json-server": "^0.17.4",
     "moment": "^2.18.1",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
