@@ -5,6 +5,8 @@ import {ScrollService} from "../service/scroll.service";
 import {AuthService} from "../login/auth.service";
 import {PlaylistService} from "../create-playlist-modal/playlist.service";
 import {EMPTY, filter} from "rxjs";
+import {HttpClient} from "@angular/common/http";
+import {FavoritosService} from "../favoritos/favoritos.service";
 
 @Component({
   selector: 'app-musicas',
@@ -78,6 +80,7 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     private scrollService: ScrollService,
     private fb: FormBuilder,
     private playlistService: PlaylistService,
+    private likeService: FavoritosService,
   ) {
     this.formG = this.fb.group({
       checkbox: [],
@@ -101,11 +104,14 @@ export class MusicasComponent implements OnInit, AfterViewInit {
   }
   
   ngAfterViewInit() {
+    
     let playlist: any[] = [];
     const setPlaylist = new Set();
     this.musicService.listMusic().subscribe((data: any) => {
+      console.log(data);
       this.arrMusica = data;
       this.playlistService.list().subscribe((data: any) => {
+        console.log(data);
         data.forEach((e: any) => {
           if(e.music.length > 0) {
             for(let i: number = 0; i < e.music.length; i++) {
@@ -134,6 +140,29 @@ export class MusicasComponent implements OnInit, AfterViewInit {
           }
         });
       })
+      this.likeService.listFavoritos().subscribe((data: any) => {
+        let fav: any[] = [];
+        data.forEach((e: any) => {
+          fav.push(e);
+        });
+        console.log(fav);
+        let hearthLike = document.querySelectorAll('.hearth');
+        let hearthLike1 = document.querySelectorAll('.hearth1');
+        hearthLike.forEach((e: any, index: number) => {
+          for(let i of fav) {
+            if(i.id === this.arrMusica[index]?.id) {
+              e.style.display = 'none'
+            }
+          }
+        })
+        hearthLike1.forEach((e: any, index: number) => {
+          for(let i of fav) {
+            if(i.id === this.arrMusica[index]?.id) {
+              e.style.display = 'block'
+            }
+          }
+        })
+      });
     })
     document.querySelectorAll('.mat-checkbox-frame')?.forEach((e: any) => {
       e.style.borderColor = "#FFF";

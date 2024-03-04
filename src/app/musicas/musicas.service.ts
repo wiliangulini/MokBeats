@@ -20,7 +20,7 @@ export type Musica = {
 @Injectable({
   providedIn: 'root'
 })
-export class MusicasService {
+export class MusicasService  {
 
   hearth: any;
   hearth1: any;
@@ -396,7 +396,7 @@ export class MusicasService {
   ];
   public arrMusica!: Musica[];
 
-  private readonly API_MUSIC = `${environment.API}arrMusica`
+  private readonly API_MUSIC = `${environment.API}musicas`
 
   constructor(
     private authService: AuthService,

@@ -59,68 +59,6 @@ app.route('/api/musicas/:id').delete((request, response)=> {
   response.status(204).send({});
 });
 
-// app.listen(8000, () => {
-//   console.log('servidor porta 8000');
-// });
-//
-// var COURSES = [
-//     {
-//         id: 1,
-//         name: 'Angular: CLI',
-//         releaseDate: 'November 2, 2019',
-//         description: 'Neste curso, os alunos irão obter um grande conhecimento nos principais recursos do CLI.',
-//         duration: 120,
-//         code: 'XLF-1212',
-//         rating: 3,
-//         price: 12.99,
-//         imageUrl: '/assets/images/cli.png',
-//     },
-//     {
-//         id: 2,
-//         name: 'Angular: Forms',
-//         releaseDate: 'November 4, 2019',
-//         description: 'Neste curso, os alunos irão obter um conhecimento aprofundado sobre os recursos disponíveis no módulo de Forms.',
-//         duration: 80,
-//         code: 'DWQ-3412',
-//         rating: 3.5,
-//         price: 24.99,
-//         imageUrl: '/assets/images/forms.png',
-//     },
-//     {
-//         id: 3,
-//         name: 'Angular: HTTP',
-//         releaseDate: 'November 8, 2019',
-//         description: 'Neste curso, os alunos irão obter um conhecimento aprofundado sobre os recursos disponíveis no módulo de HTTP.',
-//         duration: 80,
-//         code: 'QPL-0913',
-//         rating: 4.0,
-//         price: 36.99,
-//         imageUrl: '/assets/images/http.png',
-//     },
-//     {
-//         id: 4,
-//         name: 'Angular: Router',
-//         releaseDate: 'November 16, 2019',
-//         description: 'Neste curso, os alunos irão obter um conhecimento aprofundado sobre os recursos disponíveis no módulo de Router.',
-//         duration: 80,
-//         code: 'OHP-1095',
-//         rating: 4.5,
-//         price: 46.99,
-//         imageUrl: '/assets/images/router.png',
-//     },
-//     {
-//         id: 5,
-//         name: 'Angular: Animations',
-//         releaseDate: 'November 25, 2019',
-//         description: 'Neste curso, os alunos irão obter um conhecimento aprofundado sobre os recursos disponíveis sobre Animation.',
-//         duration: 80,
-//         code: 'PWY-9381',
-//         rating: 5,
-//         price: 56.99,
-//         imageUrl: '/assets/images/animations.png',
-//     }
-// ];
-
 var MUSICAS = [
   {
     id: 1,
@@ -331,6 +269,454 @@ var MUSICAS = [
   },
   {
     id: 24,
+    nome_musica: "The Funkster",
+    nome_produtor: "Sweet Spot",
+    duracao: 180000,
+    bpm: 95,
+    trechos: 60,
+    loops: 7
+  }
+];
+
+
+app.route('/api/playlists').get((request, response) => {
+  response.send(PLAYLISTS);
+});
+
+app.route('/api/playlists').post((request, response) => {
+  let playlist = request.body;
+
+  const firstId = PLAYLISTS ? Math.max.apply(null, PLAYLISTS.map(playlistIterator => playlistIterator.id)) + 1 : 1;
+  playlist.id = firstId;
+  PLAYLISTS.push(playlist);
+  response.status(201).send(playlist);
+});
+
+app.route('/api/playlists/:id').put((request, response) => {
+  const playlistId = +request.params['id'];
+  const playlist = request.body;
+  const index = PLAYLISTS.findIndex(playlistIterator => playlistIterator.id === playlistId);
+  PLAYLISTS[index] = playlist;
+  response.status(200).send(playlist);
+});
+
+app.route('/api/playlists/:id').get((request, response) => {
+  const playlistId = +request.params['id'];
+  response.status(200).send(PLAYLISTS.find(playlistIterator => playlistIterator.id === playlistId));
+});
+
+app.route('/api/playlists/:id').delete((request, response)=> {
+  const playlistId = +request.params['id'];
+  PLAYLISTS = PLAYLISTS.filter(playlistIterator => playlistIterator.id !== playlistId);
+  response.status(204).send({});
+});
+
+var PLAYLISTS = [
+  {
+    name: "testeNIT2",
+    data_alteracao: "30/12/2023",
+    description: "testeinit2Description",
+    music: [
+      {
+        id: 1,
+        nome_musica: "HighFrenetic",
+        nome_produtor: "Xalaika",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      },
+      {
+        id: 2,
+        nome_musica: "Maleficus Chaos",
+        nome_produtor: "Luan Bolico",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      },
+      {
+        id: 3,
+        nome_musica: "Impertinent",
+        nome_produtor: "Hagy Fantasy",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      },
+      {
+        id: 4,
+        nome_musica: "The Funkster",
+        nome_produtor: "Sweet Spot",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      }
+    ],
+    id: 1
+  },
+  {
+    name: "New Paylist",
+    data_alteracao: "18/11/2023",
+    description: "description playlist",
+    music: [
+      {
+        id: 1,
+        nome_musica: "HighFrenetic",
+        nome_produtor: "Xalaika",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      }
+    ],
+    id: 2
+  },
+  {
+    name: "HighBM",
+    data_alteracao: "18/11/2023",
+    description: "acelero",
+    music: [
+      {
+        id: 2,
+        nome_musica: "Maleficus Chaos",
+        nome_produtor: "Luan Bolico",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      }
+    ],
+    id: 3
+  },
+  {
+    name: "novaP",
+    data_alteracao: "18/11/2023",
+    description: "descricao",
+    music: [
+      {
+        id: 1,
+        nome_musica: "HighFrenetic",
+        nome_produtor: "Xalaika",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      }
+    ],
+    id: 4
+  },
+  {
+    name: "hagy",
+    data_alteracao: "18/11/2023",
+    description: "impertinent",
+    music: [
+      {
+        id: 3,
+        nome_musica: "Impertinent",
+        nome_produtor: "Hagy Fantasy",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      }
+    ],
+    id: 5
+  },
+  {
+    name: "test1",
+    data_alteracao: "18/11/2023",
+    description: "desc1",
+    music: [
+      {
+        id: 2,
+        nome_musica: "Maleficus Chaos",
+        nome_produtor: "Luan Bolico",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      },
+      {
+        id: 3,
+        nome_musica: "Impertinent",
+        nome_produtor: "Hagy Fantasy",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      }
+    ],
+    id: 6
+  },
+  {
+    name: "test2",
+    data_alteracao: "18/11/2023",
+    description: "desc2",
+    music: [
+      {
+        id: 1,
+        nome_musica: "HighFrenetic",
+        nome_produtor: "Xalaika",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      },
+      {
+        id: 3,
+        nome_musica: "Impertinent",
+        nome_produtor: "Hagy Fantasy",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      }
+    ],
+    id: 7
+  },
+  {
+    name: "testEd",
+    data_alteracao: "18/11/2023",
+    description: "descEnd",
+    music: [
+      {
+        id: 1,
+        nome_musica: "HighFrenetic",
+        nome_produtor: "Xalaika",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      },
+      {
+        id: 2,
+        nome_musica: "Maleficus Chaos",
+        nome_produtor: "Luan Bolico",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      }
+    ],
+    id: 8
+  },
+  {
+    name: "1test",
+    data_alteracao: "19/11/2023",
+    description: "1desc",
+    music: [
+      {
+        id: 1,
+        nome_musica: "HighFrenetic",
+        nome_produtor: "Xalaika",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      },
+      {
+        id: 3,
+        nome_musica: "Impertinent",
+        nome_produtor: "Hagy Fantasy",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      }
+    ],
+    id: 9
+  },
+  {
+    name: "Code",
+    description: "bonieky",
+    data_alteracao: "28/12/2023",
+    music: [
+      {
+        id: 5,
+        nome_musica: "Code",
+        nome_produtor: "Bonieky",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      }
+    ],
+    id: 13
+  },
+  {
+    name: "code2",
+    description: "boniekylacerda",
+    data_alteracao: "28/12/2023",
+    music: [
+      {
+        id: 5,
+        nome_musica: "Code",
+        nome_produtor: "Bonieky",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      }
+    ],
+    id: 14
+  },
+  {
+    name: "AFudrica",
+    description: "theFunkester",
+    data_alteracao: "28/12/2023",
+    music: [
+      {
+        id: 6,
+        nome_musica: "The Funkster",
+        nome_produtor: "Sweet Spot",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      }
+    ],
+    id: 15
+  },
+  {
+    name: "foraDeOrdemPlaylist",
+    description: "testando icone amarelo fora de ordem",
+    data_alteracao: "31/12/2023",
+    music: [
+      {
+        id: 9,
+        nome_musica: "Impertinent",
+        nome_produtor: "Hagy Fantasy",
+        duracao: 180000,
+        bpm: 95,
+        trechos: 60,
+        loops: 7
+      }
+    ],
+    id: 16
+  }
+];
+
+
+app.route('/api/favoritos').get((request, response) => {
+  console.log(FAVORITOS);
+  response.send(FAVORITOS);
+});
+
+app.route('/api/favoritos').post((request, response) => {
+  let favorito = request.body;
+
+  const firstId = FAVORITOS ? Math.max.apply(null, FAVORITOS.map(favoritoIterator => favoritoIterator.id)) + 1 : 1;
+  favorito.id = firstId;
+  FAVORITOS.push(favorito);
+  response.status(201).send(favorito);
+});
+
+app.route('/api/favoritos/:id').put((request, response) => {
+  const favoritoId = +request.params['id'];
+  const favorito = request.body;
+  const index = FAVORITOS.findIndex(favoritoIterator => favoritoIterator.id === favoritoId);
+  FAVORITOS[index] = favorito;
+  response.status(200).send(favorito);
+});
+
+app.route('/api/favoritos/:id').get((request, response) => {
+  const favoritoId = +request.params['id'];
+  response.status(200).send(FAVORITOS.find(favoritoIterator => favoritoIterator.id === favoritoId));
+});
+
+app.route('/api/favoritos/:id').delete((request, response)=> {
+  const favoritoId = +request.params['id'];
+  FAVORITOS = FAVORITOS.filter(favoritoIterator => favoritoIterator.id !== favoritoId);
+  response.status(204).send({});
+});
+
+
+var FAVORITOS = [
+  {
+  id: 1,
+  nome_musica: "HighFrenetic",
+  nome_produtor: "Xalaika",
+  duracao: 180000,
+  bpm: 95,
+  trechos: 60,
+  loops: 7
+},
+  {
+    id: 2,
+    nome_musica: "Maleficus Chaos",
+    nome_produtor: "Luan Bolico",
+    duracao: 180000,
+    bpm: 95,
+    trechos: 60,
+    loops: 7
+  },
+  {
+    id: 3,
+    nome_musica: "Impertinent",
+    nome_produtor: "Hagy Fantasy",
+    duracao: 180000,
+    bpm: 95,
+    trechos: 60,
+    loops: 7
+  },
+  {
+    id: 4,
+    nome_musica: "The Funkster",
+    nome_produtor: "Sweet Spot",
+    duracao: 180000,
+    bpm: 95,
+    trechos: 60,
+    loops: 7
+  },
+  {
+    id: 5,
+    nome_musica: "Code",
+    nome_produtor: "Bonieky",
+    duracao: 180000,
+    bpm: 95,
+    trechos: 60,
+    loops: 7
+  },
+  {
+    id: 6,
+    nome_musica: "The Funkster",
+    nome_produtor: "Sweet Spot",
+    duracao: 180000,
+    bpm: 95,
+    trechos: 60,
+    loops: 7
+  },
+  {
+    id: 7,
+    nome_musica: "HighFrenetic",
+    nome_produtor: "Xalaika",
+    duracao: 180000,
+    bpm: 95,
+    trechos: 60,
+    loops: 7
+  },
+  {
+    id: 8,
+    nome_musica: "Maleficus Chaos",
+    nome_produtor: "Luan Bolico",
+    duracao: 180000,
+    bpm: 95,
+    trechos: 60,
+    loops: 7
+  },
+  {
+    id: 9,
+    nome_musica: "Impertinent",
+    nome_produtor: "Hagy Fantasy",
+    duracao: 180000,
+    bpm: 95,
+    trechos: 60,
+    loops: 7
+  },
+  {
+    id: 12,
     nome_musica: "The Funkster",
     nome_produtor: "Sweet Spot",
     duracao: 180000,

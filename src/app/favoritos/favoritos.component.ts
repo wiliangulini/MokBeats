@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Musica, MusicasService} from "../musicas/musicas.service";
 import {AuthService} from "../login/auth.service";
@@ -10,7 +10,7 @@ import {FavoritosService} from "./favoritos.service";
   templateUrl: './favoritos.component.html',
   styleUrls: ['./favoritos.component.scss']
 })
-export class FavoritosComponent implements OnInit {
+export class FavoritosComponent implements OnInit, AfterViewInit {
 
 
   trecho: any[] = [15, 30, 60];
@@ -98,6 +98,25 @@ export class FavoritosComponent implements OnInit {
     this.arrMusic = this.likeService.addFavorite();
   }
 
+  ngAfterViewInit() {
+    this.likeService.listFavoritos().subscribe((data: any) => {
+      this.arrMusic = data;
+      console.log(this.arrMusic)
+      
+      this.arrMusic.forEach((e: any) => {
+        console.log(e);
+      })
+    });
+    setTimeout(() => {
+      document.querySelectorAll('.hearth').forEach((e: any) => {
+        e.style.display = 'none';
+      })
+      document.querySelectorAll('.hearth1').forEach((e: any) => {
+        e.style.display = 'block';
+      })
+    }, 250);
+  }
+  
   curtir(i: number): void {
     this.musicService.curtir(i);
   }
