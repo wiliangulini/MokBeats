@@ -1,4 +1,12 @@
-import {AfterContentInit, AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output
+} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Musica, MusicasService} from "../musicas/musicas.service";
 import {AuthService} from "../login/auth.service";
@@ -10,12 +18,12 @@ import {FavoritosService} from "./favoritos.service";
   templateUrl: './favoritos.component.html',
   styleUrls: ['./favoritos.component.scss']
 })
-export class FavoritosComponent implements OnInit, AfterViewInit {
+export class FavoritosComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
 
   trecho: any[] = [15, 30, 60];
   loop: any[] = [1, 2, 3, 4, 5, 6, 7];
-  arrMusic: any = [];
+  arrMusic: Musica[] = [];
   numF: number = 0;
   duration: any;
   durationAut: any;
@@ -78,6 +86,7 @@ export class FavoritosComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private scrollService: ScrollService,
     private fb: FormBuilder,
+    private cdRef: ChangeDetectorRef,
   ) {
     this.formG = this.fb.group({
       checkbox: [],
@@ -89,23 +98,34 @@ export class FavoritosComponent implements OnInit, AfterViewInit {
     this.humor = this.musicService.humor;
   }
 
+  fav: any;
+  
   ngOnInit(): void {
     this.scrollService.scrollUp();
 
     if (screen.width < 769) {
       document.getElementById('navLeft')!.style.width = '0';
     }
-    this.arrMusic = this.likeService.addFavorite();
+    this.fav = this.likeService.addFavorite();
+    console.log(this.fav);
+    console.log(this.fav.length);
   }
 
   ngAfterViewInit() {
     this.likeService.listFavoritos().subscribe((data: any) => {
-      this.arrMusic = data;
-      console.log(this.arrMusic)
-      
-      this.arrMusic.forEach((e: any) => {
-        console.log(e);
+      if(this.fav !== undefined && this.fav.length === 1) {
+        console.log(this.fav);
+        this.arrMusic.push(this.fav);
+      } else if (this.fav !== undefined && this.fav.length > 1) {
+        console.log(this.fav);
+        this.fav.forEach((e: any) => {
+          this.arrMusic.push(e);
+        })
+      }
+      data.forEach((e: any) => {
+        this.arrMusic.push(e);
       })
+      console.log(this.arrMusic);
     });
     setTimeout(() => {
       document.querySelectorAll('.hearth').forEach((e: any) => {
@@ -115,10 +135,19 @@ export class FavoritosComponent implements OnInit, AfterViewInit {
         e.style.display = 'block';
       })
     }, 250);
+    
+    
+    let div: any = document.querySelector('.container-fluid.app');
+    div.style.overflow = 'auto'
+  }
+  
+  
+  ngAfterViewChecked() {
+    this.cdRef.detectChanges();
   }
   
   curtir(i: number): void {
-    this.musicService.curtir(i);
+    this.likeService.curtir(i);
   }
 
   filtrar(): void {

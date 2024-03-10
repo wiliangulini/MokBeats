@@ -425,9 +425,9 @@ export class MusicasService  {
 
       if(this.hearth[i].style.display == 'block') {
         this.hearth[i].style.display = 'none';
-        this.hearth1[i].style.display = 'block';
+        this.hearth1[i].style.display = 'block'; // curtida
       } else {
-        this.hearth[i].style.display = 'block';
+        this.hearth[i].style.display = 'block'; // descurtida
         this.hearth1[i].style.display = 'none';
       }
     }

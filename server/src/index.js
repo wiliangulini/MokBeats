@@ -606,7 +606,7 @@ app.route('/api/favoritos').get((request, response) => {
 
 app.route('/api/favoritos').post((request, response) => {
   let favorito = request.body;
-
+  console.log(favorito);
   const firstId = FAVORITOS ? Math.max.apply(null, FAVORITOS.map(favoritoIterator => favoritoIterator.id)) + 1 : 1;
   favorito.id = firstId;
   FAVORITOS.push(favorito);

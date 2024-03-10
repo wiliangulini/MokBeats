@@ -394,6 +394,10 @@ span.span.numFavorite {
 .filterMobile {
   display: none;
 }
+
+.container-fluid.app {
+  overflow: auto !important;
+}
 @media only screen and (min-width: 320px) and (max-width: 768px) {
   article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao {
     display: none;
