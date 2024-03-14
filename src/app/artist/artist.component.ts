@@ -1,30 +1,21 @@
-import {
-  AfterViewChecked,
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  OnInit,
-  Output
-} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Musica, MusicasService} from "../musicas/musicas.service";
 import {AuthService} from "../login/auth.service";
 import {ScrollService} from "../service/scroll.service";
-import {FavoritosService} from "./favoritos.service";
+import {ActivatedRoute} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-favoritos',
-  templateUrl: './favoritos.component.html',
-  styleUrls: ['./favoritos.component.scss']
+  selector: 'app-artist',
+  templateUrl: './artist.component.html',
+  styleUrls: ['./artist.component.scss']
 })
-export class FavoritosComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class ArtistComponent implements OnInit {
   
-  fav: any;
+  public favorite: Musica = {};
   trecho: any[] = [15, 30, 60];
   loop: any[] = [1, 2, 3, 4, 5, 6, 7];
-  arrMusic: Musica[] = [];
-  numF: number = 0;
   duration: any;
   durationAut: any;
   musicDownload: any[] = [];
@@ -35,7 +26,8 @@ export class FavoritosComponent implements OnInit, AfterViewInit, AfterViewCheck
   number!: number;
   formG!: FormGroup;
   frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
-  select: string = 'Adicionada em';
+  select: any = 'Mais Relevantes';
+  
   cantada: Array<any> = [
     "Amostras/Efeitos",
     "Cantores principais",
@@ -44,7 +36,6 @@ export class FavoritosComponent implements OnInit, AfterViewInit, AfterViewCheck
     "Todos os Cantores",
   ]
   arrFilter: Array<any> = [
-    "Adicionada em",
     "Popularidade",
     "Mais relevantes",
     "Mais recentes",
@@ -77,21 +68,28 @@ export class FavoritosComponent implements OnInit, AfterViewInit, AfterViewCheck
     {value: "Technology", viewValue: "Technology"},
     {value: "Trippy", viewValue: "Trippy"},
   ]
-
+  arrMusica: Musica[] = [];
+  nameArtist: any = 'Xalaika HighFrenetic';
+  descriptionArtist: any = 'Xalaika é um produtor musical que reside em Francisco Beltrão';
+  
   @Output('ngModelChange') update: any = new EventEmitter();
-
+  
   constructor(
     private musicService: MusicasService,
-    private likeService: FavoritosService,
     private authService: AuthService,
     private scrollService: ScrollService,
     private fb: FormBuilder,
-    private cdRef: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar,
   ) {
     this.formG = this.fb.group({
       checkbox: [],
       bpm: [],
       duracao: [],
+      inputCheckbox: [],
+      inputCheckbox1: [],
+      inputCheckbox2: [],
+      inputCheckbox3: [],
     });
     this.titles = this.musicService.convertida2;
     this.music = this.musicService.convertida;
@@ -100,57 +98,33 @@ export class FavoritosComponent implements OnInit, AfterViewInit, AfterViewCheck
   
   ngOnInit(): void {
     this.scrollService.scrollUp();
-
-    if (screen.width < 769) {
-      document.getElementById('navLeft')!.style.width = '0';
-    }
-    this.fav = this.likeService.addFavorite();
-    console.log(this.fav);
-    console.log(this.fav.length);
-  }
-
-  ngAfterViewInit() {
-    this.likeService.list().subscribe((data: any) => {
-      if(this.fav !== undefined && this.fav.length === 1) {
-        console.log(this.fav);
-        this.arrMusic.push(this.fav[0]);
-      } else if (this.fav !== undefined && this.fav.length > 1) {
-        console.log(this.fav);
-        this.fav.forEach((e: any) => {
-          this.arrMusic.push(e);
-        })
-      }
-      data.forEach((e: any) => {
-        this.arrMusic.push(e);
-      })
-      console.log(this.arrMusic);
-      this.numF = this.arrMusic.length;
+    if (screen.width < 769) document.getElementById('navLeft')!.style.width = '0';
+    
+    this.musicService.listMusic().subscribe((data: any) => {
+      this.arrMusica = data;
     });
-    setTimeout(() => {
-      document.querySelectorAll('.hearth').forEach((e: any) => {
-        e.style.display = 'none';
-      })
-      document.querySelectorAll('.hearth1').forEach((e: any) => {
-        e.style.display = 'block';
-      })
-    }, 500);
-    
-    
-    let div: any = document.querySelector('.container-fluid.app');
-    div.style.overflow = 'auto'
   }
   
-  
-  ngAfterViewChecked() {
-    this.cdRef.detectChanges();
+  msToMinute(ms: any) {
+    let minutes: any = Math.floor(ms / 60000);
+    let seconds: any = ((ms % 60000) / 1000).toFixed(0);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
   
   curtir(i: number): void {
-    this.likeService.curtir(i);
+    this.favorite.id = this.arrMusica[i].id;
+    this.favorite.nome_musica = this.arrMusica[i].nome_musica;
+    this.favorite.nome_produtor = this.arrMusica[i].nome_produtor;
+    this.favorite.duracao = this.arrMusica[i].duracao;
+    this.favorite.bpm = this.arrMusica[i].bpm;
+    this.favorite.trechos = this.arrMusica[i].trechos;
+    this.favorite.loops = this.arrMusica[i].loops;
+    this.musicService.sendFavorite(i, this.favorite);
+    
   }
-
+  
   filtrar(): void {
-    let navleft: any = document.getElementById('navLeft');
+    let navleft = document.getElementById('navLeft');
     if(navleft!.getAttribute('style') == 'width: 0px;' || navleft!.getAttribute('style') == 'width: 0px; opacity: 0; z-index: 0;') {
       navleft!.style.width = '96vw';
       navleft!.style.opacity = '1';
@@ -161,39 +135,46 @@ export class FavoritosComponent implements OnInit, AfterViewInit, AfterViewCheck
       navleft!.style.zIndex = '0';
     }
   }
-
-  addPlayList(music: Musica): void {
-    this.musicService.addPlayList(music);
-  }
-
-  copiarLink(i: number): void {
-    this.musicService.copiarLink(i);
-  }
-
+  
+  
+  // save() {
+  //   console.log(this.playlist);
+  //   this.playlistService.save(this.playlist).subscribe((data: any) => {
+  //     if (data.id !== undefined) {
+  //       console.log(data);
+  //       this.snackBar.open('Música removida da playlist com SUCESSO!!!', '', {duration: 5000});
+  //     } else {
+  //       this.snackBar.open('ERRO ao remover música da playlist!!!', '', {duration: 5000});
+  //     }
+  //   });
+  // }
+  
+  copiarLink(i: number): void { this.musicService.copiarLink(i); }
+  
   baixarAmostra(i: number): void {
     this.authService.verificaLogin();
     if(this.authService.userAutetic()) {
       this.musicDownload = [];
-      this.musicDownload.push(this.arrMusic[i].nome_musica);
-      this.musicDownload.push(this.arrMusic[i].nome_produtor);
+      this.musicDownload.push(this.arrMusica[i].nome_musica);
+      this.musicDownload.push(this.arrMusica[i].nome_produtor);
       this.musicService.baixarAmostra(i, this.musicDownload);
     }
   }
-
+  
   comprarLicensa(i: number): void { this.musicService.comprarLicensa(i); }
-
+  
   filtroP(e: any): void { this.select = e; }
-
+  
   onChangedEvent(event: any, elem: any): void {
-
     elem == 'bpm' ? this.number = event : this.duration = event;
+    
     if(elem == 'duracao') {
       let dateObj: any = new Date(this.duration * 1000);
       let minutes: any = dateObj.getUTCMinutes();
       let seconds: any = dateObj.getSeconds();
+      
       let timeString: any = minutes.toString().padStart(1) + ':' + seconds.toString().padStart(2, '0');
       this.durationAut = timeString;
     }
   }
-
 }

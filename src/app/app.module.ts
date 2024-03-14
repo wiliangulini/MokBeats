@@ -52,6 +52,7 @@ import {ContatoComponent} from './contato/contato.component';
 import {CreatePlaylistModalComponent} from './create-playlist-modal/create-playlist-modal.component';
 import { PagPlaylistComponent } from './pag-playlist/pag-playlist.component';
 import { EditPlaylistModalComponent } from './create-playlist-modal/edit-playlist-modal/edit-playlist-modal.component';
+import { ArtistComponent } from './artist/artist.component';
 
 
 @NgModule({
@@ -86,6 +87,7 @@ import { EditPlaylistModalComponent } from './create-playlist-modal/edit-playlis
     CreatePlaylistModalComponent,
     PagPlaylistComponent,
     EditPlaylistModalComponent,
+    ArtistComponent,
   ],
   imports: [
     BrowserModule,

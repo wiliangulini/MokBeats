@@ -19,6 +19,7 @@ import {AtualizarInformacoesComponent} from "./atualizar-informacoes/atualizar-i
 import {FinalizarCompraComponent} from "./finalizar-compra/finalizar-compra.component";
 import {ContatoComponent} from "./contato/contato.component";
 import {PagPlaylistComponent} from "./pag-playlist/pag-playlist.component";
+import {ArtistComponent} from "./artist/artist.component";
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'assinatura', component: AssinaturaComponent },
   { path: 'pedidos', component: PedidosComponent },
   { path: 'formas-de-pagamento', component: FormasDePagamentoComponent },
+  { path: 'artista', component: ArtistComponent },
   { path: 'atualizar-informacoes', component: AtualizarInformacoesComponent },
   { path: 'finalizar-compra', component: FinalizarCompraComponent },
   { path: 'contato', component: ContatoComponent },

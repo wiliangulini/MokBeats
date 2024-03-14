@@ -140,7 +140,7 @@ export class MusicasComponent implements OnInit, AfterViewInit {
           }
         });
       })
-      this.likeService.listFavoritos().subscribe((data: any) => {
+      this.likeService.list().subscribe((data: any) => {
         let fav: any[] = [];
         data.forEach((e: any) => {
           fav.push(e);

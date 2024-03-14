@@ -31,14 +31,9 @@ export class FavoritosService extends CrudService<Musica> {
   }
   
   private readonly API_MUSIC1 = `${environment.API}musicas`
-  private readonly API_FAVORITO = `${environment.API}favoritos`
   
   private listMusic() {
     return this.http.get<Musica>(`${this.API_MUSIC1}`).pipe();
-  }
-  
-  public listFavoritos() {
-    return this.http.get<Musica>(`${this.API_FAVORITO}`).pipe();
   }
   
   override list(): Observable<Musica> {
@@ -49,22 +44,25 @@ export class FavoritosService extends CrudService<Musica> {
     return super.save(record);
   }
   
+  override remove(id: number): Observable<Musica> {
+    return super.remove(id);
+  }
+  
   public curtir(i: number) {
     this.authService.verificaLogin();
-    this.list().subscribe((data: any) => { // funçao repetida de maneira desnecessaria, usar crud.
-      console.log(data);
-      
-    })
-    this.listFavoritos().subscribe((data: any) => {
-      // console.log(data);
+    this.list().subscribe((data: any) => {
       this.favoritos = data;
       
       for(let index = 0; this.favoritos.length > index; index++) {
         if(this.favoritos[index] === this.favoritos[i]) {
           console.log(this.favoritos[i]);
+          this.remove(this.favoritos[i]?.id).subscribe((data: any) => {
+            console.log(data);
+          })
         }
       }
-    });
+      console.log(this.favoritos)
+    })
     
     if(this.authService.userAutetic()) {
       this.hearth = document.querySelectorAll('.hearth');
@@ -81,7 +79,7 @@ export class FavoritosService extends CrudService<Musica> {
   }
   
   sendFavorite(elm: any) {
-    this.listFavoritos().subscribe((data: any) => {
+    this.list().subscribe((data: any) => {
       this.favoritos = data;
       
       for (let i= 0; i < this.arrMusica.length; i++) {

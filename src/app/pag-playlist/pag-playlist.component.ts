@@ -1,10 +1,9 @@
-import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Musica, MusicasService} from "../musicas/musicas.service";
 import {AuthService} from "../login/auth.service";
 import {ScrollService} from "../service/scroll.service";
 import {PlaylistService} from "../create-playlist-modal/playlist.service";
-import {EMPTY} from "rxjs";
 import {playlists} from "../create-playlist-modal/create-playlist-modal.component";
 import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
