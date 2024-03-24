@@ -16,6 +16,8 @@ export class CarrinhoService {
   
   public receivingCart(elm: Musica) {
     this.music.push(elm);
+    let ms_number: any = document.querySelector('#ms_number');
+    ms_number.innerHTML = this.music.length;
     return this.music;
   }
   public receivingCart2() {

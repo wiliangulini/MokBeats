@@ -41,10 +41,7 @@ export class MenuComponent implements OnInit {
     private cartService: CarrinhoService,
 ) { }
 
-  ngOnInit(): void {
-    let n = this.cartService.receivingCart2();
-    this.musicNumber = n.length;
-  }
+  ngOnInit(): void {}
   
   closeNav(): void {
     if (screen.width < 769) {
