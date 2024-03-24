@@ -1,20 +1,17 @@
-import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Musica, MusicasService} from "../musicas/musicas.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {Musica, MusicasService} from "./musicas.service";
-import {ScrollService} from "../service/scroll.service";
 import {AuthService} from "../login/auth.service";
-import {PlaylistService} from "../create-playlist-modal/playlist.service";
-import {EMPTY, filter} from "rxjs";
-import {HttpClient} from "@angular/common/http";
-import {FavoritosService} from "../favoritos/favoritos.service";
-import {Router} from "@angular/router";
+import {ScrollService} from "../service/scroll.service";
+import {ActivatedRoute} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-musicas',
-  templateUrl: './musicas.component.html',
-  styleUrls: ['./musicas.component.scss']
+  selector: 'app-usuario-artista',
+  templateUrl: './usuario-artista.component.html',
+  styleUrls: ['./usuario-artista.component.scss']
 })
-export class MusicasComponent implements OnInit, AfterViewInit {
+export class UsuarioArtistaComponent implements OnInit {
   
   public favorite: Musica = {};
   trecho: any[] = [15, 30, 60];
@@ -72,6 +69,8 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     {value: "Trippy", viewValue: "Trippy"},
   ]
   arrMusica: Musica[] = [];
+  nameArtist: any = '';
+  descriptionArtist: any = 'Xalaika é um produtor musical que reside em Francisco Beltrão';
   
   @Output('ngModelChange') update: any = new EventEmitter();
   
@@ -80,9 +79,8 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private scrollService: ScrollService,
     private fb: FormBuilder,
-    private playlistService: PlaylistService,
-    private likeService: FavoritosService,
-    private router: Router,
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar,
   ) {
     this.formG = this.fb.group({
       checkbox: [],
@@ -100,81 +98,15 @@ export class MusicasComponent implements OnInit, AfterViewInit {
   
   ngOnInit(): void {
     this.scrollService.scrollUp();
-    if (screen.width < 769) {
-      document.getElementById('navLeft')!.style.width = '0';
-    }
-  }
-  
-  ngAfterViewInit() {
+    if (screen.width < 769) document.getElementById('navLeft')!.style.width = '0';
     
-    let playlist: any[] = [];
-    const setPlaylist = new Set();
-    this.musicService.listMusic().subscribe((data: any) => {
+    this.route.queryParams.subscribe((data: any) => {
       console.log(data);
-      this.arrMusica = data;
-      this.playlistService.list().subscribe((data: any) => {
-        console.log(data);
-        data.forEach((e: any) => {
-          if(e.music.length > 0) {
-            for(let i: number = 0; i < e.music.length; i++) {
-              playlist.push(e.music[i]);
-            }
-          } else if(e.music.length == undefined && e.music.id > 0) {
-            playlist.push(e.music);
-          }
-        });
-        const filterMusicPlaylist = playlist.filter((data: any) => {
-          const duplicatePlaylist = setPlaylist.has(data.id);
-          setPlaylist.add(data.id);
-          return !duplicatePlaylist;
-        })
-        filterMusicPlaylist.sort((a, b) => {
-          if(a.id > b.id) return 1;
-          if(a.id < b.id) return -1;
-          return 0;
-        });
-        let addplaylist: any = document.querySelectorAll('.addPlaylist');
-        addplaylist.forEach((e: any, index: any) => {
-          for(let i of filterMusicPlaylist){
-            if(i.id === this.arrMusica[index]?.id) {
-              e.classList.add('amarelo')
-            }
-          }
-        });
-      })
-      this.likeService.list().subscribe((data: any) => {
-        let fav: any[] = [];
-        data.forEach((e: any) => {
-          fav.push(e);
-        });
-        console.log(fav);
-        let hearthLike = document.querySelectorAll('.hearth');
-        let hearthLike1 = document.querySelectorAll('.hearth1');
-        hearthLike.forEach((e: any, index: number) => {
-          for(let i of fav) {
-            if(i.id === this.arrMusica[index]?.id) {
-              e.style.display = 'none'
-            }
-          }
-        })
-        hearthLike1.forEach((e: any, index: number) => {
-          for(let i of fav) {
-            if(i.id === this.arrMusica[index]?.id) {
-              e.style.display = 'block'
-            }
-          }
-        })
+      this.nameArtist = data.nome_produtor;
+      this.musicService.listMusic().subscribe((data: any) => {
+        this.arrMusica = data;
       });
-    })
-    document.querySelectorAll('.mat-checkbox-frame')?.forEach((e: any) => {
-      e.style.borderColor = "#FFF";
-    })
-  }
-  
-  
-  pagArtist(data: any) {
-    console.log(data);
-    this.router.navigate(['/artista'], {queryParams: {nome_produtor: data.nome_produtor}});
+    });
   }
   
   msToMinute(ms: any) {
@@ -208,9 +140,18 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     }
   }
   
-  addMusicPlayList(music: Musica): void {
-    this.musicService.addPlayList(music);
-  }
+  
+  // save() {
+  //   console.log(this.playlist);
+  //   this.playlistService.save(this.playlist).subscribe((data: any) => {
+  //     if (data.id !== undefined) {
+  //       console.log(data);
+  //       this.snackBar.open('Música removida da playlist com SUCESSO!!!', '', {duration: 5000});
+  //     } else {
+  //       this.snackBar.open('ERRO ao remover música da playlist!!!', '', {duration: 5000});
+  //     }
+  //   });
+  // }
   
   copiarLink(i: number): void { this.musicService.copiarLink(i); }
   
@@ -224,7 +165,7 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     }
   }
   
-  comprarLicensa(i: any): void { this.musicService.comprarLicensa(i); }
+  comprarLicensa(i: number): void { this.musicService.comprarLicensa(i); }
   
   filtroP(e: any): void { this.select = e; }
   

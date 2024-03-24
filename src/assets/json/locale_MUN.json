@@ -1,0 +1,1745 @@
+[
+    {
+        "alpha_2": "AW",
+        "name": "Aruba",
+        "nome": "Aruba",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "AF",
+        "name": "Afghanistan",
+        "nome": "Afeganistão",
+        "official_name": "Islamic Republic of Afghanistan",
+        "nome_oficial": "República Islâmica do Afeganistão"
+    },
+    {
+        "alpha_2": "AO",
+        "name": "Angola",
+        "nome": "Angola",
+        "official_name": "Republic of Angola",
+        "nome_oficial": "República de Angola"
+    },
+    {
+        "alpha_2": "AI",
+        "name": "Anguilla",
+        "nome": "Anguila",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "AX",
+        "name": "Åland Islands",
+        "nome": "Ilhas Aland",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "AL",
+        "name": "Albania",
+        "nome": "Albânia",
+        "official_name": "Republic of Albania",
+        "nome_oficial": "República da Albânia"
+    },
+    {
+        "alpha_2": "AD",
+        "name": "Andorra",
+        "nome": "Andorra",
+        "official_name": "Principality of Andorra",
+        "nome_oficial": "Principado de Andorra"
+    },
+    {
+        "alpha_2": "AE",
+        "name": "United Arab Emirates",
+        "nome": "Emirados Árabes Unidos",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "AR",
+        "name": "Argentina",
+        "nome": "Argentina",
+        "official_name": "Argentine Republic",
+        "nome_oficial": "República Argentina"
+    },
+    {
+        "alpha_2": "AM",
+        "name": "Armenia",
+        "nome": "Armênia",
+        "official_name": "Republic of Armenia",
+        "nome_oficial": "República da Armênia"
+    },
+    {
+        "alpha_2": "AS",
+        "name": "American Samoa",
+        "nome": "Samoa Americana",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "AQ",
+        "name": "Antarctica",
+        "nome": "Antártica",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "TF",
+        "name": "French Southern Territories",
+        "nome": "Territórios do Sul da França",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "AG",
+        "name": "Antigua and Barbuda",
+        "nome": "Antígua e Barbuda",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "AU",
+        "name": "Australia",
+        "nome": "Austrália",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "AT",
+        "name": "Austria",
+        "nome": "Áustria",
+        "official_name": "Republic of Austria",
+        "nome_oficial": "República da Áustria"
+    },
+    {
+        "alpha_2": "AZ",
+        "name": "Azerbaijan",
+        "nome": "Azerbaijão",
+        "official_name": "Republic of Azerbaijan",
+        "nome_oficial": "República do Azerbaijão"
+    },
+    {
+        "alpha_2": "BI",
+        "name": "Burundi",
+        "nome": "Burundi",
+        "official_name": "Republic of Burundi",
+        "nome_oficial": "República do Burundi"
+    },
+    {
+        "alpha_2": "BE",
+        "name": "Belgium",
+        "nome": "Bélgica",
+        "official_name": "Kingdom of Belgium",
+        "nome_oficial": "Reino da Bélgica"
+    },
+    {
+        "alpha_2": "BJ",
+        "name": "Benin",
+        "nome": "Benim",
+        "official_name": "Republic of Benin",
+        "nome_oficial": "República do Benim"
+    },
+    {
+        "alpha_2": "BQ",
+        "name": "Bonaire, Sint Eustatius and Saba",
+        "nome": " Bonaire, Santo Eustáquio e Saba",
+        "official_name": "Bonaire, Sint Eustatius and Saba",
+        "nome_oficial": "\" Bonaire"
+    },
+    {
+        "alpha_2": "BF",
+        "name": "Burkina Faso",
+        "nome": "Burkina Faso",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "BD",
+        "name": "Bangladesh",
+        "nome": "Bangladesh",
+        "official_name": "People's Republic of Bangladesh",
+        "nome_oficial": "República Popular do Bangladesh"
+    },
+    {
+        "alpha_2": "BG",
+        "name": "Bulgaria",
+        "nome": "Bulgária",
+        "official_name": "Republic of Bulgaria",
+        "nome_oficial": "República da Bulgária"
+    },
+    {
+        "alpha_2": "BH",
+        "name": "Bahrain",
+        "nome": "Bahrein",
+        "official_name": "Kingdom of Bahrain",
+        "nome_oficial": "Reino de Bahrain"
+    },
+    {
+        "alpha_2": "BS",
+        "name": "Bahamas",
+        "nome": "Bahamas",
+        "official_name": "Commonwealth of the Bahamas",
+        "nome_oficial": "Comunidade das Bahamas"
+    },
+    {
+        "alpha_2": "BA",
+        "name": "Bosnia and Herzegovina",
+        "nome": "Bósnia e Herzegovina",
+        "official_name": "Republic of Bosnia and Herzegovina",
+        "nome_oficial": "República da Bósnia e Herzegovina"
+    },
+    {
+        "alpha_2": "BL",
+        "name": "Saint Barthélemy",
+        "nome": "São Bartolomeu",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "BY",
+        "name": "Belarus",
+        "nome": "Bielorrússia",
+        "official_name": "Republic of Belarus",
+        "nome_oficial": "República da Bielorrússia"
+    },
+    {
+        "alpha_2": "BZ",
+        "name": "Belize",
+        "nome": "Belize",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "BM",
+        "name": "Bermuda",
+        "nome": "Bermudas",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "BO",
+        "name": "Bolivia, Plurinational State of",
+        "nome": " Bolívia, Estado Plurinacional da",
+        "official_name": "Plurinational State of Bolivia",
+        "nome_oficial": "Estado Plurinacional da Bolívia"
+    },
+    {
+        "alpha_2": "BR",
+        "name": "Brazil",
+        "nome": "Brasil",
+        "official_name": "Federative Republic of Brazil",
+        "nome_oficial": "República Federativa do Brasil"
+    },
+    {
+        "alpha_2": "BB",
+        "name": "Barbados",
+        "nome": "Barbados",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "BN",
+        "name": "Brunei Darussalam",
+        "nome": "Brunei Darussalam",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "BT",
+        "name": "Bhutan",
+        "nome": "Butão",
+        "official_name": "Kingdom of Bhutan",
+        "nome_oficial": "Reino do Butão"
+    },
+    {
+        "alpha_2": "BV",
+        "name": "Bouvet Island",
+        "nome": "Ilha Bouvet",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "BW",
+        "name": "Botswana",
+        "nome": "Botsuana",
+        "official_name": "Republic of Botswana",
+        "nome_oficial": "República do Botsuana"
+    },
+    {
+        "alpha_2": "CF",
+        "name": "Central African Republic",
+        "nome": "República Centro-Africana",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "CA",
+        "name": "Canada",
+        "nome": "Canadá",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "CC",
+        "name": "Cocos (Keeling) Islands",
+        "nome": "Ilhas Cocos (Keeling)",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "CH",
+        "name": "Switzerland",
+        "nome": "Suíça",
+        "official_name": "Swiss Confederation",
+        "nome_oficial": "Confederação Suíça"
+    },
+    {
+        "alpha_2": "CL",
+        "name": "Chile",
+        "nome": "Chile",
+        "official_name": "Republic of Chile",
+        "nome_oficial": "República do Chile"
+    },
+    {
+        "alpha_2": "CN",
+        "name": "China",
+        "nome": "China",
+        "official_name": "People's Republic of China",
+        "nome_oficial": "República Popular da China"
+    },
+    {
+        "alpha_2": "CI",
+        "name": "Côte d'Ivoire",
+        "nome": "Costa do Marfim",
+        "official_name": "Republic of Côte d'Ivoire",
+        "nome_oficial": "República da Costa do Marfim"
+    },
+    {
+        "alpha_2": "CM",
+        "name": "Cameroon",
+        "nome": "Camarões",
+        "official_name": "Republic of Cameroon",
+        "nome_oficial": "República dos Camarões"
+    },
+    {
+        "alpha_2": "CD",
+        "name": "Congo, The Democratic Republic of the",
+        "nome": " Congo, República Democrática do",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "CG",
+        "name": "Congo",
+        "nome": "Congo",
+        "official_name": "Republic of the Congo",
+        "nome_oficial": "República do Congo"
+    },
+    {
+        "alpha_2": "CK",
+        "name": "Cook Islands",
+        "nome": "Ilhas Cook",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "CO",
+        "name": "Colombia",
+        "nome": "Colômbia",
+        "official_name": "Republic of Colombia",
+        "nome_oficial": "República da Colômbia"
+    },
+    {
+        "alpha_2": "KM",
+        "name": "Comoros",
+        "nome": "Comores",
+        "official_name": "Union of the Comoros",
+        "nome_oficial": "União das Comores"
+    },
+    {
+        "alpha_2": "CV",
+        "name": "Cabo Verde",
+        "nome": "Cabo Verde",
+        "official_name": "Republic of Cabo Verde",
+        "nome_oficial": "República de Cabo Verde"
+    },
+    {
+        "alpha_2": "CR",
+        "name": "Costa Rica",
+        "nome": "Costa Rica",
+        "official_name": "Republic of Costa Rica",
+        "nome_oficial": "República da Costa Rica"
+    },
+    {
+        "alpha_2": "CU",
+        "name": "Cuba",
+        "nome": "Cuba",
+        "official_name": "Republic of Cuba",
+        "nome_oficial": "República de Cuba"
+    },
+    {
+        "alpha_2": "CW",
+        "name": "Curaçao",
+        "nome": "Curaçao",
+        "official_name": "Curaçao",
+        "nome_oficial": "Curaçao"
+    },
+    {
+        "alpha_2": "CX",
+        "name": "Christmas Island",
+        "nome": "Ilha do Natal",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "KY",
+        "name": "Cayman Islands",
+        "nome": "Ilhas Cayman",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "CY",
+        "name": "Cyprus",
+        "nome": "Chipre",
+        "official_name": "Republic of Cyprus",
+        "nome_oficial": "República de Chipre"
+    },
+    {
+        "alpha_2": "CZ",
+        "name": "Czechia",
+        "nome": "República Tcheca",
+        "official_name": "Czech Republic",
+        "nome_oficial": "República Checa"
+    },
+    {
+        "alpha_2": "DE",
+        "name": "Germany",
+        "nome": "Alemanha",
+        "official_name": "Federal Republic of Germany",
+        "nome_oficial": "República Federal da Alemanha"
+    },
+    {
+        "alpha_2": "DJ",
+        "name": "Djibouti",
+        "nome": "Djibuti",
+        "official_name": "Republic of Djibouti",
+        "nome_oficial": "República do Djibuti"
+    },
+    {
+        "alpha_2": "DM",
+        "name": "Dominica",
+        "nome": "Dominica",
+        "official_name": "Commonwealth of Dominica",
+        "nome_oficial": "Comunidade da Dominica"
+    },
+    {
+        "alpha_2": "DK",
+        "name": "Denmark",
+        "nome": "Dinamarca",
+        "official_name": "Kingdom of Denmark",
+        "nome_oficial": "Reino da Dinamarca"
+    },
+    {
+        "alpha_2": "DO",
+        "name": "Dominican Republic",
+        "nome": "República Dominicana",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "DZ",
+        "name": "Algeria",
+        "nome": "Argélia",
+        "official_name": "People's Democratic Republic of Algeria",
+        "nome_oficial": "República Democrática Popular da Argélia"
+    },
+    {
+        "alpha_2": "EC",
+        "name": "Ecuador",
+        "nome": "Equador",
+        "official_name": "Republic of Ecuador",
+        "nome_oficial": "República do Equador"
+    },
+    {
+        "alpha_2": "EG",
+        "name": "Egypt",
+        "nome": "Egito",
+        "official_name": "Arab Republic of Egypt",
+        "nome_oficial": "República Árabe do Egito"
+    },
+    {
+        "alpha_2": "ER",
+        "name": "Eritrea",
+        "nome": "Eritreia",
+        "official_name": "the State of Eritrea",
+        "nome_oficial": "Estado da Eritreia"
+    },
+    {
+        "alpha_2": "EH",
+        "name": "Western Sahara",
+        "nome": "Saara Ocidental",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "ES",
+        "name": "Spain",
+        "nome": "Espanha",
+        "official_name": "Kingdom of Spain",
+        "nome_oficial": "Reino da Espanha"
+    },
+    {
+        "alpha_2": "EE",
+        "name": "Estonia",
+        "nome": "Estônia",
+        "official_name": "Republic of Estonia",
+        "nome_oficial": "República da Estônia"
+    },
+    {
+        "alpha_2": "ET",
+        "name": "Ethiopia",
+        "nome": "Etiópia",
+        "official_name": "Federal Democratic Republic of Ethiopia",
+        "nome_oficial": "República Federal Democrática da Etiópia"
+    },
+    {
+        "alpha_2": "FI",
+        "name": "Finland",
+        "nome": "Finlândia",
+        "official_name": "Republic of Finland",
+        "nome_oficial": "República da Finlândia"
+    },
+    {
+        "alpha_2": "FJ",
+        "name": "Fiji",
+        "nome": "Fiji",
+        "official_name": "Republic of Fiji",
+        "nome_oficial": "República de Fiji"
+    },
+    {
+        "alpha_2": "FK",
+        "name": "Falkland Islands (Malvinas)",
+        "nome": "Ilhas Malvinas (Malvinas)",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "FR",
+        "name": "France",
+        "nome": "França",
+        "official_name": "French Republic",
+        "nome_oficial": "República Francesa"
+    },
+    {
+        "alpha_2": "FO",
+        "name": "Faroe Islands",
+        "nome": "ilhas Faroe",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "FM",
+        "name": "Micronesia, Federated States of",
+        "nome": " Micronésia, Estados Federados da",
+        "official_name": "Federated States of Micronesia",
+        "nome_oficial": "Estados Federados da Micronésia"
+    },
+    {
+        "alpha_2": "GA",
+        "name": "Gabon",
+        "nome": "Gabão",
+        "official_name": "Gabonese Republic",
+        "nome_oficial": "República Gabonesa"
+    },
+    {
+        "alpha_2": "GB",
+        "name": "United Kingdom",
+        "nome": "Reino Unido",
+        "official_name": "United Kingdom of Great Britain and Northern Ireland",
+        "nome_oficial": "Reino Unido da Grã-Bretanha e Irlanda do Norte"
+    },
+    {
+        "alpha_2": "GE",
+        "name": "Georgia",
+        "nome": "Geórgia",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "GG",
+        "name": "Guernsey",
+        "nome": "Guernsey",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "GH",
+        "name": "Ghana",
+        "nome": "Gana",
+        "official_name": "Republic of Ghana",
+        "nome_oficial": "República do Gana"
+    },
+    {
+        "alpha_2": "GI",
+        "name": "Gibraltar",
+        "nome": "Gibraltar",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "GN",
+        "name": "Guinea",
+        "nome": "Guiné",
+        "official_name": "Republic of Guinea",
+        "nome_oficial": "República da Guiné"
+    },
+    {
+        "alpha_2": "GP",
+        "name": "Guadeloupe",
+        "nome": "Guadalupe",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "GM",
+        "name": "Gambia",
+        "nome": "Gâmbia",
+        "official_name": "Republic of the Gambia",
+        "nome_oficial": "República da Gâmbia"
+    },
+    {
+        "alpha_2": "GW",
+        "name": "Guinea-Bissau",
+        "nome": "Guiné-Bissau",
+        "official_name": "Republic of Guinea-Bissau",
+        "nome_oficial": "República da Guiné-Bissau"
+    },
+    {
+        "alpha_2": "GQ",
+        "name": "Equatorial Guinea",
+        "nome": "Guiné Equatorial",
+        "official_name": "Republic of Equatorial Guinea",
+        "nome_oficial": "República da Guiné Equatorial"
+    },
+    {
+        "alpha_2": "GR",
+        "name": "Greece",
+        "nome": "Grécia",
+        "official_name": "Hellenic Republic",
+        "nome_oficial": "República Helênica"
+    },
+    {
+        "alpha_2": "GD",
+        "name": "Grenada",
+        "nome": "Granada",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "GL",
+        "name": "Greenland",
+        "nome": "Groenlândia",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "GT",
+        "name": "Guatemala",
+        "nome": "Guatemala",
+        "official_name": "Republic of Guatemala",
+        "nome_oficial": "República da Guatemala"
+    },
+    {
+        "alpha_2": "GF",
+        "name": "French Guiana",
+        "nome": "Guiana Francesa",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "GU",
+        "name": "Guam",
+        "nome": "Guam",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "GY",
+        "name": "Guyana",
+        "nome": "Guiana",
+        "official_name": "Republic of Guyana",
+        "nome_oficial": "República da Guiana"
+    },
+    {
+        "alpha_2": "HK",
+        "name": "Hong Kong",
+        "nome": "Hong Kong",
+        "official_name": "Hong Kong Special Administrative Region of China",
+        "nome_oficial": "Região Administrativa Especial de Hong Kong da China"
+    },
+    {
+        "alpha_2": "HM",
+        "name": "Heard Island and McDonald Islands",
+        "nome": "Ilha Heard e Ilhas McDonald",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "HN",
+        "name": "Honduras",
+        "nome": "Honduras",
+        "official_name": "Republic of Honduras",
+        "nome_oficial": "República de Honduras"
+    },
+    {
+        "alpha_2": "HR",
+        "name": "Croatia",
+        "nome": "Croácia",
+        "official_name": "Republic of Croatia",
+        "nome_oficial": "República da Croácia"
+    },
+    {
+        "alpha_2": "HT",
+        "name": "Haiti",
+        "nome": "Haiti",
+        "official_name": "Republic of Haiti",
+        "nome_oficial": "República do Haiti"
+    },
+    {
+        "alpha_2": "HU",
+        "name": "Hungary",
+        "nome": "Hungria",
+        "official_name": "Hungary",
+        "nome_oficial": "Hungria"
+    },
+    {
+        "alpha_2": "ID",
+        "name": "Indonesia",
+        "nome": "Indonésia",
+        "official_name": "Republic of Indonesia",
+        "nome_oficial": "República da Indonésia"
+    },
+    {
+        "alpha_2": "IM",
+        "name": "Isle of Man",
+        "nome": "Ilha de Man",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "IN",
+        "name": "India",
+        "nome": "Índia",
+        "official_name": "Republic of India",
+        "nome_oficial": "República da Índia"
+    },
+    {
+        "alpha_2": "IO",
+        "name": "British Indian Ocean Territory",
+        "nome": "Território Britânico do Oceano Índico",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "IE",
+        "name": "Ireland",
+        "nome": "Irlanda",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "IR",
+        "name": "Iran, Islamic Republic of",
+        "nome": "Irã (Republic Islâmica do Irã",
+        "official_name": "Islamic Republic of Iran",
+        "nome_oficial": "República Islâmica do Irã"
+    },
+    {
+        "alpha_2": "IQ",
+        "name": "Iraq",
+        "nome": "Iraque",
+        "official_name": "Republic of Iraq",
+        "nome_oficial": "República do Iraque"
+    },
+    {
+        "alpha_2": "IS",
+        "name": "Iceland",
+        "nome": "Islândia",
+        "official_name": "Republic of Iceland",
+        "nome_oficial": "República da Islândia"
+    },
+    {
+        "alpha_2": "IL",
+        "name": "Israel",
+        "nome": "Israel",
+        "official_name": "State of Israel",
+        "nome_oficial": "Estado de Israel"
+    },
+    {
+        "alpha_2": "IT",
+        "name": "Italy",
+        "nome": "Itália",
+        "official_name": "Italian Republic",
+        "nome_oficial": "República Italiana"
+    },
+    {
+        "alpha_2": "JM",
+        "name": "Jamaica",
+        "nome": "Jamaica",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "JE",
+        "name": "Jersey",
+        "nome": "Jersey",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "JO",
+        "name": "Jordan",
+        "nome": "Jordânia",
+        "official_name": "Hashemite Kingdom of Jordan",
+        "nome_oficial": "Reino Hachemita da Jordânia"
+    },
+    {
+        "alpha_2": "JP",
+        "name": "Japan",
+        "nome": "Japão",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "KZ",
+        "name": "Kazakhstan",
+        "nome": "Cazaquistão",
+        "official_name": "Republic of Kazakhstan",
+        "nome_oficial": "República do Cazaquistão"
+    },
+    {
+        "alpha_2": "KE",
+        "name": "Kenya",
+        "nome": "Quênia",
+        "official_name": "Republic of Kenya",
+        "nome_oficial": "República do Quênia"
+    },
+    {
+        "alpha_2": "KG",
+        "name": "Kyrgyzstan",
+        "nome": "Quirguistão",
+        "official_name": "Kyrgyz Republic",
+        "nome_oficial": "República do Quirguizistão"
+    },
+    {
+        "alpha_2": "KH",
+        "name": "Cambodia",
+        "nome": "Camboja",
+        "official_name": "Kingdom of Cambodia",
+        "nome_oficial": "Reino do Camboja"
+    },
+    {
+        "alpha_2": "KI",
+        "name": "Kiribati",
+        "nome": "Kiribati",
+        "official_name": "Republic of Kiribati",
+        "nome_oficial": "República de Kiribati"
+    },
+    {
+        "alpha_2": "KN",
+        "name": "Saint Kitts and Nevis",
+        "nome": "São Cristóvão e Nevis",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "KR",
+        "name": "Korea, Republic of",
+        "nome": "Republica da Coréia",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "KW",
+        "name": "Kuwait",
+        "nome": "Kuwait",
+        "official_name": "State of Kuwait",
+        "nome_oficial": "Estado do Kuwait"
+    },
+    {
+        "alpha_2": "LA",
+        "name": "Lao People's Democratic Republic",
+        "nome": "República Democrática Popular do Laos",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "LB",
+        "name": "Lebanon",
+        "nome": "Líbano",
+        "official_name": "Lebanese Republic",
+        "nome_oficial": "República Libanesa"
+    },
+    {
+        "alpha_2": "LR",
+        "name": "Liberia",
+        "nome": "Libéria",
+        "official_name": "Republic of Liberia",
+        "nome_oficial": "República da Libéria"
+    },
+    {
+        "alpha_2": "LY",
+        "name": "Libya",
+        "nome": "Líbia",
+        "official_name": "Libya",
+        "nome_oficial": "Líbia"
+    },
+    {
+        "alpha_2": "LC",
+        "name": "Saint Lucia",
+        "nome": "Santa Lúcia",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "LI",
+        "name": "Liechtenstein",
+        "nome": "Listenstaine",
+        "official_name": "Principality of Liechtenstein",
+        "nome_oficial": "Principado do Liechtenstein"
+    },
+    {
+        "alpha_2": "LK",
+        "name": "Sri Lanka",
+        "nome": "Sri Lanka",
+        "official_name": "Democratic Socialist Republic of Sri Lanka",
+        "nome_oficial": "República Democrática Socialista do Sri Lanka"
+    },
+    {
+        "alpha_2": "LS",
+        "name": "Lesotho",
+        "nome": "Lesoto",
+        "official_name": "Kingdom of Lesotho",
+        "nome_oficial": "Reino do Lesoto"
+    },
+    {
+        "alpha_2": "LT",
+        "name": "Lithuania",
+        "nome": "Lituânia",
+        "official_name": "Republic of Lithuania",
+        "nome_oficial": "República da Lituânia"
+    },
+    {
+        "alpha_2": "LU",
+        "name": "Luxembourg",
+        "nome": "Luxemburgo",
+        "official_name": "Grand Duchy of Luxembourg",
+        "nome_oficial": "Grão-Ducado do Luxemburgo"
+    },
+    {
+        "alpha_2": "LV",
+        "name": "Latvia",
+        "nome": "Letônia",
+        "official_name": "Republic of Latvia",
+        "nome_oficial": "República da Letônia"
+    },
+    {
+        "alpha_2": "MO",
+        "name": "Macao",
+        "nome": "Macau",
+        "official_name": "Macao Special Administrative Region of China",
+        "nome_oficial": "Região Administrativa Especial de Macau da China"
+    },
+    {
+        "alpha_2": "MF",
+        "name": "Saint Martin (French part)",
+        "nome": "São Martinho (parte francesa)",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "MA",
+        "name": "Morocco",
+        "nome": "Marrocos",
+        "official_name": "Kingdom of Morocco",
+        "nome_oficial": "Reino de Marrocos"
+    },
+    {
+        "alpha_2": "MC",
+        "name": "Monaco",
+        "nome": "Mônaco",
+        "official_name": "Principality of Monaco",
+        "nome_oficial": "Principado de Mônaco"
+    },
+    {
+        "alpha_2": "MD",
+        "name": "Moldova, Republic of",
+        "nome": " Moldávia, República da",
+        "official_name": "Republic of Moldova",
+        "nome_oficial": "República da Moldávia"
+    },
+    {
+        "alpha_2": "MG",
+        "name": "Madagascar",
+        "nome": "Madagáscar",
+        "official_name": "Republic of Madagascar",
+        "nome_oficial": "República de Madagáscar"
+    },
+    {
+        "alpha_2": "MV",
+        "name": "Maldives",
+        "nome": "Maldivas",
+        "official_name": "Republic of Maldives",
+        "nome_oficial": "República das Maldivas"
+    },
+    {
+        "alpha_2": "MX",
+        "name": "Mexico",
+        "nome": "México",
+        "official_name": "United Mexican States",
+        "nome_oficial": "Estados Unidos Mexicanos"
+    },
+    {
+        "alpha_2": "MH",
+        "name": "Marshall Islands",
+        "nome": "Ilhas Marshall",
+        "official_name": "Republic of the Marshall Islands",
+        "nome_oficial": "República das Ilhas Marshall"
+    },
+    {
+        "alpha_2": "MK",
+        "name": "North Macedonia",
+        "nome": "Macedônia do Norte",
+        "official_name": "Republic of North Macedonia",
+        "nome_oficial": "República da Macedônia do Norte"
+    },
+    {
+        "alpha_2": "ML",
+        "name": "Mali",
+        "nome": "Mali",
+        "official_name": "Republic of Mali",
+        "nome_oficial": "República do Mali"
+    },
+    {
+        "alpha_2": "MT",
+        "name": "Malta",
+        "nome": "Malta",
+        "official_name": "Republic of Malta",
+        "nome_oficial": "República de Malta"
+    },
+    {
+        "alpha_2": "MM",
+        "name": "Myanmar",
+        "nome": "Mianmar",
+        "official_name": "Republic of Myanmar",
+        "nome_oficial": "República de Mianmar"
+    },
+    {
+        "alpha_2": "ME",
+        "name": "Montenegro",
+        "nome": "Montenegro",
+        "official_name": "Montenegro",
+        "nome_oficial": "Montenegro"
+    },
+    {
+        "alpha_2": "MN",
+        "name": "Mongolia",
+        "nome": "Mongólia",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "MP",
+        "name": "Northern Mariana Islands",
+        "nome": "Ilhas Marianas do Norte",
+        "official_name": "Commonwealth of the Northern Mariana Islands",
+        "nome_oficial": "Comunidade das Ilhas Marianas do Norte"
+    },
+    {
+        "alpha_2": "MZ",
+        "name": "Mozambique",
+        "nome": "Moçambique",
+        "official_name": "Republic of Mozambique",
+        "nome_oficial": "República de Moçambique"
+    },
+    {
+        "alpha_2": "MR",
+        "name": "Mauritania",
+        "nome": "Mauritânia",
+        "official_name": "Islamic Republic of Mauritania",
+        "nome_oficial": "República Islâmica da Mauritânia"
+    },
+    {
+        "alpha_2": "MS",
+        "name": "Montserrat",
+        "nome": "Montserrat",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "MQ",
+        "name": "Martinique",
+        "nome": "Martinica",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "MU",
+        "name": "Mauritius",
+        "nome": "Maurício",
+        "official_name": "Republic of Mauritius",
+        "nome_oficial": "República das Maurícias"
+    },
+    {
+        "alpha_2": "MW",
+        "name": "Malawi",
+        "nome": "Malawi",
+        "official_name": "Republic of Malawi",
+        "nome_oficial": "República do Malawi"
+    },
+    {
+        "alpha_2": "MY",
+        "name": "Malaysia",
+        "nome": "Malásia",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "YT",
+        "name": "Mayotte",
+        "nome": "Maiote",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "NA",
+        "name": "Namibia",
+        "nome": "Namíbia",
+        "official_name": "Republic of Namibia",
+        "nome_oficial": "República da Namíbia"
+    },
+    {
+        "alpha_2": "NC",
+        "name": "New Caledonia",
+        "nome": "Nova Caledônia",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "NE",
+        "name": "Niger",
+        "nome": "Níger",
+        "official_name": "Republic of the Niger",
+        "nome_oficial": "República do Níger"
+    },
+    {
+        "alpha_2": "NF",
+        "name": "Norfolk Island",
+        "nome": "Ilha Norfolk",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "NG",
+        "name": "Nigeria",
+        "nome": "Nigéria",
+        "official_name": "Federal Republic of Nigeria",
+        "nome_oficial": "República Federal da Nigéria"
+    },
+    {
+        "alpha_2": "NI",
+        "name": "Nicaragua",
+        "nome": "Nicarágua",
+        "official_name": "Republic of Nicaragua",
+        "nome_oficial": "República da Nicarágua"
+    },
+    {
+        "alpha_2": "NU",
+        "name": "Niue",
+        "nome": "Niue",
+        "official_name": "Niue",
+        "nome_oficial": "Niue"
+    },
+    {
+        "alpha_2": "NL",
+        "name": "Netherlands",
+        "nome": "Países Baixos",
+        "official_name": "Kingdom of the Netherlands",
+        "nome_oficial": "Reino dos Países Baixos"
+    },
+    {
+        "alpha_2": "NO",
+        "name": "Norway",
+        "nome": "Noruega",
+        "official_name": "Kingdom of Norway",
+        "nome_oficial": "Reino da Noruega"
+    },
+    {
+        "alpha_2": "NP",
+        "name": "Nepal",
+        "nome": "Nepal",
+        "official_name": "Federal Democratic Republic of Nepal",
+        "nome_oficial": "República Federal Democrática do Nepal"
+    },
+    {
+        "alpha_2": "NR",
+        "name": "Nauru",
+        "nome": "Nauru",
+        "official_name": "Republic of Nauru",
+        "nome_oficial": "República de Nauru"
+    },
+    {
+        "alpha_2": "NZ",
+        "name": "New Zealand",
+        "nome": "Nova Zelândia",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "OM",
+        "name": "Oman",
+        "nome": "Omã",
+        "official_name": "Sultanate of Oman",
+        "nome_oficial": "Sultanato de Omã"
+    },
+    {
+        "alpha_2": "PK",
+        "name": "Pakistan",
+        "nome": "Paquistão",
+        "official_name": "Islamic Republic of Pakistan",
+        "nome_oficial": "República Islâmica do Paquistão"
+    },
+    {
+        "alpha_2": "PA",
+        "name": "Panama",
+        "nome": "Panamá",
+        "official_name": "Republic of Panama",
+        "nome_oficial": "República do Panamá"
+    },
+    {
+        "alpha_2": "PN",
+        "name": "Pitcairn",
+        "nome": "Pitcairn",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "PE",
+        "name": "Peru",
+        "nome": "Peru",
+        "official_name": "Republic of Peru",
+        "nome_oficial": "República do Peru"
+    },
+    {
+        "alpha_2": "PH",
+        "name": "Philippines",
+        "nome": "Filipinas",
+        "official_name": "Republic of the Philippines",
+        "nome_oficial": "República das Filipinas"
+    },
+    {
+        "alpha_2": "PW",
+        "name": "Palau",
+        "nome": "Palau",
+        "official_name": "Republic of Palau",
+        "nome_oficial": "República de Palau"
+    },
+    {
+        "alpha_2": "PG",
+        "name": "Papua New Guinea",
+        "nome": "Papua Nova Guiné",
+        "official_name": "Independent State of Papua New Guinea",
+        "nome_oficial": "Estado Independente de Papua Nova Guiné"
+    },
+    {
+        "alpha_2": "PL",
+        "name": "Poland",
+        "nome": "Polônia",
+        "official_name": "Republic of Poland",
+        "nome_oficial": "República da Polônia"
+    },
+    {
+        "alpha_2": "PR",
+        "name": "Puerto Rico",
+        "nome": "Porto Rico",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "KP",
+        "name": "Korea, Democratic People's Republic of",
+        "nome": " Coréia, República Popular Democrática da",
+        "official_name": "Democratic People's Republic of Korea",
+        "nome_oficial": "República Popular Democrática da Coreia"
+    },
+    {
+        "alpha_2": "PT",
+        "name": "Portugal",
+        "nome": "Portugal",
+        "official_name": "Portuguese Republic",
+        "nome_oficial": "República Portuguesa"
+    },
+    {
+        "alpha_2": "PY",
+        "name": "Paraguay",
+        "nome": "Paraguai",
+        "official_name": "Republic of Paraguay",
+        "nome_oficial": "República do Paraguai"
+    },
+    {
+        "alpha_2": "PS",
+        "name": "Palestine, State of",
+        "nome": " Palestina, Estado de",
+        "official_name": "the State of Palestine",
+        "nome_oficial": "o Estado da Palestina"
+    },
+    {
+        "alpha_2": "PF",
+        "name": "French Polynesia",
+        "nome": "Polinésia Francesa",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "QA",
+        "name": "Qatar",
+        "nome": "Catar",
+        "official_name": "State of Qatar",
+        "nome_oficial": "Estado do Catar"
+    },
+    {
+        "alpha_2": "RE",
+        "name": "Réunion",
+        "nome": "Reunião",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "RO",
+        "name": "Romania",
+        "nome": "Romênia",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "RU",
+        "name": "Russian Federation",
+        "nome": "Federação Russa",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "RW",
+        "name": "Rwanda",
+        "nome": "Ruanda",
+        "official_name": "Rwandese Republic",
+        "nome_oficial": "República de Ruanda"
+    },
+    {
+        "alpha_2": "SA",
+        "name": "Saudi Arabia",
+        "nome": "Arábia Saudita",
+        "official_name": "Kingdom of Saudi Arabia",
+        "nome_oficial": "Reino da Arábia Saudita"
+    },
+    {
+        "alpha_2": "SD",
+        "name": "Sudan",
+        "nome": "Sudão",
+        "official_name": "Republic of the Sudan",
+        "nome_oficial": "República do Sudão"
+    },
+    {
+        "alpha_2": "SN",
+        "name": "Senegal",
+        "nome": "Senegal",
+        "official_name": "Republic of Senegal",
+        "nome_oficial": "República do Senegal"
+    },
+    {
+        "alpha_2": "SG",
+        "name": "Singapore",
+        "nome": "Cingapura",
+        "official_name": "Republic of Singapore",
+        "nome_oficial": "República de Singapura"
+    },
+    {
+        "alpha_2": "GS",
+        "name": "South Georgia and the South Sandwich Islands",
+        "nome": "Ilhas Geórgia do Sul e Sandwich do Sul",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "SH",
+        "name": "Saint Helena, Ascension and Tristan da Cunha",
+        "nome": " Santa Helena, Ascensão e Tristão da Cunha",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "SJ",
+        "name": "Svalbard and Jan Mayen",
+        "nome": "Svalbard e Jan Mayen",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "SB",
+        "name": "Solomon Islands",
+        "nome": "Ilhas Salomão",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "SL",
+        "name": "Sierra Leone",
+        "nome": "Serra Leoa",
+        "official_name": "Republic of Sierra Leone",
+        "nome_oficial": "República da Serra Leoa"
+    },
+    {
+        "alpha_2": "SV",
+        "name": "El Salvador",
+        "nome": "El Salvador",
+        "official_name": "Republic of El Salvador",
+        "nome_oficial": "República de El Salvador"
+    },
+    {
+        "alpha_2": "SM",
+        "name": "San Marino",
+        "nome": "São Marinho",
+        "official_name": "Republic of San Marino",
+        "nome_oficial": "República de São Marinho"
+    },
+    {
+        "alpha_2": "SO",
+        "name": "Somalia",
+        "nome": "Somália",
+        "official_name": "Federal Republic of Somalia",
+        "nome_oficial": "República Federal da Somália"
+    },
+    {
+        "alpha_2": "PM",
+        "name": "Saint Pierre and Miquelon",
+        "nome": "São Pedro e Miquelon",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "RS",
+        "name": "Serbia",
+        "nome": "Sérvia",
+        "official_name": "Republic of Serbia",
+        "nome_oficial": "República da Sérvia"
+    },
+    {
+        "alpha_2": "SS",
+        "name": "South Sudan",
+        "nome": "Sudão do Sul",
+        "official_name": "Republic of South Sudan",
+        "nome_oficial": "República do Sudão do Sul"
+    },
+    {
+        "alpha_2": "ST",
+        "name": "Sao Tome and Principe",
+        "nome": "São Tomé e Príncipe",
+        "official_name": "Democratic Republic of Sao Tome and Principe",
+        "nome_oficial": "República Democrática de São Tomé e Príncipe"
+    },
+    {
+        "alpha_2": "SR",
+        "name": "Suriname",
+        "nome": "Suriname",
+        "official_name": "Republic of Suriname",
+        "nome_oficial": "República do Suriname"
+    },
+    {
+        "alpha_2": "SK",
+        "name": "Slovakia",
+        "nome": "Eslováquia",
+        "official_name": "Slovak Republic",
+        "nome_oficial": "República Eslovaca"
+    },
+    {
+        "alpha_2": "SI",
+        "name": "Slovenia",
+        "nome": "Eslovênia",
+        "official_name": "Republic of Slovenia",
+        "nome_oficial": "República da Eslovênia"
+    },
+    {
+        "alpha_2": "SE",
+        "name": "Sweden",
+        "nome": "Suécia",
+        "official_name": "Kingdom of Sweden",
+        "nome_oficial": "Reino da Suécia"
+    },
+    {
+        "alpha_2": "SZ",
+        "name": "Eswatini",
+        "nome": "Eswatini",
+        "official_name": "Kingdom of Eswatini",
+        "nome_oficial": "Reino de Eswatini"
+    },
+    {
+        "alpha_2": "SX",
+        "name": "Sint Maarten (Dutch part)",
+        "nome": "Sint Maarten (parte holandesa)",
+        "official_name": "Sint Maarten (Dutch part)",
+        "nome_oficial": "Sint Maarten (parte holandesa)"
+    },
+    {
+        "alpha_2": "SC",
+        "name": "Seychelles",
+        "nome": "Seicheles",
+        "official_name": "Republic of Seychelles",
+        "nome_oficial": "República das Seicheles"
+    },
+    {
+        "alpha_2": "SY",
+        "name": "Syrian Arab Republic",
+        "nome": "República Árabe da Síria",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "TC",
+        "name": "Turks and Caicos Islands",
+        "nome": "Ilhas Turcas e Caicos",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "TD",
+        "name": "Chad",
+        "nome": "Chade",
+        "official_name": "Republic of Chad",
+        "nome_oficial": "República do Chade"
+    },
+    {
+        "alpha_2": "TG",
+        "name": "Togo",
+        "nome": "Ir",
+        "official_name": "Togolese Republic",
+        "nome_oficial": "República do Togo"
+    },
+    {
+        "alpha_2": "TH",
+        "name": "Thailand",
+        "nome": "Tailândia",
+        "official_name": "Kingdom of Thailand",
+        "nome_oficial": "Reino da Tailândia"
+    },
+    {
+        "alpha_2": "TJ",
+        "name": "Tajikistan",
+        "nome": "Tajiquistão",
+        "official_name": "Republic of Tajikistan",
+        "nome_oficial": "República do Tajiquistão"
+    },
+    {
+        "alpha_2": "TK",
+        "name": "Tokelau",
+        "nome": "Toquelau",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "TM",
+        "name": "Turkmenistan",
+        "nome": "Turcomenistão",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "TL",
+        "name": "Timor-Leste",
+        "nome": "Timor-Leste",
+        "official_name": "Democratic Republic of Timor-Leste",
+        "nome_oficial": "República Democrática de Timor-Leste"
+    },
+    {
+        "alpha_2": "TO",
+        "name": "Tonga",
+        "nome": "Tonga",
+        "official_name": "Kingdom of Tonga",
+        "nome_oficial": "Reino de Tonga"
+    },
+    {
+        "alpha_2": "TT",
+        "name": "Trinidad and Tobago",
+        "nome": "Trindade e Tobago",
+        "official_name": "Republic of Trinidad and Tobago",
+        "nome_oficial": "República de Trinidad e Tobago"
+    },
+    {
+        "alpha_2": "TN",
+        "name": "Tunisia",
+        "nome": "Tunísia",
+        "official_name": "Republic of Tunisia",
+        "nome_oficial": "República da Tunísia"
+    },
+    {
+        "alpha_2": "TR",
+        "name": "Turkey",
+        "nome": "Turquia",
+        "official_name": "Republic of Turkey",
+        "nome_oficial": "República da Turquia"
+    },
+    {
+        "alpha_2": "TV",
+        "name": "Tuvalu",
+        "nome": "Tuvalu",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "TW",
+        "name": "Taiwan, Province of China",
+        "nome": " Taiwan, província da China",
+        "official_name": "Taiwan, Province of China",
+        "nome_oficial": "\" Taiwan"
+    },
+    {
+        "alpha_2": "TZ",
+        "name": "Tanzania, United Republic of",
+        "nome": " Tanzânia, República Unida da",
+        "official_name": "United Republic of Tanzania",
+        "nome_oficial": "República Unida da Tanzânia"
+    },
+    {
+        "alpha_2": "UG",
+        "name": "Uganda",
+        "nome": "Uganda",
+        "official_name": "Republic of Uganda",
+        "nome_oficial": "República do Uganda"
+    },
+    {
+        "alpha_2": "UA",
+        "name": "Ukraine",
+        "nome": "Ucrânia",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "UM",
+        "name": "United States Minor Outlying Islands",
+        "nome": "Ilhas Menores Distantes dos Estados Unidos",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "UY",
+        "name": "Uruguay",
+        "nome": "Uruguai",
+        "official_name": "Eastern Republic of Uruguay",
+        "nome_oficial": "República Oriental do Uruguai"
+    },
+    {
+        "alpha_2": "US",
+        "name": "United States",
+        "nome": "Estados Unidos",
+        "official_name": "United States of America",
+        "nome_oficial": "Estados Unidos da América"
+    },
+    {
+        "alpha_2": "UZ",
+        "name": "Uzbekistan",
+        "nome": "Uzbequistão",
+        "official_name": "Republic of Uzbekistan",
+        "nome_oficial": "República do Uzbequistão"
+    },
+    {
+        "alpha_2": "VA",
+        "name": "Holy See (Vatican City State)",
+        "nome": "Santa Sé (Estado da Cidade do Vaticano)",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "VC",
+        "name": "Saint Vincent and the Grenadines",
+        "nome": "São Vicente e Granadinas",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "VE",
+        "name": "Venezuela, Bolivarian Republic of",
+        "nome": " Venezuela, República Bolivariana da",
+        "official_name": "Bolivarian Republic of Venezuela",
+        "nome_oficial": "República Bolivariana da Venezuela"
+    },
+    {
+        "alpha_2": "VG",
+        "name": "Virgin Islands, British",
+        "nome": " Ilhas Virgens, Britânico",
+        "official_name": "British Virgin Islands",
+        "nome_oficial": "Ilhas Virgens Britânicas"
+    },
+    {
+        "alpha_2": "VI",
+        "name": "Virgin Islands, U.S.",
+        "nome": " Ilhas Virgens, EUA",
+        "official_name": "Virgin Islands of the United States",
+        "nome_oficial": "Ilhas Virgens dos Estados Unidos"
+    },
+    {
+        "alpha_2": "VN",
+        "name": "Viet Nam",
+        "nome": "Vietnã",
+        "official_name": "Socialist Republic of Viet Nam",
+        "nome_oficial": "República Socialista do Vietnã"
+    },
+    {
+        "alpha_2": "VU",
+        "name": "Vanuatu",
+        "nome": "Vanuatu",
+        "official_name": "Republic of Vanuatu",
+        "nome_oficial": "República de Vanuatu"
+    },
+    {
+        "alpha_2": "WF",
+        "name": "Wallis and Futuna",
+        "nome": "Wallis e Futuna",
+        "official_name": "",
+        "nome_oficial": ""
+    },
+    {
+        "alpha_2": "WS",
+        "name": "Samoa",
+        "nome": "Samoa",
+        "official_name": "Independent State of Samoa",
+        "nome_oficial": "Estado Independente de Samoa"
+    },
+    {
+        "alpha_2": "YE",
+        "name": "Yemen",
+        "nome": "Iémen",
+        "official_name": "Republic of Yemen",
+        "nome_oficial": "República do Iêmen"
+    },
+    {
+        "alpha_2": "ZA",
+        "name": "South Africa",
+        "nome": "África do Sul",
+        "official_name": "Republic of South Africa",
+        "nome_oficial": "República da África do Sul"
+    },
+    {
+        "alpha_2": "ZM",
+        "name": "Zambia",
+        "nome": "Zâmbia",
+        "official_name": "Republic of Zambia",
+        "nome_oficial": "República da Zâmbia"
+    },
+    {
+        "alpha_2": "ZW",
+        "name": "Zimbabwe",
+        "nome": "Zimbábue",
+        "official_name": "Republic of Zimbabwe",
+        "nome_oficial": "República do Zimbábue"
+    }
+]

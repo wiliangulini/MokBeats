@@ -1,0 +1,200 @@
+label span.underline {
+  text-decoration: underline;
+}
+main {
+  margin-top: 10vh;
+  background-color: #F9F9F9;
+}
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column {
+  padding-top: 4%;
+}
+.resumoCompra {
+  background-color: #FFF;
+  height: 100%;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  padding: 4.5% 2% 4% 3% !important;
+}
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .card {
+  width: 70%;
+  box-shadow: 0 0 10px 0 #DDD;
+  padding: 30px 30px 25px 30px;
+}
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column p.h2.font-weight-bold {
+  font-size: 45px;
+}
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column p.h6.mb-5,
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column p.h2.font-weight-bold,
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column p.h3.font-weight-bold {
+  width: 67%;
+}
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column p.h6.mb-5 {
+  font-size: 18px;
+}
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .card .form-group {
+  border-bottom: 1px solid #CED4DA;
+}
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .card .form-group input {
+  border: 0;
+}
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .card .form-group input:focus {
+  border-bottom-color: #1b1b1b;
+}
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .card .form-check {
+  border-bottom: 1px solid #CED4DA;
+  padding: 30px 45px 30px 45px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column button[type='submit'].btn.btn-primary.font-weight-bold.text-uppercase {
+  width: 50%;
+  border-radius: 33px;
+  height: 70px;
+  font-size: 22px;
+}
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .card .form-check .imgs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 32%;
+}
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .form-group.d-flex.justify-content-start.align-items-center label {
+  margin-bottom: 0;
+  font-size: 18px;
+}
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .form-group.d-flex.justify-content-start.align-items-center {
+  width: 68%;
+}
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .form-group.d-flex.justify-content-start.align-items-center input[type='checkbox'] {
+  width: auto;
+  margin-right: 2%;
+}
+main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .card .inputControl .form-group.border-0 mat-form-field mat-label,
+input {
+  font-size: 18px;
+}
+main .container-fluid .row form .resumoCompra .control.d-flex {
+  width: 100%;
+}
+main .container-fluid .row form .resumoCompra .control.d-flex p.h5.font-weight-bold,
+main .container-fluid .row form .resumoCompra .control.d-flex p.h6.font-weight-bold {
+  margin-bottom: 0;
+}
+main .container-fluid .row form .resumoCompra .controlCarrinho.w-100 .controlInt.d-flex {
+  border-bottom: 1px solid #DDD;
+  padding: 2% 0;
+}
+main .container-fluid .row form .resumoCompra .controlCarrinho.w-100 .controlInt.d-flex .controlCarrinhoInt .svg {
+  border: 2px solid #DDD;
+  border-radius: 50%;
+  padding: 10px;
+  margin-right: 20px;
+}
+main .container-fluid .row form .resumoCompra .controlCarrinho.w-100 .controlInt.d-flex .controlCarrinhoInt p.mb-0 {
+  font-size: 18px;
+  font-weight: 500;
+}
+main .container-fluid .row form .resumoCompra .controlCarrinho.w-100 .controlInt.d-flex .controlCarrinhoInt .music {
+  margin-right: 10px;
+}
+main .container-fluid .row form .resumoCompra .controlCarrinho.w-100 .controlInt.d-flex .controlCarrinhoInt button.btn.btn-primary {
+  border: 2px solid #DDD;
+  background: #FFF;
+  color: #000;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 33px;
+}
+main .container-fluid .row form .resumoCompra .controlCarrinho.w-100 .controlInt.d-flex .controlCarrinhoInt svg.ml-3 {
+  fill: grey;
+}
+main .container-fluid .row form .resumoCompra .total {
+  margin-top: 10%;
+  width: 100%;
+}
+main .container-fluid .row form .resumoCompra .total p.h5.font-weight-bold.text-uppercase.mb-5 {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1%;
+}
+main .container-fluid .row form .resumoCompra .total .economize.d-flex {
+  background: linear-gradient(45deg, #4B3A8F, #2f1ef1, #7b009c);
+  color: #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 #4B3A8F;
+  border: 1px solid #7b009c;
+}
+main .container-fluid .row form .resumoCompra .total .economize.d-flex .w-75 p.h3.font-weight-bold {
+  width: 100%;
+  font-size: 24px;
+  margin-bottom: 5%;
+}
+main .container-fluid .row form .resumoCompra .total .economize.d-flex .w-75 .txt0,
+main .container-fluid .row form .resumoCompra .total .economize.d-flex .w-75 .txt1,
+main .container-fluid .row form .resumoCompra .total .economize.d-flex .w-75 .txt2 {
+  color: #DDD;
+  font-weight: 500;
+  align-items: center;
+}
+main .container-fluid .row form .resumoCompra .total .economize.d-flex .w-75 .txt1 svg,
+main .container-fluid .row form .resumoCompra .total .economize.d-flex .w-75 .txt2 svg,
+main .container-fluid .row form .resumoCompra .total .economize.d-flex .w-75 .txt0 svg {
+  fill: #DDD;
+  margin-right: 2%;
+}
+main .container-fluid .row form .resumoCompra .total .economize.d-flex .w-25 {
+  width: 30% !important;
+}
+main .container-fluid .row form .resumoCompra .total .economize.d-flex .w-25 p.h4.font-weight-bold.text-uppercase {
+  font-size: 22px;
+}
+main .container-fluid .row form .resumoCompra .total .economize.d-flex .w-25 p.h3.font-weight-bold {
+  font-size: 26px;
+  text-align: center;
+  margin: 7px 0 2px;
+}
+main .container-fluid .row form .resumoCompra .total .economize.d-flex .w-25 p.h3.font-weight-bold small {
+  font-size: 18px;
+}
+main .container-fluid .row form .resumoCompra .total .economize.d-flex .w-25 p.h6 {
+  font-size: 15px;
+  margin-bottom: 12%;
+}
+main .container-fluid .row form .resumoCompra .security {
+  color: #b4b4b5;
+  fill: #b4b4b5;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+main .container-fluid .row form .resumoCompra .security .securityInt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15%;
+  width: 50%;
+  margin-bottom: 2%;
+}
+main .container-fluid .row form .resumoCompra .security .securityInt p {
+  margin: 0 0 0 1.5%;
+}
+main .container-fluid .row form .resumoCompra .security .securityInt2 {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 50%;
+}
+main .container-fluid .row form .resumoCompra .total .economize.d-flex .w-25.d-flex button.btn.btn-primary {
+  width: 75%;
+  border-radius: 33px;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 0 0 10px 0 #007bff;
+}

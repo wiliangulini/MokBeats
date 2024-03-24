@@ -1,5 +1,3 @@
-
-
 #article {
   height: auto;
 }
@@ -7,10 +5,11 @@
   white-space: pre;
 }
 article.one {
-  background-color: #101010;
+  background: linear-gradient(45deg, #57443D, #423338, #292130);
+  position: relative;
 }
 .amarelo {
-  fill: #dcad54 !important;
+  fill: #dcad54;
 }
 .nav-item.p-0.close,
 button.btn.btn-icons.mobile {
@@ -78,6 +77,16 @@ article.one .container-fluid {
   width: calc(100vw - 14vw);
   transition: all .5s ease-in-out;
 }
+article.one .container-fluid #cf .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.p-0 .col-sm-10.col-md-10.col-lg-10.col-xl-10.p-0 {
+  right: 4%;
+  padding-bottom: 3% !important;
+}
+article.one .container-fluid #cf .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.p-0 .col-sm-10.col-md-10.col-lg-10.col-xl-10.p-0 .styleMusic {
+  flex-wrap: wrap;
+}
+article.one .container-fluid #cf .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.flex-column.align-items-start.justify-content-center {
+  height: 60vh;
+}
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu.show {
   display: flex !important;
   flex-direction: column;
@@ -117,6 +126,9 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
   background: transparent;
   width: 57px;
   height: 34px;
+}
+#artistFilterMusic {
+  left: 7.5%;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
   padding-left: 1.5%;
@@ -209,6 +221,12 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
 button.btn.btn-warning {
   color: #fff !important;
 }
+article.one span.material-icons.removePlaylist {
+  color: #9B959A !important;
+  font-size: 35px !important;
+  position: relative;
+  top: 5px;
+}
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.titlesMDiv .col-sm-1.col-md-1.col-lg-1.col-xl-1.d-flex.align-items-center.justify-content-between,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1.one.d-flex.align-items-center.justify-content-around.pl-2.pr-2.pt-0.pb-0 {
   right: 2%;
@@ -226,10 +244,27 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.title
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1 p {
   font-size: 13px;
 }
-article.one .container-fluid .row h4 {
+article.one .container-fluid .row h1 {
+  font-size: 56px;
+  margin-bottom: 2% !important;
+  width: 100%;
+  font-weight: bold;
+  color: #FFF;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+}
+#reproduzirMusicas {
+  position: relative;
+  top: 10%;
+  border-radius: 33px;
+}
+article.one .container-fluid .row p.description {
   font-size: 1.5rem;
   width: 100%;
-  font-weight: bold
+  color: #FFF;
+  display: flex;
+  justify-content: center;
 }
 article.one .container-fluid .row h6 {
   width: 100%;
@@ -267,6 +302,15 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
   min-height: 95px;
   height: auto;
 }
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2.d-flex.justify-content-center.align-items-center {
+  padding: 0;
+  position: initial;
+}
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2.d-flex.justify-content-center.align-items-center img {
+  border-radius: 50%;
+  box-shadow: 0 0 10px 0 #DDD;
+}
+#arve,
 #arrve {
   color: #FFF;
   border: 1px solid #FFF;
@@ -306,9 +350,6 @@ article.one .container-fluid #cf .row #array .controlDivs .controlDivsInt .contr
 }
 #li {
   justify-content: space-between;
-}
-article.one {
-  position: relative;
 }
 .dropdown-menu {
   background-color: #1b1b1b !important;
@@ -371,7 +412,7 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
   border: 2px solid rgba(255,255,255,.2);
   background: transparent;
   font-weight: bold;
-  width: 100%;
+  width: 70%;
 }
 .dropdown-item:hover, .dropdown-item:focus {
   background-color: transparent;

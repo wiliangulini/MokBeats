@@ -44,3 +44,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 textarea.mat-input-element {
   background: rgba(0,0,0,.04) !important;
 }
+.mat-form-field-appearance-fill .mat-form-field-flex,
+.mat-form-field-appearance-fill .mat-form-field-infix {
+  background: #FFF !important;
+}
+.mat-form-field-appearance-fill .mat-form-field-underline::before {
+  background-color: #CED4DA !important;
+}

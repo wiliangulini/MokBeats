@@ -17,9 +17,11 @@ export class MenuComponent implements OnInit {
   @HostListener('window:scroll') onWindowScroll() {
     if (window.scrollY > 75) {
       this.nav.nativeElement.style.backgroundImage = 'linear-gradient(90deg, #000, #343a40)';
+      this.nav.nativeElement.style.marginTop = '0px';
     } else {
       this.nav.nativeElement.style.backgroundColor = 'transparent';
       this.nav.nativeElement.style.backgroundImage = 'none';
+      this.nav.nativeElement.style.marginTop = '10px';
     }
   }
 

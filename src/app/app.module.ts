@@ -50,9 +50,13 @@ import {SubMenuComponent} from './sub-menu/sub-menu.component';
 import {FinalizarCompraComponent} from './finalizar-compra/finalizar-compra.component';
 import {ContatoComponent} from './contato/contato.component';
 import {CreatePlaylistModalComponent} from './create-playlist-modal/create-playlist-modal.component';
-import { PagPlaylistComponent } from './pag-playlist/pag-playlist.component';
-import { EditPlaylistModalComponent } from './create-playlist-modal/edit-playlist-modal/edit-playlist-modal.component';
-import { ArtistComponent } from './artist/artist.component';
+import {PagPlaylistComponent} from './pag-playlist/pag-playlist.component';
+import {EditPlaylistModalComponent} from './create-playlist-modal/edit-playlist-modal/edit-playlist-modal.component';
+import {ArtistComponent} from './artist/artist.component';
+import {CarrinhoComponent} from './carrinho/carrinho.component';
+import {PlayerComponent} from './player/player.component';
+import {UsuarioArtistaComponent} from './usuario-artista/usuario-artista.component';
+import {MatFormFieldModule} from "@angular/material/form-field";
 
 
 @NgModule({
@@ -88,6 +92,9 @@ import { ArtistComponent } from './artist/artist.component';
     PagPlaylistComponent,
     EditPlaylistModalComponent,
     ArtistComponent,
+    CarrinhoComponent,
+    PlayerComponent,
+    UsuarioArtistaComponent,
   ],
   imports: [
     BrowserModule,
@@ -111,6 +118,7 @@ import { ArtistComponent } from './artist/artist.component';
     MatRadioModule,
     MatSnackBarModule,
     MatInputModule,
+    MatFormFieldModule,
   ],
   providers: [
     NgbTooltip,

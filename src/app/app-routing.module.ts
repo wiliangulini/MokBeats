@@ -20,6 +20,8 @@ import {FinalizarCompraComponent} from "./finalizar-compra/finalizar-compra.comp
 import {ContatoComponent} from "./contato/contato.component";
 import {PagPlaylistComponent} from "./pag-playlist/pag-playlist.component";
 import {ArtistComponent} from "./artist/artist.component";
+import {CarrinhoComponent} from "./carrinho/carrinho.component";
+import {UsuarioArtistaComponent} from "./usuario-artista/usuario-artista.component";
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -39,10 +41,12 @@ const routes: Routes = [
   { path: 'pedidos', component: PedidosComponent },
   { path: 'formas-de-pagamento', component: FormasDePagamentoComponent },
   { path: 'artista', component: ArtistComponent },
+  { path: 'cliente', component: UsuarioArtistaComponent },
   { path: 'atualizar-informacoes', component: AtualizarInformacoesComponent },
   { path: 'finalizar-compra', component: FinalizarCompraComponent },
   { path: 'contato', component: ContatoComponent },
   { path: 'pagina-playlist', component: PagPlaylistComponent },
+  { path: 'carrinho', component: CarrinhoComponent },
   { path: 'upload', loadChildren: () => import('./upload-file/upload-file.module').then(m => m.UploadFileModule) },
 ];
 

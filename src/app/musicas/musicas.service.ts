@@ -6,6 +6,7 @@ import {AuthService} from "../login/auth.service";
 import {FavoritosService} from "../favoritos/favoritos.service";
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
+import {CarrinhoService} from "../service/carrinho.service";
 
 export type Musica = {
   id?: number;
@@ -403,6 +404,7 @@ export class MusicasService  {
     private modalService: NgbModal,
     private likeService: FavoritosService,
     private http: HttpClient,
+    private cartService: CarrinhoService,
   ) {
     this.genero.map((obj: any) => {
       Object.keys(obj).map((chave: any) => {
@@ -469,8 +471,10 @@ export class MusicasService  {
     this.modalService.open(DownloadAmostraComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
   }
 
-  public comprarLicensa(i: number) {
+  public comprarLicensa(i: any) {
     this.authService.verificaLogin();
-    console.log(i);
+    if(this.authService.userAutetic()) {
+      this.cartService.receivingCart(i)
+    }
   }
 }

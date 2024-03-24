@@ -1,0 +1,143 @@
+<main>
+  <div class="container-fluid">
+    <div class="row">
+      <form [formGroup]="form" class="w-100 d-flex justify-content-center align-items-center">
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex justify-content-center align-items-center flex-column mb-5 pb-5">
+          <p class="h2 font-weight-bold">Finalizar a compra</p>
+          <p class="h6 mb-5">Verifique as suas informações de pagamento</p>
+          <div class="card mb-5">
+            <div class="form-group">
+              <input type="text" placeholder="Nome do projeto (opcional)" formControlName="nomeProjeto" class="w-100 form-control" />
+            </div>
+            <div class="form-group">
+              <input type="text" placeholder="Observações ou comentários (opcional)" formControlName="observacoes" class="w-100 form-control" />
+            </div>
+          </div>
+          <p class="h3 font-weight-bold mb-4">Endereço de cobrança</p>
+          <div class="card mb-5">
+            <div class="form-group">
+              <input type="text" placeholder="Nome de contato *" formControlName="nomeContato" class="w-100 form-control" required/>
+            </div>
+            <div class="form-group">
+              <input type="text" placeholder="Endereço *" formControlName="endereco" class="w-100 form-control" required/>
+            </div>
+            <div class="form-group">
+              <input type="text" placeholder="Endereço (linha2)" formControlName="enderecoLinha2" class="w-100 form-control" />
+            </div>
+            <div class="inputControl d-flex">
+              <div class="form-group w-50 border-0">
+                <mat-form-field appearance="fill" class="w-100 pr-2">
+                  <mat-label>País *</mat-label>
+                  <mat-select>
+                    <mat-option *ngFor="let item of pais" [value]="item.nome">
+                      {{item.nome}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group w-50 border-0">
+                <mat-form-field appearance="fill" class="w-100 pl-2">
+                  <mat-label>Província/Estado *</mat-label>
+                  <mat-select>
+                    <mat-option *ngFor="let it of estados" [value]="it.ID">
+                      {{it.Nome}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="inputControl d-flex">
+              <div class="form-group w-50 mr-2">
+                <input type="text" class="w-100 form-control" formControlName="cidade" placeholder="Cidade *" required/>
+              </div>
+              <div class="form-group w-50 ml-2">
+                <input type="number" class="w-100 form-control" formControlName="cep" placeholder="Código postal/CEP *" required/>
+              </div>
+            </div>
+          </div>
+          <p class="h3 font-weight-bold">Forma de pagamento</p>
+          <div class="card mb-4 p-0">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="credito" formControlName="credito" name="credito" />
+              <div class="imgs ml-3">
+                <img src="assets/images/amex.svg" alt="cartao amex" />
+                <img src="assets/images/visa.svg" alt="cartao visa" />
+                <img src="assets/images/mastercard.svg" alt="cartao mastercard" />
+              </div>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="paypal" formControlName="credito" name="credito" />
+              <img class="ml-3" src="assets/images/paypal.svg" alt="paypal imagem" />
+            </div>
+          </div>
+          <div class="form-group d-flex justify-content-start align-items-center">
+            <input type="checkbox" class="form-control" formControlName="termosLicensa" required/>
+            <label>Eu li e aceito os termos do <span class="underline">Contrato de licença de Mokbeats</span></label>
+          </div>
+          <button class="btn btn-primary font-weight-bold text-uppercase mt-4" type="submit" (click)="onSubmit($event)">Pagamento de R${{price}}</button>
+        </div>
+        <div class="resumoCompra col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex justify-content-center align-items-center flex-column">
+          <p class="h2 font-weight-bold mb-5">Resumo da Compra</p>
+          <div class="control d-flex justify-content-between align-items-center mt-4 mb-3">
+            <p class="h5 font-weight-bold">No seu carrinho ({{numberMusic}})</p>
+            <p class="h6 font-weight-bold">Licença <svg class="ml-2" width="24" height="24" viewBox="0 0 24 24"><path d="M12,4.5A7.5,7.5,0,1,1,4.5,12,7.508,7.508,0,0,1,12,4.5m0-2A9.5,9.5,0,1,0,21.5,12,9.5,9.5,0,0,0,12,2.5"></path><path d="M12.012,11.317c.494-.337,1.105-.767,1.105-1.5a.957.957,0,0,0-1.092-.986c-.611,0-1.117.377-1.117,1.326H8.828a2.874,2.874,0,0,1,3.2-2.912c1.664,0,3.147.883,3.147,2.572a2.834,2.834,0,0,1-1.391,2.3,1.63,1.63,0,0,0-.832,1.586h-2.08a2.46,2.46,0,0,1,1.143-2.393m-.1,2.77a1.332,1.332,0,1,1-1.352,1.326,1.337,1.337,0,0,1,1.352-1.326"></path></svg></p>
+          </div>
+          <div class="controlCarrinho w-100 mt-3" *ngFor="let music of musics;">
+            <div class="controlInt d-flex justify-content-between align-items-center w-100">
+              <div class="controlCarrinhoInt d-flex align-items-center justify-content-start">
+                <div class="svg">
+                  <svg width="24" height="24" viewBox="0 0 24 24"><path d="M20.661,12.442,7.855,19.929a.511.511,0,0,1-.77-.442V4.513a.511.511,0,0,1,.77-.442l12.806,7.487A.512.512,0,0,1,20.661,12.442Z"></path></svg>
+                </div>
+                <svg class="music" width="24" height="24" viewBox="0 0 24 24"><path d="M21.427,3.375a.872.872,0,0,0-.176-.442.967.967,0,0,0-1-.339l-.34.061-4.888.877c-.665.119-4.774.863-5.278.945a1.4,1.4,0,0,0-1.024.471,1.271,1.271,0,0,0-.159.757v9.663a4.388,4.388,0,0,0-2.1-.528c-2.15,0-3.9,1.481-3.9,3.3s1.75,3.3,3.9,3.3,3.9-1.481,3.9-3.3V10.208l9.271-1.685v4.965a4.387,4.387,0,0,0-2.1-.528c-2.15,0-3.9,1.481-3.9,3.3s1.75,3.3,3.9,3.3,3.9-1.481,3.9-3.3v-.4c0-.358,0-12.069,0-12.315A1.412,1.412,0,0,0,21.427,3.375ZM6.464,19.643c-1.139,0-2.1-.687-2.1-1.5s.961-1.5,2.1-1.5,2.1.688,2.1,1.5S7.6,19.643,6.464,19.643Zm3.9-11.264V6.2l9.271-1.663V6.694Zm7.172,9.386c-1.139,0-2.1-.687-2.1-1.5s.961-1.5,2.1-1.5,2.1.688,2.1,1.5S18.675,17.765,17.536,17.765Z"></path></svg>
+                <p class="mb-0">{{ music.nome_musica }}</p>
+              </div>
+              <div class="controlCarrinhoInt d-flex align-items-center justify-content-start">
+                <button type="button" class="btn btn-primary">Creator R${{priceMusic}} <svg width="16" height="16" class="ZpAUX" viewBox="0 0 16 16"><path d="M8,10.26189a.74616.74616,0,0,1-.52539-.21484L4.37012,7.00018A.75.75,0,1,1,5.4209,5.92986L8,8.46111l2.5791-2.53125a.75.75,0,1,1,1.05078,1.07031L8.52539,10.04705A.74616.74616,0,0,1,8,10.26189Z"></path></svg></button>
+                <svg class="ml-3" width="16" height="16" viewBox="0 0 16 16"><path d="M9.41406,8l3.293-3.293A.99989.99989,0,0,0,11.293,3.293L8,6.58594,4.707,3.293A.99989.99989,0,0,0,3.293,4.707L6.58594,8,3.293,11.293A.99989.99989,0,1,0,4.707,12.707L8,9.41406l3.293,3.293A.99989.99989,0,0,0,12.707,11.293Z"></path></svg>
+              </div>
+            </div>
+          </div>
+          <div class="total">
+            <p class="h5 font-weight-bold text-uppercase mb-5">total de R${{price}}</p>
+            <div class="economize d-flex">
+              <div class="w-75">
+                <p class="h3 font-weight-bold">Economize 80% com uma assinatura anual</p>
+                <div class="txt0 d-flex">
+                  <svg width="24" height="24" viewBox="0 0 24 24"><path d="M8.24414,19.08594c-.0127,0-.02441,0-.03711-.001a.999.999,0,0,1-.70312-.32715L3.30176,14.12988a.99968.99968,0,0,1,1.48047-1.34375l3.51465,3.87109L19.418,6.10449a1.00024,1.00024,0,0,1,1.377,1.45117L8.93262,18.81152A1,1,0,0,1,8.24414,19.08594Z"></path></svg>
+                  Mais flexibilidade com 60 faixas por ano, pagamento antecipado
+                </div>
+                <div class="txt1 d-flex">
+                  <svg width="24" height="24" viewBox="0 0 24 24"><path d="M8.24414,19.08594c-.0127,0-.02441,0-.03711-.001a.999.999,0,0,1-.70312-.32715L3.30176,14.12988a.99968.99968,0,0,1,1.48047-1.34375l3.51465,3.87109L19.418,6.10449a1.00024,1.00024,0,0,1,1.377,1.45117L8.93262,18.81152A1,1,0,0,1,8.24414,19.08594Z"></path></svg>
+                  Cada licença inclui todas as versões de faixas disponíveis
+                </div>
+                <div class="txt2 d-flex">
+                  <svg width="24" height="24" viewBox="0 0 24 24"><path d="M8.24414,19.08594c-.0127,0-.02441,0-.03711-.001a.999.999,0,0,1-.70312-.32715L3.30176,14.12988a.99968.99968,0,0,1,1.48047-1.34375l3.51465,3.87109L19.418,6.10449a1.00024,1.00024,0,0,1,1.377,1.45117L8.93262,18.81152A1,1,0,0,1,8.24414,19.08594Z"></path></svg>
+                  Inclui Licenças Padrão
+                </div>
+              </div>
+              <div class="w-25 d-flex flex-column align-items-center justify-content-center">
+                <p class="h4 font-weight-bold text-uppercase">economize 80%</p>
+                <p class="h3 font-weight-bold">R$9,99<small>/faixa</small></p>
+                <p class="h6">R$ 500/ano, cobrado anualmente</p>
+                <button type="button" class="btn btn-primary">Assinar</button>
+              </div>
+            </div>
+          </div>
+          <div class="security">
+            <div class="securityInt">
+              <svg width="32" height="32" viewBox="0 0 32 32"><path d="M14.7373,20.71289H14.7168a1.00194,1.00194,0,0,1-.70312-.30957L8.30273,14.41895A1.00017,1.00017,0,1,1,9.75,13.03809l5.0166,5.25781L28.56836,4.99316A1.00005,1.00005,0,1,1,29.957,6.43262l-14.52539,14A1.00126,1.00126,0,0,1,14.7373,20.71289Z"></path><path d="M14.02441,28.28711a12.28711,12.28711,0,1,1,6.79-22.5293c.19727.13086.39258.26953.583.41113a1.00039,1.00039,0,0,1-1.19922,1.60156c-.15918-.12012-.32324-.23535-.49023-.34668A10.28822,10.28822,0,1,0,24.31152,16a1,1,0,0,1,2,0A12.3007,12.3007,0,0,1,14.02441,28.28711Z"></path></svg>
+              <p class="h5 text-uppercase font-weight-bold">compras 100% seguras</p>
+            </div>
+            <div class="securityInt2">
+              <svg width="146" height="26" viewBox="0 0 146 26"><path d="M63.4,19v-5.5a3.2,3.2,0,00-3.3-3.4,3.3,3.3,0,00-3,1.5,3.1,3.1,0,00-2.8-1.5,2.8,2.8,0,00-2.5,1.2v-1H50v8.6h1.8v-4.8a2,2,0,012.1-2.3c1.3,0,1.9.8,1.9,2.3v4.8h1.8v-4.8a2,2,0,012.1-2.3c1.2,0,1.9.8,1.9,2.3v4.8h1.8zm27.7-8.7h-3V7.6h-1.9v2.7h-1.7V12h1.7v4c0,2,.8,3.1,3,3.1a4.3,4.3,0,002.3-.6l-.5-1.7a3.4,3.4,0,01-1.7.5,1.2,1.2,0,01-1.2-1.4v-4h3zm15.8-.2a2.5,2.5,0,00-2.2,1.2v-1h-1.9v8.6h1.9v-4.8c0-1.5.6-2.3,1.8-2.3a3,3,0,011.2.3l.5-1.8a3.9,3.9,0,00-1.3-.2zM83,11a6.3,6.3,0,00-3.4-1c-2.2,0-3.6,1.1-3.6,2.8,0,1.4,1,2.3,3,2.6h.8c1,.2,1.5.5,1.5,1,0,.7-.7,1-2,1a4.5,4.5,0,01-2.8-.9l-.8,1.5a6,6,0,003.7,1.1c2.4,0,3.8-1.1,3.8-2.8,0-1.5-1-2.3-3-2.6l-.8-.1c-.8-.1-1.4-.3-1.4-.8,0-.7.6-1,1.6-1a5.4,5.4,0,012.6.7zm49.6-1a2.5,2.5,0,00-2.2,1.3v-1h-1.9v8.6h1.9v-4.8c0-1.5.6-2.3,1.8-2.3a3,3,0,011.2.3l.5-1.8a4,4,0,00-1.3-.2zm-23.8,4.6a4.3,4.3,0,004.5,4.5,4.4,4.4,0,003-1l-.8-1.5a3.7,3.7,0,01-2.2.8,2.8,2.8,0,010-5.6,3.7,3.7,0,012.2.8l.9-1.5a4.4,4.4,0,00-3-1,4.3,4.3,0,00-4.6,4.5zm17.3,0v-4.3h-1.8v1a3.2,3.2,0,00-2.7-1.3,4.5,4.5,0,000,9.1,3.2,3.2,0,002.7-1.2v1h1.8v-4.3zm-6.9,0a2.6,2.6,0,112.6,2.8,2.6,2.6,0,01-2.6-2.8zM97,10a4.5,4.5,0,00.1,9,5.1,5.1,0,003.5-1.2l-1-1.4a4,4,0,01-2.4,1,2.4,2.4,0,01-2.5-2.2h6.3v-.7c0-2.7-1.6-4.6-4-4.6zm0,1.6a2.1,2.1,0,012.1,2.1h-4.4a2.2,2.2,0,012.2-2zm46.4,2.9V6.7h-1.9v4.5a3.2,3.2,0,00-2.7-1.3,4.5,4.5,0,000,9.1,3.2,3.2,0,002.7-1.2v1h1.9v-4.3zm2.1,3.5a.6.6,0,01.3,0,.6.6,0,01.1.2.5.5,0,01.2.2.5.5,0,010,.4.5.5,0,01-.2.2.5.5,0,01-.1,0,.5.5,0,01-.3.1.6.6,0,01-.2-1,.6.6,0,01.3,0zm0,1a.4.4,0,00.2,0,.4.4,0,00.1-.1.4.4,0,000-.6.4.4,0,000-.1.4.4,0,00-.3,0,.4.4,0,00-.1,0,.4.4,0,00-.2.5.4.4,0,00.4.3zm0-.7a.2.2,0,01.2,0,.1.1,0,010,.2.2.2,0,010,.1v.2l-.2-.2v.2h-.1v-.5zm0,.1v.1a.1.1,0,00.1,0zm-9-4a2.6,2.6,0,112.6,2.9,2.6,2.6,0,01-2.6-2.8zm-62.5,0v-4.2h-2v1a3.2,3.2,0,00-2.6-1.2,4.5,4.5,0,000,9,3.2,3.2,0,002.6-1.2v1h1.9zm-7,0a2.6,2.6,0,112.7,2.9,2.6,2.6,0,01-2.6-2.8zm-26.7,8v-.3h.2V22h-.4.1v.5zm.8,0V22l-.2.3-.2-.3h-.1v.5-.4l.2.3h.1l.1-.3v.4zm-25.9-9.5a13.7,13.7,0,015-10.7A12.7,12.7,0,002.8,4.9,13.1,13.1,0,005,23.1a12.6,12.6,0,0015.2.5,13.7,13.7,0,01-5-10.7zm23.6-8a12.7,12.7,0,00-17.4-2.7,13.8,13.8,0,010,21.4,12.7,12.7,0,007.3,2.3,12.9,12.9,0,0012.8-13,13.1,13.1,0,00-2.7-8zm-18-2.2a13.1,13.1,0,000,20.4,13.1,13.1,0,000-20.4z"></path></svg>
+              <svg width="59" height="20.031" viewBox="0 0 59 20.031"><path d="M16.8.4l-4.5,13.5-.3-1.8C9.5,6.1,5.4,4,5.4,4l3.9,15.4h5.3L22,.4h-5.2zm4.2,19h4.8l3-19h-5zm-9.2-8.5l-1.7-8.6A3,3,0,007.5.4H0s9.5,3,11.8,10.5zm23.8-5c0-1.2.9-2,3.3-2a7.3,7.3,0,013.3,1.2L43,.9a14,14,0,00-4.5-1c-5.1,0-7.7,2.7-7.7,6,0,6,6.7,5.2,6.7,8.3,0,.6-.4,1.8-3.2,1.8a9.7,9.7,0,01-4.7-1.1l-.8,4a10.7,10.7,0,005.3,1.1c3.4,0,8.2-2.8,8.2-6.8,0-4.9-6.7-5.2-6.7-7.4zM55.2.4h-5l-8,19H47l1-2.7h6l.6,2.7H59zm-5.8,12.7L52,5.9l1.4,7.2h-4z"></path></svg>
+              <svg width="79" height="21" viewBox="0 0 79 21"><path d="M10.2,5.7c-.3,2.2-2,2.2-3.7,2.2h-.9l.7-4a.5.5,0,01.5-.5h.4c1.1,0,2.2,0,2.7.6a2,2,0,01.3,1.7zM9.5,0H3.3a.9.9,0,00-.8.7L0,16.4a.5.5,0,00.5.6h3a.9.9,0,00.8-.7l.7-4.2a.9.9,0,01.8-.8h2c4,0,6.3-2,7-5.8a4.7,4.7,0,00-.8-4C13,.5,11.5,0,9.5,0zm14.2,11.4a3.3,3.3,0,01-3.3,2.8,2.3,2.3,0,01-2.4-2.9,3.3,3.3,0,013.3-2.8,2.5,2.5,0,012,.8,2.5,2.5,0,01.4,2zm4.1-5.7H25a.5.5,0,00-.5.4l-.1.8-.2-.3c-.7-.9-2.1-1.2-3.5-1.2a6.8,6.8,0,00-6.6,5.9,5.5,5.5,0,001.1,4.5,4.6,4.6,0,003.7,1.5,5.6,5.6,0,004.1-1.7l-.1.8a.5.5,0,00.5.6H26a.9.9,0,00.9-.7l1.6-10a.5.5,0,00-.6-.6zm15.7,0h-3a.9.9,0,00-.6.3l-4.1,6L34,6.3a.9.9,0,00-.8-.6h-2.9a.5.5,0,00-.5.6l3.3,9.6-3,4.3a.5.5,0,00.3.8h3a.9.9,0,00.7-.4l9.8-14.1a.5.5,0,00-.4-.8zm10.5,0c-.3,2.2-2,2.2-3.6,2.2h-1l.7-4a.5.5,0,01.5-.5h.4c1.1,0,2.2,0,2.7.6a2,2,0,01.3,1.7zM53.3,0h-6.1a.9.9,0,00-.9.7l-2.5,15.7a.5.5,0,00.5.6h3.2a.6.6,0,00.6-.5l.7-4.4a.9.9,0,01.8-.7h2c4,0,6.4-2,7-5.9a4.7,4.7,0,00-.8-4C56.9.5,55.4,0,53.3,0zm14.3,11.4a3.3,3.3,0,01-3.3,2.8,2.3,2.3,0,01-2.5-2.9,3.3,3.3,0,013.3-2.8,2.5,2.5,0,012,.8,2.5,2.5,0,01.5,2zm4-5.7h-2.9a.5.5,0,00-.5.4l-.1.8-.2-.3c-.6-.9-2-1.2-3.5-1.2a6.8,6.8,0,00-6.5,5.9,5.5,5.5,0,001,4.5,4.6,4.6,0,003.8,1.5,5.6,5.6,0,004-1.7l-.1.8a.5.5,0,00.5.6h2.7a.9.9,0,00.8-.7l1.6-10a.5.5,0,00-.5-.6zM75.1.4l-2.5,16a.5.5,0,00.5.6h2.6a.9.9,0,00.8-.7L79,.6a.5.5,0,00-.5-.6h-2.9a.5.5,0,00-.5.4z"></path></svg>
+              <svg width="67.062" height="15.031" viewBox="0 0 67.062 15.031"><path d="M30.9,0l-4.3,10-4.2-10h-5.5v14.5L10.9,0H6.2L0,15h3.7L5,11.7h7l1.4,3.3h7V4L25,15h3.2L33,4v11h3.5V0h-5.6zM6.3,8.4l2.1-5.2,2.2,5.2H6.3zm54.5-1L67,0h-4.4l-4,4.7L54.8,0H41v15h13.3l4.2-5,4,5H67zm-8.3,4.5h-8v-3h7.6V6h-7.6V3.2h8.4l3.4,4.1z"></path></svg>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+<app-footer></app-footer>

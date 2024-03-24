@@ -69,7 +69,7 @@ export class ArtistComponent implements OnInit {
     {value: "Trippy", viewValue: "Trippy"},
   ]
   arrMusica: Musica[] = [];
-  nameArtist: any = 'Xalaika HighFrenetic';
+  nameArtist: any = '';
   descriptionArtist: any = 'Xalaika é um produtor musical que reside em Francisco Beltrão';
   
   @Output('ngModelChange') update: any = new EventEmitter();
@@ -100,8 +100,12 @@ export class ArtistComponent implements OnInit {
     this.scrollService.scrollUp();
     if (screen.width < 769) document.getElementById('navLeft')!.style.width = '0';
     
-    this.musicService.listMusic().subscribe((data: any) => {
-      this.arrMusica = data;
+    this.route.queryParams.subscribe((data: any) => {
+      console.log(data);
+      this.nameArtist = data.nome_produtor;
+      this.musicService.listMusic().subscribe((data: any) => {
+        this.arrMusica = data;
+      });
     });
   }
   
