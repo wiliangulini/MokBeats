@@ -15,7 +15,7 @@ export class CartModalComponent implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
       this.closeModal();
-    }, 2000);
+    }, 1500);
   }
   
   closeModal() {

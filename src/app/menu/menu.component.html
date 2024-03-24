@@ -47,8 +47,9 @@
           </li>
           <div class="control d-flex">
             <li routerLinkActive="active" class="nav-item">
-              <a class="nav-link d-flex justify-content-center align-items-center cart" [routerLink]="['/carrinho']" (click)="closeNav()" href="">
+              <a class="nav-link d-flex justify-content-center align-items-center cart position-relative" [routerLink]="['/carrinho']" (click)="closeNav()" href="">
                 <span class="material-icons">shopping_cart</span>
+                <small id="ms_number">0</small>
                 <span class="txt mobile d-none">Carrinho</span>
               </a>
             </li>

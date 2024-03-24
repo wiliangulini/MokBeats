@@ -5,6 +5,7 @@ import {AuthService} from "../login/auth.service";
 import {MusicasService} from "../musicas/musicas.service";
 import {MenuProdutorComponent} from "../menu-produtor/menu-produtor.component";
 import {empty} from "rxjs";
+import {CarrinhoService} from "../service/carrinho.service";
 
 @Component({
   selector: 'app-menu',
@@ -31,13 +32,18 @@ export class MenuComponent implements OnInit {
       }
     }
   }
-
+  
+  musicNumber: any;
+  
   constructor(
     public modalService: NgbModal,
     private authService: AuthService,
+    private cartService: CarrinhoService,
 ) { }
 
   ngOnInit(): void {
+    let n = this.cartService.receivingCart2();
+    this.musicNumber = n.length;
   }
   
   closeNav(): void {

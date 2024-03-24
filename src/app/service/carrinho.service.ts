@@ -15,6 +15,7 @@ export class CarrinhoService {
     ) { }
   
   public receivingCart(elm: Musica) {
+    this.music.push(elm);
     return this.music;
   }
   public receivingCart2() {
