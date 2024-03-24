@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, OnInit} from '@angular/core';
+import {AfterContentInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators,} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {CarrinhoService} from "../service/carrinho.service";
@@ -11,8 +11,9 @@ import {Musica} from "../musicas/musicas.service";
 })
 export class CarrinhoComponent implements OnInit, AfterContentInit {
   
-  valorTotal: number = 0;
-  numberMusic: number = 2;
+  nav: any;
+  
+  numberMusic!: number;
   musics: Musica[] = [];
   form!: FormGroup;
   cidadeJson: any = '../../assets/json/Cidades.json';
@@ -23,6 +24,7 @@ export class CarrinhoComponent implements OnInit, AfterContentInit {
   cidades: any[] = [];
   estados: any[] = [];
   pais: any[] = [];
+  insert: boolean = false;
   
   constructor(
     private fb: FormBuilder,
@@ -58,12 +60,17 @@ export class CarrinhoComponent implements OnInit, AfterContentInit {
     });
     this.musics = this.cartService.receivingCart2();
     this.numberMusic = this.musics.length;
+    this.numberMusic > 0 ? this.insert = true : this.insert = false;
     console.log(this.musics);
   }
   
   ngAfterContentInit() {
     this.price = this.numberMusic * this.priceMusic;
     console.log(this.price);
+    this.nav = document.querySelector('nav');
+    let url: string = location.href;
+    let newUrl = url.slice(-8);
+    (window.scrollY === 0 && newUrl === 'carrinho') ? this.nav.style.marginTop = '10px' : this.nav.style.marginTop = '0px';
   }
   
   onSubmit(data: any) {

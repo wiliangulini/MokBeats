@@ -41,7 +41,7 @@ const routes: Routes = [
   { path: 'pedidos', component: PedidosComponent },
   { path: 'formas-de-pagamento', component: FormasDePagamentoComponent },
   { path: 'artista', component: ArtistComponent },
-  { path: 'cliente', component: UsuarioArtistaComponent },
+  { path: 'pagina-artista', component: UsuarioArtistaComponent },
   { path: 'atualizar-informacoes', component: AtualizarInformacoesComponent },
   { path: 'finalizar-compra', component: FinalizarCompraComponent },
   { path: 'contato', component: ContatoComponent },

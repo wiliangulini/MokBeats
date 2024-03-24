@@ -198,3 +198,16 @@ main .container-fluid .row form .resumoCompra .total .economize.d-flex .w-25.d-f
   text-transform: uppercase;
   box-shadow: 0 0 10px 0 #007bff;
 }
+main .container-fluid .row.justify-content-center .col-sm-9.col-md-9.col-lg-9.col-xl-9.d-flex.flex-column.align-items-center.justify-content-center a.font-weight-bold.text-uppercase.text-center.btn {
+  width: 25%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  border-radius: 33px;
+}
+main .container-fluid .row.justify-content-center .col-sm-9.col-md-9.col-lg-9.col-xl-9.d-flex.flex-column.align-items-center.justify-content-center span.cartIcon {
+  font-size: 80px;
+  margin-bottom: 2%;
+}

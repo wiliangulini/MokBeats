@@ -57,6 +57,7 @@ import {CarrinhoComponent} from './carrinho/carrinho.component';
 import {PlayerComponent} from './player/player.component';
 import {UsuarioArtistaComponent} from './usuario-artista/usuario-artista.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
+import {CartModalComponent} from "./carrinho/cartModal/cart-modal.component";
 
 
 @NgModule({
@@ -95,6 +96,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
     CarrinhoComponent,
     PlayerComponent,
     UsuarioArtistaComponent,
+    CartModalComponent,
   ],
   imports: [
     BrowserModule,

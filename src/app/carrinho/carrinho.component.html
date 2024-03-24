@@ -1,6 +1,6 @@
 <main>
   <div class="container-fluid">
-    <div class="row">
+    <div class="row" *ngIf="insert">
       <form [formGroup]="form" class="w-100 d-flex justify-content-center align-items-center">
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex justify-content-center align-items-center flex-column mb-5 pb-5">
           <p class="h2 font-weight-bold">Finalizar a compra</p>
@@ -137,6 +137,14 @@
           </div>
         </div>
       </form>
+    </div>
+    <div class="row justify-content-center align-items-center pt-5 pb-5" *ngIf="!insert">
+      <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 d-flex flex-column align-items-center justify-content-center pb-5 pt-5">
+        <span class="material-icons cartIcon">shopping_cart</span>
+        <p class="h1 font-weight-bold text-center">Seu carrinho está vazio</p>
+        <p class="h5 text-center mb-4">Viste nossa coleção de músicas e encontre a faixa exclusiva pra você</p>
+        <a class="font-weight-bold text-uppercase text-center btn btn-success" [routerLink]="['/musicas']">Visite nossas Músicas</a>
+      </div>
     </div>
   </div>
 </main>

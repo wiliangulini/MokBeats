@@ -1,9 +1,10 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {NgbModal, NgbNavbar} from "@ng-bootstrap/ng-bootstrap";
 import { LoginComponent } from "../login/login.component";
 import {AuthService} from "../login/auth.service";
 import {MusicasService} from "../musicas/musicas.service";
 import {MenuProdutorComponent} from "../menu-produtor/menu-produtor.component";
+import {empty} from "rxjs";
 
 @Component({
   selector: 'app-menu',
@@ -15,13 +16,19 @@ export class MenuComponent implements OnInit {
   @ViewChild('nav', {static: true}) nav!:ElementRef;
 
   @HostListener('window:scroll') onWindowScroll() {
+    let url: string = location.href;
+    let newUrl = url.slice(-8);
+    
     if (window.scrollY > 75) {
-      this.nav.nativeElement.style.backgroundImage = 'linear-gradient(90deg, #000, #343a40)';
-      this.nav.nativeElement.style.marginTop = '0px';
+      this.nav.nativeElement.removeAttribute('style');
+      this.nav.nativeElement.setAttribute('style', 'background-image: linear-gradient(90deg, #000, #343a40);');
+      
     } else {
-      this.nav.nativeElement.style.backgroundColor = 'transparent';
-      this.nav.nativeElement.style.backgroundImage = 'none';
-      this.nav.nativeElement.style.marginTop = '10px';
+      this.nav.nativeElement.removeAttribute('style');
+      this.nav.nativeElement.setAttribute('style', 'background-image: none; background-color: transparent;');
+      if (window.scrollY === 0 && newUrl === 'carrinho') {
+        this.nav.nativeElement.style.marginTop = '10px';
+      }
     }
   }
 
@@ -30,12 +37,15 @@ export class MenuComponent implements OnInit {
     private authService: AuthService,
 ) { }
 
-  ngOnInit(): void {}
-
+  ngOnInit(): void {
+  }
+  
   closeNav(): void {
     if (screen.width < 769) {
       let close = document.getElementById('closeNav');
       close!.click();
+    } else if (screen.width >= 769){
+      this.nav.nativeElement.removeAttribute('style');
     }
   }
 
@@ -51,6 +61,7 @@ export class MenuComponent implements OnInit {
   }
   
   mouseOver(event: any) {
+    console.log(event)
     let li: any = document.querySelector('li.nav-item.active');
     event.target.innerText == li?.innerText ? li?.classList.remove('remove') : li?.classList.add('remove');
   }

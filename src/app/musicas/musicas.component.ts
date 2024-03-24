@@ -8,6 +8,7 @@ import {EMPTY, filter} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {FavoritosService} from "../favoritos/favoritos.service";
 import {Router} from "@angular/router";
+import {CarrinhoService} from "../service/carrinho.service";
 
 @Component({
   selector: 'app-musicas',
@@ -174,7 +175,7 @@ export class MusicasComponent implements OnInit, AfterViewInit {
   
   pagArtist(data: any) {
     console.log(data);
-    this.router.navigate(['/artista'], {queryParams: {nome_produtor: data.nome_produtor}});
+    this.router.navigate(['/pagina-artista'], {queryParams: {nome_produtor: data.nome_produtor}});
   }
   
   msToMinute(ms: any) {
@@ -240,4 +241,6 @@ export class MusicasComponent implements OnInit, AfterViewInit {
       this.durationAut = timeString;
     }
   }
+  
+  
 }

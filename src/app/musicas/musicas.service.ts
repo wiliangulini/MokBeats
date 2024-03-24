@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AddPlaylistModalComponent} from "../add-playlist-modal/add-playlist-modal.component";
 import {DownloadAmostraComponent} from "../download-amostra/download-amostra.component";
 import {AuthService} from "../login/auth.service";
@@ -405,6 +405,7 @@ export class MusicasService  {
     private likeService: FavoritosService,
     private http: HttpClient,
     private cartService: CarrinhoService,
+    private activeModal: NgbActiveModal,
   ) {
     this.genero.map((obj: any) => {
       Object.keys(obj).map((chave: any) => {
@@ -474,7 +475,8 @@ export class MusicasService  {
   public comprarLicensa(i: any) {
     this.authService.verificaLogin();
     if(this.authService.userAutetic()) {
-      this.cartService.receivingCart(i)
+      this.cartService.openModalCart();
+      this.cartService.receivingCart(i);
     }
   }
 }
