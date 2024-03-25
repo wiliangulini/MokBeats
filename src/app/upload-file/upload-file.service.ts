@@ -37,7 +37,7 @@ export class UploadFileService {
   ) { }
 
   upload(files: Set<File>, url: string) {
-
+    console.log(files, url);
     const formData = new FormData();
     files.forEach(file => formData.append('file', file, file.name));
 

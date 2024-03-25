@@ -19,7 +19,16 @@ export class MenuComponent implements OnInit {
   @HostListener('window:scroll') onWindowScroll() {
     let url: string = location.href;
     let newUrl = url.slice(-8);
-    
+    let ms_number: any = document.querySelector('#ms_number');
+    // ms_number.style.display = 'none';
+    let music = this.cartService.receivingCart2();
+    console.log(music)
+    if (music.length > 0) {
+      ms_number.innerHTML = music.length;
+      ms_number.style.display = 'flex';
+    } else {
+      ms_number.style.display = 'none';
+    }
     if (window.scrollY > 75) {
       this.nav.nativeElement.removeAttribute('style');
       this.nav.nativeElement.setAttribute('style', 'background-image: linear-gradient(90deg, #000, #343a40);');
@@ -41,7 +50,10 @@ export class MenuComponent implements OnInit {
     private cartService: CarrinhoService,
 ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    let ms_number: any = document.querySelector('#ms_number');
+    ms_number.style.display = 'none';
+  }
   
   closeNav(): void {
     if (screen.width < 769) {

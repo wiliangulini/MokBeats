@@ -258,6 +258,14 @@ article.one .container-fluid .row h1 {
   position: relative;
   top: 10%;
   border-radius: 33px;
+  width: 25%;
+  font-size: 20px;
+  font-weight: 600;
+  transition: all 0.75s linear;
+}
+#reproduzirMusicas:hover {
+  background: linear-gradient(45deg, #57443D, #423338, #292130);
+  border-color: #FFF;
 }
 article.one .container-fluid .row p.description {
   font-size: 1.5rem;

@@ -1,17 +1,20 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Musica, MusicasService} from "../musicas/musicas.service";
 import {AuthService} from "../login/auth.service";
 import {ScrollService} from "../service/scroll.service";
 import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {environment} from "../../environments/environment";
+import {UploadFileService} from "../upload-file/upload-file.service";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-artist',
   templateUrl: './artist.component.html',
   styleUrls: ['./artist.component.scss']
 })
-export class ArtistComponent implements OnInit {
+export class ArtistComponent implements OnInit, AfterViewInit {
   
   public favorite: Musica = {};
   trecho: any[] = [15, 30, 60];
@@ -27,6 +30,7 @@ export class ArtistComponent implements OnInit {
   formG!: FormGroup;
   frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
   select: any = 'Mais Relevantes';
+  $$: any;
   
   cantada: Array<any> = [
     "Amostras/Efeitos",
@@ -69,8 +73,8 @@ export class ArtistComponent implements OnInit {
     {value: "Trippy", viewValue: "Trippy"},
   ]
   arrMusica: Musica[] = [];
-  nameArtist: any = '';
-  descriptionArtist: any = 'Xalaika é um produtor musical que reside em Francisco Beltrão';
+  nameArtist: string = 'Wilian Gulini';
+  descriptionArtist: any = 'Wilian Gulini é um desenvolvedor web/mobile e de software que reside em Coronel Vivida. Wilian Gulini é um desenvolvedor web/mobile e de software que reside em Coronel Vivida';
   
   @Output('ngModelChange') update: any = new EventEmitter();
   
@@ -79,17 +83,14 @@ export class ArtistComponent implements OnInit {
     private authService: AuthService,
     private scrollService: ScrollService,
     private fb: FormBuilder,
-    private route: ActivatedRoute,
+    private uploadFileService: UploadFileService,
     private snackBar: MatSnackBar,
+    private http: HttpClient,
   ) {
     this.formG = this.fb.group({
-      checkbox: [],
       bpm: [],
       duracao: [],
-      inputCheckbox: [],
-      inputCheckbox1: [],
-      inputCheckbox2: [],
-      inputCheckbox3: [],
+      upload: [],
     });
     this.titles = this.musicService.convertida2;
     this.music = this.musicService.convertida;
@@ -98,15 +99,64 @@ export class ArtistComponent implements OnInit {
   
   ngOnInit(): void {
     this.scrollService.scrollUp();
+    this.$$ = document.querySelector.bind(document);
     if (screen.width < 769) document.getElementById('navLeft')!.style.width = '0';
     
-    this.route.queryParams.subscribe((data: any) => {
-      console.log(data);
-      this.nameArtist = data.nome_produtor;
+    // this.route.queryParams.subscribe((data: any) => {
+    //   console.log(data);
+      // this.nameArtist = data.nome_produtor;
       this.musicService.listMusic().subscribe((data: any) => {
         this.arrMusica = data;
       });
-    });
+    // });
+  }
+  
+  ngAfterViewInit() {
+    this.uploadFile();
+  }
+  
+  convertToBase64 = (file: any) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+  
+  files!: Set<File>;
+  onChange(event: any) {
+    const selectedFiles: FileList = event.srcElement.files;
+    this.files = new Set();
+    for(let i = 0; i < selectedFiles.length; i++) {
+      this.files.add(selectedFiles[i]);
+    }
+    this.onUpload();
+  }
+  
+  onUpload() {
+    if (this.files.size > 0) {
+      this.uploadFileService.upload(this.files, environment.API + 'uploads').subscribe((data: any) => {
+        if(data.type == 4) {
+          console.log(data);
+          console.log('"Upload CONCLUIDO"');
+          
+        }
+      })
+    }
+  }
+  
+  uploadFile(): void {
+    let fileChooser = this.$$('.input-file');
+    
+    fileChooser.onchange = (e: any): void => {
+      console.log(e.target.files[0]);
+      const getFileAndConvert = async () => {
+        
+        const file = e.target.files[0];
+        const convertedFile = await this.convertToBase64(file)
+        console.log(convertedFile);
+      }
+      console.log(getFileAndConvert());
+    };
   }
   
   msToMinute(ms: any) {

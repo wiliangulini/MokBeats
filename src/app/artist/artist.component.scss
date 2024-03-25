@@ -253,18 +253,33 @@ article.one .container-fluid .row h1 {
   text-transform: uppercase;
   display: flex;
   justify-content: center;
+  position: relative;
+  bottom: 10px;
 }
 #reproduzirMusicas {
   position: relative;
   top: 10%;
   border-radius: 33px;
+  width: 25%;
+  font-size: 20px;
+  font-weight: 600;
+  transition: all 0.75s linear;
+}
+#reproduzirMusicas:hover {
+  background: linear-gradient(45deg, #57443D, #423338, #292130);
+  border-color: #FFF;
 }
 article.one .container-fluid .row p.description {
   font-size: 1.5rem;
-  width: 100%;
+  margin-bottom: 0;
+  width: 65%;
   color: #FFF;
-  display: flex;
-  justify-content: center;
+  text-align: center;
+  line-height: 1.5;
+  border: 1px solid grey;
+  border-radius: 10px;
+  box-shadow: 0 0 8px 0;
+  padding: 20px;
 }
 article.one .container-fluid .row h6 {
   width: 100%;
@@ -290,6 +305,21 @@ article.one .text p.h6 {
   color: #828282;
   font-weight: 200 !important;
 }
+article.one .input-file {
+  position: absolute;
+  display: none;
+}
+article.one .material-icons.edit {
+  font-size: 22px !important;
+  box-shadow: 0 0 10px 0 #DDD;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  z-index: 20;
+  position: absolute;
+  right: 11%;
+  bottom: 24%;
+}
 article.one .material-icons {
   font-size: 45px !important;
   cursor: pointer;
@@ -304,7 +334,8 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2.d-flex.justify-content-center.align-items-center {
   padding: 0;
-  position: initial;
+  position: relative;
+  left: 0;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2.d-flex.justify-content-center.align-items-center img {
   border-radius: 50%;
