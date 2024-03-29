@@ -86,10 +86,6 @@ export class UsuarioArtistaComponent implements OnInit {
       checkbox: [],
       bpm: [],
       duracao: [],
-      inputCheckbox: [],
-      inputCheckbox1: [],
-      inputCheckbox2: [],
-      inputCheckbox3: [],
     });
     this.titles = this.musicService.convertida2;
     this.music = this.musicService.convertida;

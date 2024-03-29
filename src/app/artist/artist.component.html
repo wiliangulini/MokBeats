@@ -101,14 +101,15 @@
           <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column align-items-start justify-content-center">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex p-0">
               <label class="col-sm-2 col-md-2 col-lg-2 col-xl-2 d-flex justify-content-center align-items-center">
-                <img class="w-100" src="./assets/images/smoking.png" alt="foto de perfil">
+                <img id="imgPerfil" class="w-100" src="./assets/images/smoking.png" alt="foto de perfil">
                 <span id="edit" class="material-icons edit">edit</span>
                 <input type="file" formControlName="upload" name="upload" class="input-file" (change)="onChange($event)"  accept="*/*" id="file" />
               </label>
               <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10 p-0 d-flex justify-content-center align-items-center flex-column">
-                <div class="txt w-100 d-flex justify-content-center align-items-center flex-column mb-3">
+                <div class="txt w-100 d-flex justify-content-center align-items-center flex-column position-relative mb-3">
                   <h1 class="mb-2 mt-4">{{nameArtist}}</h1>
                   <p class="description">{{descriptionArtist}}</p>
+                  <span id="edit2" class="material-icons edit2">edit</span>
                 </div>
                 <div class="styleMusic d-flex justify-content-center align-items-center w-75">
                   <div class="mt-4 mr-2" *ngFor="let vx of arrVExtendida; let i = index;">

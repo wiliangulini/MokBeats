@@ -89,10 +89,6 @@ export class MusicasComponent implements OnInit, AfterViewInit {
       checkbox: [],
       bpm: [],
       duracao: [],
-      inputCheckbox: [],
-      inputCheckbox1: [],
-      inputCheckbox2: [],
-      inputCheckbox3: [],
     });
     this.titles = this.musicService.convertida2;
     this.music = this.musicService.convertida;

@@ -320,6 +320,15 @@ article.one .material-icons.edit {
   right: 11%;
   bottom: 24%;
 }
+article.one .material-icons.edit2 {
+  font-size: 20px !important;
+  position: absolute;
+  right: 15%;
+  bottom: -8%;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 0 #ddd;
+  padding: 5px;
+}
 article.one .material-icons {
   font-size: 45px !important;
   cursor: pointer;
@@ -340,6 +349,9 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2.d-flex.justify-content-center.align-items-center img {
   border-radius: 50%;
   box-shadow: 0 0 10px 0 #DDD;
+  width: 265px !important;
+  height: 265px !important;
+  object-fit: cover;
 }
 #arve,
 #arrve {

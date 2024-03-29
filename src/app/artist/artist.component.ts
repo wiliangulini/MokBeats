@@ -112,6 +112,10 @@ export class ArtistComponent implements OnInit, AfterViewInit {
   }
   
   ngAfterViewInit() {
+    this.uploadFileService.list().subscribe((data: any) => {
+      console.log(data);
+    })
+    
     this.uploadFile();
   }
   
@@ -129,33 +133,41 @@ export class ArtistComponent implements OnInit, AfterViewInit {
     for(let i = 0; i < selectedFiles.length; i++) {
       this.files.add(selectedFiles[i]);
     }
-    this.onUpload();
+    // this.onUpload();
   }
   
-  onUpload() {
-    if (this.files.size > 0) {
-      this.uploadFileService.upload(this.files, environment.API + 'uploads').subscribe((data: any) => {
-        if(data.type == 4) {
-          console.log(data);
-          console.log('"Upload CONCLUIDO"');
-          
-        }
-      })
-    }
-  }
+  // onUpload() {
+  //   if (this.files.size > 0) {
+  //     this.uploadFileService.upload(this.files, environment.API + 'uploads').subscribe((data: any) => {
+  //       if(data.type == 4) {
+  //         console.log(data);
+  //         console.log('"Upload CONCLUIDO"');
+  //
+  //       }
+  //     })
+  //   }
+  // }
   
   uploadFile(): void {
     let fileChooser = this.$$('.input-file');
     
     fileChooser.onchange = (e: any): void => {
       console.log(e.target.files[0]);
+      let b64: any;
       const getFileAndConvert = async () => {
         
         const file = e.target.files[0];
         const convertedFile = await this.convertToBase64(file)
         console.log(convertedFile);
+        b64 = convertedFile;
       }
-      console.log(getFileAndConvert());
+      // b64 = getFileAndConvert();
+      getFileAndConvert();
+      setTimeout(() => {
+        let img: any = document.getElementById('imgPerfil');
+        console.log(img);
+        img.setAttribute('src', b64);
+      }, 1000);
     };
   }
   
@@ -189,19 +201,6 @@ export class ArtistComponent implements OnInit, AfterViewInit {
       navleft!.style.zIndex = '0';
     }
   }
-  
-  
-  // save() {
-  //   console.log(this.playlist);
-  //   this.playlistService.save(this.playlist).subscribe((data: any) => {
-  //     if (data.id !== undefined) {
-  //       console.log(data);
-  //       this.snackBar.open('Música removida da playlist com SUCESSO!!!', '', {duration: 5000});
-  //     } else {
-  //       this.snackBar.open('ERRO ao remover música da playlist!!!', '', {duration: 5000});
-  //     }
-  //   });
-  // }
   
   copiarLink(i: number): void { this.musicService.copiarLink(i); }
   
