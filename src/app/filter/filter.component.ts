@@ -147,6 +147,10 @@ export class FilterComponent implements OnInit {
       navleft!.style.opacity = '1';
       cf!.style.width = '86vw';
     }
-    
+  }
+  
+  verifyGen() {
+    let collapseOne: any = document.getElementById('collapseOne');
+    console.log(collapseOne);
   }
 }
