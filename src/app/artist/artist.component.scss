@@ -244,17 +244,24 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.title
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1 p {
   font-size: 13px;
 }
-article.one .container-fluid .row h1 {
+article.one .container-fluid .row input.nameArtist {
   font-size: 56px;
   margin-bottom: 2% !important;
-  width: 100%;
+  width: 65%;
   font-weight: bold;
   color: #FFF;
   text-transform: uppercase;
   display: flex;
   justify-content: center;
+  align-items: center;
   position: relative;
   bottom: 10px;
+  text-align: center;
+  background: transparent;
+  border-radius: 10px;
+  border: 0;
+  box-shadow: 0 0 10px 0;
+  padding: 10px;
 }
 #reproduzirMusicas {
   position: relative;
@@ -269,7 +276,8 @@ article.one .container-fluid .row h1 {
   background: linear-gradient(45deg, #57443D, #423338, #292130);
   border-color: #FFF;
 }
-article.one .container-fluid .row p.description {
+//article.one .container-fluid .row p.description,
+article.one .container-fluid .row textarea.description {
   font-size: 1.5rem;
   margin-bottom: 0;
   width: 65%;
@@ -280,6 +288,8 @@ article.one .container-fluid .row p.description {
   border-radius: 10px;
   box-shadow: 0 0 8px 0;
   padding: 20px;
+  min-height: 150px;
+  background: transparent;
 }
 article.one .container-fluid .row h6 {
   width: 100%;
@@ -319,6 +329,15 @@ article.one .material-icons.edit {
   position: absolute;
   right: 11%;
   bottom: 24%;
+}
+article.one .material-icons.save {
+  font-size: 20px !important;
+  position: absolute;
+  right: 15%;
+  bottom: 6%;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 0 #ddd;
+  padding: 5px;
 }
 article.one .material-icons.edit2 {
   font-size: 20px !important;
