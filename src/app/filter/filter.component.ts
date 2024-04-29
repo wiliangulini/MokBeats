@@ -7,7 +7,7 @@ import {MusicasService} from "../musicas/musicas.service";
   styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent implements OnInit {
-  
+
   generos: Array<any> = [
     "Blues",
     "Clássica",
@@ -124,20 +124,20 @@ export class FilterComponent implements OnInit {
     "Hip Hop",
   ];
   humor: any[];
-  
+
   constructor(
     private musicService: MusicasService,
   ) {
     this.humor = this.musicService.humor;
   }
-  
+
   ngOnInit(): void {
   }
-  
+
   filtrar() {
     let navleft = document.getElementById('navLeft');
     let cf = document.getElementById('cf');
-    
+
     if(navleft!.getAttribute('style') == 'width: 13vw;' || navleft!.getAttribute('style') == 'width: 13vw; opacity: 1;') {
       navleft!.style.width = '0vw';
       navleft!.style.opacity = '0';
@@ -148,8 +148,8 @@ export class FilterComponent implements OnInit {
       cf!.style.width = '86vw';
     }
   }
-  
-  verifyGen() {
+
+  verifyGen() { // continuar daki
     let collapseOne: any = document.getElementById('collapseOne');
     console.log(collapseOne);
   }
