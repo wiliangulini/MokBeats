@@ -151,19 +151,17 @@ export class FilterComponent implements OnInit {
   }
 
 
-  verifyGen() { // check by clicking on mood
+  verifyGen() {
     let gender: any = document.getElementById('gender');
     let collapseOne: any = document.getElementById('collapseOne');
 
     collapseOne?.classList.contains('show') ? gender.click() : empty();
-
   }
 
-  verifyHum() { // check when clicking on gender
+  verifyHum() {
     let humor: any = document.getElementById('humor');
     let collapseOne1: any = document.getElementById('collapseOne1');
 
     collapseOne1?.classList.contains('show') ? humor.click() : empty();
-
   }
 }
