@@ -1,3 +1,4 @@
+import { empty } from 'rxjs';
 import {Component, OnInit} from '@angular/core';
 import {MusicasService} from "../musicas/musicas.service";
 
@@ -149,8 +150,20 @@ export class FilterComponent implements OnInit {
     }
   }
 
-  verifyGen() { // continuar daki
+
+  verifyGen() { // check by clicking on mood
+    let gender: any = document.getElementById('gender');
     let collapseOne: any = document.getElementById('collapseOne');
-    console.log(collapseOne);
+
+    collapseOne?.classList.contains('show') ? gender.click() : empty();
+
+  }
+
+  verifyHum() { // check when clicking on gender
+    let humor: any = document.getElementById('humor');
+    let collapseOne1: any = document.getElementById('collapseOne1');
+
+    collapseOne1?.classList.contains('show') ? humor.click() : empty();
+
   }
 }
