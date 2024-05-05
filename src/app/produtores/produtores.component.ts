@@ -98,14 +98,14 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     // this.uploadFileService.list().subscribe(data => console.log(data));
 
     this.uploadFileService.list2().subscribe(data => console.log(data));
-    
+
     this.uploadFileService.loadById(4).subscribe(data => console.log(data));
     /*
     esta listando no console, verificar se outros metodos alem da listagem estao funcionando, se sim, mudar_todo o nosso crud atual para esse novo back end.
-    
+
     remover enviroment e criar as urls.
     */
-    
+
     this.generoMusic = this.musicService.convertida2;
     this.uploadFile();
     let matForm: any = document.querySelectorAll('.mat-form-field-wrapper');
@@ -144,6 +144,9 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     }
     if (e.target.checked == true) {
       this.checkBoxProducer = true;
+      document.getElementById('btn')?.classList.add('top');
+      document.querySelector('a.m-0.p-0')?.classList.add('top');
+      document.getElementById('collapseWidthExample')?.classList.add('comboFlex');
     } else if (e.target.checked == false) {
       this.checkBoxProducer = false;
     }

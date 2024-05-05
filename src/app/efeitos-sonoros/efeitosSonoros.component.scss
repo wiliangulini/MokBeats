@@ -1,3 +1,6 @@
+#navLeft {
+  width: 13vw;
+}
 #collapseT {
   white-space: pre;
 }
@@ -652,8 +655,19 @@ nav ul.pagination li.page-item.next a span {
   display: none;
 }
 @media only screen and (min-width: 320px) and (max-width: 768px) {
+
+  #navLeft {
+    width: 0vw;
+  }
+  .controlDivs .controlDivsInt.row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.align-items-start.justify-content-start.pr-5 {
+    max-width: 70%;
+  }
+  .controlDivs .controlDivsInt.row .col-sm-1.col-md-1.col-lg-1.col-xl-1.d-flex.align-items-center.justify-content-around {
+    max-width: 25%;
+  }
+  .controlDivs .controlDivsInt.row .col-sm-4.col-md-4.col-lg-4.col-xl-4.d-flex.align-items-center.justify-content-end.licenca,
   article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao {
-    display: none;
+    display: none !important;
   }
   button.btn.btn-icons.rmv,
   .col-sm-3.col-md-3.col-lg-3.col-xl-3.d-flex.align-items-center.justify-content-end.licenca,
