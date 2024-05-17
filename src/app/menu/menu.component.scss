@@ -160,6 +160,10 @@ ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link 
 //
 //}
 @media only screen and (min-width: 320px) and (max-width: 999px) {
+
+  nav .col-sm-12.col-md-12.col-lg-12.col-xl-12.h-100.d-flex.justify-content-between.align-items-center.pl-1 {
+    flex-wrap: wrap;
+  }
   li.nav-item a:before {
     background-color: #007bff;
   }

@@ -1,3 +1,9 @@
+#collapseWidthExample .card.card-body {
+  width: 30vw !important;
+}
+.row.w-100 .collapseControl {
+  min-height: 120px !important;
+}
 p {
   margin-bottom: 0;
 }
@@ -170,4 +176,76 @@ form .row.w-100.justify-content-between.align-items-center {
 }
 mat-form-field {
   background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+
+.comboFlex {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+  a.top,
+  #btn.top {
+    top: 10px;
+  }
+  section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 h1 {
+    font-size: 45px;
+    text-align: center;
+    line-height: 1.25;
+  }
+  section.submit .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.justify-content-center.align-items-center.p-0.m-0 {
+    flex-direction: column;
+    padding-top: 8% !important;
+  }
+  section.submit .container .row .beforeSubmit,
+  section.submit .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.justify-content-center.align-items-center.p-0.m-0 .title {
+    text-align: center;
+  }
+  section.submit .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.justify-content-center.align-items-center.p-0.m-0 .title .h4 {
+    font-size: 18px;
+  }
+  section.submit .container .row .beforeSubmit {
+    padding: 8% !important;
+  }
+  section.submit .container .row .beforeSubmit .txt .h6 {
+    font-size: 17px;
+  }
+  section.submit .container .row.form {
+    margin: 0 !important;
+  }
+  section.submit .container .row.form form .controlPai {
+    flex-direction: column;
+    margin-top: 15%;
+  }
+  section.submit .container .row.form form .controlPai .controlInt {
+    max-width: 100%;
+    padding: 0 15px !important;
+  }
+  section.submit .container .row.form form .controlPai .control .d-flex mat-radio-group {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    padding-left: 8%;
+  }
+  #collapseWidthExample .card.card-body .h6.m-0 {
+    font-size: 14px;
+  }
+  #collapseWidthExample .card.card-body {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  form .row.w-100.justify-content-between.align-items-center {
+    height: auto !important;
+  }
+  form .row.w-100.justify-content-between.align-items-center .collapseControl,
+  form .row.w-100.justify-content-between.align-items-center .collapseControl #collapseWidthExample {
+    height: 100% !important;
+    min-height: 100% !important;
+  }
+  a.m-0.p-0,
+  button.btn.btn-success {
+    width: 100% !important;
+  }
+
 }

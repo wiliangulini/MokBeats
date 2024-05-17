@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row form">
       <form [formGroup]="form" class="w-100 mt-5 d-flex flex-column align-items-center justify-content-center">
         <p class="h5 font-weight-bold mb-4">Envie sua música</p>
         <input type="text" formControlName="nome" name="Nome" placeholder="Nome" class="w-100" />
@@ -49,15 +49,15 @@
         <input type="text" formControlName="fonteAcesso" name="fonteAcesso" placeholder="Como você ficou sabendo sobre nós?" class="w-100" />
         <div class="row w-100 justify-content-between align-items-center">
 
-          <div style="min-height: 120px;">
+          <div class="collapseControl">
             <div class="collapse width" id="collapseWidthExample">
-              <div class="card card-body" style="width: 30vw;">
+              <div class="card card-body">
                 <p class="h6 m-0">A partir de agora sua conta sera de um <strong class="text-uppercase">Produtor Musical,</strong> e como benefício terá acesso a partes exclusivas da plataforma somente para <strong class="text-uppercase">Produtores</strong>. Ao marcar essa opção você nos autoriza a usar os dados do seu cadastro pra fazermos um upgrade em sua conta.</p>
               </div>
             </div>
           </div>
             <a class="m-0 p-0">
-              <button (click)="markCheckbox($event)" class="btn btn-success font-weight-bold" type="button" data-toggle="collapse" data-target="#collapseWidthExample" id="btn"  aria-expanded="true" aria-controls="collapseWidthExample">
+              <button (click)="markCheckbox($event)" class="btn btn-success font-weight-bold position-relative" type="button" data-toggle="collapse" data-target="#collapseWidthExample" id="btn"  aria-expanded="true" aria-controls="collapseWidthExample">
                 <mat-label class="mr-2">Cadastro - Produtor/Comprador</mat-label>
                 <input class="m-0" type="checkbox" formControlName="checkBoxProducer" id="inputCB" [(ngModel)]="checkBoxProducer" [checked]="checkBoxProducer" aria-label="checkBoxProducer" />
               </button>
