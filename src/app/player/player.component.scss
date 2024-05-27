@@ -1,7 +1,7 @@
 section .container-fluid .row.audioCanva,
 section .container-fluid .row.player {
   background: #000;
-  position: fixed;
+  // position: fixed;
   color: #FFF;
   width: 100%;
 }
@@ -64,4 +64,23 @@ section .container-fluid .row.player .div.controls.col-3 h6.artist {
   position: relative;
   left: 1%;
   padding-left: 0 !important;
+}
+svg,
+.div.controls.down.licenca.d-flex.justify-content-between.align-items-center.col-3 svg {
+  fill: #FFF;
+}
+
+.div.controls.down.licenca.d-flex.justify-content-between.align-items-center.col-3 button {
+  color: #FFF;
+  padding: 5px 15px;
+  border: 1px solid #DDD;
+  border-radius: 33px;
+  -webkit-border-radius: 33px;
+  -moz-border-radius: 33px;
+  -ms-border-radius: 33px;
+  -o-border-radius: 33px;
+  width: 48% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
