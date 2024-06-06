@@ -1,14 +1,14 @@
 section .container-fluid .row.audioCanva,
 section .container-fluid .row.player {
   background: #000;
-   //position: fixed;
+   position: fixed;
   color: #FFF;
   width: 100%;
 }
 section .container-fluid .row.audioCanva {
-  height: 40px;
   bottom: 81px;
   border-bottom: 1px solid #DDD;
+  padding: 10px 0;
 }
 section .container-fluid .row.player {
 height: 81px;
@@ -84,6 +84,8 @@ svg,
   justify-content: center;
   align-items: center;
 }
-section .container-fluid #waveform ::part(scroll) div.scroll {
-  overflow: hidden !important;
+#backward.prev,
+#forward.next,
+#play.play {
+  cursor: pointer;
 }

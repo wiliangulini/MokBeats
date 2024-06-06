@@ -10,15 +10,15 @@ import Minimap from 'wavesurfer.js/dist/plugins/minimap';
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent implements OnInit, AfterContentInit {
-
+  
   arrMusica: Musica[] = [];
-
+  
   constructor(
     private musicService: MusicasService,
   ) {
-
+  
   }
-
+  
   ngOnInit(): void {
     this.musicService.listMusic().subscribe((data: any): void => {
       console.log(data);
@@ -26,85 +26,50 @@ export class PlayerComponent implements OnInit, AfterContentInit {
   }
   
   ngAfterContentInit(): void {
-    const ws: WaveSurfer = WaveSurfer.create({
-      container: '#waveform',
-      waveColor: 'rgb(200, 0, 200)',
-      progressColor: 'rgb(100, 0, 100)',
+    const audio = new Audio();
+    audio.src = '../../assets/videos/Vibe_Shisui.mp3';
+    
+    const ws = WaveSurfer.create({
+      container: "#waveform",
+      waveColor: '#2f1ef1',
+      progressColor: '#007BFF',
+      media: audio,
       url: '../../assets/videos/Vibe_Shisui.mp3',
-      minPxPerSec: 100,
+      minPxPerSec: 10.6,
+      hideScrollbar: true,
+      fillParent: true,
+      height: 100,
       dragToSeek: true,
-    })
-    
-    // const ws = WaveSurfer.create({
-    //   container: document.body,
-    //   waveColor: 'rgb(200, 0, 200)',
-    //   progressColor: 'rgb(100, 0, 100)',
-    //   url: '../../assets/videos/Vibe_Shisui.mp3',
-    //   minPxPerSec: 100,
-    //   hideScrollbar: true,
-    //   autoCenter: false,
-    //   mediaControls: true,
-    //   barWidth: 1,
-    //   barGap: 1,
-    //   barRadius: 1,
-    //   dragToSeek: true,
-    //   fillParent: true,
-    //   plugins: [
-    //     // Register the plugin
-    //     Minimap.create({
-    //       height: 20,
-    //       waveColor: '#ddd',
-    //       progressColor: '#fff',
-    //       // the Minimap takes all the same options as the WaveSurfer itself
-    //     }),
-    //   ],
-    // });
-    
-    // ws.on('interaction', () => {
-    //   ws.play();
-    // });
-    
-    ws.once('decode', (): void => {
-      const slider: any = document.querySelector('#zoom');
-      console.log(slider);
-      
-      slider.addEventListener('input', (e: any): void => {
-        console.log(e);
-        const minPxPerSec = e.target.valueAsNumber
-        ws.zoom(minPxPerSec)
-      })
-    })
-    
-    const playButton: any = document.querySelector('#play');
-    const forwardButton: any = document.querySelector('#forward');
-    const backButton: any = document.querySelector('#backward');
-    
-    ws.once('decode', (): void => {
-      document.querySelectorAll('input[type="checkbox"]').forEach((input: any) => {
-        input.onchange = (e: any): void => {
-          ws.setOptions({
-            [input.value]: e.target.checked,
-          })
-        }
-      });
-      
-      playButton.onclick = (): void => {
-        ws.playPause();
-      }
-      
-      forwardButton.onclick = (): void => {
-        ws.skip(5);
-      }
-      
-      backButton.onclick = (): void => {
-        ws.skip(-5);
-      }
+      // plugins: [
+      //   // Register the plugin
+      //   Minimap.create({
+      //     height: 20,
+      //     waveColor: '#ddd',
+      //     progressColor: '#fff',
+      //     // the Minimap takes all the same options as the WaveSurfer itself
+      //   }),
+      // ],
     });
     
-    setTimeout(() => {
-      const scroll: any = document.querySelector('.scroll');
-      console.log(scroll);
-    }, 500);
+    document.body.appendChild(audio);
+    
+    const playButton: any = document.querySelector('#play');
+    const backButton: any = document.querySelector('#backward');
+    const forwardButton: any = document.querySelector('#forward');
+    
+    playButton.onclick = (): void => {
+      ws.playPause();
+    }
+    
+    forwardButton.onclick = (): void => {
+      ws.skip(5);
+    }
+    
+    backButton.onclick = (): void => {
+      ws.skip(-5);
+    }
+    
+    
   }
   
   curtir(e: any) {
@@ -116,9 +81,9 @@ export class PlayerComponent implements OnInit, AfterContentInit {
   copiarLink(elm: any) {
     console.log(elm);
   }
-
+  
   baixarAmostra(i: any) {
     console.log(i);
   }
-
+  
 }

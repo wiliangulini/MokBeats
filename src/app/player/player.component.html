@@ -1,29 +1,16 @@
 <section>
   <div class="container-fluid p-0">
     <div class="row audioCanva m-0" id="waveform">
-      <label>
-        Zoom: <input id="zoom" type="range" min="10" max="1000" value="100" />
-      </label>
-
-      <label><input type="checkbox" checked value="scrollbar" /> Scroll bar</label>
-      <label><input type="checkbox" checked value="fillParent" /> Fill parent</label>
-      <label><input type="checkbox" checked value="autoCenter" /> Auto center</label>
-
-      <div style="margin: 1em 0 2em;">
-        <button id="play">Play/Pause</button>
-        <button id="backward">Backward 5s</button>
-        <button id="forward">Forward 5s</button>
-      </div>
     </div>
     <div class="row player">
       <div class="div controls col-1">
-        <span class="material-icons prev">
+        <span id="backward" class="material-icons prev">
           skip_previous
         </span>
-        <span class="material-icons play">
+        <span id="play" class="material-icons play">
           play_arrow
         </span>
-        <span class="material-icons next">
+        <span id="forward" class="material-icons next">
           skip_next
         </span>
       </div>
