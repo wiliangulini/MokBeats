@@ -7,6 +7,7 @@ import { FavoritosService } from '../favoritos/favoritos.service';
 import { AuthService } from '../login/auth.service';
 import { ScrollService } from '../service/scroll.service';
 import { Musica, MusicasService } from './musicas.service';
+import {style} from "@angular/animations";
 
 @Component({
   selector: 'app-musicas',
@@ -165,7 +166,15 @@ export class MusicasComponent implements OnInit, AfterViewInit {
       e.style.borderColor = "#FFF";
     })
   }
-
+  
+  playerShow() {
+    let controlPlayer: any = document.querySelector('#controlPlayer');
+    setTimeout(() => {
+      controlPlayer.classList.remove('hidePlayer');
+    }, 1000);
+    controlPlayer.classList.add('showPlayer');
+    console.log(controlPlayer);
+  }
 
   pagArtist(data: any) {
     console.log(data);

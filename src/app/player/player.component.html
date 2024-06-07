@@ -1,6 +1,9 @@
 <section>
-  <div class="container-fluid p-0">
+  <div class="container-fluid p-0 hidePlayer" id="controlPlayer">
     <div class="row audioCanva m-0" id="waveform">
+      <button type="button" (click)="hidePlayer()">
+        <span class="material-icons">keyboard_arrow_down</span>
+      </button>
     </div>
     <div class="row player">
       <div class="div controls col-1">

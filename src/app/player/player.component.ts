@@ -77,6 +77,11 @@ export class PlayerComponent implements OnInit, AfterContentInit {
     
   }
   
+  hidePlayer() {
+    document.getElementById('controlPlayer')!.classList.remove('showPlayer');
+    document.getElementById('controlPlayer')!.classList.add('hidePlayer');
+  }
+  
   curtir(e: any) {
     console.log(e);
   }
