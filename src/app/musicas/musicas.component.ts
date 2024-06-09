@@ -171,7 +171,7 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     let controlPlayer: any = document.querySelector('#controlPlayer');
     setTimeout(() => {
       controlPlayer.classList.remove('hidePlayer');
-    }, 1000);
+    }, 600);
     controlPlayer.classList.add('showPlayer');
     console.log(controlPlayer);
   }

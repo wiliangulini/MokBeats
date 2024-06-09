@@ -1,7 +1,24 @@
 <section>
-  <div class="container-fluid p-0 hidePlayer" id="controlPlayer">
+  <div class="container-fluid hidePlayer p-0" id="controlPlayer">
+    <div id="wave">
+      <div class="container" style="text-align: center">
+        
+        <div class="volbox">
+          Volume:<br/>
+          <input id="volumeSlider" className="volume-slider" type="range" name="volume-slider" min="0" max="100" value="75" />
+          <br/>Mute:
+          <button id="volumeOn" (click)="muteOnOff()" type="button">
+            <span class="material-icons muteOn d-flex">volume_mute</span>
+            <span class="material-icons muteOff d-none">volume_off</span>
+          </button>
+        
+        </div>
+      
+      </div>
+    </div>
     <div class="row audioCanva m-0" id="waveform">
-      <button type="button" (click)="hidePlayer()">
+      
+      <button id="hide" type="button" (click)="hidePlayer()">
         <span class="material-icons">keyboard_arrow_down</span>
       </button>
     </div>
@@ -136,3 +153,4 @@
     </div>
   </div>
 </section>
+

@@ -5,6 +5,11 @@ section .container-fluid .row.player {
   color: #FFF;
   width: 100%;
 }
+#wave {
+  position: fixed;
+  bottom: 202px;
+  color: #FFF;
+}
 section .container-fluid .row.audioCanva {
   bottom: 81px;
   border-bottom: 1px solid #DDD;
@@ -95,19 +100,19 @@ svg,
 #controlPlayer.showPlayer {
   height: 202px;
   animation-name: showPlayer;
-  animation-duration: 2s;
-  animation-delay: 1s;
+  animation-duration: 1s;
+  animation-delay: .5s;
 }
-
+// hideplayer pode ser feito com transform: translateY(100%); pointer-events: none; junto com transition: transform 300ms cubic-bezier(0.6, 0.3, 0, 1);
 #controlPlayer.hidePlayer {
   height: 0;
   opacity: 0;
 }
 
-#waveform button span {
+#waveform button#hide span {
   color: #FFF;
 }
-#waveform button {
+#waveform button#hide {
   position: absolute;
   right: 3px;
   top: -36%;
