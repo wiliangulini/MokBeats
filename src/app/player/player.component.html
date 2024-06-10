@@ -5,9 +5,9 @@
         
         <div class="volbox">
           Volume:<br/>
-          <input id="volumeSlider" className="volume-slider" type="range" name="volume-slider" min="0" max="100" value="75" />
+          <input id="volumeSlider" (change)="valueInitial($event)" className="volume-slider" type="range" name="volume-slider" min="0" max="100" value="75" />
           <br/>Mute:
-          <button id="volumeOn" (click)="muteOnOff()" type="button">
+          <button id="volumeOn" type="button">
             <span class="material-icons muteOn d-flex">volume_mute</span>
             <span class="material-icons muteOff d-none">volume_off</span>
           </button>

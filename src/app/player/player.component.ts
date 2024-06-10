@@ -38,15 +38,6 @@ export class PlayerComponent implements OnInit, AfterContentInit {
       height: 100,
       dragToSeek: true,
       backend: 'MediaElement',
-      // plugins: [
-      //   // Registrar o plugin
-      //   Minimap.create({
-      //     height: 20,
-      //     waveColor: '#ddd',
-      //     progressColor: '#fff',
-      //     // o Minimapa tem todas as mesmas opções do próprio WaveSurfer
-      //   }),
-      // ],
     });
     ws.load('../../assets/videos/Tipo_Minato.mp3');
     
@@ -63,39 +54,63 @@ export class PlayerComponent implements OnInit, AfterContentInit {
     const timeEl: any = document.querySelector('#time');
     const durationEl: any = document.querySelector('#duration');
     const volumeSlider: any = document.querySelector("#volumeSlider");
-    const volumeOn: any = document.querySelector(".muteOn");
-    const volumeOn2: any = document.querySelector(".muteOff");
+    const volumeOn: any = document.querySelector("#volumeOn");
+    const muteOn: any = document.querySelector(".muteOn");
+    const muteOff: any = document.querySelector(".muteOff");
+    this.volumeInitial = document.querySelector('#volumeSlider')!.getAttribute('value');
     
     ws.on('decode', (duration: any) => (durationEl.textContent = formatTime(duration)));
     ws.on('timeupdate', (currentTime: any) => (timeEl.textContent = formatTime(currentTime)));
-    console.log(volumeSlider.value);
     ws.on('ready', () => {
       
       // quando clicar no mute trocar icone e colocar slider de volume no 0;
       if(volumeSlider) {
         volumeSlider.addEventListener('input', (e: any) => {
-          console.log(e);
+          // console.log(e);
           let vol: any = e.target.value;
           ws.setVolume(vol / 100);
           
           if(vol == '0') {
-            volumeOn2.classList.add('d-flex');
-            volumeOn2.classList.remove('d-none');
-            volumeOn.classList.remove('d-flex');
-            volumeOn.classList.add('d-none');
+            muteOff.classList.add('d-flex');
+            muteOff.classList.remove('d-none');
+            muteOn.classList.remove('d-flex');
+            muteOn.classList.add('d-none');
           } else {
-            volumeOn.classList.add('d-flex');
-            volumeOn.classList.remove('d-none');
-            volumeOn2.classList.remove('d-flex');
-            volumeOn2.classList.add('d-none');
+            muteOn.classList.add('d-flex');
+            muteOn.classList.remove('d-none');
+            muteOff.classList.remove('d-flex');
+            muteOff.classList.add('d-none');
           }
           
         });
+        
+        volumeOn.addEventListener('click', (e: any) => {
+          console.log(e);
+          if(muteOn.classList.contains('d-flex')) {
+            //ativando muted, icon muted verify, slider value verify;
+            console.log('muteon end');
+            console.log(this.volumeInitial);
+            muteOn.classList.remove('d-flex');
+            muteOn.classList.add('d-none');
+            muteOff.classList.add('d-flex');
+            muteOff.classList.remove('d-none');
+            volumeSlider.value = '0';
+          } else if (muteOff.classList.contains('d-flex')) {
+            // removendo muted, icon muted verify, slider value verify
+            console.log('muteoff end');
+            console.log(this.volumeInitial);
+            muteOff.classList.remove('d-flex');
+            muteOff.classList.add('d-none');
+            muteOn.classList.add('d-flex');
+            muteOn.classList.remove('d-none');
+            volumeSlider.value = this.volumeInitial;
+          }
+        });
       }
-      // provavelmente nao esta funcionando pois nao esta dentro do wavesurfer o muted e sim ligado ao botao, por isso o slider esta correndo ao clicar e trocando icones porem nao esta alterando a musica.
+      
+      
+      console.log(this.volumeInitial);
     });
-    
-    this.volumeInitial = document.querySelector('#volumeSlider')!.getAttribute('value');
     
     playButton.onclick = (): void => {
       ws.playPause();
@@ -111,39 +126,31 @@ export class PlayerComponent implements OnInit, AfterContentInit {
     
   }
   
-  
-  muteOnOff() {
-    let volumeSlider: any = document.querySelector("#volumeSlider");
-    let muteOn: any = document.querySelector(".muteOn");
-    let muteOff: any = document.querySelector(".muteOff");
-    console.log(this.volumeInitial);
-    
-    volumeSlider.setAttribute('value', '0');
-    // amanha verificar funçoes, eu posso juntar ambas, com dupla verificacaçao dessa forma verfico o valor do volumeSlider e o icone presente no btn mute, dentro setar as informaçoes pra que a barra de rolagem corra, ou entao checar apenas pelos icones dos botoes mas tenho q pegar o valor em que o slider esta pela ultima vez antes de mutalo pra poder voltar ao valor inicial, pois inicialmente é 75 porem o usuario pode mudar esse valor, e qndo se faz isso nao esta funcionando. slider esta funcionando, porem ao clicar em muted temos a rolagem apenas no inicio porem nao muta a musica tocando.
-    if(muteOff.classList.contains('d-flex')) {
-      volumeSlider.setAttribute('value', this.volumeInitial);
-      console.log(volumeSlider)
-      muteOff.classList.remove('d-flex');
-      muteOff.classList.add('d-none');
-      muteOn.classList.add('d-flex');
-      muteOn.classList.remove('d-none');
-    }
-    
-    if(volumeSlider.value !== '0') {
-      console.log(volumeSlider.value);
-      muteOn.classList.add('d-flex');
-      muteOn.classList.remove('d-none');
-      muteOff.classList.remove('d-flex');
-      muteOff.classList.add('d-none');
-    } else {
-      console.log(volumeSlider.value);
-      console.log(this.volumeInitial);
-      muteOff.classList.add('d-flex');
-      muteOff.classList.remove('d-none');
-      muteOn.classList.remove('d-flex');
-      muteOn.classList.add('d-none');
-    }
+  valueInitial(event: any) {
+    console.log(event)
+    this.volumeInitial = event.target.value;
+    console.log(this.volumeInitial)
   }
+  
+  // muteONOFF() {
+  //   let muteOn: any = document.querySelector(".muteOn");
+  //   let muteOff: any = document.querySelector(".muteOff");
+  //
+  //   if(muteOn.classList.contains('d-flex')) {
+  //
+  //     muteOn.classList.remove('d-flex');
+  //     muteOn.classList.add('d-none');
+  //     muteOff.classList.add('d-flex');
+  //     muteOff.classList.remove('d-none');
+  //   } else if (muteOff.classList.contains('d-flex')) {
+  //
+  //     muteOff.classList.remove('d-flex');
+  //     muteOff.classList.add('d-none');
+  //     muteOn.classList.add('d-flex');
+  //     muteOn.classList.remove('d-none');
+  //   }
+  // }
+  
   
   hidePlayer() {
     document.getElementById('controlPlayer')!.classList.remove('showPlayer');
