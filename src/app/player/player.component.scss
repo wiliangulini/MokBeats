@@ -11,6 +11,7 @@ section .container-fluid .row.player {
   background: #000;
   position: fixed;
   width: 100%;
+  z-index: 10;
 }
 #playPause,
 #volumeOn,

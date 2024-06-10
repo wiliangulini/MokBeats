@@ -20,9 +20,7 @@ export class MenuComponent implements OnInit {
     let url: string = location.href;
     let newUrl = url.slice(-8);
     let ms_number: any = document.querySelector('#ms_number');
-    // ms_number.style.display = 'none';
     let music = this.cartService.receivingCart2();
-    console.log(music)
     if (music.length > 0) {
       ms_number.innerHTML = music.length;
       ms_number.style.display = 'flex';
@@ -41,8 +39,6 @@ export class MenuComponent implements OnInit {
       }
     }
   }
-  
-  musicNumber: any;
   
   constructor(
     public modalService: NgbModal,

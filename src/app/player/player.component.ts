@@ -2,7 +2,6 @@ import {AfterContentInit, Component, OnInit} from '@angular/core';
 import {Musica, MusicasService} from '../musicas/musicas.service';
 import WaveSurfer from 'wavesurfer.js';
 
-
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
@@ -12,6 +11,7 @@ export class PlayerComponent implements OnInit, AfterContentInit {
   
   arrMusica: Musica[] = [];
   volumeInitial: any;
+  secondsNext: any;
   
   constructor(
     private musicService: MusicasService,
@@ -39,10 +39,12 @@ export class PlayerComponent implements OnInit, AfterContentInit {
     });
     ws.load('../../assets/videos/Tipo_Minato.mp3');
     
+    // secondsNext pega o tempo percorrido da musica, a nao ser q a musica n tenha iniciado ainda so ai o forward e backward pulam toda a track;
     const formatTime = (seconds: any) => {
-      const minutes = Math.floor(seconds / 60)
-      const secondsRemainder = Math.round(seconds) % 60
-      const paddedSeconds = `0${secondsRemainder}`.slice(-2)
+      this.secondsNext = seconds;
+      const minutes = Math.floor(seconds / 60);
+      const secondsRemainder = Math.round(seconds) % 60;
+      const paddedSeconds = `0${secondsRemainder}`.slice(-2);
       return `${minutes}:${paddedSeconds}`
     }
     
@@ -147,13 +149,14 @@ export class PlayerComponent implements OnInit, AfterContentInit {
       }
     });
     
-    forwardButton.onclick = (): void => {
-      ws.skip(5);
-    }
+    forwardButton.addEventListener('click', (): void => {
+      console.log(this.secondsNext);
+      ws.skip(this.secondsNext);
+    });
     
-    backButton.onclick = (): void => {
-      ws.skip(-5);
-    }
+    backButton.addEventListener('click', (): void => {
+      ws.skip(-this.secondsNext);
+    });
     
   }
   
