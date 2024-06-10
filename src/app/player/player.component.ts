@@ -16,7 +16,6 @@ export class PlayerComponent implements OnInit, AfterContentInit {
   constructor(
     private musicService: MusicasService,
   ) {
-  
   }
   
   ngOnInit(): void {
@@ -62,14 +61,11 @@ export class PlayerComponent implements OnInit, AfterContentInit {
     ws.on('decode', (duration: any) => (durationEl.textContent = formatTime(duration)));
     ws.on('timeupdate', (currentTime: any) => (timeEl.textContent = formatTime(currentTime)));
     ws.on('ready', () => {
-      
-      // quando clicar no mute trocar icone e colocar slider de volume no 0;
       if(volumeSlider) {
         volumeSlider.addEventListener('input', (e: any) => {
-          // console.log(e);
+          
           let vol: any = e.target.value;
           ws.setVolume(vol / 100);
-          
           if(vol == '0') {
             muteOff.classList.add('d-flex');
             muteOff.classList.remove('d-none');
@@ -81,24 +77,19 @@ export class PlayerComponent implements OnInit, AfterContentInit {
             muteOff.classList.remove('d-flex');
             muteOff.classList.add('d-none');
           }
-          
         });
         
         volumeOn.addEventListener('click', (e: any) => {
           console.log(e);
           if(muteOn.classList.contains('d-flex')) {
-            //ativando muted, icon muted verify, slider value verify;
-            console.log('muteon end');
-            console.log(this.volumeInitial);
+            ws.setMuted(true);
             muteOn.classList.remove('d-flex');
             muteOn.classList.add('d-none');
             muteOff.classList.add('d-flex');
             muteOff.classList.remove('d-none');
             volumeSlider.value = '0';
           } else if (muteOff.classList.contains('d-flex')) {
-            // removendo muted, icon muted verify, slider value verify
-            console.log('muteoff end');
-            console.log(this.volumeInitial);
+            ws.setMuted(false);
             muteOff.classList.remove('d-flex');
             muteOff.classList.add('d-none');
             muteOn.classList.add('d-flex');
@@ -107,9 +98,6 @@ export class PlayerComponent implements OnInit, AfterContentInit {
           }
         });
       }
-      
-      
-      console.log(this.volumeInitial);
     });
     
     playButton.onclick = (): void => {
@@ -127,30 +115,8 @@ export class PlayerComponent implements OnInit, AfterContentInit {
   }
   
   valueInitial(event: any) {
-    console.log(event)
     this.volumeInitial = event.target.value;
-    console.log(this.volumeInitial)
   }
-  
-  // muteONOFF() {
-  //   let muteOn: any = document.querySelector(".muteOn");
-  //   let muteOff: any = document.querySelector(".muteOff");
-  //
-  //   if(muteOn.classList.contains('d-flex')) {
-  //
-  //     muteOn.classList.remove('d-flex');
-  //     muteOn.classList.add('d-none');
-  //     muteOff.classList.add('d-flex');
-  //     muteOff.classList.remove('d-none');
-  //   } else if (muteOff.classList.contains('d-flex')) {
-  //
-  //     muteOff.classList.remove('d-flex');
-  //     muteOff.classList.add('d-none');
-  //     muteOn.classList.add('d-flex');
-  //     muteOn.classList.remove('d-none');
-  //   }
-  // }
-  
   
   hidePlayer() {
     document.getElementById('controlPlayer')!.classList.remove('showPlayer');
