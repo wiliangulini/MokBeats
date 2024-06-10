@@ -76,7 +76,6 @@ export class MenuComponent implements OnInit {
   }
   
   mouseOver(event: any) {
-    console.log(event)
     let li: any = document.querySelector('li.nav-item.active');
     event.target.innerText == li?.innerText ? li?.classList.remove('remove') : li?.classList.add('remove');
   }

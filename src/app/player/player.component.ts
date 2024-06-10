@@ -15,17 +15,16 @@ export class PlayerComponent implements OnInit, AfterContentInit {
   
   constructor(
     private musicService: MusicasService,
-  ) {
-  }
+  ) {}
   
   ngOnInit(): void {
     this.musicService.listMusic().subscribe((data: any): void => {
       console.log(data);
+      // puxar musicas pra essa pagina porem é preciso verificar onde o usuario esta e qual lista de reproduçao ele esta usando para entao reproduzir uma apos a outra, pois aqui todas as musicas sao puxadas.
     });
   }
   
   ngAfterContentInit(): void {
-    
     const ws: any = WaveSurfer.create({
       container: "#waveform",
       waveColor: '#2f1ef1',
@@ -47,7 +46,7 @@ export class PlayerComponent implements OnInit, AfterContentInit {
       return `${minutes}:${paddedSeconds}`
     }
     
-    const playButton: any = document.querySelector('#play');
+    const playButton: any = document.querySelector('#playPause');
     const backButton: any = document.querySelector('#backward');
     const forwardButton: any = document.querySelector('#forward');
     const timeEl: any = document.querySelector('#time');
@@ -63,7 +62,6 @@ export class PlayerComponent implements OnInit, AfterContentInit {
     ws.on('ready', () => {
       if(volumeSlider) {
         volumeSlider.addEventListener('input', (e: any) => {
-          
           let vol: any = e.target.value;
           ws.setVolume(vol / 100);
           if(vol == '0') {
@@ -98,11 +96,56 @@ export class PlayerComponent implements OnInit, AfterContentInit {
           }
         });
       }
+      
+      let volbox: any = document.querySelector('.volbox');
+      let volboxAdd = () => {
+        volbox.classList.add('d-flex');
+        volumeSlider.classList.add('d-flex');
+      }
+      let volboxRemove = () => {
+        volbox.classList.remove('d-flex');
+        volumeSlider.classList.remove('d-flex');
+      }
+      volumeOn.addEventListener('mouseover', () => {
+        volboxAdd();
+        volbox.addEventListener('mouseover', () => {
+          volboxAdd();
+        })
+        volumeSlider.addEventListener('mouseover', () => {
+          volboxAdd();
+        })
+      })
+      volumeOn.addEventListener('mouseout', () => {
+        volboxRemove();
+        volbox.addEventListener('mouseout', () => {
+          volboxRemove();
+        })
+        volumeSlider.addEventListener('mouseout', () => {
+          volboxRemove();
+        })
+      })
     });
     
-    playButton.onclick = (): void => {
+    
+    playButton.addEventListener('click', (): void => {
       ws.playPause();
-    }
+      
+      let play: any = document.querySelector('#play');
+      let pause: any = document.querySelector('#pause');
+      if(play.classList.contains('d-flex')) {
+        console.log('pause icon d-flex');
+        play.classList.remove('d-flex');
+        play.classList.add('d-none');
+        pause.classList.add('d-flex');
+        pause.classList.remove('d-none');
+      } else if (pause.classList.contains('d-flex')) {
+        console.log('play icon d-flex');
+        play.classList.remove('d-none');
+        play.classList.add('d-flex');
+        pause.classList.remove('d-flex');
+        pause.classList.add('d-none');
+      }
+    });
     
     forwardButton.onclick = (): void => {
       ws.skip(5);

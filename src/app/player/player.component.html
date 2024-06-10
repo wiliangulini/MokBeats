@@ -1,23 +1,6 @@
 <section>
   <div class="container-fluid hidePlayer p-0" id="controlPlayer">
-    <div id="wave">
-      <div class="container" style="text-align: center">
-        
-        <div class="volbox">
-          Volume:<br/>
-          <input id="volumeSlider" (change)="valueInitial($event)" className="volume-slider" type="range" name="volume-slider" min="0" max="100" value="75" />
-          <br/>Mute:
-          <button id="volumeOn" type="button">
-            <span class="material-icons muteOn d-flex">volume_mute</span>
-            <span class="material-icons muteOff d-none">volume_off</span>
-          </button>
-        
-        </div>
-      
-      </div>
-    </div>
     <div class="row audioCanva m-0" id="waveform">
-      
       <button id="hide" type="button" (click)="hidePlayer()">
         <span class="material-icons">keyboard_arrow_down</span>
       </button>
@@ -27,9 +10,14 @@
         <span id="backward" class="material-icons prev">
           skip_previous
         </span>
-        <span id="play" class="material-icons play">
+        <button type="button" id="playPause">
+          <span id="play" class="material-icons play d-flex">
           play_arrow
-        </span>
+          </span>
+          <span id="pause" class="material-icons pause d-none">
+          pause
+          </span>
+        </button>
         <span id="forward" class="material-icons next">
           skip_next
         </span>
@@ -62,8 +50,15 @@
         <small>128 bpm</small>
       </div>
       <div class="div controls icons d-flex flex-row justify-content-center align-items-center col-2">
-        <!-- <div class="col-3" *ngFor="let itens of arrMusica; let i = index;"> -->
-        <span class="material-icons">volume_up</span>
+        <!-- <div class="col-3" *ngFor="let itens of arrMusica; let i = index;"> loop pra trazer playlist/musica selecionada pelo usuario?-->
+        
+        <div class="volbox">
+          <input id="volumeSlider" (change)="valueInitial($event)" className="volume-slider" type="range" name="volume-slider" min="0" max="100" value="75" />
+        </div>
+        <button id="volumeOn" type="button">
+          <span class="material-icons muteOn d-flex volume_up">volume_up</span>
+          <span class="material-icons muteOff d-none">volume_off</span>
+        </button>
         <button type="button" data-toggle="tooltip" data-placement="bot" title="Adicionar aos favoritos"
                 class="btn btn-icons" (click)="curtir($event)">
           <svg style="display: block;" class="hearth" width="24" height="24" fill="rgba(255,255,255,.5)"
@@ -98,7 +93,7 @@
             </path>
           </svg>
         </button>
-        <!-- <button class="btn btn-icons mobile" type="button" data-toggle="tooltip" data-placement="top" title="Licença">
+        <button class="btn btn-icons mobile" type="button" data-toggle="tooltip" data-placement="top" title="Licença">
             <svg fill="rgba(255,255,255,.5)" height="24px" width="24px" viewBox="0 0 305.406 305.406">
               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
               <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -132,7 +127,7 @@
                 </g>
               </g>
             </svg>
-          </button> -->
+          </button>
         <!-- </div> -->
       </div>
       <div class="div controls down licenca d-flex justify-content-between align-items-center col-3">

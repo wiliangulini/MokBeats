@@ -106,10 +106,8 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     let playlist: any[] = [];
     const setPlaylist = new Set();
     this.musicService.listMusic().subscribe((data: any) => {
-      console.log(data);
       this.arrMusica = data;
       this.playlistService.list().subscribe((data: any) => {
-        console.log(data);
         data.forEach((e: any) => {
           if(e.music.length > 0) {
             for(let i: number = 0; i < e.music.length; i++) {
@@ -143,7 +141,6 @@ export class MusicasComponent implements OnInit, AfterViewInit {
         data.forEach((e: any) => {
           fav.push(e);
         });
-        console.log(fav);
         let hearthLike = document.querySelectorAll('.hearth');
         let hearthLike1 = document.querySelectorAll('.hearth1');
         hearthLike.forEach((e: any, index: number) => {
@@ -173,7 +170,6 @@ export class MusicasComponent implements OnInit, AfterViewInit {
       controlPlayer.classList.remove('hidePlayer');
     }, 600);
     controlPlayer.classList.add('showPlayer');
-    console.log(controlPlayer);
   }
 
   pagArtist(data: any) {
