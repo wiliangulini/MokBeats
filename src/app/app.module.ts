@@ -58,6 +58,7 @@ import {PlayerComponent} from './player/player.component';
 import {UsuarioArtistaComponent} from './usuario-artista/usuario-artista.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {CartModalComponent} from "./carrinho/cartModal/cart-modal.component";
+import { I18nextTestComponent } from './i18next-test/i18next-test.component';
 
 
 @NgModule({
@@ -97,6 +98,7 @@ import {CartModalComponent} from "./carrinho/cartModal/cart-modal.component";
     PlayerComponent,
     UsuarioArtistaComponent,
     CartModalComponent,
+    I18nextTestComponent,
   ],
   imports: [
     BrowserModule,

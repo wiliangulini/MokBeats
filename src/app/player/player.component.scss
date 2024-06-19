@@ -120,6 +120,9 @@ span.material-icons.volume_up,
 //}
 #controlPlayer.showPlayer {
   height: 202px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   animation-name: showPlayer;
   animation-duration: 1s;
   animation-delay: .5s;

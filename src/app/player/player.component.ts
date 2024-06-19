@@ -18,10 +18,10 @@ export class PlayerComponent implements OnInit, AfterContentInit {
   ) {}
   
   ngOnInit(): void {
-    this.musicService.listMusic().subscribe((data: any): void => {
-      console.log(data);
-      // puxar musicas pra essa pagina porem é preciso verificar onde o usuario esta e qual lista de reproduçao ele esta usando para entao reproduzir uma apos a outra, pois aqui todas as musicas sao puxadas.
-    });
+    // this.musicService.listMusic().subscribe((data: any): void => {
+    
+    // puxar musicas pra essa pagina porem é preciso verificar onde o usuario esta e em qual lista de reproduçao ele esta usando para entao reproduzir uma apos a outra, pois aqui todas as musicas sao puxadas.
+    // });
   }
   
   ngAfterContentInit(): void {
@@ -37,7 +37,7 @@ export class PlayerComponent implements OnInit, AfterContentInit {
       dragToSeek: true,
       backend: 'MediaElement',
     });
-    ws.load('../../assets/videos/Tipo_Minato.mp3');
+    ws.load('../../assets/audios/Tipo_Minato.mp3');
     
     // secondsNext pega o tempo percorrido da musica, a nao ser q a musica n tenha iniciado ainda so ai o forward e backward pulam toda a track;
     const formatTime = (seconds: any) => {
@@ -80,7 +80,7 @@ export class PlayerComponent implements OnInit, AfterContentInit {
         });
         
         volumeOn.addEventListener('click', (e: any) => {
-          console.log(e);
+          
           if(muteOn.classList.contains('d-flex')) {
             ws.setMuted(true);
             muteOn.classList.remove('d-flex');
@@ -135,13 +135,11 @@ export class PlayerComponent implements OnInit, AfterContentInit {
       let play: any = document.querySelector('#play');
       let pause: any = document.querySelector('#pause');
       if(play.classList.contains('d-flex')) {
-        console.log('pause icon d-flex');
         play.classList.remove('d-flex');
         play.classList.add('d-none');
         pause.classList.add('d-flex');
         pause.classList.remove('d-none');
       } else if (pause.classList.contains('d-flex')) {
-        console.log('play icon d-flex');
         play.classList.remove('d-none');
         play.classList.add('d-flex');
         pause.classList.remove('d-flex');
@@ -150,7 +148,6 @@ export class PlayerComponent implements OnInit, AfterContentInit {
     });
     
     forwardButton.addEventListener('click', (): void => {
-      console.log(this.secondsNext);
       ws.skip(this.secondsNext);
     });
     

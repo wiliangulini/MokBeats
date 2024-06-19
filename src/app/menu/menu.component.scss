@@ -13,7 +13,8 @@ li.nav-item {
   position: relative;
 }
 a.navbar-brand img.logo {
-  height: 100px;
+  width: 50%;
+  object-fit: cover;
 }
 li.nav-item.active.remove a.nav-link:before {
   width: 0;
