@@ -1,6 +1,8 @@
-import {AfterContentInit, Component, OnInit} from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, OnInit} from '@angular/core';
 import {Musica, MusicasService} from '../musicas/musicas.service';
 import WaveSurfer from 'wavesurfer.js';
+import Minimap from 'wavesurfer.js/dist/plugins/minimap';
+import EnvelopePlugin from 'wavesurfer.js/dist/plugins/envelope';
 
 @Component({
   selector: 'app-player',
@@ -11,7 +13,7 @@ export class PlayerComponent implements OnInit, AfterContentInit {
   
   arrMusica: Musica[] = [];
   volumeInitial: any;
-  secondsNext: any;
+  timeSkip: any;
   
   constructor(
     private musicService: MusicasService,
@@ -25,23 +27,31 @@ export class PlayerComponent implements OnInit, AfterContentInit {
   }
   
   ngAfterContentInit(): void {
+    console.log(document.querySelector('.scroll.noScrollbar'))
     const ws: any = WaveSurfer.create({
-      container: "#waveform",
+      container: '#waveform',
       waveColor: '#2f1ef1',
       progressColor: '#007BFF',
-      // url: '../../assets/videos/Tipo_Minato.mp3',
-      minPxPerSec: 10,
+      // url: '../../assets/audios/Tipo_Minato.mp3',
+      minPxPerSec: 100,
       hideScrollbar: true,
       fillParent: true,
-      height: 100,
+      height: 0,
       dragToSeek: true,
       backend: 'MediaElement',
+      plugins: [
+        Minimap.create({
+          height: 100,
+          waveColor: '#2f1ef1',
+          progressColor: '#007BFF',
+        })
+      ]
     });
     ws.load('../../assets/audios/Tipo_Minato.mp3');
     
-    // secondsNext pega o tempo percorrido da musica, a nao ser q a musica n tenha iniciado ainda so ai o forward e backward pulam toda a track;
+    // TEMOS APENAS UMA TRACK, TBM NAO TEMOS TRACK CUSTOM FAZER URGENTE
+    
     const formatTime = (seconds: any) => {
-      this.secondsNext = seconds;
       const minutes = Math.floor(seconds / 60);
       const secondsRemainder = Math.round(seconds) % 60;
       const paddedSeconds = `0${secondsRemainder}`.slice(-2);
@@ -59,7 +69,10 @@ export class PlayerComponent implements OnInit, AfterContentInit {
     const muteOff: any = document.querySelector(".muteOff");
     this.volumeInitial = document.querySelector('#volumeSlider')!.getAttribute('value');
     
-    ws.on('decode', (duration: any) => (durationEl.textContent = formatTime(duration)));
+    ws.on('decode', (duration: any) => {
+      durationEl.textContent = formatTime(duration);
+      this.timeSkip = duration;
+    });
     ws.on('timeupdate', (currentTime: any) => (timeEl.textContent = formatTime(currentTime)));
     ws.on('ready', () => {
       if(volumeSlider) {
@@ -131,30 +144,35 @@ export class PlayerComponent implements OnInit, AfterContentInit {
     
     playButton.addEventListener('click', (): void => {
       ws.playPause();
-      
-      let play: any = document.querySelector('#play');
-      let pause: any = document.querySelector('#pause');
-      if(play.classList.contains('d-flex')) {
-        play.classList.remove('d-flex');
-        play.classList.add('d-none');
-        pause.classList.add('d-flex');
-        pause.classList.remove('d-none');
-      } else if (pause.classList.contains('d-flex')) {
-        play.classList.remove('d-none');
-        play.classList.add('d-flex');
-        pause.classList.remove('d-flex');
-        pause.classList.add('d-none');
-      }
+      this.tooglePlayPause();
     });
-    
+    // todos segundos da track estao em timeskip, ao clicar vai direto pro final da musica ou inicio dependendo do botao clicado
     forwardButton.addEventListener('click', (): void => {
-      ws.skip(this.secondsNext);
+      ws.setTime(this.timeSkip);
+      this.tooglePlayPause();
     });
     
     backButton.addEventListener('click', (): void => {
-      ws.skip(-this.secondsNext);
+      ws.setTime(-this.timeSkip);
+      this.tooglePlayPause();
     });
     
+  }
+  
+  tooglePlayPause() {
+    let play: any = document.querySelector('#play');
+    let pause: any = document.querySelector('#pause');
+    if(play.classList.contains('d-flex')) {
+      play.classList.remove('d-flex');
+      play.classList.add('d-none');
+      pause.classList.add('d-flex');
+      pause.classList.remove('d-none');
+    } else if (pause.classList.contains('d-flex')) {
+      play.classList.remove('d-none');
+      play.classList.add('d-flex');
+      pause.classList.remove('d-flex');
+      pause.classList.add('d-none');
+    }
   }
   
   valueInitial(event: any) {
