@@ -2,11 +2,10 @@
 <section>
   <div class="container-fluid hidePlayer p-0" id="controlPlayer">
     <div class="row audioCanva m-0" id="waveform">
-      <button id="hide" class="d-none" type="button" (click)="hidePlayer()">
+      <button id="hide" type="button" (click)="hidePlayer()">
         <span class="material-icons">keyboard_arrow_down</span>
       </button>
     </div>
-    <div class="row" id="trackCustom"></div>
     <div class="row player">
       <div class="div controls col-1">
         <span id="backward" class="material-icons prev">
@@ -36,12 +35,14 @@
         <p class="h6 mb-0">30</p>
         <p class="h6 mb-0">60</p>
       </div>
-<!--      <div class="div controls loopFaixas justify-content-between align-itens-center d-flex flex-row col-1 ">-->
-<!--        <p class="h6 mb-0">1</p>-->
-<!--        <p class="h6 mb-0">2</p>-->
-<!--        <p class="h6 mb-0">3</p>-->
-<!--        <p class="h6 mb-0">4</p>-->
-<!--      </div>-->
+      <div class="div controls loopFaixas justify-content-between align-itens-center d-flex flex-row col-1 ">
+        <p class="h6 mb-0">1</p>
+        <p class="h6 mb-0">2</p>
+        <p class="h6 mb-0">3</p>
+        <p class="h6 mb-0">4</p>
+        <p class="h6 mb-0">5</p>
+        <p class="h6 mb-0">6</p>
+      </div>
       <div class="div d-flex flex-column align-items-center justify-content-center pl-3 pr-3 controls time">
         <div class="d-flex">
           <span class="pr-1" id="time">0:00</span>/
@@ -51,7 +52,7 @@
       </div>
       <div class="div controls icons d-flex flex-row justify-content-center align-items-center col-2">
         <!-- <div class="col-3" *ngFor="let itens of arrMusica; let i = index;"> loop pra trazer playlist/musica selecionada pelo usuario?-->
-
+        
         <div class="volbox">
           <input id="volumeSlider" (change)="valueInitial($event)" className="volume-slider" type="range" name="volume-slider" min="0" max="100" value="75" />
         </div>
@@ -130,8 +131,7 @@
           </button>
         <!-- </div> -->
       </div>
-      <div class="div controls down licenca d-flex justify-content-between align-items-center col-4">
-        <button type="button" class="font-weight-bold text-uppercase text-center">track custom</button>
+      <div class="div controls down licenca d-flex justify-content-between align-items-center col-3">
         <button class="font-weight-bold d-flex btn btn-icons rmv" type="button" data-toggle="tooltip"
                 data-placement="top" title="Baixar amostra" (click)="baixarAmostra($event)">
           <svg width="24" height="24" fill="rgba(255,255,255,.5)" viewBox="0 0 24 24">

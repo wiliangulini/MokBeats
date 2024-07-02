@@ -12,6 +12,7 @@ export type Musica = {
   id?: number;
   nome_musica?: string;
   nome_produtor?: string;
+  url?: string;
   duracao?: number;
   bpm?: number;
   trechos?: number;

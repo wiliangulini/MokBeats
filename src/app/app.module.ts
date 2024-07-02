@@ -55,10 +55,12 @@ import {EditPlaylistModalComponent} from './create-playlist-modal/edit-playlist-
 import {ArtistComponent} from './artist/artist.component';
 import {CarrinhoComponent} from './carrinho/carrinho.component';
 import {PlayerComponent} from './player/player.component';
+import {PlayerSaveComponent} from './player_save/player.component';
 import {UsuarioArtistaComponent} from './usuario-artista/usuario-artista.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {CartModalComponent} from "./carrinho/cartModal/cart-modal.component";
 import { I18nextTestComponent } from './i18next-test/i18next-test.component';
+import { WavesurferComponent } from './wavesurfer/wavesurfer.component';
 
 
 @NgModule({
@@ -96,9 +98,11 @@ import { I18nextTestComponent } from './i18next-test/i18next-test.component';
     ArtistComponent,
     CarrinhoComponent,
     PlayerComponent,
+    PlayerSaveComponent,
     UsuarioArtistaComponent,
     CartModalComponent,
     I18nextTestComponent,
+    WavesurferComponent,
   ],
   imports: [
     BrowserModule,

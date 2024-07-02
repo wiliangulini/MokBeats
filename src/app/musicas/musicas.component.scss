@@ -122,22 +122,40 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
   padding-left: 1.5%;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.d-flex.align-items-start.justify-content-start {
-  max-width: 33.3%;
+  max-width: 18%;
   flex: 0 0 33.3%;
+  padding: 0 0 0 1% !important;
 }
+.col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.titlesMDiv.mb-3 .col-sm-3.col-md-3.col-lg-3.col-xl-3.d-flex.align-items-start.justify-content-start {
+  max-width: 54.5% !important;
+  flex: 0 0 54.5% !important;
+}
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .controlDivs .controlDivsInt .wavesurfer {
+  max-width: 36%;
+  width: 100%;
+  //background: blue;
+}
+//article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-between {
+//  left: 1% !important;
+//}
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-between,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-around {
   max-width: 16%;
   flex: 0 0 16%;
 }
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-around {
+  justify-content: space-between !important;
+  padding: 0 1.5% !important;
+}
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-between .titlesMusic.four,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-between .titlesMusic.five {
   right: 5%;
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-between .titlesMusic.four {
-  right: 9%;
-}
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-between .titlesMusic.three {
-  right: 6%;
+//article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-between .titlesMusic.three {
+//  right: 6%;
+//}
+.titlesMusic.three.position-relative {
+  left: 3%;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 button.btn.btn-primary,
 a.btn.btn-warning,
@@ -209,19 +227,27 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
 button.btn.btn-warning {
   color: #fff !important;
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.titlesMDiv .col-sm-1.col-md-1.col-lg-1.col-xl-1.d-flex.align-items-center.justify-content-between,
+
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.titlesMDiv .col-sm-1.col-md-1.col-lg-1.col-xl-1.d-flex.align-items-center.justify-content-between {
+  padding: 0 !important;
+  max-width: 5.5% !important;
+}
+//article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.titlesMDiv .col-sm-1.col-md-1.col-lg-1.col-xl-1.d-flex.align-items-center.justify-content-between,
+//article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1.one.d-flex.align-items-center.justify-content-around.pl-2.pr-2.pt-0.pb-0 {
+//  right: 2%;
+//}
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1.one.d-flex.align-items-center.justify-content-around.pl-2.pr-2.pt-0.pb-0 {
-  right: 2%;
+  max-width: 6%;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.titlesMDiv .titlesMusic p {
   color: #b4b4b5 !important;
   font-size: 12px !important;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.titlesMDiv .titlesMusic.one {
-  right: 15%;
+  right: 5%;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.titlesMDiv .titlesMusic.two {
-  right: 19%;
+  right: 17%;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1 p {
   font-size: 13px;
@@ -275,6 +301,8 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 {
 }
 .controlDivsInt.row {
   width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }
 #collapseT .col-sm-7.col-md-7.col-lg-7.col-xl-7.mb-3 {
   color: #FFF;
@@ -356,9 +384,12 @@ button.btn.btn-icons {
   padding: 0;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2 {
-  padding: 0 3.4%;
-  position: relative;
-  left: 3%;
+  padding: 0 1%;
+  max-width: 10%;
+}
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.d-flex.align-items-center.justify-content-end.licenca {
+  max-width: 13%;
+  padding: 0;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 button.btn.btn-primary .xdBUc {
   position: relative;

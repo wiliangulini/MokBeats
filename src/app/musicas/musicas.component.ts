@@ -1,21 +1,31 @@
-import { AfterViewInit, Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import {
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Router} from '@angular/router';
 
-import { PlaylistService } from '../create-playlist-modal/playlist.service';
-import { FavoritosService } from '../favoritos/favoritos.service';
-import { AuthService } from '../login/auth.service';
-import { ScrollService } from '../service/scroll.service';
-import { Musica, MusicasService } from './musicas.service';
-import {style} from "@angular/animations";
+import {PlaylistService} from '../create-playlist-modal/playlist.service';
+import {FavoritosService} from '../favoritos/favoritos.service';
+import {AuthService} from '../login/auth.service';
+import {ScrollService} from '../service/scroll.service';
+import {Musica, MusicasService} from './musicas.service';
+import {WavesurferComponent} from "../wavesurfer/wavesurfer.component";
 
 @Component({
   selector: 'app-musicas',
   templateUrl: './musicas.component.html',
   styleUrls: ['./musicas.component.scss']
 })
-export class MusicasComponent implements OnInit, AfterViewInit {
+export class MusicasComponent implements OnInit, AfterViewInit, AfterContentInit {
 
+  @ViewChildren(WavesurferComponent) waveSurfers!: QueryList<WavesurferComponent>;
   public favorite: Musica = {};
   trecho: any[] = [15, 30, 60];
   loop: any[] = [1, 2, 3, 4, 5, 6, 7];
@@ -30,6 +40,9 @@ export class MusicasComponent implements OnInit, AfterViewInit {
   formG!: FormGroup;
   frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
   select: any = 'Mais Relevantes';
+
+  currentTrackIndex = 0;
+  isPlaying = false;
 
   cantada: Array<any> = [
     "Amostras/Efeitos",
@@ -71,7 +84,7 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     {value: "Technology", viewValue: "Technology"},
     {value: "Trippy", viewValue: "Trippy"},
   ]
-  arrMusica: Musica[] = [];
+  arrMusica: any[] = [];
 
   @Output('ngModelChange') update: any = new EventEmitter();
 
@@ -101,12 +114,25 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     }
   }
 
+  ngAfterContentInit() {
+
+  }
+
   ngAfterViewInit() {
 
     let playlist: any[] = [];
     const setPlaylist = new Set();
     this.musicService.listMusic().subscribe((data: any) => {
       this.arrMusica = data;
+
+      for (let i: any = 0; i < this.arrMusica.length; i++) {
+        if (i == 0) {
+          console.log(this.arrMusica[i], i);
+          localStorage.setItem('audioUrl', this.arrMusica[i].url);
+          localStorage.setItem('number', i);
+        }
+      }
+
       this.playlistService.list().subscribe((data: any) => {
         data.forEach((e: any) => {
           if(e.music.length > 0) {
@@ -162,10 +188,55 @@ export class MusicasComponent implements OnInit, AfterViewInit {
     document.querySelectorAll('.mat-checkbox-frame')?.forEach((e: any) => {
       e.style.borderColor = "#FFF";
     })
+
   }
-  
+
+  playNextTrack() {
+    const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
+    console.log(currentWaveSurfer);
+    if (currentWaveSurfer) {
+      currentWaveSurfer.play();
+      this.isPlaying = true;
+      // console.log(this.isPlaying)
+    }
+  }
+
+  onSongFinished(index: number) {
+    // console.log(this.currentTrackIndex)
+    // console.log(index);
+    if (index === this.currentTrackIndex) {
+      this.currentTrackIndex++;
+      console.log(this.currentTrackIndex)
+      if (this.currentTrackIndex < this.arrMusica.length) {
+        this.playNextTrack();
+      } else {
+        this.isPlaying = false;
+        console.log(this.isPlaying)
+      }
+    }
+  }
+
+  playPause() {
+    this.playerShow();
+    console.log(this.isPlaying)
+    if (this.isPlaying) {
+      const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
+      console.log(currentWaveSurfer);
+      if (currentWaveSurfer) {
+        currentWaveSurfer.pause();
+        this.isPlaying = false;
+        // console.log(this.isPlaying)
+      }
+    } else {
+      this.playNextTrack();
+    }
+  }
+
+  // service player ?
   playerShow() {
+    // this.playPause()
     let controlPlayer: any = document.querySelector('#controlPlayer');
+    // console.log(controlPlayer)
     setTimeout(() => {
       controlPlayer.classList.remove('hidePlayer');
     }, 600);
@@ -196,7 +267,9 @@ export class MusicasComponent implements OnInit, AfterViewInit {
   }
 
   filtrar(): void {
-    let navleft = document.getElementById('navLeft');
+    let navleft: any = document.getElementById('navLeft');
+
+
     if(navleft!.getAttribute('style') == 'width: 0px;' || navleft!.getAttribute('style') == 'width: 0px; opacity: 0; z-index: 0;') {
       navleft!.style.width = '96vw';
       navleft!.style.opacity = '1';
