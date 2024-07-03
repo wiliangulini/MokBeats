@@ -31,9 +31,9 @@ export class WavesurferComponent implements OnInit, OnDestroy, AfterViewInit {
       backend: 'MediaElement',
       plugins: [
         Minimap.create({
-          height: 50,
-          waveColor: 'violet',
-          progressColor: 'purple',
+          height: 40,
+          waveColor: '#fff',
+          progressColor: '#dcad54',
           dragToSeek: true,
         })
       ]

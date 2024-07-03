@@ -65,8 +65,8 @@ export class PlayerComponent implements OnInit, AfterContentInit {
         plugins: [
           Minimap.create({
             height: 50,
-            waveColor: '#2f1ef1',
-            progressColor: '#007BFF',
+            waveColor: '#fff',
+            progressColor: '#dcad54',
             dragToSeek: true,
           })
         ]
