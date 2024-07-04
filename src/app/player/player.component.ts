@@ -44,10 +44,6 @@ export class PlayerComponent implements OnInit, AfterContentInit {
     //     console.log(localStorage.getItem('number'));
     //   })
     // }, 1000);
-    let playpause: any = document.getElementById('playPause');
-    playpause.addEventListener('click', () => {
-      this.tooglePlayPause();
-    });
 
     this.musicService.listMusic().subscribe((data: any): void => {
       console.log(data);
@@ -55,8 +51,8 @@ export class PlayerComponent implements OnInit, AfterContentInit {
 
       const ws: any = WaveSurfer.create({
         container: '#waveform',
-        waveColor: '#2f1ef1',
-        progressColor: '#007BFF',
+        waveColor: '#fff',
+        progressColor: '#dcad54',
         minPxPerSec: 100,
         hideScrollbar: true,
         fillParent: true,
@@ -74,7 +70,7 @@ export class PlayerComponent implements OnInit, AfterContentInit {
 
       setTimeout(() => {
         ws.load(localStorage.getItem('audioUrl'));
-      });
+      }, 500);
 
       const playButton: any = document.querySelector('#playPause');
       const backButton: any = document.querySelector('#backward');

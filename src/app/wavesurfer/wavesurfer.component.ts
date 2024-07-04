@@ -22,8 +22,8 @@ export class WavesurferComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     this.wavesurfer = WaveSurfer.create({
       container: `#${this.containerId}`,
-      waveColor: 'violet',
-      progressColor: 'purple',
+      waveColor: '#fff',
+      progressColor: '#dcad54',
       minPxPerSec: 100,
       hideScrollbar: true,
       fillParent: true,
