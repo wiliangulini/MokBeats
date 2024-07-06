@@ -31,8 +31,8 @@ export class PlayerSaveComponent implements OnInit, AfterContentInit {
     console.log(document.querySelector('.scroll.noScrollbar'))
     const ws: any = WaveSurfer.create({
       container: '#waveform',
-      waveColor: '#2f1ef1',
-      progressColor: '#007BFF',
+      waveColor: '#fff',
+      progressColor: '#dcad54',
       // url: '../../assets/audios/Tipo_Minato.mp3',
       minPxPerSec: 100,
       hideScrollbar: true,
@@ -42,8 +42,8 @@ export class PlayerSaveComponent implements OnInit, AfterContentInit {
       plugins: [
         Minimap.create({
           height: 100,
-          waveColor: '#2f1ef1',
-          progressColor: '#007BFF',
+          waveColor: '#fff',
+          progressColor: '#dcad54',
           dragToSeek: true,
         })
       ]

@@ -34,7 +34,7 @@ li.nav-item a.nav-link:before {
   transition: all 300ms linear;
 }
 li.nav-item a.nav-link:hover:before {
-  background-color: #007bff;
+  background-color: rgba(255,255,255,.5);
   width: 100%;
 }
 a.nav-link,
@@ -166,7 +166,7 @@ ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link 
     flex-wrap: wrap;
   }
   li.nav-item a:before {
-    background-color: #007bff;
+    background-color: rgba(255,255,255,.5) !important;
   }
   .navbar-light .navbar-nav .nav-link {
     border-bottom: 1px solid #DDD;
@@ -206,7 +206,7 @@ ul.navbar-nav.w-100 .col-sm-6.col-md-6.col-lg-6.col-xl-6 li.nav-item a.nav-link 
     border-radius: 10px;
     transition: all 0.03s linear;
     border: 0;
-    left: 25%;
+    left: 27%;
     height: 100vh;
     right: -15px;
     z-index: 1100;

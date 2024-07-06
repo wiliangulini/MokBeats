@@ -92,6 +92,14 @@ section.faqTxt .container .row .programaDeIndicacao.w-75 p.h1,
 section.faqTxt .container .row .assinatura.w-75 p.h1 {
   font-size: 50px;
 }
+.control.w-75 {
+  z-index: 20 !important;
+}
 .talk {
-  color: #007bff !important;
+  color: rgba(255,255,255,.5) !important;
+  transition: all 0.45s ease-in-out !important;
+  cursor: pointer;
+}
+.talk:hover {
+  font-weight: bold;
 }

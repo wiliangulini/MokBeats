@@ -4,6 +4,10 @@
 #collapseT {
   white-space: pre;
 }
+#reproduzirMusicas {
+  background: #4B3A8F;
+  border-color: #4B3A8F;
+}
 article.one {
   background: linear-gradient(45deg, #57443D, #423338, #292130);
   position: relative;
@@ -16,7 +20,7 @@ button.btn.btn-icons.mobile {
   display: none;
 }
 #navLeft ul li span.text-uppercase {
-  color: #007bff;
+  color: rgba(255, 255, 255, 0.5);
   font-weight: bold;
   font-size: 13.5px !important;
 }

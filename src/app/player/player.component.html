@@ -2,7 +2,7 @@
 <section>
   <div class="container-fluid hidePlayer p-0" id="controlPlayer">
     <div class="row audioCanva m-0" id="waveform">
-      <button id="hide" class="d-none" type="button" (click)="hidePlayer()">
+      <button id="hide" (click)="hidePlayer()" type="button">
         <span class="material-icons">keyboard_arrow_down</span>
       </button>
     </div>
@@ -12,7 +12,7 @@
         <span id="backward" class="material-icons prev">
           skip_previous
         </span>
-        <button type="button" id="playPause">
+        <button type="button" id="playPause" (click)="playPause()">
           <span id="play" class="material-icons play d-flex">
           play_arrow
           </span>

@@ -22,12 +22,14 @@ import {PagPlaylistComponent} from "./pag-playlist/pag-playlist.component";
 import {ArtistComponent} from "./artist/artist.component";
 import {CarrinhoComponent} from "./carrinho/carrinho.component";
 import {UsuarioArtistaComponent} from "./usuario-artista/usuario-artista.component";
+import {PlayerComponent} from "./player/player.component";
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'musicas', component: MusicasComponent },
+  { path: 'player', component: PlayerComponent },
   { path: 'efeitos-sonoros', component: EfeitosSonorosComponent },
   { path: 'precos', component: LicencaValorComponent },
   { path: 'politica-de-privacidade', component: PoliticaPrivacidadeComponent },

@@ -15,7 +15,6 @@ section .container-fluid .row.player {
 }
 #playPause,
 #volumeOn,
-#waveform1 button#hide span,
 section .container-fluid .row.audioCanva,
 section .container-fluid .row.player,
 .div.controls.down.licenca.d-flex.justify-content-between.align-items-center.col-4 button  {
@@ -137,19 +136,33 @@ span.material-icons.volume_up,
 #controlPlayer.hidePlayer {
   height: 0;
   opacity: 0;
+  pointer-events: none;
 }
-#waveform1 button#hide {
-  position: absolute;
-  right: 3px;
-  top: -36%;
-  background: #000;
-  border: 1px solid #FFF;
-  border-radius: 50%;
+//#control {
+//  height: 152px !important;
+//  bottom: 0;
+//  position: fixed;
+//  z-index: 20;
+//  display: flex;
+//  justify-content: center;
+//  align-items: center;
+//}
+#hide {
+  position: fixed;
+  bottom: 150px;
+  right: 10px;
+  background: #212529;
+  width: 60px;
+  height: 32px;
+  border-radius: 8px 8px 0 0;
+  border: 1px solid #ddd;
+  border-bottom: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
+}
+#hide span {
+  color: #FFF;
 }
 button.btn.btn-icons.mobile {
   display: none !important;

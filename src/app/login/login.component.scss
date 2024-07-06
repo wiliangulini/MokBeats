@@ -1,5 +1,5 @@
 a {
-  color: #007bff !important;
+  color: #4B3A8F !important;
   cursor: pointer !important;
 }
 .modal-body .row .forgetPass {
@@ -17,13 +17,18 @@ a {
   font-weight: bold;
 }
 .modal-footer a {
-  color: #007bff !important;
+  color: #4B3A8F !important;
   cursor: pointer !important;
   font-size: 1.5rem;
 }
+button.btn.btn-primary.w-50.mb-3,
+button.btn.btn-primary.w-50.mb-4.mt-4 {
+  background: #4B3A8F !important;
+  border-color: #4B3A8F;
+}
 .btnReset {
   font-size: 18px;
-  color: #007bff;
+  color: #4B3A8F;
 }
 #logCad {
   margin-bottom: 0;
@@ -31,12 +36,85 @@ a {
 input, select {
   width: 60%;
 }
-select {
-  height: 40px;
-  border-radius: 10px;
-  outline: none;
-  padding: 1%;
+
+.ls-select.status {
+  background: #FFFFFF;
+  box-shadow: 0 0 5px rgb(0 0 0 / 25%);
+  border-radius: 2px;
+  border: 0;
+  height: 38px;
+  color: #888686;
+  font-size: 16px;
+  width: 60%;
+  padding: 1% 2% 1% 2%;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
 }
+.ls-select.status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+.ls-select.status .control {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.ls-select.status .control p#value.txt {
+  margin-bottom: 0;
+}
+
+.ls-select.status .down.val {
+  position: absolute;
+  top: 105%;
+  width: 100%;
+  background-color: #FFF;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  box-shadow: 0 0 2px rgb(0 0 0 / 30%);
+}
+.ls-select.status .down.val label {
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1px solid #DDD;
+  cursor: pointer;
+  transition: all 0.45s ease-in-out;
+}
+.ls-select.status .down.val label:focus,
+.ls-select.status .down.val label:hover {
+  background: #888686;
+  color: #FFF;
+}
+.ls-select.status .down.val label,
+.ls-select.status .down.val label p {
+  margin-bottom: 0;
+}
+.ls-select.status .down.val label p {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 10;
+  padding: 4%;
+}
+.ls-select.status .down.val label input.radio {
+  opacity: 0;
+  position: absolute;
+}
+
+//select {
+//  height: 40px;
+//  border-radius: 10px;
+//  outline: none;
+//  padding: 1%;
+//}
 input, input:focus {
   outline: none !important;
 }

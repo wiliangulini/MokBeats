@@ -174,6 +174,10 @@ main .container-fluid .row form .resumoCompra .security {
   align-items: center;
   justify-content: center;
 }
+button.btn.btn-primary {
+  background: #4B3A8F;
+  border-color: #4B3A8F;
+}
 main .container-fluid .row form .resumoCompra .security .securityInt {
   display: flex;
   align-items: center;
@@ -196,7 +200,7 @@ main .container-fluid .row form .resumoCompra .total .economize.d-flex .w-25.d-f
   border-radius: 33px;
   font-weight: bold;
   text-transform: uppercase;
-  box-shadow: 0 0 10px 0 #007bff;
+  box-shadow: 0 0 10px 0 #4B3A8F;
 }
 main .container-fluid .row.justify-content-center .col-sm-9.col-md-9.col-lg-9.col-xl-9.d-flex.flex-column.align-items-center.justify-content-center a.font-weight-bold.text-uppercase.text-center.btn {
   width: 25%;

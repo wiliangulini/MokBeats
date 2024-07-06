@@ -23,7 +23,7 @@ section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4.p-0 {
   color: #FFF !important;
 }
 section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-sm-6.col-md-6.col-lg-6.col-xl-6 .btn.h-100:hover {
-  color: #007bff;
+  color: rgba(255, 255, 255, 0.5);
 }
 section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-sm-6.col-md-6.col-lg-6.col-xl-6 .btn.h-100:hover:before{
   right: 5%;
@@ -32,7 +32,7 @@ section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-
   top: auto;
   bottom: 0;
   height: 5px;
-  background-color: #007bff;
+  background-color: rgba(255, 255, 255, 0.5);
   content: "";
 }
 section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-flex.justify-content-end.align-items-center button.btn:hover:before {
@@ -42,11 +42,11 @@ section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-fle
   top: auto;
   bottom: 0;
   height: 5px;
-  background-color: #007bff;
+  background-color: rgba(255, 255, 255, 0.5);
   content: "";
 }
 section.filter .container-fluid div.col-sm-4.col-md-4.col-lg-4.col-xl-4 div.col-sm-6.col-md-6.col-lg-6.col-xl-6 .btn.h-100:hover svg {
-  fill: #007bff;
+  fill: rgba(255, 255, 255, 0.5);
 }
 section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-flex.justify-content-end.align-items-center .controlTwo,
 section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-flex.justify-content-end.align-items-center button.btn,
@@ -113,7 +113,7 @@ section.filter .container-fluid form .inputFilter span {
   padding-left: 2%;
 }
 section.filter .container-fluid button {
-  color: #007bff;
+  color: rgba(255, 255, 255, 0.5);
   border: 0;
   background-color: #1b1b1b;
   height: 100%;
@@ -123,7 +123,7 @@ section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.p-0.d-flex.
   padding-right: 9% !important;
 }
 section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-flex.justify-content-end.align-items-center button:hover svg {
-  fill: #007bff;
+  fill: rgba(255, 255, 255, 0.5);
 }
 .card,
 #humorAccordion,
@@ -140,7 +140,7 @@ section.filter .container-fluid .col-sm-4.col-md-4.col-lg-4.col-xl-4.h-100.d-fle
 }
 #humorAccordion .container-fluid .row button.btn.btn-warning,
 #generoAccordion .container-fluid .row button.btn.btn-warning {
-  background: #007bff;
+  background: rgba(255, 255, 255, 0.5);
   font-weight: bold;
   display: flex;
   justify-content: center;
@@ -158,7 +158,7 @@ button.btn.btn-warning a {
   border: 0;
 }
 .card .card-body a.h5:hover {
-  color: #007bff;
+  color: rgba(255, 255, 255, 0.5);
 }
 .card .card-body a.h5 {
   transition: all .5s ease-in-out;

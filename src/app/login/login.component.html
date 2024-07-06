@@ -13,10 +13,22 @@
             <p class="h5 w-75 text-center">Crie uma conta para fazer login na MokBeats, e poder comprar ou entao vender suas musicas!!!</p>
             <input class="form-control mb-3 mt-3" type="email" formControlName="email"  placeholder="Email" [(ngModel)]="cadastro.email" />
             <input class="form-control mb-3" type="password" formControlName="senha" placeholder="Senha" [(ngModel)]="cadastro.senha" />
-            <select>
-              <option value="Pessoa Física">Pessoa Física</option>
-              <option value="Pessoa Jurídica">Pessoa Jurídica</option>
-            </select>
+            <div class="ls-select status forma">
+              <div class="control">
+                <p id="forma" class="txt m-0">Tipo de Conta</p>
+                <img id="arrow2" src="./assets/images/arrowDownGrey.webp" alt="seta pra baixo" />
+              </div>
+              <div class="down two val" style="display: none;">
+                <label id="ter1" class="radiocontainer d-flex">
+                  <input type="radio" class="radio" name="Terapia realizada" />
+                  <p (click)="radiocontainer(this)" id="label5" class="texto">Pessoa Física</p>
+                </label>
+                <label id="ter2" class="radiocontainer d-flex">
+                  <input type="radio" class="radio" name="Terapia marcada" />
+                  <p (click)="radiocontainer(this)" id="label6" class="texto">Pessoa Jurídica</p>
+                </label>
+              </div>
+            </div>
             <small>As senhas devem ter pelo menos 8 caracteres.</small>
             <button type="submit" class="btn btn-primary w-50 mb-4 mt-4" (click)="onSubmit()">Criar Conta</button>
             <p class="h6 w-75 text-center">Ao clicar, concordo com os <a href="#">Termos do site</a>, e a <a (click)="politica()">Política de privacidade</a></p>
