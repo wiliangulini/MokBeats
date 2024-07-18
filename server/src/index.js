@@ -11,7 +11,6 @@ const corsOptions = {
   origin: '*',
   optionsSuccessStatus: 200
 };
-//loiane aula 138 removendo cors, acredito q precise usar um app.get e nao post pra pegar itens do back end criado.
 app.use(cors(corsOptions));
 
 const multipartMiddleware = multipart({ uploadDir: './uploads' });

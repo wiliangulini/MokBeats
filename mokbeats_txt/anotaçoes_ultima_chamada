@@ -11,9 +11,10 @@
 
 5 - na pagina produtror criar input para produtor inserir o numero de bpm da musica, tonalidade, e se sao criadas por I.A., e campo pra informar de qual I.A. foi utilizada, inserir campo informando que o produtor pra cada full track precisa de um loop de 15s, 30s, 60s, inserir um campo para codigo de registro musica ( nao precisa ser obrigatorio, mas é recomendado, caso o usuario nao tenha registro nos podemos lhe ensinar como registrar sua musica ), criar uma tag <a>Registrar Aqui</a> 
 
-6 - em FILTRAR inserir filtro pra verificar se é musica criada por I.A.
+6 - em FILTRAR inserir filtro pra verificar se é musica criada por I.A. e tbm inserir filtro pra musicas FREE.
 
 7 - ate o dia 21 preciso estar com o track custom com as musicas enviadas pelo jess prontas mesmo q sejam estaticas, paginas musicas tbm com uma musica funcionando ok mesmo que seja estatica pra poder demonstrar o funcionamento do front-end.
 
 8 - verificaçao pra ver se é produtor ou nao pois o produtor tem acesso pagina dele do artista pra poder editar informaçoes ja o usuario tem acesso a pagina igual porem so ve as informaçoes que o produtor editou e deixou ali pra ser visto.
+
 

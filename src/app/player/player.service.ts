@@ -10,9 +10,6 @@ export class PlayerService {
   private dataSource = new BehaviorSubject<any>('audio');
   currentData = this.dataSource.asObservable();
 
-  // private dataSource2 = new BehaviorSubject<any>('waveId');
-  // currentData2 = this.dataSource2.asObservable();
-
   private isPlayingSubject = new BehaviorSubject<boolean>(false);
   isPlaying$ = this.isPlayingSubject.asObservable();
 
@@ -27,10 +24,6 @@ export class PlayerService {
   changeData(data: any) {
     this.dataSource.next(data);
   }
-
-  // changeData2(data: any) {
-  //   this.dataSource2.next(data);
-  // }
 
   tooglePlayPause() {
     let play: any = document.querySelector('#play');

@@ -36,12 +36,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked 
     this.cdRef.detectChanges();
   }
 
-  waveID: any;
   ngAfterViewInit(): void {
-    // this.playerService.currentData2.subscribe((dt2: any) => {
-    //   this.waveID = dt2;
-    //   // console.log(this.waveID)
-    // });
+
     this.playerService.currentData.subscribe((dt: any) => {
       console.log(dt);
       this.audioUrl = dt;
