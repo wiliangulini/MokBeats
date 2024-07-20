@@ -18,6 +18,8 @@ import {ScrollService} from '../service/scroll.service';
 import {Musica, MusicasService} from './musicas.service';
 import {WavesurferComponent} from "../wavesurfer/wavesurfer.component";
 import {PlayerService} from "../player/player.service";
+import {MusicPlayerService} from "../service/music-player.service";
+import {WaveSurferTestComponent} from "../wave-surfer-test/wave-surfer-test.component";
 
 @Component({
   selector: 'app-musicas',
@@ -26,7 +28,7 @@ import {PlayerService} from "../player/player.service";
 })
 export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
-  @ViewChildren(WavesurferComponent) waveSurfers!: QueryList<WavesurferComponent>;
+  @ViewChildren(WaveSurferTestComponent) waveSurfers!: QueryList<WaveSurferTestComponent>;
   public favorite: Musica = {};
   trecho: any[] = [15, 30, 60];
   loop: any[] = [1, 2, 3, 4, 5, 6, 7];
@@ -43,7 +45,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   select: any = 'Mais Relevantes';
 
   currentTrackIndex = 0;
-  isPlaying = false;
+  isPlaying: boolean = false;
 
   cantada: Array<any> = [
     "Amostras/Efeitos",
@@ -99,6 +101,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     private likeService: FavoritosService,
     private router: Router,
     private cdRef: ChangeDetectorRef,
+    private musicPlayerService: MusicPlayerService
   ) {
     this.formG = this.fb.group({
       checkbox: [],
@@ -194,16 +197,61 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     this.cdRef.detectChanges();
   }
 
+  play_pause: any = 'play';
+  id!: number;
+  action!: string;
+  playMusic: any;
+
+  onPlayPause(action: any, musicId: any) {
+    this.id = musicId;
+    this.action = action;
+    this.playerShow();
+    this.arrMusica.forEach((music: any) => {
+      if(music.id === this.id) {
+        this.playMusic = music;
+      }
+    });
+
+    this.currentTrackIndex = this.playMusic.id - 1;
+    if(this.isPlaying) {
+      const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
+      if (currentWaveSurfer) {
+        this.musicPlayerService.onPlayPause('pause', this.id);
+        this.toogleButton();
+        this.isPlaying = false;
+      }
+    } else {
+      this.playNextTrack();
+    }
+  }
+
+  toogleButton() {
+    let spanPlay: any = document.querySelectorAll('span.spanPlay');
+    let spanPause: any = document.querySelectorAll('span.spanPause');
+    if(this.action == 'play') {
+      this.play_pause = 'pause';
+      spanPause[this.currentTrackIndex].classList.add('d-flex');
+      spanPause[this.currentTrackIndex].classList.remove('d-none');
+      spanPlay[this.currentTrackIndex].classList.remove('d-flex');
+      spanPlay[this.currentTrackIndex].classList.add('d-none');
+    }
+    else if (this.action == 'pause') {
+      this.play_pause = 'play';
+      spanPlay[this.currentTrackIndex].classList.add('d-flex');
+      spanPlay[this.currentTrackIndex].classList.remove('d-none');
+      spanPause[this.currentTrackIndex].classList.remove('d-flex');
+      spanPause[this.currentTrackIndex].classList.add('d-none');
+    }
+  }
+
   playNextTrack() {
     const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
-    // console.log(currentWaveSurfer);
     if (currentWaveSurfer) {
-      let array: any[] = [];
-      array.push(currentWaveSurfer.audioUrl)
-      array.push(currentWaveSurfer.containerId)
-      this.playerService.changeData(currentWaveSurfer.audioUrl);
-      // this.playerService.changeData2(currentWaveSurfer.containerId);
-      currentWaveSurfer.play();
+      this.musicPlayerService.onPlayPause('play', this.id);
+      console.log(currentWaveSurfer)
+      this.playMusic = currentWaveSurfer.music;
+      console.log(this.playMusic)
+      this.toogleButton();
       this.isPlaying = true;
     }
   }
@@ -211,27 +259,12 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   onSongFinished(index: number) {
     if (index === this.currentTrackIndex) {
       this.currentTrackIndex++;
-      console.log(this.currentTrackIndex)
+      this.id++;
       if (this.currentTrackIndex < this.arrMusica.length) {
         this.playNextTrack();
       } else {
         this.isPlaying = false;
       }
-    }
-  }
-
-  playPause(e: any) {
-    // console.log(e);  musica sendo tocada
-    this.currentTrackIndex = e.id - 1;
-    this.playerShow();
-    if (this.isPlaying) {
-      const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
-      if (currentWaveSurfer) {
-        currentWaveSurfer.pause();
-        this.isPlaying = false;
-      }
-    } else {
-      this.playNextTrack();
     }
   }
 
@@ -311,6 +344,4 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.durationAut = timeString;
     }
   }
-
-
 }

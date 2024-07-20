@@ -70,6 +70,7 @@ button.btn.btn-icons.mobile {
   border: 1px solid #FFF;
   border-radius: 50%;
   cursor: pointer;
+  background: transparent;
 }
 button, a {
   transition: all .25s ease-in-out;
@@ -284,6 +285,10 @@ article.one .text p.h6 {
 article.one .material-icons {
   font-size: 45px !important;
   cursor: pointer;
+}
+article.one .material-icons.spanPause,
+article.one .material-icons.spanPlay {
+  font-size: 35px !important;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.titlesMDiv {
   height: auto !important;

@@ -61,6 +61,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {CartModalComponent} from "./carrinho/cartModal/cart-modal.component";
 import { I18nextTestComponent } from './i18next-test/i18next-test.component';
 import { WavesurferComponent } from './wavesurfer/wavesurfer.component';
+import { WaveSurferTestComponent } from './wave-surfer-test/wave-surfer-test.component';
 
 
 @NgModule({
@@ -103,6 +104,7 @@ import { WavesurferComponent } from './wavesurfer/wavesurfer.component';
     CartModalComponent,
     I18nextTestComponent,
     WavesurferComponent,
+    WaveSurferTestComponent,
   ],
   imports: [
     BrowserModule,

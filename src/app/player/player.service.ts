@@ -7,24 +7,6 @@ import WaveSurfer from "wavesurfer.js";
 })
 export class PlayerService {
 
-  private dataSource = new BehaviorSubject<any>('audio');
-  currentData = this.dataSource.asObservable();
-
-  private isPlayingSubject = new BehaviorSubject<boolean>(false);
-  isPlaying$ = this.isPlayingSubject.asObservable();
-
-  play() {
-    this.isPlayingSubject.next(true);
-  }
-
-  pause() {
-    this.isPlayingSubject.next(false);
-  }
-
-  changeData(data: any) {
-    this.dataSource.next(data);
-  }
-
   tooglePlayPause() {
     let play: any = document.querySelector('#play');
     let pause: any = document.querySelector('#pause');
@@ -45,21 +27,4 @@ export class PlayerService {
     document.getElementById('controlPlayer')!.classList.remove('showPlayer');
     document.getElementById('controlPlayer')!.classList.add('hidePlayer');
   }
-
-  // setAudio(data: any) {
-  //   this.data = data;
-  // }
-  // setId(data2: any) {
-  //   this.data2 = data2;
-  // }
-  // getAudio() {
-  //   // console.log(this.data);
-  //   return this.data;
-  // }
-  // getId() {
-  //   // console.log(this.data2);
-  //   return this.data2;
-  // }
-
-
 }

@@ -161,21 +161,27 @@
             <div class="controlDivs d-flex flex-column w-100">
               <div class="controlDivsInt row">
                 <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start pr-5" >
-                <span class="svg" (click)="playPause(itens)">
-                  <svg width="24" fill="#FFF" height="24" viewBox="0 0 24 24"><path d="M20.7 12.4L7.9 20a.5.5 0 01-.8-.4v-15a.5.5 0 01.8-.4l12.8 7.5a.5.5 0 010 .8z"></path></svg>
-                </span>
+                  <button class="svg play" (click)="onPlayPause(play_pause, itens.id)">
+                    <span class="material-icons spanPlay d-flex">play_arrow</span>
+                    <span class="material-icons spanPause d-none">pause</span>
+                  </button>
                   <div class="text d-flex flex-column align-items-start justify-content-start">
                     <p class="h4"><a href="#">{{itens.nome_musica}}</a></p>
                     <p class="h6 mt-1">por <a (click)="pagArtist(itens)" href="" [routerLink]="['/pagina-artista']" >{{itens.nome_produtor}}</a></p>
                   </div>
                 </div>
                 <div class="wavesurfer">
-                  <app-wavesurfer
-                    [audioUrl]="itens.url"
-                    [containerId]="'waveform-' + i"
+                  <!--                  <app-wavesurfer-->
+                  <!--                    [audioUrl]="itens"-->
+                  <!--                    [containerId]="'waveform-' + i"-->
+                  <!--                    (songFinished)="onSongFinished(i)"-->
+                  <!--                  >-->
+                  <!--                  </app-wavesurfer>-->
+                  <app-wave-surfer-test
+                    [music]="itens"
+                    [idContainer]="'waveform-' + i"
                     (songFinished)="onSongFinished(i)"
-                  >
-                  </app-wavesurfer>
+                  ></app-wave-surfer-test>
                 </div>
                 <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around pl-2 pr-2 pt-0 pb-0">
                   <p class="h6 mb-0" id="duracao">{{this.msToMinute(itens.duracao)}}</p>
@@ -452,7 +458,7 @@
       </div>
     </div>
   </section>
-<!--  <app-i18next-test></app-i18next-test>-->
-<!--  <app-player></app-player>-->
+  <!--  <app-i18next-test></app-i18next-test>-->
+  <!--  <app-player></app-player>-->
   <app-footer></app-footer>
 </main>
