@@ -124,13 +124,12 @@ span.material-icons.volume_up,
 //  transition: transform 300ms cubic-bezier(0.6, 0.3, 0, 1);
 //}
 #controlPlayer.showPlayer {
-  height: 202px;
   display: flex;
   justify-content: center;
   align-items: center;
-  animation-name: showPlayer;
-  animation-duration: 1s;
-  animation-delay: .5s;
+  //animation-name: showPlayer;
+  //animation-duration: 1s;
+  //animation-delay: .5s;
 }
 // hideplayer pode ser feito com transform: translateY(100%); pointer-events: none; junto com transition: transform 300ms cubic-bezier(0.6, 0.3, 0, 1);
 #controlPlayer.hidePlayer {

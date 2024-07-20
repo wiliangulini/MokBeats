@@ -17,8 +17,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
   volumeInitial: any;
   timeSkip: any;
   track: any;
-  audioUrl: any;
-  isPlaying!: boolean;
+  currentMusicUrl!: string;
+  isPlaying: boolean = false;
+  musicId: any;
 
   private subscription?: Subscription;
   ws!: WaveSurfer;
@@ -28,11 +29,14 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
     private playerService: PlayerService,
     private cdRef: ChangeDetectorRef,
     private musicPlayerService: MusicPlayerService
-  ) {
-    // super();
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.musicPlayerService.currentMusicUrl$.subscribe((url) => {
+      this.currentMusicUrl = url;
+      console.log(this.currentMusicUrl);
+      this.playMusicUrl(url)
+    })
     this.subscription = this.musicPlayerService.playPauseAction$.subscribe(({ action, musicId }) => {
       if (action === 'play') {
         this.playMusic(musicId);
@@ -40,27 +44,20 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
         this.pauseMusic(musicId);
       }
     });
+  }
 
-    this.musicService.listMusic().subscribe((data: any) => {
-      this.arrMusica = data;
-    })
+  ngAfterViewChecked() {
+    if(!this.isPlaying) {
+      if(this.arrMusica.length === 0) {
+        this.arrMusica = JSON.parse(String(localStorage.getItem('arrMusica')));
+        console.log(this.arrMusica);
+        this.isPlaying = true;
+      }
+    }
+    this.cdRef.detectChanges();
   }
 
   ngAfterViewInit(): void {
-    this.musicPlayerService.currentData.subscribe((url: any) => {
-      let audio: string = url;
-      console.log(audio);
-    });
-    this.musicPlayerService.urlGo$.subscribe((url: any) => {
-      let audio2: string = url;
-      console.log(audio2);
-      if(audio2 === url) {
-        console.log('igual')
-      } else {
-        console.log('diferente')
-      }
-    });
-
     this.ws = WaveSurfer.create({
       container: '#waveform',
       waveColor: '#fff',
@@ -90,7 +87,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
     const muteOff: any = document.querySelector(".muteOff");
     this.volumeInitial = document.querySelector('#volumeSlider')!.getAttribute('value');
 
-
+    // setTimeout(() => {
+    //   console.log(this.arrMusica)
+    //
+    //   this.ws.load("../../assets/audios/Tipo_Minato.mp3");
+    // }, 300);
     this.ws.load("../../assets/audios/Tipo_Minato.mp3");
     // playButton.click();
 
@@ -175,16 +176,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
     });
   }
 
-  ngAfterViewChecked() {
-    // if(!this.isPlaying) {
-    //   if(this.audioUrl !== undefined) {
-    //     this.isPlaying = true;
-    //   }
-    //   console.log(this.audioUrl)
-    this.cdRef.detectChanges();
-    // }
-  }
-
   ngOnDestroy() {
     if(this.subscription) {
       this.subscription.unsubscribe();
@@ -193,12 +184,18 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
       this.ws.destroy();
     }
   }
+  playMusicUrl(url: string): void {
+    console.log(url.length);
+    // this.ws.load(url);
+  }
 
   playMusic(musicId: any) {
+    this.musicId = musicId;
     this.ws.play();
   }
 
   pauseMusic(musicId: any) {
+    this.musicId = musicId;
     this.ws.pause();
   }
 

@@ -21,7 +21,7 @@ export class PlayerSaveComponent implements OnInit, AfterContentInit {
   ) {}
 
   ngOnInit(): void {
-    // this.musicService.listMusic().subscribe((data: any): void => {
+    // this.musicService.list().subscribe((data: any): void => {
 
     // puxar musicas pra essa pagina porem é preciso verificar onde o usuario esta e em qual lista de reproduçao ele esta usando para entao reproduzir uma apos a outra, pois aqui todas as musicas sao puxadas.
     // });

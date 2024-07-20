@@ -124,9 +124,10 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
 
     let playlist: any[] = [];
     const setPlaylist = new Set();
-    this.musicService.listMusic().subscribe((data: any) => {
+    this.musicService.list().subscribe((data: any) => {
       this.arrMusica = data;
-      console.log(this.arrMusica);
+      let arrMusica = JSON.stringify(this.arrMusica);
+      localStorage.setItem('arrMusica', arrMusica);
       this.playlistService.list().subscribe((data: any) => {
         data.forEach((e: any) => {
           if(e.music.length > 0) {
@@ -247,16 +248,17 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   playNextTrack() {
     const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
     if (currentWaveSurfer) {
-      this.musicPlayerService.onPlayPause('play', this.id);
-      console.log(currentWaveSurfer)
       this.playMusic = currentWaveSurfer.music;
-      console.log(this.playMusic)
+      this.musicPlayerService.setCurrentMusicUrl(this.playMusic.url);
+      this.musicPlayerService.onPlayPause('play', this.id);
       this.toogleButton();
       this.isPlaying = true;
     }
   }
 
   onSongFinished(index: number) {
+    const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
+    console.log(currentWaveSurfer)
     if (index === this.currentTrackIndex) {
       this.currentTrackIndex++;
       this.id++;
@@ -270,9 +272,9 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   playerShow() {
     let controlPlayer: any = document.querySelector('#controlPlayer');
-    setTimeout(() => {
+    // setTimeout(() => {
       controlPlayer.classList.remove('hidePlayer');
-    }, 600);
+    // }, 600);
     controlPlayer.classList.add('showPlayer');
   }
 

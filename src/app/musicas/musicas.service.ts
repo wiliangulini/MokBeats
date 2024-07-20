@@ -7,6 +7,8 @@ import {FavoritosService} from "../favoritos/favoritos.service";
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {CarrinhoService} from "../service/carrinho.service";
+import {CrudService} from "../service/crud-service";
+import {Observable} from "rxjs";
 
 export type Musica = {
   id?: number;
@@ -22,7 +24,7 @@ export type Musica = {
 @Injectable({
   providedIn: 'root'
 })
-export class MusicasService  {
+export class MusicasService extends CrudService<Musica> {
 
   hearth: any;
   hearth1: any;
@@ -398,16 +400,15 @@ export class MusicasService  {
   ];
   public arrMusica!: Musica[];
 
-  private readonly API_MUSIC = `${environment.API}musicas`
-
   constructor(
     private authService: AuthService,
     private modalService: NgbModal,
     private likeService: FavoritosService,
-    private http: HttpClient,
+    protected override http: HttpClient,
     private cartService: CarrinhoService,
     private activeModal: NgbActiveModal,
   ) {
+    super(http, `${environment.API}musicas`);
     this.genero.map((obj: any) => {
       Object.keys(obj).map((chave: any) => {
         this.convertida2.push(chave);
@@ -416,8 +417,16 @@ export class MusicasService  {
     });
   }
 
-  public listMusic() {
-    return this.http.get<Musica>(`${this.API_MUSIC}`).pipe();
+  override list(): Observable<Musica> {
+    return super.list();
+  }
+
+  override save(record: any): Observable<Musica> {
+    return super.save(record);
+  }
+
+  override remove(id: number): Observable<Musica> {
+    return super.remove(id);
   }
 
   public curtir(i: number) {
@@ -445,7 +454,7 @@ export class MusicasService  {
   public addPlayList(music: Musica) {
     this.authService.verificaLogin();
     if(this.authService.userAutetic()) {
-      this.listMusic().subscribe((data: any) => {
+      this.list().subscribe((data: any) => {
         this.arrMusica = data;
         this.addMusicPlaylist = music;
         document.querySelectorAll('.addPlaylist').forEach((e: any, index: any) => {

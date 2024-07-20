@@ -9,33 +9,15 @@ export class MusicPlayerService {
   private playPauseSubject = new Subject<{action: any, musicId: any}>();
   playPauseAction$ = this.playPauseSubject.asObservable();
 
-  private urlGo = new Subject<{ url: any }>();
-  urlGo$ = this.urlGo.asObservable();
-
-  private dataSource = new BehaviorSubject<any>('');
-  currentData = this.dataSource.asObservable();
-
-  // private isPlayingSubject = new BehaviorSubject<boolean>(false);
-  // isPlaying$ = this.isPlayingSubject.asObservable();
-
-  takeUrl(url: any) {
-    this.urlGo.next(url);
-  }
+  private currentMusicUrlSubject = new BehaviorSubject<string>('');
+  currentMusicUrl$ = this.currentMusicUrlSubject.asObservable();
 
   onPlayPause(action: any, musicId: any) {
     this.playPauseSubject.next({action, musicId});
   }
 
-  changeData(data: any) {
-    this.dataSource.next(data);
+  setCurrentMusicUrl(musicUrl: any) {
+    this.currentMusicUrlSubject.next(musicUrl);
   }
-  //
-  // playTrue() {
-  //   this.isPlayingSubject.next(true);
-  // }
-  //
-  // playFalse() {
-  //   this.isPlayingSubject.next(false);
-  // }
 
 }
