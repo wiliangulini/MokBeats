@@ -20,6 +20,7 @@ import {WavesurferComponent} from "../wavesurfer/wavesurfer.component";
 import {PlayerService} from "../player/player.service";
 import {MusicPlayerService} from "../service/music-player.service";
 import {WaveSurferTestComponent} from "../wave-surfer-test/wave-surfer-test.component";
+import {AudioService} from "../service/audio.service";
 
 @Component({
   selector: 'app-musicas',
@@ -43,7 +44,8 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   formG!: FormGroup;
   frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
   select: any = 'Mais Relevantes';
-
+  audioUrl: string = '';
+  durationUrl: number | null = null;
   currentTrackIndex = 0;
   isPlaying: boolean = false;
 
@@ -101,7 +103,8 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     private likeService: FavoritosService,
     private router: Router,
     private cdRef: ChangeDetectorRef,
-    private musicPlayerService: MusicPlayerService
+    private musicPlayerService: MusicPlayerService,
+    private audioService: AudioService,
   ) {
     this.formG = this.fb.group({
       checkbox: [],
@@ -118,6 +121,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     if (screen.width < 769) {
       document.getElementById('navLeft')!.style.width = '0';
     }
+
   }
 
   ngAfterViewInit() {
@@ -273,7 +277,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   playerShow() {
     let controlPlayer: any = document.querySelector('#controlPlayer');
     // setTimeout(() => {
-      controlPlayer.classList.remove('hidePlayer');
+    controlPlayer.classList.remove('hidePlayer');
     // }, 600);
     controlPlayer.classList.add('showPlayer');
   }
@@ -282,6 +286,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     console.log(data);
     this.router.navigate(['/pagina-artista'], {queryParams: {nome_produtor: data.nome_produtor}});
   }
+
 
   msToMinute(ms: any) {
     let minutes: any = Math.floor(ms / 60000);
@@ -319,6 +324,14 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   copiarLink(i: number): void { this.musicService.copiarLink(i); }
+
+  // função pra pegar o tempo da musica pela url.
+  fetchAudioDuration() {
+    this.audioService.getAudioduration(this.audioUrl)
+      .then(duration => this.durationUrl = duration)
+      .catch(error => console.log(error));
+
+  }
 
   baixarAmostra(i: number): void {
     this.authService.verificaLogin();

@@ -17,12 +17,15 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
   volumeInitial: any;
   timeSkip: any;
   track: any;
-  currentMusicUrl!: string;
+  currentMusicUrl: string = '';
   isPlaying: boolean = false;
+  isPlaying2: boolean = false;
   musicId: any;
+  audioUrl: string = '';
 
   private subscription?: Subscription;
-  ws!: WaveSurfer;
+  wavesurfer!: WaveSurfer;
+  trackCustom!: WaveSurfer;
 
   constructor(
     private musicService: MusicasService,
@@ -32,18 +35,22 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
   ) {}
 
   ngOnInit(): void {
-    this.musicPlayerService.currentMusicUrl$.subscribe((url) => {
-      this.currentMusicUrl = url;
-      console.log(this.currentMusicUrl);
-      this.playMusicUrl(url)
-    })
     this.subscription = this.musicPlayerService.playPauseAction$.subscribe(({ action, musicId }) => {
+      this.musicId = musicId;
       if (action === 'play') {
         this.playMusic(musicId);
       } else if (action === 'pause') {
         this.pauseMusic(musicId);
       }
     });
+
+    this.musicPlayerService.currentMusicUrl$.subscribe((url) => {
+      this.currentMusicUrl = url;
+      if(url.length > 0) {
+        this.playMusicUrl(url);
+      }
+    });
+
   }
 
   ngAfterViewChecked() {
@@ -58,7 +65,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
   }
 
   ngAfterViewInit(): void {
-    this.ws = WaveSurfer.create({
+    this.wavesurfer = WaveSurfer.create({
       container: '#waveform',
       waveColor: '#fff',
       progressColor: '#dcad54',
@@ -73,10 +80,89 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
           waveColor: '#fff',
           progressColor: '#dcad54',
           dragToSeek: true,
-        })
-      ]
+        }),
+      ],
     });
-    const playButton: any = document.querySelector('#playPause');
+
+    this.trackCustom = WaveSurfer.create({
+      container: '#trackCustom1',
+      waveColor: '#fff',
+      progressColor: '#dcad54',
+      minPxPerSec: 100,
+      url: '../../assets/audios/MokBeats_Future_Forest_(DRUMS).mp3',
+      hideScrollbar: true,
+      fillParent: true,
+      height: 0,
+      backend: 'MediaElement',
+      plugins: [
+        Minimap.create({
+          height: 40,
+          waveColor: '#fff',
+          progressColor: '#dcad54',
+          dragToSeek: true,
+        }),
+      ],
+    });
+    this.trackCustom = WaveSurfer.create({
+      container: '#trackCustom2',
+      waveColor: '#fff',
+      progressColor: '#dcad54',
+      minPxPerSec: 100,
+      url: '../../assets/audios/MokBeats_Future_Forest_(EFEITOS).mp3',
+      hideScrollbar: true,
+      fillParent: true,
+      height: 0,
+      backend: 'MediaElement',
+      plugins: [
+        Minimap.create({
+          height: 40,
+          waveColor: '#fff',
+          progressColor: '#dcad54',
+          dragToSeek: true,
+        }),
+      ],
+    });
+    this.trackCustom = WaveSurfer.create({
+      container: '#trackCustom3',
+      waveColor: '#fff',
+      progressColor: '#dcad54',
+      minPxPerSec: 100,
+      url: '../../assets/audios/MokBeats_Future_Forest_(HARMONIAS).mp3',
+      hideScrollbar: true,
+      fillParent: true,
+      height: 0,
+      backend: 'MediaElement',
+      plugins: [
+        Minimap.create({
+          height: 40,
+          waveColor: '#fff',
+          progressColor: '#dcad54',
+          dragToSeek: true,
+        }),
+      ],
+    });
+    this.trackCustom = WaveSurfer.create({
+      container: '#trackCustom4',
+      waveColor: '#fff',
+      progressColor: '#dcad54',
+      minPxPerSec: 100,
+      url: '../../assets/audios/MokBeats_Future_Forest_(MELODIAS).mp3',
+      hideScrollbar: true,
+      fillParent: true,
+      height: 0,
+      backend: 'MediaElement',
+      plugins: [
+        Minimap.create({
+          height: 40,
+          waveColor: '#fff',
+          progressColor: '#dcad54',
+          dragToSeek: true,
+        }),
+      ],
+    });
+
+    const prev10: any = document.querySelector('.prev10sec');
+    const next10: any = document.querySelector('.next10sec');
     const backButton: any = document.querySelector('#backward');
     const forwardButton: any = document.querySelector('#forward');
     const timeEl: any = document.querySelector('#time');
@@ -87,14 +173,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
     const muteOff: any = document.querySelector(".muteOff");
     this.volumeInitial = document.querySelector('#volumeSlider')!.getAttribute('value');
 
-    // setTimeout(() => {
-    //   console.log(this.arrMusica)
-    //
-    //   this.ws.load("../../assets/audios/Tipo_Minato.mp3");
-    // }, 300);
-    this.ws.load("../../assets/audios/Tipo_Minato.mp3");
-    // playButton.click();
-
     const formatTime = (seconds: any) => {
       const minutes = Math.floor(seconds / 60);
       const secondsRemainder = Math.round(seconds) % 60;
@@ -102,16 +180,21 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
       return `${minutes}:${paddedSeconds}`
     }
 
-    this.ws.on('decode', (duration: any) => {
+    this.wavesurfer.on('load', (url: string) => {
+      this.audioUrl = url;
+    });
+    this.wavesurfer.on('decode', (duration: any) => {
       durationEl.textContent = formatTime(duration);
       this.timeSkip = duration;
     });
-    this.ws.on('timeupdate', (currentTime: any) => (timeEl.textContent = formatTime(currentTime)));
-    this.ws.on('ready', () => {
+    this.wavesurfer.on('timeupdate', (currentTime: any) => {
+      timeEl.textContent = formatTime(currentTime);
+    });
+    this.wavesurfer.on('ready', () => {
       if(volumeSlider) {
         volumeSlider.addEventListener('input', (e: any) => {
           let vol: any = e.target.value;
-          this.ws.setVolume(vol / 100);
+          this.wavesurfer.setVolume(vol / 100);
           if(vol == '0') {
             this.muteOffAdd(muteOn, muteOff);
           } else {
@@ -121,11 +204,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
 
         volumeOn.addEventListener('click', (e: any) => {
           if(muteOn.classList.contains('d-flex')) {
-            this.ws.setMuted(true);
+            this.wavesurfer.setMuted(true);
             this.muteOffAdd(muteOn, muteOff);
             volumeSlider.value = '0';
           } else if (muteOff.classList.contains('d-flex')) {
-            this.ws.setMuted(false);
+            this.wavesurfer.setMuted(false);
             this.muteOnAdd(muteOn, muteOff);
             volumeSlider.value = this.volumeInitial;
           }
@@ -161,48 +244,75 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
       })
     });
 
-    // playButton.addEventListener('click', (): void => {
-    //   this.ws.playPause();
-    //   this.playerService.tooglePlayPause();
-    // });
     // todos segundos da track estao em timeskip, ao clicar vai direto pro final da musica ou inicio dependendo do botao clicado
     forwardButton.addEventListener('click', (): void => {
-      this.ws.setTime(this.timeSkip);
+      this.wavesurfer.setTime(this.timeSkip);
       this.playerService.tooglePlayPause();
     });
     backButton.addEventListener('click', (): void => {
-      this.ws.setTime(-this.timeSkip);
+      this.wavesurfer.setTime(-this.timeSkip);
       this.playerService.tooglePlayPause();
     });
+    prev10.addEventListener('click', (): void => {
+      this.wavesurfer.skip(-10);
+    });
+    next10.addEventListener('click', (): void => {
+      this.wavesurfer.skip(10);
+    });
+
   }
 
   ngOnDestroy() {
     if(this.subscription) {
       this.subscription.unsubscribe();
     }
-    if (this.ws) {
-      this.ws.destroy();
+    if (this.wavesurfer) {
+      this.wavesurfer.destroy();
     }
   }
+
   playMusicUrl(url: string): void {
-    console.log(url.length);
-    // this.ws.load(url);
+    this.wavesurfer.load(url).then();
+    let array: any[] = [];
+    array.push(url);
+
   }
 
   playMusic(musicId: any) {
-    this.musicId = musicId;
-    this.ws.play();
+    this.wavesurfer.play();
+    this.playerService.tooglePlayPause();
+    this.isPlaying2 = true;
   }
 
   pauseMusic(musicId: any) {
-    this.musicId = musicId;
-    this.ws.pause();
+    this.wavesurfer.pause();
+    this.playerService.tooglePlayPause();
+    this.isPlaying2 = false;
   }
 
   playPause(): void {
-    this.ws.playPause();
-    this.playerService.tooglePlayPause();
+    !this.isPlaying2 ? this.playMusic(this.musicId) : this.pauseMusic(this.musicId);
   }
+
+  trackCustomOpen() {
+    let waveform: any = document.querySelector('#waveform');
+    let rowPlayer: any = document.querySelector('.row.player');
+    let trackCustom: any = document.getElementById('trackCustom');
+    let trackCustom1: any = document.getElementById('trackCustom1');
+    let trackCustom2: any = document.getElementById('trackCustom2');
+    let trackCustom3: any = document.getElementById('trackCustom3');
+    let trackCustom4: any = document.getElementById('trackCustom4');
+    if(trackCustom.getAttribute('style') == 'display: none;') {
+      trackCustom.setAttribute('style', 'display: flex;');
+      waveform.setAttribute('style', 'bottom: 301px;');
+      rowPlayer.setAttribute('style', 'bottom: 220px;');
+    } else if(trackCustom.getAttribute('style') == 'display: flex;') {
+      trackCustom.setAttribute('style', 'display: none;');
+      waveform.removeAttribute('style');
+      rowPlayer.removeAttribute('style');
+    }
+  }
+
   hidePlayer() {
     this.playerService.hidePlayer();
   }

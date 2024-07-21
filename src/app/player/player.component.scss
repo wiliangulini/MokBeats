@@ -6,6 +6,34 @@
   100% {opacity: 1;}
 }
 
+#trackCustom {
+  background: #000;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+  bottom: 0;
+  height: 220px;
+}
+#trackCustom1,
+#trackCustom2,
+#trackCustom3,
+#trackCustom4 {
+  border-bottom: 1px solid #DDD;
+  background: rgb(20, 20, 20);
+  height: 55px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+#trackCustom1.current {
+  background: rgb(73, 73, 73);
+}
+#trackCustom1:hover,
+#trackCustom2:hover,
+#trackCustom3:hover,
+#trackCustom4:hover {
+  background: rgb(51, 51, 51);
+}
 section .container-fluid .row.audioCanva,
 section .container-fluid .row.player {
   background: #000;
@@ -13,6 +41,16 @@ section .container-fluid .row.player {
   width: 100%;
   z-index: 10;
 }
+section .container-fluid .row.audioCanva {
+  bottom: 81px;
+  border-bottom: 1px solid #DDD;
+  padding: 10px 0;
+}
+section .container-fluid .row.player {
+  height: 81px;
+  bottom: 0;
+}
+
 #playPause,
 #volumeOn,
 section .container-fluid .row.audioCanva,
@@ -30,14 +68,9 @@ section .container-fluid .row.player,
   border: 0;
   padding: 0;
 }
-section .container-fluid .row.audioCanva {
-  bottom: 81px;
-  border-bottom: 1px solid #DDD;
-  padding: 10px 0;
-}
-section .container-fluid .row.player {
-  height: 81px;
-  bottom: 0;
+section .container-fluid .row.player .div.controls.col-1.musicArrows {
+  flex: 0 0 12%;
+  max-width: 12%;
 }
 section .container-fluid .row.player .div.controls.col-1 {
   display: flex;
@@ -53,6 +86,10 @@ section .container-fluid .row.player .div.controls.col-1 span.play {
 }
 section .container-fluid .row.player .div.controls.col-1 span.next {
   font-size: 35px !important;
+}
+section .container-fluid .row.player .div.controls.col-2.artistName {
+  flex: 0 0 11%;
+  max-width: 11%;
 }
 section .container-fluid .row.player .div.controls.col-2 {
   display: flex;
@@ -114,11 +151,17 @@ svg,
   justify-content: center;
   align-items: center;
 }
+span.material-icons.prev10sec,
+span.material-icons.prev10sec,
 span.material-icons.volume_up,
 #backward.prev,
 #forward.next,
 #play.play {
   cursor: pointer;
+}
+span.material-icons.prev10sec,
+span.material-icons.prev10sec {
+  font-size: 25px !important;
 }
 //#controlPlayer {
 //  transition: transform 300ms cubic-bezier(0.6, 0.3, 0, 1);
@@ -133,6 +176,7 @@ span.material-icons.volume_up,
 }
 // hideplayer pode ser feito com transform: translateY(100%); pointer-events: none; junto com transition: transform 300ms cubic-bezier(0.6, 0.3, 0, 1);
 #controlPlayer.hidePlayer {
+  display: none;
   height: 0;
   opacity: 0;
   pointer-events: none;
