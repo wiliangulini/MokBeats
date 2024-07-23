@@ -1,6 +1,7 @@
 import {
   AfterViewChecked,
-  AfterViewInit, ChangeDetectorRef,
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   OnInit,
@@ -16,7 +17,6 @@ import {FavoritosService} from '../favoritos/favoritos.service';
 import {AuthService} from '../login/auth.service';
 import {ScrollService} from '../service/scroll.service';
 import {Musica, MusicasService} from './musicas.service';
-import {WavesurferComponent} from "../wavesurfer/wavesurfer.component";
 import {PlayerService} from "../player/player.service";
 import {MusicPlayerService} from "../service/music-player.service";
 import {WaveSurferTestComponent} from "../wave-surfer-test/wave-surfer-test.component";
@@ -28,7 +28,7 @@ import {AudioService} from "../service/audio.service";
   styleUrls: ['./musicas.component.scss']
 })
 export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked {
-
+  isLoading: boolean = true;
   @ViewChildren(WaveSurferTestComponent) waveSurfers!: QueryList<WaveSurferTestComponent>;
   public favorite: Musica = {};
   trecho: any[] = [15, 30, 60];
@@ -89,7 +89,9 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     {value: "Technology", viewValue: "Technology"},
     {value: "Trippy", viewValue: "Trippy"},
   ]
-  arrMusica: any[] = [];
+  arrMusica: Musica[] = [];
+  btnPlay: any;
+  btnTrue: boolean = false;
 
   @Output('ngModelChange') update: any = new EventEmitter();
 
@@ -125,7 +127,6 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   ngAfterViewInit() {
-
     let playlist: any[] = [];
     const setPlaylist = new Set();
     this.musicService.list().subscribe((data: any) => {
@@ -133,6 +134,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
       let arrMusica = JSON.stringify(this.arrMusica);
       localStorage.setItem('arrMusica', arrMusica);
       this.playlistService.list().subscribe((data: any) => {
+        this.isLoading = false;
         data.forEach((e: any) => {
           if(e.music.length > 0) {
             for(let i: number = 0; i < e.music.length; i++) {
@@ -199,6 +201,15 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   ngAfterViewChecked() {
+    if(!this.btnTrue) {
+      this.btnPlay = document.querySelectorAll('button.svg.play');
+      if(this.btnPlay.length > 0) {
+        this.btnPlay.forEach((e: any, i: number) => {
+          e.setAttribute('data-key', this.arrMusica[i].id);
+        });
+        this.btnTrue = true;
+      }
+    }
     this.cdRef.detectChanges();
   }
 
@@ -253,6 +264,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
     if (currentWaveSurfer) {
       this.playMusic = currentWaveSurfer.music;
+      this.musicPlayerService.setCurrentMusicID(this.playMusic.id);
       this.musicPlayerService.setCurrentMusicUrl(this.playMusic.url);
       this.musicPlayerService.onPlayPause('play', this.id);
       this.toogleButton();
@@ -276,9 +288,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   playerShow() {
     let controlPlayer: any = document.querySelector('#controlPlayer');
-    // setTimeout(() => {
     controlPlayer.classList.remove('hidePlayer');
-    // }, 600);
     controlPlayer.classList.add('showPlayer');
   }
 

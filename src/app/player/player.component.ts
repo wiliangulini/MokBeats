@@ -21,7 +21,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
   isPlaying: boolean = false;
   isPlaying2: boolean = false;
   musicId: any;
-  audioUrl: string = '';
 
   private subscription?: Subscription;
   wavesurfer!: WaveSurfer;
@@ -36,6 +35,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
 
   ngOnInit(): void {
     this.subscription = this.musicPlayerService.playPauseAction$.subscribe(({ action, musicId }) => {
+      console.log(action, musicId);
       this.musicId = musicId;
       if (action === 'play') {
         this.playMusic(musicId);
@@ -43,14 +43,19 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
         this.pauseMusic(musicId);
       }
     });
-
     this.musicPlayerService.currentMusicUrl$.subscribe((url) => {
+      console.log(url);
       this.currentMusicUrl = url;
       if(url.length > 0) {
         this.playMusicUrl(url);
       }
     });
-
+    this.musicPlayerService.currentMusicID$.subscribe((id) => {
+      console.log(id)
+      if(id > -1) {
+        this.idMusicPlay(id);
+      }
+    });
   }
 
   ngAfterViewChecked() {
@@ -161,6 +166,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
       ],
     });
 
+    this.trackCustom.on('ready', () => {
+
+    })
+
     const prev10: any = document.querySelector('.prev10sec');
     const next10: any = document.querySelector('.next10sec');
     const backButton: any = document.querySelector('#backward');
@@ -180,9 +189,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
       return `${minutes}:${paddedSeconds}`
     }
 
-    this.wavesurfer.on('load', (url: string) => {
-      this.audioUrl = url;
-    });
     this.wavesurfer.on('decode', (duration: any) => {
       durationEl.textContent = formatTime(duration);
       this.timeSkip = duration;
@@ -244,7 +250,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
       })
     });
 
-    // todos segundos da track estao em timeskip, ao clicar vai direto pro final da musica ou inicio dependendo do botao clicado
+    // todos segundos da track estao em timeskip, ao clicar vai direto pro final da musica ou inicio dependendo do botao clicado. API Wavesurfer Pre-decode = setTime(0) dentro de on('finish') faz a track ao terminar voltar ao inicio;
     forwardButton.addEventListener('click', (): void => {
       this.wavesurfer.setTime(this.timeSkip);
       this.playerService.tooglePlayPause();
@@ -271,11 +277,49 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
     }
   }
 
-  playMusicUrl(url: string): void {
-    this.wavesurfer.load(url).then();
-    let array: any[] = [];
-    array.push(url);
+  timeMusic: any;
+  arrayControl: any[] = [];
+  index!: any;
 
+  playMusicUrl(url: string): void {
+    if(!this.arrayControl.includes(url)) {
+      this.index = this.idMusicCurrent - 1;
+      this.arrayControl.push(url, this.idMusicCurrent);
+      this.wavesurfer.load(url);
+    }
+    console.log(this.index)
+    console.log(this.arrayControl);
+
+    // pega o tempo do audio tocado no player;
+    this.wavesurfer.on('timeupdate', (currentTime: any) => {
+      this.timeMusic = this.formatTime(currentTime);
+    });
+  }
+
+  mutedTrack1() {
+
+  }
+  mutedTrack2() {
+
+  }
+  mutedTrack3() {
+
+  }
+  mutedTrack4() {
+
+  }
+
+  formatTime = (seconds: any) => {
+    const minutes = Math.floor(seconds / 60);
+    const secondsRemainder = Math.round(seconds) % 60;
+    const paddedSeconds = `0${secondsRemainder}`.slice(-2);
+    return `${minutes}:${paddedSeconds}`
+  }
+
+  idMusicCurrent!: number;
+  idMusicPlay(id: number) {
+    console.log(id);
+    this.idMusicCurrent = id;
   }
 
   playMusic(musicId: any) {
@@ -292,6 +336,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
 
   playPause(): void {
     !this.isPlaying2 ? this.playMusic(this.musicId) : this.pauseMusic(this.musicId);
+    // console.log(document.querySelector('button.svg.play'))
+    // isso pode servir pra controlar o play em musicas caso a criacao de outro servico nao de certo, usando o id de cada musica por botao ou entao data-key.
+    // let btn: any = document.querySelector('button.svg.play');
+    // btn!.click();
+    // this.playerService.tooglePlayPause();
   }
 
   trackCustomOpen() {

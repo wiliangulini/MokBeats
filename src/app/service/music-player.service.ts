@@ -12,12 +12,19 @@ export class MusicPlayerService {
   private currentMusicUrlSubject = new BehaviorSubject<string>('');
   currentMusicUrl$ = this.currentMusicUrlSubject.asObservable();
 
+  private currentMusicIDSubject = new BehaviorSubject<number>(-1);
+  currentMusicID$ = this.currentMusicIDSubject.asObservable();
+
   onPlayPause(action: any, musicId: any) {
     this.playPauseSubject.next({action, musicId});
   }
 
   setCurrentMusicUrl(musicUrl: any) {
     this.currentMusicUrlSubject.next(musicUrl);
+  }
+
+  setCurrentMusicID(idMusic: any) {
+    this.currentMusicIDSubject.next(idMusic);
   }
 
 }

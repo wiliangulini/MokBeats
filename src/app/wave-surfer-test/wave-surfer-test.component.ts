@@ -14,7 +14,7 @@ export class WaveSurferTestComponent implements OnInit, AfterViewInit ,OnDestroy
   @Input() idContainer!: any;
   @Output() songFinished = new EventEmitter<void>();
   private subscription!: Subscription;
-
+  isPlaying!: boolean;
   wavesurfer!: WaveSurfer;
 
   constructor(private musicPlayerService: MusicPlayerService) {}
@@ -52,6 +52,8 @@ export class WaveSurferTestComponent implements OnInit, AfterViewInit ,OnDestroy
     });
 
     this.wavesurfer.load(this.music.url);
+
+    // this.wavesurfer.setMuted(true);
 
     this.wavesurfer.on('finish', () => {
       this.songFinished.emit();

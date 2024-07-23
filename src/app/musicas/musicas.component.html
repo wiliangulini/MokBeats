@@ -1,4 +1,7 @@
-<main id="article" [formGroup]="formG">
+<div class="loading d-flex justify-content-center align-items-center" *ngIf="isLoading">
+  <h1>CARREGANDO</h1>
+</div>
+<main *ngIf="!isLoading" id="article" [formGroup]="formG">
   <app-filter></app-filter>
   <article class="one pb-5">
     <div class="container-fluid w-100 p-0">

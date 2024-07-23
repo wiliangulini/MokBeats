@@ -7,7 +7,7 @@
     </div>
     <div class="row player">
       <div class="div controls musicArrows col-1">
-        <span class="material-icons prev10sec">keyboard_double_arrow_left</span>
+        <span class="material-icons prev10sec" title="Voltar 10 seg.">keyboard_double_arrow_left</span>
         <span id="backward" title="Música Anterior" class="material-icons prev">
           skip_previous
         </span>
@@ -22,7 +22,7 @@
         <span id="forward" title="Próxima Música" class="material-icons next">
           skip_next
         </span>
-        <span class="material-icons next10sec">keyboard_double_arrow_right</span>
+        <span class="material-icons next10sec" title="Avançar 10 seg.">keyboard_double_arrow_right</span>
       </div>
       <div class="div controls artistName col-2">
         <h3 class="music mb-0">With the Gratest Will</h3>
@@ -51,7 +51,7 @@
       </div>
       <div class="div controls icons d-flex flex-row justify-content-center align-items-center col-2">
         <div class="volbox">
-          <input id="volumeSlider" (change)="valueInitial($event)" className="volume-slider" type="range" name="volume-slider" min="0" max="100" value="75" />
+          <input id="volumeSlider" (change)="valueInitial($event)" type="range" name="volume-slider" min="0" max="100" value="75" />
         </div>
         <button id="volumeOn" type="button">
           <span class="material-icons muteOn d-flex volume_up">volume_up</span>
@@ -158,14 +158,29 @@
         >
           <p class="class text-uppercase m-0 font-weight-bold">licença</p>
         </button>
-        <button type="button" (click)="trackCustomOpen()" class="font-weight-bold text-uppercase text-center">track custom</button>
+        <button type="button" (click)="trackCustomOpen()" class="font-weight-bold text-uppercase text-center">
+          track custom
+          <span class="material-icons iconTrackCustom">keyboard_arrow_down</span>
+        </button>
       </div>
     </div>
     <div class="row justify-content-center align-items-center" style="display: none;" id="trackCustom">
-      <div class="row current" id="trackCustom1"></div>
-      <div class="row" id="trackCustom2"></div>
-      <div class="row" id="trackCustom3"></div>
-      <div class="row" id="trackCustom4"></div>
+      <div class="row col-12 p-0">
+        <div class="row col-1" (click)="mutedTrack1()"><span class="material-icons">volume_up</span></div>
+        <div class="row col-11 current" id="trackCustom1"></div>
+      </div>
+      <div class="row col-12 p-0">
+        <div class="row col-1" (click)="mutedTrack2()"><span class="material-icons">volume_up</span></div>
+        <div class="row col-11 current" id="trackCustom2"></div>
+      </div>
+      <div class="row col-12 p-0">
+        <div class="row col-1" (click)="mutedTrack3()"><span class="material-icons">volume_up</span></div>
+        <div class="row col-11 current" id="trackCustom3"></div>
+      </div>
+      <div class="row col-12 p-0">
+        <div class="row col-1" (click)="mutedTrack4()"><span class="material-icons">volume_up</span></div>
+        <div class="row col-11 current" id="trackCustom4"></div>
+      </div>
     </div>
   </div>
 </section>

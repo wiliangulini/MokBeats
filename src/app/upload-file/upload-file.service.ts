@@ -4,18 +4,6 @@ import { Observable } from 'rxjs';
 import {CrudService} from "../service/crud-service";
 import {environment} from "../../environments/environment";
 
-// export class Course {
-//   id?: number;
-//   name?: string;
-//   releaseDate?: string;
-//   description?: string;
-//   duration?: number;
-//   code?: string;
-//   rating?: number;
-//   price?: number;
-//   imageUrl?: string;
-// }
-
 export class Musicas {
   id?: number;
   nome_musica?: string;

@@ -18,14 +18,16 @@
 #trackCustom2,
 #trackCustom3,
 #trackCustom4 {
-  border-bottom: 1px solid #DDD;
+  //border-bottom: 1px solid #DDD;
   background: rgb(20, 20, 20);
   height: 55px;
+  padding: 0;
   width: 100%;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
-#trackCustom1.current {
+.row.current {
   background: rgb(73, 73, 73);
 }
 #trackCustom1:hover,
