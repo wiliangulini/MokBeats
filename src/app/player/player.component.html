@@ -165,21 +165,53 @@
       </div>
     </div>
     <div class="row justify-content-center align-items-center" style="display: none;" id="trackCustom">
-      <div class="row col-12 p-0">
-        <div class="row col-1" (click)="mutedTrack1()"><span class="material-icons">volume_up</span></div>
-        <div class="row col-11 current" id="trackCustom1"></div>
+      <div class="row col-12 justify-content-between align-items-center p-0">
+        <div class="row icon">
+          <div class="volbox1">
+          <input id="mutedTrack1" (change)="valueInitial($event)" type="range" name="volume-slider" min="0" max="100" value="75" />
+        </div>
+        <button id="volumeOnTrackCustom1" type="button">
+          <span class="material-icons muteOn1 d-flex volume_up">volume_up</span>
+          <span class="material-icons muteOff1 d-none">volume_off</span>
+        </button>
+        </div>
+        <div class="row track col-11" id="trackCustom1"></div>
       </div>
-      <div class="row col-12 p-0">
-        <div class="row col-1" (click)="mutedTrack2()"><span class="material-icons">volume_up</span></div>
-        <div class="row col-11 current" id="trackCustom2"></div>
+      <div class="row col-12 justify-content-between align-items-center p-0">
+        <div class="row icon">
+          <div class="volbox2">
+          <input id="mutedTrack2" (change)="valueInitial($event)" type="range" name="volume-slider" min="0" max="100" value="75" />
+        </div>
+        <button id="volumeOnTrackCustom2" type="button">
+          <span class="material-icons muteOn2 d-flex volume_up">volume_up</span>
+          <span class="material-icons muteOff2 d-none">volume_off</span>
+        </button>
+        </div>
+        <div class="row track col-11" id="trackCustom2"></div>
       </div>
-      <div class="row col-12 p-0">
-        <div class="row col-1" (click)="mutedTrack3()"><span class="material-icons">volume_up</span></div>
-        <div class="row col-11 current" id="trackCustom3"></div>
+      <div class="row col-12 justify-content-between align-items-center p-0">
+        <div class="row icon">
+          <div class="volbox3">
+          <input id="mutedTrack3" (change)="valueInitial($event)" type="range" name="volume-slider" min="0" max="100" value="75" />
+        </div>
+        <button id="volumeOnTrackCustom3" type="button">
+          <span class="material-icons muteOn3 d-flex volume_up">volume_up</span>
+          <span class="material-icons muteOff3 d-none">volume_off</span>
+        </button>
+        </div>
+        <div class="row track col-11" id="trackCustom3"></div>
       </div>
-      <div class="row col-12 p-0">
-        <div class="row col-1" (click)="mutedTrack4()"><span class="material-icons">volume_up</span></div>
-        <div class="row col-11 current" id="trackCustom4"></div>
+      <div class="row col-12 justify-content-between align-items-center p-0">
+        <div class="row icon">
+          <div class="volbox4">
+          <input id="mutedTrack4" (change)="valueInitial($event)" type="range" name="volume-slider" min="0" max="100" value="75" />
+        </div>
+        <button id="volumeOnTrackCustom4" type="button">
+          <span class="material-icons muteOn4 d-flex volume_up">volume_up</span>
+          <span class="material-icons muteOff4 d-none">volume_off</span>
+        </button>
+        </div>
+        <div class="row track col-11" id="trackCustom4"></div>
       </div>
     </div>
   </div>

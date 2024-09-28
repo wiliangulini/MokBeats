@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Subject} from "rxjs";
+import WaveSurfer from "wavesurfer.js";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,12 @@ export class MusicPlayerService {
 
   private currentMusicIDSubject = new BehaviorSubject<number>(-1);
   currentMusicID$ = this.currentMusicIDSubject.asObservable();
+
+  // private wavesurfer!: WaveSurfer;
+  //
+  // playPause(): void {
+  //   this.wavesurfer?.playPause();
+  // }
 
   onPlayPause(action: any, musicId: any) {
     this.playPauseSubject.next({action, musicId});

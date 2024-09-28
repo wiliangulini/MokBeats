@@ -15,13 +15,18 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
 
   arrMusica: Musica[] = [];
   volumeInitial: any;
+  volumeInitial1: any;
+  volumeInitial2: any;
+  volumeInitial3: any;
+  volumeInitial4: any;
   timeSkip: any;
   track: any;
   currentMusicUrl: string = '';
   isPlaying: boolean = false;
   isPlaying2: boolean = false;
   musicId: any;
-
+  idMusicCurrent!: number;
+  arrayControl: any[] = [];
   private subscription?: Subscription;
   wavesurfer!: WaveSurfer;
   trackCustom!: WaveSurfer;
@@ -37,10 +42,12 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
     this.subscription = this.musicPlayerService.playPauseAction$.subscribe(({ action, musicId }) => {
       console.log(action, musicId);
       this.musicId = musicId;
-      if (action === 'play') {
-        this.playMusic(musicId);
-      } else if (action === 'pause') {
-        this.pauseMusic(musicId);
+      if(this.currentMusicUrl.length > 0) {
+        if (action === 'play') {
+          this.playMusic(musicId);
+        } else if (action === 'pause') {
+          this.pauseMusic(musicId);
+        }
       }
     });
     this.musicPlayerService.currentMusicUrl$.subscribe((url) => {
@@ -88,6 +95,27 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
         }),
       ],
     });
+
+    const mutedTrack1: any = document.getElementById('mutedTrack1');
+    const volumeOnTrackCustom1: any = document.getElementById('volumeOnTrackCustom1');
+    const muteOn1: any = document.querySelector('.muteOn1');
+    const muteOff1: any = document.querySelector('.muteOff1');
+    this.volumeInitial1 = document.querySelector('#mutedTrack1')!.getAttribute('value');
+    const mutedTrack2: any = document.getElementById('mutedTrack2');
+    const volumeOnTrackCustom2: any = document.getElementById('volumeOnTrackCustom2');
+    const muteOn2: any = document.querySelector('.muteOn2');
+    const muteOff2: any = document.querySelector('.muteOff2');
+    this.volumeInitial2 = document.querySelector('#mutedTrack2')!.getAttribute('value');
+    const mutedTrack3: any = document.getElementById('mutedTrack3');
+    const volumeOnTrackCustom3: any = document.getElementById('volumeOnTrackCustom3');
+    const muteOn3: any = document.querySelector('.muteOn3');
+    const muteOff3: any = document.querySelector('.muteOff3');
+    this.volumeInitial3 = document.querySelector('#mutedTrack3')!.getAttribute('value');
+    const mutedTrack4: any = document.getElementById('mutedTrack4');
+    const volumeOnTrackCustom4: any = document.getElementById('volumeOnTrackCustom4');
+    const muteOn4: any = document.querySelector('.muteOn4');
+    const muteOff4: any = document.querySelector('.muteOff4');
+    this.volumeInitial4 = document.querySelector('#mutedTrack4')!.getAttribute('value');
 
     this.trackCustom = WaveSurfer.create({
       container: '#trackCustom1',
@@ -167,8 +195,206 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
     });
 
     this.trackCustom.on('ready', () => {
+      if(mutedTrack1) {
+        mutedTrack1.addEventListener('input', (e: any) => {
+          let vol: any = e.target.value;
+          this.trackCustom.setVolume(vol / 100);
+          if(vol == '0') {
+            this.muteOffAdd(muteOn1, muteOff1);
+          } else {
+            this.muteOnAdd(muteOn1, muteOff1);
+          }
+        });
+        volumeOnTrackCustom1.addEventListener('click', (e: any) => {
+          if(muteOn1.classList.contains('d-flex')) {
+            this.trackCustom.setMuted(true);
+            this.muteOffAdd(muteOn1, muteOff1);
+            mutedTrack1.value = '0';
+          } else if (muteOff1.classList.contains('d-flex')) {
+            this.trackCustom.setMuted(false);
+            this.muteOnAdd(muteOn1, muteOff1);
+            mutedTrack1.value = this.volumeInitial;
+          }
+        });
+      }
+      let volbox1: any = document.querySelector('.volbox1');
+      let volboxAdd1 = () => {
+        volbox1.classList.add('d-flex');
+        mutedTrack1.classList.add('d-flex');
+      }
+      let volboxRemove1 = () => {
+        volbox1.classList.remove('d-flex');
+        mutedTrack1.classList.remove('d-flex');
+      }
+      volumeOnTrackCustom1.addEventListener('mouseover', () => {
+        volboxAdd1();
+        volbox1.addEventListener('mouseover', () => {
+          volboxAdd1();
+        })
+        mutedTrack1.addEventListener('mouseover', () => {
+          volboxAdd1();
+        })
+      })
+      volumeOnTrackCustom1.addEventListener('mouseout', () => {
+        volboxRemove1();
+        volbox1.addEventListener('mouseout', () => {
+          volboxRemove1();
+        })
+        mutedTrack1.addEventListener('mouseout', () => {
+          volboxRemove1();
+        })
+      })
 
-    })
+      if(mutedTrack2) {
+        mutedTrack2.addEventListener('input', (e: any) => {
+          let vol: any = e.target.value;
+          this.trackCustom.setVolume(vol / 100);
+          if(vol == '0') {
+            this.muteOffAdd(muteOn2, muteOff2);
+          } else {
+            this.muteOnAdd(muteOn2, muteOff2);
+          }
+        });
+        volumeOnTrackCustom2.addEventListener('click', (e: any) => {
+          if(muteOn2.classList.contains('d-flex')) {
+            this.trackCustom.setMuted(true);
+            this.muteOffAdd(muteOn2, muteOff2);
+            mutedTrack2.value = '0';
+          } else if (muteOff2.classList.contains('d-flex')) {
+            this.trackCustom.setMuted(false);
+            this.muteOnAdd(muteOn2, muteOff2);
+            mutedTrack2.value = this.volumeInitial;
+          }
+        });
+      }
+      let volbox2: any = document.querySelector('.volbox2');
+      let volboxAdd2 = () => {
+        volbox2.classList.add('d-flex');
+        mutedTrack2.classList.add('d-flex');
+      }
+      let volboxRemove2 = () => {
+        volbox2.classList.remove('d-flex');
+        mutedTrack2.classList.remove('d-flex');
+      }
+      volumeOnTrackCustom2.addEventListener('mouseover', () => {
+        volboxAdd2();
+        volbox2.addEventListener('mouseover', () => {
+          volboxAdd2();
+        })
+        mutedTrack2.addEventListener('mouseover', () => {
+          volboxAdd2();
+        })
+      })
+      volumeOnTrackCustom2.addEventListener('mouseout', () => {
+        volboxRemove2();
+        volbox2.addEventListener('mouseout', () => {
+          volboxRemove2();
+        })
+        mutedTrack2.addEventListener('mouseout', () => {
+          volboxRemove2();
+        })
+      })
+
+      if(mutedTrack3) {
+        mutedTrack3.addEventListener('input', (e: any) => {
+          let vol: any = e.target.value;
+          this.trackCustom.setVolume(vol / 100);
+          if(vol == '0') {
+            this.muteOffAdd(muteOn3, muteOff3);
+          } else {
+            this.muteOnAdd(muteOn3, muteOff3);
+          }
+        });
+        volumeOnTrackCustom3.addEventListener('click', (e: any) => {
+          if(muteOn3.classList.contains('d-flex')) {
+            this.trackCustom.setMuted(true);
+            this.muteOffAdd(muteOn3, muteOff3);
+            mutedTrack3.value = '0';
+          } else if (muteOff3.classList.contains('d-flex')) {
+            this.trackCustom.setMuted(false);
+            this.muteOnAdd(muteOn3, muteOff3);
+            mutedTrack3.value = this.volumeInitial;
+          }
+        });
+      }
+      let volbox3: any = document.querySelector('.volbox3');
+      let volboxAdd3 = () => {
+        volbox3.classList.add('d-flex');
+        mutedTrack3.classList.add('d-flex');
+      }
+      let volboxRemove3 = () => {
+        volbox3.classList.remove('d-flex');
+        mutedTrack3.classList.remove('d-flex');
+      }
+      volumeOnTrackCustom3.addEventListener('mouseover', () => {
+        volboxAdd3();
+        volbox3.addEventListener('mouseover', () => {
+          volboxAdd3();
+        })
+        mutedTrack3.addEventListener('mouseover', () => {
+          volboxAdd3();
+        })
+      })
+      volumeOnTrackCustom3.addEventListener('mouseout', () => {
+        volboxRemove3();
+        volbox3.addEventListener('mouseout', () => {
+          volboxRemove3();
+        })
+        mutedTrack3.addEventListener('mouseout', () => {
+          volboxRemove3();
+        })
+      })
+
+      if(mutedTrack4) {
+        mutedTrack4.addEventListener('input', (e: any) => {
+          let vol: any = e.target.value;
+          this.trackCustom.setVolume(vol / 100);
+          if(vol == '0') {
+            this.muteOffAdd(muteOn4, muteOff4);
+          } else {
+            this.muteOnAdd(muteOn4, muteOff4);
+          }
+        });
+        volumeOnTrackCustom3.addEventListener('click', (e: any) => {
+          if(muteOn4.classList.contains('d-flex')) {
+            this.trackCustom.setMuted(true);
+            this.muteOffAdd(muteOn4, muteOff4);
+            mutedTrack4.value = '0';
+          } else if (muteOff4.classList.contains('d-flex')) {
+            this.trackCustom.setMuted(false);
+            this.muteOnAdd(muteOn4, muteOff4);
+            mutedTrack4.value = this.volumeInitial;
+          }
+        });
+      }
+      let volbox4: any = document.querySelector('.volbox4');
+      let volboxAdd4 = () => {
+        volbox4.classList.add('d-flex');
+        mutedTrack4.classList.add('d-flex');
+      }
+      let volboxRemove4 = () => {
+        volbox4.classList.remove('d-flex');
+        mutedTrack4.classList.remove('d-flex');
+      }
+      volumeOnTrackCustom4.addEventListener('mouseover', () => {
+        volboxAdd4();
+        volbox4.addEventListener('mouseover', () => {
+          volboxAdd4();
+        })
+        mutedTrack4.addEventListener('mouseover', () => {
+          volboxAdd4();
+        })
+      })
+      volumeOnTrackCustom4.addEventListener('mouseout', () => {
+        volboxRemove4();
+        volbox4.addEventListener('mouseout', () => {
+          volboxRemove4();
+        })
+        mutedTrack4.addEventListener('mouseout', () => {
+          volboxRemove4();
+        })
+      })
+    });
 
     const prev10: any = document.querySelector('.prev10sec');
     const next10: any = document.querySelector('.next10sec');
@@ -277,48 +503,18 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
     }
   }
 
-  timeMusic: any;
-  arrayControl: any[] = [];
-  index!: any;
-
   playMusicUrl(url: string): void {
     if(!this.arrayControl.includes(url)) {
-      this.index = this.idMusicCurrent - 1;
       this.arrayControl.push(url, this.idMusicCurrent);
       this.wavesurfer.load(url);
+      this.wavesurfer.on('finish', () => {
+        this.wavesurfer.setTime(0);
+        this.playMusic(this.idMusicCurrent)
+      })
     }
-    console.log(this.index)
-    console.log(this.arrayControl);
-
-    // pega o tempo do audio tocado no player;
-    this.wavesurfer.on('timeupdate', (currentTime: any) => {
-      this.timeMusic = this.formatTime(currentTime);
-    });
   }
 
-  mutedTrack1() {
-
-  }
-  mutedTrack2() {
-
-  }
-  mutedTrack3() {
-
-  }
-  mutedTrack4() {
-
-  }
-
-  formatTime = (seconds: any) => {
-    const minutes = Math.floor(seconds / 60);
-    const secondsRemainder = Math.round(seconds) % 60;
-    const paddedSeconds = `0${secondsRemainder}`.slice(-2);
-    return `${minutes}:${paddedSeconds}`
-  }
-
-  idMusicCurrent!: number;
   idMusicPlay(id: number) {
-    console.log(id);
     this.idMusicCurrent = id;
   }
 
@@ -338,9 +534,13 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
     !this.isPlaying2 ? this.playMusic(this.musicId) : this.pauseMusic(this.musicId);
     // console.log(document.querySelector('button.svg.play'))
     // isso pode servir pra controlar o play em musicas caso a criacao de outro servico nao de certo, usando o id de cada musica por botao ou entao data-key.
-    // let btn: any = document.querySelector('button.svg.play');
-    // btn!.click();
-    // this.playerService.tooglePlayPause();
+    let btn: any = document.querySelectorAll('button.svg.play');
+    btn.forEach((btn: any) => {
+      if(btn.getAttribute('data-key') == this.idMusicCurrent.toString()) {
+        btn.click();
+        this.playerService.tooglePlayPause();
+      }
+    })
   }
 
   trackCustomOpen() {

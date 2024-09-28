@@ -21,6 +21,7 @@ import {PlayerService} from "../player/player.service";
 import {MusicPlayerService} from "../service/music-player.service";
 import {WaveSurferTestComponent} from "../wave-surfer-test/wave-surfer-test.component";
 import {AudioService} from "../service/audio.service";
+import WaveSurfer from "wavesurfer.js";
 
 @Component({
   selector: 'app-musicas',
@@ -92,7 +93,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   arrMusica: Musica[] = [];
   btnPlay: any;
   btnTrue: boolean = false;
-
+  wavesurfer!: WaveSurfer;
   @Output('ngModelChange') update: any = new EventEmitter();
 
   constructor(
@@ -263,6 +264,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   playNextTrack() {
     const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
     if (currentWaveSurfer) {
+      console.log(currentWaveSurfer)
       this.playMusic = currentWaveSurfer.music;
       this.musicPlayerService.setCurrentMusicID(this.playMusic.id);
       this.musicPlayerService.setCurrentMusicUrl(this.playMusic.url);
@@ -297,7 +299,14 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     this.router.navigate(['/pagina-artista'], {queryParams: {nome_produtor: data.nome_produtor}});
   }
 
+  formatTime = (seconds: any) => {
+    const minutes = Math.floor(seconds / 60);
+    const secondsRemainder = Math.round(seconds) % 60;
+    const paddedSeconds = `0${secondsRemainder}`.slice(-2);
+    return `${minutes}:${paddedSeconds}`
+  }
 
+  dur!: any;
   msToMinute(ms: any) {
     let minutes: any = Math.floor(ms / 60000);
     let seconds: any = ((ms % 60000) / 1000).toFixed(0);
@@ -333,15 +342,19 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     this.musicService.addPlayList(music);
   }
 
-  copiarLink(i: number): void { this.musicService.copiarLink(i); }
+  copiarLink(i: number): void {
+    this.musicService.copiarLink(i);
+  }
 
   // função pra pegar o tempo da musica pela url.
-  fetchAudioDuration() {
-    this.audioService.getAudioduration(this.audioUrl)
-      .then(duration => this.durationUrl = duration)
-      .catch(error => console.log(error));
-
-  }
+  // fetchAudioDuration() {
+  //   this.audioService.getAudioduration("../../assets/audios/MokBeats_Future_Forest_(FULL).mp3")
+  //     .then(duration => {
+  //       this.durationUrl = duration
+  //       console.log(this.durationUrl)
+  //     }).catch(error => console.log(error));
+  //
+  // }
 
   baixarAmostra(i: number): void {
     this.authService.verificaLogin();

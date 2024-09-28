@@ -5,7 +5,6 @@
   75% {opacity: 0.75;}
   100% {opacity: 1;}
 }
-
 #trackCustom {
   background: #000;
   position: fixed;
@@ -21,20 +20,37 @@
   //border-bottom: 1px solid #DDD;
   background: rgb(20, 20, 20);
   height: 55px;
-  padding: 0;
+  padding-left: 0 !important;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.row.current {
-  background: rgb(73, 73, 73);
 }
 #trackCustom1:hover,
 #trackCustom2:hover,
 #trackCustom3:hover,
 #trackCustom4:hover {
   background: rgb(51, 51, 51);
+}
+.track.col-11 {
+  flex: 0 0 98%;
+  max-width: 98%;
+}
+.row.icon button {
+  background: transparent;
+  border: 0;
+  height: 40px;
+  cursor: pointer;
+}
+.row.icon button span {
+  color: white;
+  cursor: pointer;
+}
+.row.icon {
+  width: 3%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 section .container-fluid .row.audioCanva,
 section .container-fluid .row.player {
@@ -212,8 +228,13 @@ span.material-icons.prev10sec {
 button.btn.btn-icons.mobile {
   display: none !important;
 }
+.volbox1,
+.volbox2,
+.volbox3,
+.volbox4,
 .volbox {
   display: none;
+  cursor: pointer;
   transition: all 0.5s linear;
   transform: rotate(270deg);
   width: 160px;
@@ -222,11 +243,29 @@ button.btn.btn-icons.mobile {
   align-items: center;
   border: 1px solid #FFF;
   border-radius: 8px;
-  right: 48.5%;
-  top: -88%;
   background-color: #000;
   box-shadow: 0 0 10px 0 #DDD;
   position: absolute;
+}
+.volbox {
+  right: 48.5%;
+  top: -88%;
+}
+.volbox1 {
+  top: -152%;
+  left: -2.9%;
+}
+.volbox2 {
+  top: -147%;
+  left: -2.9%;
+}
+.volbox3 {
+  top: -150%;
+  left: -2.9%;
+}
+.volbox4 {
+  top: -149%;
+  left: -2.9%;
 }
 
 @media only screen and (min-width: 320px) and (max-width: 768px) {
