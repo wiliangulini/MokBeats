@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row flex-column align-items-center justify-content-center">
       <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 title">
-        <h1 class="font-weight-bold">Aqui na MokBeats você encontra música e SFX que causam impacto</h1>
+        <h1 class="font-weight-bold">Aqui na MokBeats você encontra músicas e SFX que causam impacto</h1>
         <h3>Acesse músicas e efeitos sonoros de alta qualidade e com curadoria especializada que você não encontrará em
           nenhum outro lugar.</h3>
       </div>
@@ -19,7 +19,7 @@
               </select>
             </div>
             <input class="form-control mr-sm-2" [(ngModel)]="mokbeats.search" type="search" formControlName="search"
-              placeholder="Pesquisar" aria-label="Search">
+              placeholder="Pesquise aqui" aria-label="Search">
             <button class="btn btn-warning my-2 my-sm-0" type="submit">Pesquisar</button>
           </div>
         </form>
@@ -31,9 +31,9 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column align-items-center justify-content-center">
-        <h2 class="text-center">Ouça nossos especialistas em música</h2>
+        <h2 class="text-center">Ouça nossos especialistas em músicas</h2>
         <h3 class="text-center">Todas as nossas faixas isentas de royalties são escolhidas a dedo por especialistas da
-          indústria musical. ouça algumas de suas faixas favoritas</h3>
+          indústria musical. Ouça algumas de suas faixas favoritas</h3>
       </div>
     </div>
     <div class="row mt-5" *ngIf="primeirasCincoMusicas.length > 0">
@@ -86,7 +86,7 @@
       </div>
     </div>
     <div class="row mt-5" *ngIf="primeirasCincoMusicas.length === 0">
-      <p>Nenhuma música encontrada ou carregando...</p>
+      <p>Nenhuma músicas encontrada ou carregando...</p>
     </div>
     <div class="row mt-3 justify-content-center align-items-center button">
       <a (click)="routeNav('musicas')" class="btn btn-warning w-25 mb-3 mt-5">Mostrar todas as tracks</a>
