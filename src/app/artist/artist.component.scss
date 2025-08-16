@@ -91,26 +91,66 @@ article.one .container-fluid #cf .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d
 article.one .container-fluid #cf .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.flex-column.align-items-start.justify-content-center {
   height: 60vh;
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu.show {
-  display: flex !important;
-  flex-direction: column;
+// article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu.show {
+//   display: flex !important;
+//   flex-direction: column;
+// }
+// article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown button.bttn {
+//   background: transparent;
+//   border-radius: 999px;
+//   border: 2px solid rgba(255,255,255,.2);
+//   color: #FFF;
+//   padding: 2.5% 18%;
+//   position: relative;
+//   right: 46%;
+// }
+// article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu {
+//   background: #FFF !important;
+// }
+// article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu .dropdown-item {
+//   color: #585858;
+//   cursor: pointer;
+// }
+
+.dropdown-menu.show,
+.dropdown-menu {
+  background-color: #333; /* Cor de fundo do menu */
+  border: 1px solid #555; /* Borda sutil */
+  border-radius: 5px; /* Cantos arredondados */
+  padding: 5px 0; /* Espaçamento interno */
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown button.bttn {
-  background: transparent;
-  border-radius: 999px;
-  border: 2px solid rgba(255,255,255,.2);
-  color: #FFF;
-  padding: 2.5% 18%;
-  position: relative;
-  right: 46%;
+
+.dropdown-item {
+  color: #b4b4b5; /* Cor do texto dos itens */
+  padding: 10px 15px; /* Espaçamento interno dos itens */
+  transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu {
-  background: #FFF !important;
+
+.dropdown-item:hover {
+  background-color: #555; /* Cor de fundo ao passar o mouse */
+  color: #FFF; /* Cor do texto ao passar o mouse */
 }
-article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu .dropdown-item {
-  color: #585858;
-  cursor: pointer;
+
+.dropdown-item:not(:last-child) {
+  border-bottom: 1px solid #444; /* Divisor entre os itens */
 }
+
+.bttn.dropdown-toggle {
+  background-color: #333; /* Cor de fundo do botão */
+  color: #b4b4b5; /* Cor do texto do botão */
+  border: 1px solid #555; /* Borda do botão */
+  border-radius: 999px; /* Cantos arredondados para o botão */
+  padding: 10px 20px; /* Espaçamento interno do botão */
+  transition: background-color 0.3s ease, border-color 0.3s ease; /* Transição suave */
+}
+
+.bttn.dropdown-toggle:hover,
+.bttn.dropdown-toggle:focus {
+  background-color: #555; /* Cor de fundo ao passar o mouse/focar */
+  border-color: #777; /* Cor da borda ao passar o mouse/focar */
+  color: #FFF; /* Cor do texto ao passar o mouse/focar */
+}
+
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao button.button {
   border: 2px solid rgba(255,255,255,.2);
   border-radius: 999px;

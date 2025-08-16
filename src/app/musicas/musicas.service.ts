@@ -1,14 +1,14 @@
-import {Injectable} from '@angular/core';
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {AddPlaylistModalComponent} from "../add-playlist-modal/add-playlist-modal.component";
-import {DownloadAmostraComponent} from "../download-amostra/download-amostra.component";
-import {AuthService} from "../login/auth.service";
-import {FavoritosService} from "../favoritos/favoritos.service";
-import {environment} from "../../environments/environment";
-import {HttpClient} from "@angular/common/http";
-import {CarrinhoService} from "../service/carrinho.service";
-import {CrudService} from "../service/crud-service";
-import {Observable} from "rxjs";
+import { Injectable } from '@angular/core';
+import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { AddPlaylistModalComponent } from "../add-playlist-modal/add-playlist-modal.component";
+import { DownloadAmostraComponent } from "../download-amostra/download-amostra.component";
+import { AuthService } from "../login/auth.service";
+import { FavoritosService } from "../favoritos/favoritos.service";
+import { environment } from "../../environments/environment";
+import { HttpClient } from "@angular/common/http";
+import { CarrinhoService } from "../service/carrinho.service";
+import { CrudService } from "../service/crud-service";
+import { Observable } from "rxjs";
 
 export type Musica = {
   id?: number;
@@ -59,7 +59,7 @@ export class MusicasService extends CrudService<Musica> {
         "K-Pop",
         "México",
         "Rússia",
-        "Spain",
+        "Espanha",
         "Suécia",
         "Índia",
       ],
@@ -88,7 +88,7 @@ export class MusicasService extends CrudService<Musica> {
         "Dance",
         "Dance Pop",
         "Deep House",
-        "DnB",
+        "Drum and Bass (DnB)",
         "Dubstep",
         "EDM",
         "Future House",
@@ -108,9 +108,9 @@ export class MusicasService extends CrudService<Musica> {
       "Datas comemorativas": [
         "Dia da Independência",
         "Dia das Bruxas",
-        "NYE",
+        "Ano Novo",
         "Natal",
-        "Patriótica/presidencial",
+        "Patriótica/Presidencial",
       ],
       "Eletrônica": [
         "ASMR",
@@ -137,18 +137,13 @@ export class MusicasService extends CrudService<Musica> {
       "Hip Hop": [
         "Crunk",
         "Gangsta",
-        "Hick",
-        "Hop",
-        "Hip",
-        "hop",
-        "old",
-        "school",
+        "Hick Hop",
+        "Hip hop old school",
         "Hyphy",
         "Rap",
-        "Rap",
-        "emo",
+        "Rap emo",
         "Trap",
-        "Twerk,"
+        "Twerk"
       ],
       "Infantil/Crianças": [
         "Animada",
@@ -156,24 +151,17 @@ export class MusicasService extends CrudService<Musica> {
         "Suave/Canção de ninar",
       ],
       "Jazz": [
-        "Acid",
-        "jazz",
-        "Balada",
-        "jazz",
+        "Acid jazz",
+        "Balada jazz",
         "Dixieland",
         "Exótica",
         "Fusion",
-        "Jazz",
-        "cigano",
-        "Jazz",
-        "latino",
-        "Jazz",
-        "moderno",
-        "Lounge",
-        "jazz",
+        "Jazz cigano",
+        "Jazz latino",
+        "Jazz moderno",
+        "Lounge jazz",
         "Ragtime",
-        "Smooth",
-        "jazz",
+        "Smooth jazz",
         "Swing",
       ],
       "Jogos": [
@@ -187,8 +175,7 @@ export class MusicasService extends CrudService<Musica> {
       ],
       "Latina": [
         "Bachata",
-        "Bossa",
-        "Nova",
+        "Bossa Nova",
         "Brasileira/Samba",
         "Conjunto",
         "Cubana/Salsa",
@@ -196,94 +183,77 @@ export class MusicasService extends CrudService<Musica> {
         "Espanhola/Flamenca",
         "Jarocho",
         "Mariachi",
-        "Norteno",
+        "Norteño",
         "Peruana",
         "Reggaeton",
-        "Rock",
-        "latino",
+        "Rock latino",
         "Rumba",
         "Tango",
         "Tex-Mex",
       ],
       "Mundo": [
-        " Africana",
-        " Afro-cubana",
-        " Asiática",
-        " Balinesa",
-        " Balkan",
-        " Bollywood",
-        " Cajun",
-        " Calipso",
-        " Celta",
-        " Chinês",
-        " Coreano",
-        " Dinamarca",
-        " Estilo",
-        " gamelão",
-        " Etíope",
-        " Europeia",
-        " Germany",
-        " Gnawa",
-        " Grega",
-        " Havaiana",
-        " Indiana",
-        " Indígena",
-        " norte-americana",
-        " Ireland",
-        " Italiana",
-        " Japonesa",
-        " Klezmer",
-        " Mediterrânea",
-        " Mongol",
-        " Norwegian",
-        " Polca",
-        " Polinésia",
-        " Portugal",
-        " Scandinavian",
-        " Tailandesa",
-        " Vietnamita",
-        " do",
-        " Oriente",
-        " Médio",
+        "Africana",
+        "Afro-cubana",
+        "Asiática",
+        "Balinesa",
+        "Balcânica",
+        "Bollywood",
+        "Cajun",
+        "Calipso",
+        "Celta",
+        "Chinesa",
+        "Coreana",
+        "Dinamarquesa",
+        "Estilo gamelão",
+        "Etíope",
+        "Europeia",
+        "Alemã",
+        "Gnawa",
+        "Grega",
+        "Havaiana",
+        "Indiana",
+        "Indígena norte-americana",
+        "Irlandesa",
+        "Italiana",
+        "Japonesa",
+        "Klezmer",
+        "Mediterrânea",
+        "Mongol",
+        "Norueguesa",
+        "Polca",
+        "Polinésia",
+        "Portuguesa",
+        "Escandinava",
+        "Tailandesa",
+        "Vietnamita",
+        "Do Oriente Médio",
       ],
       "New age": [
         "Drones",
-        "Elementos",
-        "de",
-        "world",
-        "music",
+        "Elementos de música mundial",
         "Etéreo",
         "Lounge",
         "Orquestral",
       ],
       "Noticiário": [
-        "Identidade",
-        "auditiva",
+        "Identidade auditiva",
         "Manchetes",
       ],
       "Piano/Solo instrumental": [
         "Drama humano",
       ],
       "Pop": [
-        "Adulto",
-        "contemporâneo",
+        "Adulto contemporâneo",
         "Afrobeat",
         "Balada",
         "Cantor/Compositor",
-        "Dream",
-        "Pop",
-        "Electro",
-        "pop",
-        "Indie",
-        "pop",
-        "New",
-        "Wave",
-        "Pop",
-        "chiclete",
-        "Pop",
-        "rock",
-        "Suave/Easy",
-        "listening",
+        "Dream Pop",
+        "Electro Pop",
+        "Indie Pop",
+        "New Wave",
+        "Pop chiclete",
+        "Pop rock",
+        "Suave/Easy listening",
         "Synthpop",
       ],
       "Reggae": [
@@ -292,112 +262,89 @@ export class MusicasService extends CrudService<Musica> {
         "Soca",
       ],
       "Rhythm and blues": [
-        " Disco",
-        " Doo-Wop",
-        " Funk",
-        " Gospel",
-        " Motown R&B alternativo",
-        " R&B pop",
+        "Disco",
+        "Doo-Wop",
+        "Funk",
+        "Gospel",
+        "Motown R&B alternativo",
+        "R&B pop",
         "Soul",
-        " Soul contemporâneo",
-        " Soul pop",
+        "Soul contemporâneo",
+        "Soul pop",
       ],
       "Rock": [
-        "Alternativa/Grunge",
-        "Blues",
-        "Rock",
+        "Alternativo/Grunge",
+        "Blues Rock",
         "Boogie-Woogie",
-        "Death",
-        "Metal",
+        "Death Metal",
         "Emo",
-        "Funk",
-        "Rock",
-        "Hard",
-        "Rock",
+        "Funk Rock",
+        "Hard Rock",
         "Hardcore",
-        "Heartland",
-        "Rock",
-        "Heavy",
-        "metal",
-        "Indie",
-        "rock",
-        "Mersey",
-        "Beat",
-        "Pop",
-        "Punk",
-        "Pop",
-        "rock",
-        "Punk",
-        "rock",
-        "Raga",
-        "rock",
-        "Rock",
-        "clássico",
+        "Heartland Rock",
+        "Heavy Metal",
+        "Indie Rock",
+        "Mersey Beat",
+        "Pop Punk",
+        "Pop rock",
+        "Punk rock",
+        "Raga rock",
+        "Rock clássico",
         "Rock n roll",
-        "Rock",
-        "retrô",
+        "Rock retrô",
         "Rockabilly",
         "Rocktrônica",
         "Ska",
-        "Soft",
-        "rock",
-        "Southern",
-        "rock",
-        "Spaghetti",
-        "Western",
-        "Surf",
-        "rock",
-        "Swamp",
-        "Rock",
+        "Soft rock",
+        "Southern rock",
+        "Spaghetti Western",
+        "Surf rock",
+        "Swamp Rock",
       ],
       "Sertanejo": [
         "Bluegrass",
         "Faroeste",
-        "Honky",
-        "Tonk",
-        "Raízes",
-        "americanas",
-        "Sertaneja",
-        "tradicional",
-        "Sertanejo",
-        "folk",
-        "Sertanejo",
-        "pop",
-        "Sertanejo",
-        "rock",
-        "Swing",
-        "texano",
+        "Honky Tonk",
+        "Raízes americanas",
+        "Sertaneja tradicional",
+        "Sertanejo folk",
+        "Sertanejo pop",
+        "Sertanejo rock",
+        "Swing texano",
       ]
     }
   ];
+
   public humor: any = [
-    "Action / Sports",
-    "Adventure / Discovery",
-    "Aerobics / Workout",
-    "Aggressive",
-    "Comedy / Funny",
-    "Crime / Thriller / Spy",
-    "Dark / Somber",
-    "Epic / Orchestral",
-    "Fashion / Lifestyle",
-    "Feel Good",
-    "Gentle / Light",
-    "Happy / Cheerful",
-    "Horror / Scary",
-    "Magical / Mystical",
-    "Military / Patriotic",
-    "Relaxation / Meditation",
-    "Religious / Christian",
-    "Romantic / Sentimental",
-    "Sad / Nostalgic",
-    "Sci-Fi / Future",
+    "Ação / Esportes",
+    "Aventura / Descoberta",
+    "Aeróbica / Exercícios",
+    "Agressivo",
+    "Comédia / Engraçado",
+    "Crime / Suspense / Espionagem",
+    "Sombrio / Melancólico",
+    "Épico / Orquestral",
+    "Moda / Estilo de Vida",
+    "Bem-Estar / Sentir-se Bem",
+    "Suave / Leve",
+    "Feliz / Alegre",
+    "Terror / Assustador",
+    "Mágico / Místico",
+    "Militar / Patriótico",
+    "Relaxamento / Meditação",
+    "Religioso / Cristão",
+    "Romântico / Sentimental",
+    "Triste / Nostálgico",
+    "Ficção Científica / Futurista",
     "Sexy / Sensual",
-    "Strange / Bizarre",
+    "Estranho / Bizarro",
     "Suspense / Drama",
-    "Underscores",
-    "Uplifting",
-    "Wedding",
+    "Trilhas de Fundo",
+    "Inspirador / Elevado",
+    "Casamento",
   ];
+
+
   public arrMusica!: Musica[];
 
   constructor(
@@ -432,11 +379,11 @@ export class MusicasService extends CrudService<Musica> {
   public curtir(i: number) {
     this.authService.verificaLogin();
 
-    if(this.authService.userAutetic()) {
+    if (this.authService.userAutetic()) {
       this.hearth = document.querySelectorAll('.hearth');
       this.hearth1 = document.querySelectorAll('.hearth1');
 
-      if(this.hearth[i].style.display == 'block') {
+      if (this.hearth[i].style.display == 'block') {
         this.hearth[i].style.display = 'none';
         this.hearth1[i].style.display = 'block'; // curtida
       } else {
@@ -453,14 +400,14 @@ export class MusicasService extends CrudService<Musica> {
 
   public addPlayList(music: Musica) {
     this.authService.verificaLogin();
-    if(this.authService.userAutetic()) {
+    if (this.authService.userAutetic()) {
       this.list().subscribe((data: any) => {
         this.arrMusica = data;
         this.addMusicPlaylist = music;
         document.querySelectorAll('.addPlaylist').forEach((e: any, index: any) => {
           if (this.arrMusica[index].id == this.addMusicPlaylist.id) {
             e.classList.add('amarelo');
-            const activeModal = this.modalService.open(AddPlaylistModalComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
+            const activeModal = this.modalService.open(AddPlaylistModalComponent, { size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false });
             activeModal.componentInstance.addNewMusicPlaylist(this.addMusicPlaylist);
             activeModal.result.then();
           }
@@ -479,12 +426,12 @@ export class MusicasService extends CrudService<Musica> {
   public baixarAmostra(i: number, md: any) {
     console.log(md);
     this.downloadMusic = md;
-    this.modalService.open(DownloadAmostraComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
+    this.modalService.open(DownloadAmostraComponent, { size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false });
   }
 
   public comprarLicensa(i: any) {
     this.authService.verificaLogin();
-    if(this.authService.userAutetic()) {
+    if (this.authService.userAutetic()) {
       this.cartService.openModalCart();
       this.cartService.receivingCart(i);
     }
