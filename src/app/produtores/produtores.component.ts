@@ -276,7 +276,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
   }
   onUpload() {
     if (this.files && this.files.size > 0) {
-      this.uploadFileService.upload(this.files, environment.API + '/upload').subscribe((data: any) => {
+      this.uploadFileService.upload(this.files, environment.API + 'uploads/').subscribe((data: any) => {
         console.log(data)
         console.log('"Upload CONCLUIDO"')
       })

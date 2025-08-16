@@ -14,15 +14,16 @@ export class FooterComponent implements OnInit {
   @ViewChild('button', {static: true}) button!:ElementRef;
 
   collections: Array<any> = [
-    {value: 'Most Popular Music', viewValue: 'Most Popular Music'},
-    {value: 'Most Recent Music', viewValue: 'Most Recent Music'},
-    {value: 'Corporate / Business', viewValue: 'Corporate / Business'},
-    {value: 'Jazz Music', viewValue: 'Jazz Music'},
-    {value: 'Classical Music', viewValue: 'Classical Music'},
-    {value: 'Royalty Free Music for Projects', viewValue: 'Royalty Free Music for Projects'},
-    {value: 'Music Collections', viewValue: 'Music Collections'},
-    {value: 'Free Music', viewValue: 'Free Music'},
-  ];
+  { value: 'Músicas Mais Populares', viewValue: 'Músicas Mais Populares' },
+  { value: 'Músicas Mais Recentes', viewValue: 'Músicas Mais Recentes' },
+  { value: 'Corporativo / Empresarial', viewValue: 'Corporativo / Empresarial' },
+  { value: 'Música Jazz', viewValue: 'Música Jazz' },
+  { value: 'Música Clássica', viewValue: 'Música Clássica' },
+  { value: 'Música Livre de Direitos para Projetos', viewValue: 'Música Livre de Direitos para Projetos' },
+  { value: 'Coleções de Música', viewValue: 'Coleções de Música' },
+  { value: 'Música Gratuita', viewValue: 'Música Gratuita' },
+];
+
   info: Array<any> = [
     {value: 'Sobre Nós', viewValue: 'Sobre Nós'},
     {value: 'Testemunhos', viewValue: 'Testemunhos'},
@@ -33,7 +34,7 @@ export class FooterComponent implements OnInit {
     {value: 'Entre em Contato', viewValue: 'Entre em Contato'},
     {value: 'Fale Conosco via WhatsApp', viewValue: 'Fale Conosco via WhatsApp'},
     {value: 'FAQ', viewValue: 'FAQ'},
-    {value: 'Blog', viewValue: 'Blog'},
+    {value: 'HUB', viewValue: 'HUB'},
   ];
 
   url: string = 'https://api.whatsapp.com/send?phone=5546991161666&text=Entre+em+contato+agora';

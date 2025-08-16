@@ -1,35 +1,46 @@
-<nav #nav class="navbar navbar-expand-lg navbar-light">
+<nav #nav class="navbar navbar-expand-lg navbar-light pt-0 pb-0">
   <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 h-100 d-flex justify-content-between align-items-center pl-1">
-    <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 pl-0 h-100 position-relative">
-      <a [routerLink]="['']" class="navbar-brand h-100 d-flex" href="#">
-        <img class="logo" src="../../assets/images/Logomarca+logotipo_sem_fundo_horizontal_branca.webp" alt="logo mokbeats"/>
-      </a>
-    </div>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- Logo - Estrutura simplificada -->
+    <a [routerLink]="['']" class="navbar-brand">
+      <img class="logo" src="../../assets/images/Logomarca+logotipo_sem_fundo_horizontal_branca.png"
+        alt="Mokbeats - Produção Musical" loading="lazy" />
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav w-100" id="menu">
         <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 d-flex justify-content-end align-items-end menuInt">
           <li class="nav-item p-0">
-            <a class="nav-link d-flex justify-content-end align-items-end border-0" id="closeNav" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
-              <svg clip-rule="evenodd" fill="#fff" fill-rule="evenodd" width="24px" height="24px" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"/></svg>
+            <a class="nav-link d-flex justify-content-end align-items-end border-0" id="closeNav" type="button"
+              data-toggle="collapse" data-target="#navbarNavDropdown">
+              <svg clip-rule="evenodd" fill="#fff" fill-rule="evenodd" width="24px" height="24px"
+                stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z" />
+              </svg>
             </a>
           </li>
           <li routerLinkActive="active" class="nav-item pt-0">
-            <a class="nav-link" [routerLink]="['/home']" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()" (click)="closeNav()" href="">Home</a>
+            <a class="nav-link" [routerLink]="['/home']" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()"
+              (click)="closeNav()" href="">Home</a>
           </li>
           <li routerLinkActive="active" class="nav-item">
-            <a class="nav-link" [routerLink]="['/musicas']" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()" (click)="closeNav()" href="">Músicas</a>
+            <a class="nav-link" [routerLink]="['/musicas']" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()"
+              (click)="closeNav()" href="">Músicas</a>
           </li>
           <li routerLinkActive="active" class="nav-item">
-            <a class="nav-link" [routerLink]="['/efeitos-sonoros']" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()" (click)="closeNav()" href="">Efeitos Sonoros</a>
+            <a class="nav-link" [routerLink]="['/efeitos-sonoros']" (mouseover)="mouseOver($event)"
+              (mouseout)="mouseOut()" (click)="closeNav()" href="">Efeitos Sonoros</a>
           </li>
           <li routerLinkActive="active" class="nav-item">
-            <a class="nav-link" [routerLink]="['/produtores']" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()" (click)="closeNav()" href="">Produtores</a>
+            <a class="nav-link" [routerLink]="['/produtores']" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()"
+              (click)="closeNav()" href="">Produtores</a>
           </li>
           <li routerLinkActive="active" class="nav-item">
-            <a class="nav-link" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()" (click)="closeNav()" href="">Blog</a>
+            <a class="nav-link" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()" (click)="closeNav()"
+              href="">HUB</a>
           </li>
         </div>
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex justify-content-end align-items-end menuInt">
@@ -47,7 +58,8 @@
           </li>
           <div class="control d-flex">
             <li routerLinkActive="active" class="nav-item">
-              <a class="nav-link d-flex justify-content-center align-items-center cart position-relative" [routerLink]="['/carrinho']" (click)="closeNav()" href="">
+              <a class="nav-link d-flex justify-content-center align-items-center cart position-relative"
+                [routerLink]="['/carrinho']" (click)="closeNav()" href="">
                 <span class="material-icons">shopping_cart</span>
                 <small id="ms_number">0</small>
                 <span class="txt mobile d-none">Carrinho</span>

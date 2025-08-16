@@ -22,7 +22,7 @@ a {
   text-align: center !important;
 }
 .mat-snack-bar-container {
-  background-color: #FFF !important;
+  background-color: #fff !important;
   font-weight: bold !important;
   border: 1px solid red !important;
   color: red !important;
@@ -35,19 +35,56 @@ a.btn.btn-warning:hover,
 button.btn.btn-warning:hover {
   background-color: #c29441 !important;
 }
-/* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Para inputs padrão */
+input::placeholder,
+textarea::placeholder {
+  font-style: italic;
+}
+
+/* Para navegadores com prefixos */
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+  font-style: italic;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+  font-style: italic;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  font-style: italic;
+}
+::ng-deep .mat-form-field-label {
+  font-style: italic;
+}
+
+/* Importing Bootstrap SCSS file. */
+@import "bootstrap/scss/bootstrap";
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 textarea.mat-input-element {
-  background: rgba(0,0,0,.04) !important;
+  background: rgba(0, 0, 0, 0.04) !important;
 }
 .mat-form-field-appearance-fill .mat-form-field-flex,
 .mat-form-field-appearance-fill .mat-form-field-infix {
-  background: #FFF !important;
+  background: #fff !important;
 }
 .mat-form-field-appearance-fill .mat-form-field-underline::before {
-  background-color: #CED4DA !important;
+  background-color: #ced4da !important;
 }

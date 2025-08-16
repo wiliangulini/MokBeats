@@ -62,6 +62,7 @@ import {CartModalComponent} from "./carrinho/cartModal/cart-modal.component";
 import { I18nextTestComponent } from './i18next-test/i18next-test.component';
 import { WavesurferComponent } from './wavesurfer/wavesurfer.component';
 import { WaveSurferTestComponent } from './wave-surfer-test/wave-surfer-test.component';
+import { PlaceholderEllipsisDirective } from './directives/placeholder-ellipsis.directive';
 
 
 @NgModule({
@@ -105,6 +106,7 @@ import { WaveSurferTestComponent } from './wave-surfer-test/wave-surfer-test.com
     I18nextTestComponent,
     WavesurferComponent,
     WaveSurferTestComponent,
+    PlaceholderEllipsisDirective,
   ],
   imports: [
     BrowserModule,

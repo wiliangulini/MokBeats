@@ -2,9 +2,9 @@
 import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { AuthService } from "../login/auth.service";
-import {Musica, MusicasService} from "../musicas/musicas.service";
-import {Router} from "@angular/router";
-import {ScrollService} from "../service/scroll.service";
+import { Musica, MusicasService } from "../musicas/musicas.service";
+import { Router } from "@angular/router";
+import { ScrollService } from "../service/scroll.service";
 
 interface GeneroM {
   value: string;
@@ -31,13 +31,10 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     { value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos' },
     { value: 'HighFrenetic', viewValue: 'HighFrenetic' }
   ];
-  arrMusic: Array<any> = [
-    { value: 'The Funkster', viewValue: 'The Funkster' },
-    { value: 'Code', viewValue: 'Code' },
-    { value: 'Impertinent', viewValue: 'Impertinent' },
-    { value: 'Maleficus Chaos', viewValue: 'Maleficus Chaos' },
-    { value: 'HighFrenetic', viewValue: 'HighFrenetic' },
-  ];
+
+  primeirasCincoMusicas: any[] = [];
+  arrMusica: Musica[] = [];
+
   generoM: GeneroM[] = [
     { value: 'Músicas', viewValue: 'Músicas' },
     { value: 'Efeitos', viewValue: 'Efeitos' },
@@ -67,6 +64,29 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   ngAfterViewInit() {
+     // Recupera a string JSON do localStorage
+    const arrMusicaString = localStorage.getItem('arrMusica');
+
+    // Verifica se os dados existem antes de tentar fazer o parse
+    if (arrMusicaString) {
+      // Converte a string JSON de volta para um array de objetos
+      const arrMusica = JSON.parse(arrMusicaString);
+
+      // Pega apenas os primeiros 5 itens do array
+      this.primeirasCincoMusicas = arrMusica.slice(0, 5);
+
+    } else if (!arrMusicaString) {
+      this.musicService.list().subscribe((data: any) => {
+        this.arrMusica = data;
+        let arrMusica = JSON.stringify(this.arrMusica);
+        localStorage.setItem('arrMusica', arrMusica);
+
+      // Pega apenas os primeiros 5 itens do array
+      this.primeirasCincoMusicas = this.arrMusica.slice(0, 5);
+      console.log(this.primeirasCincoMusicas)
+      });
+    }
+      console.log(this.primeirasCincoMusicas)
     this.form.get('genero')?.setValue(this.generoM[0].viewValue);
   }
 
@@ -91,7 +111,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   baixarAmostra(i: number) {
-    this.musicDownload.push(this.arrMusic[i].viewValue);
+    //this.musicDownload.push(this.arrMusic[i].viewValue);
     this.musicDownload.push(this.dados[i].viewValue);
     this.musicService.baixarAmostra(i, this.musicDownload);
   }

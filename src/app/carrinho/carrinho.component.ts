@@ -10,9 +10,9 @@ import {Musica} from "../musicas/musicas.service";
   styleUrls: ['./carrinho.component.scss']
 })
 export class CarrinhoComponent implements OnInit, AfterContentInit {
-  
+
   nav: any;
-  
+
   numberMusic!: number;
   musics: Musica[] = [];
   form!: FormGroup;
@@ -25,7 +25,7 @@ export class CarrinhoComponent implements OnInit, AfterContentInit {
   estados: any[] = [];
   pais: any[] = [];
   insert: boolean = false;
-  
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -61,9 +61,9 @@ export class CarrinhoComponent implements OnInit, AfterContentInit {
     this.musics = this.cartService.receivingCart2();
     this.numberMusic = this.musics.length;
     this.numberMusic > 0 ? this.insert = true : this.insert = false;
-    console.log(this.musics);
+    console.log('carrinho: ', this.musics);
   }
-  
+
   ngAfterContentInit() {
     this.price = this.numberMusic * this.priceMusic;
     console.log(this.price);
@@ -72,7 +72,7 @@ export class CarrinhoComponent implements OnInit, AfterContentInit {
     let newUrl = url.slice(-8);
     (window.scrollY === 0 && newUrl === 'carrinho') ? this.nav.style.marginTop = '10px' : this.nav.style.marginTop = '0px';
   }
-  
+
   onSubmit(data: any) {
     console.log(data);
   }

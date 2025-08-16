@@ -67,16 +67,21 @@ section.filter .container-fluid form {
   padding: 0;
   max-width: 28.4%;
 }
+#btnOutS {
+  font-size: 22px;
+}
 section.filter .container-fluid form .inputFilter {
   position: relative;
   width: 81% !important;
 }
-#btnOutS {
-  font-size: 22px;
-}
 section.filter .container-fluid form .inputFilter input {
   border: 0;
-  border-radius: 0px 999px 999px 0px;
+  border-radius: 999px;
+  outline: none !important;
+  -webkit-border-radius: 999px;
+  -moz-border-radius: 999px;
+  -ms-border-radius: 999px;
+  -o-border-radius: 999px;
 }
 section.filter .container-fluid form:focus-within button.btn.w-25.btn-outline-success.mr-2 input {
   background-color: #828282;
@@ -85,6 +90,7 @@ section.filter .container-fluid form:focus-within .inputFilter span,
 section.filter .container-fluid form .inputFilter input:focus {
   outline: none !important;
   color: #828282;
+  box-shadow: none;
   background-color: #FFF;
   transition: all .35s ease-in !important;
 }
@@ -94,7 +100,7 @@ section.filter .container-fluid form .inputFilter input::placeholder {
 section.filter .container-fluid form .inputFilter button.btn {
   height: 40px;
   background: transparent;
-  color: #b4b4b5;
+  color: #FFF; /* Alterado para branco */
   position: absolute;
   right: 1.25%;
   width: auto !important;
@@ -112,6 +118,7 @@ section.filter .container-fluid form .inputFilter span {
   right: -1%;
   padding-left: 2%;
 }
+
 section.filter .container-fluid button {
   color: rgba(255, 255, 255, 0.5);
   border: 0;
