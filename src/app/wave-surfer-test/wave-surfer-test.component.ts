@@ -31,32 +31,77 @@ export class WaveSurferTestComponent implements OnInit, AfterViewInit ,OnDestroy
   }
 
   ngAfterViewInit() {
-    this.wavesurfer = WaveSurfer.create({
-      container: `#${this.idContainer}`,
-      waveColor: '#fff',
-      progressColor: '#dcad54',
-      minPxPerSec: 100,
-      hideScrollbar: true,
-      fillParent: true,
-      height: 0,
-      backend: 'MediaElement',
-      plugins: [
-        Minimap.create({
-          height: 40,
-          waveColor: '#fff',
-          progressColor: '#dcad54',
-          dragToSeek: true,
-        })
-      ]
-    });
+    // Delay para garantir que o container DOM esteja disponível
+    setTimeout(() => {
+      this.initWaveSurfer();
+    }, 150);
+  }
 
-    this.wavesurfer.load(this.music.url);
+  private initWaveSurfer() {
+    const container = document.querySelector(`#${this.idContainer}`);
+    if (!container) {
+      console.error(`Container ${this.idContainer} not found`);
+      // Tentar novamente após mais tempo
+      setTimeout(() => this.initWaveSurfer(), 200);
+      return;
+    }
 
-    this.wavesurfer.setMuted(true);
+    // Se já existe um wavesurfer, destruir antes de criar novo
+    if (this.wavesurfer) {
+      this.wavesurfer.destroy();
+    }
 
-    this.wavesurfer.on('finish', () => {
-      this.songFinished.emit();
-    });
+    try {
+      this.wavesurfer = WaveSurfer.create({
+        container: `#${this.idContainer}`,
+        waveColor: '#fff',
+        progressColor: '#dcad54',
+        minPxPerSec: 100,
+        hideScrollbar: true,
+        fillParent: true,
+        height: 0,
+        backend: 'MediaElement',
+        plugins: [
+          Minimap.create({
+            height: 40,
+            waveColor: '#fff',
+            progressColor: '#dcad54',
+            dragToSeek: true,
+          })
+        ]
+      });
+
+      // Aguardar a criação antes de carregar
+      setTimeout(() => {
+        if (this.wavesurfer && this.music.url) {
+          this.wavesurfer.load(this.music.url);
+          this.wavesurfer.setMuted(true);
+
+          this.wavesurfer.on('finish', () => {
+            this.songFinished.emit();
+          });
+
+          this.wavesurfer.on('error', (error) => {
+            if (error.name !== 'AbortError') {
+              console.error('WaveSurfer error:', error);
+            }
+          });
+
+          this.wavesurfer.on('ready', () => {
+            console.log(`✅ WaveSurfer ready for ${this.music.nome_musica}`);
+          });
+
+          this.wavesurfer.on('loading', (progress) => {
+            if (progress === 100) {
+              console.log(`📊 WaveSurfer loaded for ${this.music.nome_musica}`);
+            }
+          });
+        }
+      }, 50);
+
+    } catch (error) {
+      console.error('Error creating WaveSurfer:', error);
+    }
   }
 
   ngOnDestroy() {
@@ -70,11 +115,17 @@ export class WaveSurferTestComponent implements OnInit, AfterViewInit ,OnDestroy
 
   playWave() {
     console.log('play', 'this.playWave')
-    this.wavesurfer.play().then();
+    if (this.wavesurfer) {
+      this.wavesurfer.play().catch(error => {
+        console.error('Error playing audio:', error);
+      });
+    }
   }
 
   pauseWave() {
-    this.wavesurfer.pause();
+    if (this.wavesurfer) {
+      this.wavesurfer.pause();
+    }
   }
 
 }

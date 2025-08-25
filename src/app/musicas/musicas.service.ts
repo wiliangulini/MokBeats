@@ -436,4 +436,25 @@ export class MusicasService extends CrudService<Musica> {
       this.cartService.receivingCart(i);
     }
   }
+
+  // Métodos para filtros
+  getArtistas(): Observable<any> {
+    return this.http.get(`${environment.API}artistas`);
+  }
+
+  getInstrumentos(): Observable<any> {
+    return this.http.get(`${environment.API}instrumentos`);
+  }
+
+  getGeneros(): Observable<any> {
+    return this.http.get(`${environment.API}generos`);
+  }
+
+  getHumores(): Observable<any> {
+    return this.http.get(`${environment.API}humores`);
+  }
+
+  filterMusicas(filtros: any): Observable<any> {
+    return this.http.post(`${environment.API}musicas/filtro`, filtros);
+  }
 }

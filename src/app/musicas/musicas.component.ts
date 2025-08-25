@@ -40,8 +40,21 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   titles: any[];
   music: any[];
   humor: any[];
+  artistas: any[] = [];
+  instrumentos: any[] = [];
   musicas: any = {};
-  number!: number;
+  number: number | undefined;
+  
+  // Filtros selecionados
+  selectedGeneros: string[] = [];
+  selectedSubgeneros: string[] = [];
+  selectedVozes: string[] = [];
+  selectedHumores: string[] = [];
+  selectedArtistas: string[] = [];
+  selectedInstrumentos: string[] = [];
+  
+  // Flag para controlar se os filtros devem ser aplicados
+  filtersInitialized: boolean = false;
   formG!: FormGroup;
   frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
   select: any = 'Mais Relevantes';
@@ -124,7 +137,8 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     if (screen.width < 769) {
       document.getElementById('navLeft')!.style.width = '0';
     }
-
+    this.loadArtistas();
+    this.loadInstrumentos();
   }
 
   ngAfterViewInit() {
@@ -134,6 +148,12 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.arrMusica = data;
       let arrMusica = JSON.stringify(this.arrMusica);
       localStorage.setItem('arrMusica', arrMusica);
+      
+      // Habilitar filtros após carregar as músicas
+      setTimeout(() => {
+        this.filtersInitialized = true;
+      }, 500);
+      
       this.playlistService.list().subscribe((data: any) => {
         this.isLoading = false;
         data.forEach((e: any) => {
@@ -381,5 +401,166 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
       let timeString: any = minutes.toString().padStart(1) + ':' + seconds.toString().padStart(2, '0');
       this.durationAut = timeString;
     }
+    // Só aplica filtros se há um valor definido
+    if (this.number || this.duration) {
+      this.applyFilters();
+    }
+  }
+
+  // Métodos para carregar dados do backend
+  loadArtistas(): void {
+    this.musicService.getArtistas().subscribe((data: any) => {
+      this.artistas = data;
+    });
+  }
+
+  loadInstrumentos(): void {
+    this.musicService.getInstrumentos().subscribe((data: any) => {
+      this.instrumentos = data;
+    });
+  }
+
+  // Métodos para lidar com mudanças nos checkboxes
+  onGeneroChange(event: any): void {
+    const value = event.source.value;
+    if (event.checked) {
+      this.selectedGeneros.push(value);
+    } else {
+      const index = this.selectedGeneros.indexOf(value);
+      if (index > -1) {
+        this.selectedGeneros.splice(index, 1);
+      }
+    }
+    if (this.filtersInitialized) {
+      this.applyFilters();
+    }
+  }
+
+  onSubgeneroChange(event: any): void {
+    const value = event.source.value;
+    if (event.checked) {
+      this.selectedSubgeneros.push(value);
+    } else {
+      const index = this.selectedSubgeneros.indexOf(value);
+      if (index > -1) {
+        this.selectedSubgeneros.splice(index, 1);
+      }
+    }
+    if (this.filtersInitialized) {
+      this.applyFilters();
+    }
+  }
+
+  onVozesChange(event: any): void {
+    const value = event.source.value;
+    if (event.checked) {
+      this.selectedVozes.push(value);
+    } else {
+      const index = this.selectedVozes.indexOf(value);
+      if (index > -1) {
+        this.selectedVozes.splice(index, 1);
+      }
+    }
+    if (this.filtersInitialized) {
+      this.applyFilters();
+    }
+  }
+
+  onHumorChange(event: any): void {
+    const value = event.source.value;
+    if (event.checked) {
+      this.selectedHumores.push(value);
+    } else {
+      const index = this.selectedHumores.indexOf(value);
+      if (index > -1) {
+        this.selectedHumores.splice(index, 1);
+      }
+    }
+    if (this.filtersInitialized) {
+      this.applyFilters();
+    }
+  }
+
+  onArtistaChange(event: any): void {
+    const value = event.source.value;
+    if (event.checked) {
+      this.selectedArtistas.push(value);
+    } else {
+      const index = this.selectedArtistas.indexOf(value);
+      if (index > -1) {
+        this.selectedArtistas.splice(index, 1);
+      }
+    }
+    if (this.filtersInitialized) {
+      this.applyFilters();
+    }
+  }
+
+  onInstrumentoChange(event: any): void {
+    const value = event.source.value;
+    if (event.checked) {
+      this.selectedInstrumentos.push(value);
+    } else {
+      const index = this.selectedInstrumentos.indexOf(value);
+      if (index > -1) {
+        this.selectedInstrumentos.splice(index, 1);
+      }
+    }
+    if (this.filtersInitialized) {
+      this.applyFilters();
+    }
+  }
+
+  // Método para aplicar todos os filtros
+  applyFilters(): void {
+    // Verifica se há algum filtro selecionado
+    const hasFilters = this.selectedGeneros.length > 0 ||
+                      this.selectedSubgeneros.length > 0 ||
+                      this.selectedVozes.length > 0 ||
+                      this.selectedHumores.length > 0 ||
+                      this.selectedArtistas.length > 0 ||
+                      this.selectedInstrumentos.length > 0 ||
+                      (this.number && this.number > 0) ||
+                      (this.duration && this.duration > 0);
+
+    if (!hasFilters) {
+      // Se não há filtros, recarrega todas as músicas
+      this.musicService.list().subscribe((data: any) => {
+        this.arrMusica = data;
+      });
+      return;
+    }
+
+    const filtros: any = {};
+    
+    if (this.selectedGeneros.length > 0) filtros.genero = this.selectedGeneros;
+    if (this.selectedSubgeneros.length > 0) filtros.subgenero = this.selectedSubgeneros;
+    if (this.selectedVozes.length > 0) filtros.vozes = this.selectedVozes;
+    if (this.selectedHumores.length > 0) filtros.humor = this.selectedHumores;
+    if (this.selectedArtistas.length > 0) filtros.artistas = this.selectedArtistas;
+    if (this.selectedInstrumentos.length > 0) filtros.instrumentos = this.selectedInstrumentos;
+    if (this.number && this.number > 0) filtros.bpmMax = this.number;
+    if (this.duration && this.duration > 0) filtros.duracaoMax = this.duration;
+
+    this.musicService.filterMusicas(filtros).subscribe((data: any) => {
+      this.arrMusica = data;
+    });
+  }
+
+  // Método para resetar todos os filtros
+  resetFilters(): void {
+    this.selectedGeneros = [];
+    this.selectedSubgeneros = [];
+    this.selectedVozes = [];
+    this.selectedHumores = [];
+    this.selectedArtistas = [];
+    this.selectedInstrumentos = [];
+    this.number = undefined;
+    this.duration = undefined;
+    
+    // Recarrega todas as músicas
+    this.musicService.list().subscribe((data: any) => {
+      this.arrMusica = data;
+    });
   }
 }

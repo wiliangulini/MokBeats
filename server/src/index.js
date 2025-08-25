@@ -132,6 +132,12 @@ app.route('/api/musicas/filtro').post((request, response) => {
     );
   }
 
+  if (filtros.subgenero && filtros.subgenero.length > 0) {
+    musicasFiltradas = musicasFiltradas.filter(musica =>
+      filtros.subgenero.includes(musica.subgenero)
+    );
+  }
+
   response.status(200).send(musicasFiltradas);
 });
 
@@ -291,7 +297,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Rhythm and blues",
+    subgenero: "Funk",
+    humor: "Bem-Estar / Sentir-se Bem",
+    instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
+    vozes: "Instrumental"
   },
   {
     id: 7,
@@ -302,7 +313,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "EDM",
+    subgenero: "Dance",
+    humor: "Bem-Estar / Sentir-se Bem",
+    instrumentos: ["Sintetizador", "Bateria Eletrônica", "Baixo Sintetizado"],
+    vozes: "Instrumental"
   },
   {
     id: 8,
@@ -313,7 +329,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Rock",
+    subgenero: "Hard Rock",
+    humor: "Agressivo",
+    instrumentos: ["Guitarra Elétrica", "Bateria", "Baixo Elétrico"],
+    vozes: "Instrumental"
   },
   {
     id: 9,
@@ -324,7 +345,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Pop",
+    subgenero: "Indie Pop",
+    humor: "Feliz / Alegre",
+    instrumentos: ["Piano", "Violão", "Baixo Acústico", "Bateria"],
+    vozes: "Instrumental"
   },
   {
     id: 10,
@@ -335,7 +361,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Rhythm and blues",
+    subgenero: "Funk",
+    humor: "Bem-Estar / Sentir-se Bem",
+    instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
+    vozes: "Instrumental"
   },
   {
     id: 11,
@@ -346,7 +377,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Eletrônica",
+    subgenero: "Experimental",
+    humor: "Ficção Científica / Futurista",
+    instrumentos: ["Sintetizador Modular", "Sequenciador", "Drum Machine"],
+    vozes: "Instrumental"
   },
   {
     id: 12,
@@ -357,7 +393,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Rhythm and blues",
+    subgenero: "Funk",
+    humor: "Bem-Estar / Sentir-se Bem",
+    instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
+    vozes: "Instrumental"
   },
   {
     id: 13,
@@ -368,7 +409,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "EDM",
+    subgenero: "Dance",
+    humor: "Bem-Estar / Sentir-se Bem",
+    instrumentos: ["Sintetizador", "Bateria Eletrônica", "Baixo Sintetizado"],
+    vozes: "Instrumental"
   },
   {
     id: 14,
@@ -379,7 +425,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Rock",
+    subgenero: "Hard Rock",
+    humor: "Agressivo",
+    instrumentos: ["Guitarra Elétrica", "Bateria", "Baixo Elétrico"],
+    vozes: "Instrumental"
   },
   {
     id: 15,
@@ -390,7 +441,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Pop",
+    subgenero: "Indie Pop",
+    humor: "Feliz / Alegre",
+    instrumentos: ["Piano", "Violão", "Baixo Acústico", "Bateria"],
+    vozes: "Instrumental"
   },
   {
     id: 16,
@@ -401,7 +457,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Rhythm and blues",
+    subgenero: "Funk",
+    humor: "Bem-Estar / Sentir-se Bem",
+    instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
+    vozes: "Instrumental"
   },
   {
     id: 17,
@@ -412,7 +473,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Eletrônica",
+    subgenero: "Experimental",
+    humor: "Ficção Científica / Futurista",
+    instrumentos: ["Sintetizador Modular", "Sequenciador", "Drum Machine"],
+    vozes: "Instrumental"
   },
   {
     id: 18,
@@ -423,7 +489,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Rhythm and blues",
+    subgenero: "Funk",
+    humor: "Bem-Estar / Sentir-se Bem",
+    instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
+    vozes: "Instrumental"
   },
   {
     id: 19,
@@ -434,7 +505,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "EDM",
+    subgenero: "Dance",
+    humor: "Bem-Estar / Sentir-se Bem",
+    instrumentos: ["Sintetizador", "Bateria Eletrônica", "Baixo Sintetizado"],
+    vozes: "Instrumental"
   },
   {
     id: 20,
@@ -445,7 +521,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Rock",
+    subgenero: "Hard Rock",
+    humor: "Agressivo",
+    instrumentos: ["Guitarra Elétrica", "Bateria", "Baixo Elétrico"],
+    vozes: "Instrumental"
   },
   {
     id: 21,
@@ -456,7 +537,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Pop",
+    subgenero: "Indie Pop",
+    humor: "Feliz / Alegre",
+    instrumentos: ["Piano", "Violão", "Baixo Acústico", "Bateria"],
+    vozes: "Instrumental"
   },
   {
     id: 22,
@@ -467,7 +553,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Rhythm and blues",
+    subgenero: "Funk",
+    humor: "Bem-Estar / Sentir-se Bem",
+    instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
+    vozes: "Instrumental"
   },
   {
     id: 23,
@@ -478,7 +569,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Eletrônica",
+    subgenero: "Experimental",
+    humor: "Ficção Científica / Futurista",
+    instrumentos: ["Sintetizador Modular", "Sequenciador", "Drum Machine"],
+    vozes: "Instrumental"
   },
   {
     id: 24,
@@ -489,7 +585,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Rhythm and blues",
+    subgenero: "Funk",
+    humor: "Bem-Estar / Sentir-se Bem",
+    instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
+    vozes: "Instrumental"
   }
 ];
 
