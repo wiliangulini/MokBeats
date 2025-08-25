@@ -36,6 +36,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
   valueTrack: Array<any> = [
     { value: 'trackNoStems', viewValue: 'Música sem Stems' },
     { value: 'trackWithStems', viewValue: 'Músicas com Stems' },
+    { value: 'remixStems', viewValue: 'Remix dos Stems' },
   ]
   oneOrAlbum: Array<any> = [
     { value: '1 Música com 4 stems', viewValue: '1 Música com 4 stems' },
