@@ -34,24 +34,24 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     { value: 'Efeitos/Vozes', viewValue: 'Efeitos/Vozes' },
   ]
   valueTrack: Array<any> = [
-    { value: 'trackNoStems', viewValue: 'Track sem Stems' },
-    { value: 'trackWithStems', viewValue: 'Track com Stems' },
+    { value: 'trackNoStems', viewValue: 'Música sem Stems' },
+    { value: 'trackWithStems', viewValue: 'Músicas com Stems' },
   ]
   oneOrAlbum: Array<any> = [
-    { value: '1 Track com 4 stems', viewValue: '1 Track com 4 stems' },
-    { value: '10 Tracks com 30 Stems', viewValue: '10 Tracks com 30 Stems' },
+    { value: '1 Música com 4 stems', viewValue: '1 Música com 4 stems' },
+    { value: '10 Músicas com 30 Stems', viewValue: '10 Músicas com 30 Stems' },
   ]
   rulesTrackStems: Array<any> = [
     {
       value: '10Tracks',
-      viewValue: 'Nesta opção você produtor poderá fazer upload de até dez tracks sem stems.' },
+      viewValue: 'Nesta opção você produtor poderá fazer upload de até dez músicas sem stems.' },
     {
       value: '1Track4Stems',
-      viewValue: 'Nesta opção você produtor poderá fazer upload de uma track completa com mais quatro stems, totalizando em cinco uploads. Stems precisam ter o mesmo duração da full track.'
+      viewValue: 'Nesta opção você produtor poderá fazer upload de uma música completa com mais quatro stems, totalizando em cinco uploads. Stems precisam ter o mesmo duração da música completa.'
     },
     {
       value: '10Track30Stems',
-      viewValue: 'Nesta opção você produtor poderá fazer upload de até dez tracks completas com mais trinta stems ( no caso quatro stems por track ), totalizando em quarenta uploads. Stems precisam ter o mesmo duração da full track.'
+      viewValue: 'Nesta opção você produtor poderá fazer upload de até dez músicas completas com mais trinta stems ( no caso quatro stems por música ), totalizando em quarenta uploads. Stems precisam ter o mesmo duração da música completa.'
     },
   ];
 

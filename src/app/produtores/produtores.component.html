@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row justify-content-center align-items-center">
       <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-        <h1 class="d-flex justify-content-center align-items-center">Venha Trabalhar Conosco!!!</h1>
+        <h1 class="d-flex justify-content-center align-items-center">Seja parte de uma cultura inovadora e colaborativa.</h1>
       </div>
     </div>
   </div>
@@ -12,7 +12,7 @@
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-center align-items-center p-0 m-0">
         <div class="title col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <p class="h1 font-weight-bold mb-3">Envio de novos artistas</p>
+          <p class="h1 font-weight-bold mb-3">Venha ser um produtor Mokbeats</p>
           <p class="h4">Na Mokbeats, nós impulsionamos e apoiamos nossos artistas em seu trabalho criativo.</p>
           <p class="h4 mb-5">Venha ser um produtor Mokbeats.</p>
         </div>
@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="beforeSubmit mt-3">
-        <p class="h2 font-weight-bold mb-4">Antes de enviar, verifique o seguinte:</p>
+        <p class="h2 font-weight-bold mb-4">Garantir a qualidade é fundamental, verifique o seguinte:</p>
         <div class="txt d-flex mb-3">
           <span class="material-icons mr-2">done</span>
           <p class="h6"><strong>A sua música é 100% original?</strong> Você deve deter 100% da propriedade e controle sobre os direitos autorais da composição e das matrizes da gravação da música. Versões e samples NÃO são permitidos.</p>
@@ -58,7 +58,7 @@
           </div>
             <a class="m-0 p-0">
               <button (click)="markCheckbox($event)" class="btn btn-success font-weight-bold position-relative" type="button" data-toggle="collapse" data-target="#collapseWidthExample" id="btn"  aria-expanded="true" aria-controls="collapseWidthExample">
-                <mat-label class="mr-2">Cadastro - Produtor/Comprador</mat-label>
+                <mat-label class="mr-2">Produtor</mat-label>
                 <input class="m-0" type="checkbox" formControlName="checkBoxProducer" id="inputCB" [(ngModel)]="checkBoxProducer" [checked]="checkBoxProducer" aria-label="checkBoxProducer" />
               </button>
             </a>
@@ -66,7 +66,7 @@
         <div class="controlPai w-100 d-flex">
           <div class="controlInt col-sm-4 col-md-4 col-lg-4 col-xl-4 m-0 d-flex pl-0">
             <mat-form-field appearance="fill" class="w-100 mb-3">
-              <mat-label>Escolher gênero da track(s)</mat-label>
+              <mat-label>Escolher gênero da música(s)</mat-label>
               <mat-select formControlName="generoMusic">
                 <mat-option *ngFor="let gen of generoMusic" [value]="gen">
                   {{gen}}
@@ -76,7 +76,7 @@
           </div>
           <div class="controlInt col-sm-4 col-md-4 col-lg-4 col-xl-4 m-0 d-flex">
             <mat-form-field appearance="fill" class="w-100 mb-3">
-              <mat-label>Escolher Stems da track(s)</mat-label>
+              <mat-label>Escolher Stems da música(s)</mat-label>
               <mat-select formControlName="generoMusic">
                 <mat-option *ngFor="let stems of typeStems" [value]="stems.value">
                   {{stems['viewValue']}}
@@ -87,7 +87,7 @@
           <div class="control col-sm-4 col-md-4 col-lg-4 col-xl-4 m-0 d-flex justify-content-center align-items-center">
             <div class="d-flex justify-content-start align-items-center mb-3 w-100">
               <mat-radio-group
-                  aria-label="Selecione o tipo de track"
+                  aria-label="Selecione o tipo de música"
                   formControlName="track_stems" [(ngModel)]="producer"
                   (change)="changeTrack($event)"
                   class="d-flex align-items-center justify-content-between w-100"
@@ -103,7 +103,7 @@
               <div class="tracks10" *ngIf="rulesVal === 0"><span class="span rules">{{ rules }}</span></div>
               <div class="tracks40" *ngIf="rulesVal === 1">
                 <mat-form-field appearance="fill">
-                  <mat-label>Selecione Track ou Álbum</mat-label>
+                  <mat-label>Selecione Música ou Álbum</mat-label>
                   <mat-select formControlName="selectOption"  [(ngModel)]="selectOption">
                     <mat-option *ngFor="let food of oneOrAlbum" [value]="food.value" (click)="optionSelect(selectOption)">
                       {{food["viewValue"]}}
@@ -116,7 +116,7 @@
           </div>
         </div>
         <mat-form-field class="d-flex justify-content-center align-items-center w-100 textarea mb-4">
-          <mat-label class="h6 m-0 p-0">#Tambores, #Pratos, #Instrumental. Tags p/ otimizar a busca da track</mat-label>
+          <mat-label class="h6 m-0 p-0">Tags para otimizar a busca da música. Ex: #Tambores, #Pratos, #Instrumental</mat-label>
           <textarea
             class="h-100 w-100"
             matInput
@@ -125,7 +125,7 @@
           </textarea>
         </mat-form-field>
         <mat-form-field class="d-flex justify-content-center align-items-center w-100 textarea mb-4">
-          <mat-label class="h6 m-0 p-0">Release</mat-label>
+          <mat-label class="h6 m-0 p-0">Digite aqui uma breve descrição de sua música.</mat-label>
           <textarea
               class="h-100 w-100"
               matInput

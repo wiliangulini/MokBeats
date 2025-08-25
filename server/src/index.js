@@ -58,6 +58,149 @@ app.route('/api/musicas/:id').delete((request, response) => {
   response.status(204).send({});
 });
 
+// Novos endpoints para filtros
+app.route('/api/artistas').get((request, response) => {
+  const artistas = [...new Set(MUSICAS.map(musica => musica.nome_produtor))].sort();
+  response.status(200).send(artistas);
+});
+
+app.route('/api/instrumentos').get((request, response) => {
+  const instrumentos = [...new Set(MUSICAS.flatMap(musica => musica.instrumentos || []))].sort();
+  response.status(200).send(instrumentos);
+});
+
+app.route('/api/generos').get((request, response) => {
+  const generos = [...new Set(MUSICAS.map(musica => musica.genero))].filter(g => g).sort();
+  response.status(200).send(generos);
+});
+
+app.route('/api/humores').get((request, response) => {
+  const humores = [...new Set(MUSICAS.map(musica => musica.humor))].filter(h => h).sort();
+  response.status(200).send(humores);
+});
+
+// Endpoint de filtros avançados
+app.route('/api/musicas/filtro').post((request, response) => {
+  const filtros = request.body;
+  let musicasFiltradas = MUSICAS;
+
+  if (filtros.genero && filtros.genero.length > 0) {
+    musicasFiltradas = musicasFiltradas.filter(musica =>
+      filtros.genero.includes(musica.genero)
+    );
+  }
+
+  if (filtros.humor && filtros.humor.length > 0) {
+    musicasFiltradas = musicasFiltradas.filter(musica =>
+      filtros.humor.includes(musica.humor)
+    );
+  }
+
+  if (filtros.artistas && filtros.artistas.length > 0) {
+    musicasFiltradas = musicasFiltradas.filter(musica =>
+      filtros.artistas.includes(musica.nome_produtor)
+    );
+  }
+
+  if (filtros.instrumentos && filtros.instrumentos.length > 0) {
+    musicasFiltradas = musicasFiltradas.filter(musica =>
+      filtros.instrumentos.some(instrumento =>
+        (musica.instrumentos || []).includes(instrumento)
+      )
+    );
+  }
+
+  if (filtros.bpmMin || filtros.bpmMax) {
+    const min = filtros.bpmMin || 0;
+    const max = filtros.bpmMax || 999;
+    musicasFiltradas = musicasFiltradas.filter(musica =>
+      musica.bpm >= min && musica.bpm <= max
+    );
+  }
+
+  if (filtros.duracaoMin || filtros.duracaoMax) {
+    const min = filtros.duracaoMin || 0;
+    const max = filtros.duracaoMax || 999999;
+    musicasFiltradas = musicasFiltradas.filter(musica =>
+      musica.duracao >= min && musica.duracao <= max
+    );
+  }
+
+  if (filtros.vozes && filtros.vozes.length > 0) {
+    musicasFiltradas = musicasFiltradas.filter(musica =>
+      filtros.vozes.includes(musica.vozes)
+    );
+  }
+
+  response.status(200).send(musicasFiltradas);
+});
+
+app.route('/api/playlists').get((request, response) => {
+  response.send(PLAYLISTS);
+});
+
+app.route('/api/playlists').post((request, response) => {
+  let playlist = request.body;
+
+  const firstId = PLAYLISTS ? Math.max.apply(null, PLAYLISTS.map(playlistIterator => playlistIterator.id)) + 1 : 1;
+  playlist.id = firstId;
+  PLAYLISTS.push(playlist);
+  response.status(201).send(playlist);
+});
+
+app.route('/api/playlists/:id').put((request, response) => {
+  const playlistId = +request.params['id'];
+  const playlist = request.body;
+  const index = PLAYLISTS.findIndex(playlistIterator => playlistIterator.id === playlistId);
+  PLAYLISTS[index] = playlist;
+  response.status(200).send(playlist);
+});
+
+app.route('/api/playlists/:id').get((request, response) => {
+  const playlistId = +request.params['id'];
+  response.status(200).send(PLAYLISTS.find(playlistIterator => playlistIterator.id === playlistId));
+});
+
+app.route('/api/playlists/:id').delete((request, response) => {
+  const playlistId = +request.params['id'];
+  PLAYLISTS = PLAYLISTS.filter(playlistIterator => playlistIterator.id !== playlistId);
+  response.status(204).send({});
+});
+
+app.route('/api/favoritos').get((request, response) => {
+  console.log(FAVORITOS);
+  response.send(FAVORITOS);
+});
+
+app.route('/api/favoritos').post((request, response) => {
+  let favorito = request.body;
+  console.log(favorito);
+  const firstId = FAVORITOS ? Math.max.apply(null, FAVORITOS.map(favoritoIterator => favoritoIterator.id)) + 1 : 1;
+  favorito.id = firstId;
+  FAVORITOS.push(favorito);
+  response.status(201).send(favorito);
+});
+
+app.route('/api/favoritos/:id').put((request, response) => {
+  const favoritoId = +request.params['id'];
+  const favorito = request.body;
+  const index = FAVORITOS.findIndex(favoritoIterator => favoritoIterator.id === favoritoId);
+  FAVORITOS[index] = favorito;
+  response.status(200).send(favorito);
+});
+
+app.route('/api/favoritos/:id').get((request, response) => {
+  const favoritoId = +request.params['id'];
+  response.status(200).send(FAVORITOS.find(favoritoIterator => favoritoIterator.id === favoritoId));
+});
+
+app.route('/api/favoritos/:id').delete((request, response) => {
+  const favoritoId = +request.params['id'];
+  FAVORITOS = FAVORITOS.filter(favoritoIterator => favoritoIterator.id !== favoritoId);
+  response.status(204).send({});
+});
+
+
 var MUSICAS = [
   {
     id: 1,
@@ -68,7 +211,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "EDM",
+    subgenero: "Dance",
+    humor: "Bem-Estar / Sentir-se Bem",
+    instrumentos: ["Sintetizador", "Bateria Eletrônica", "Baixo Sintetizado"],
+    vozes: "Instrumental"
   },
   {
     id: 2,
@@ -79,7 +227,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Rock",
+    subgenero: "Hard Rock",
+    humor: "Agressivo",
+    instrumentos: ["Guitarra Elétrica", "Bateria", "Baixo Elétrico"],
+    vozes: "Instrumental"
   },
   {
     id: 3,
@@ -90,7 +243,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Pop",
+    subgenero: "Indie Pop",
+    humor: "Feliz / Alegre",
+    instrumentos: ["Piano", "Violão", "Baixo Acústico", "Bateria"],
+    vozes: "Instrumental"
   },
   {
     id: 4,
@@ -101,7 +259,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Rhythm and blues",
+    subgenero: "Funk",
+    humor: "Bem-Estar / Sentir-se Bem",
+    instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
+    vozes: "Instrumental"
   },
   {
     id: 5,
@@ -112,7 +275,12 @@ var MUSICAS = [
     duracao: 180000,
     bpm: 95,
     trechos: 60,
-    loops: 7
+    loops: 7,
+    genero: "Eletrônica",
+    subgenero: "Experimental",
+    humor: "Ficção Científica / Futurista",
+    instrumentos: ["Sintetizador Modular", "Sequenciador", "Drum Machine"],
+    vozes: "Instrumental"
   },
   {
     id: 6,
@@ -324,39 +492,6 @@ var MUSICAS = [
     loops: 7
   }
 ];
-
-
-app.route('/api/playlists').get((request, response) => {
-  response.send(PLAYLISTS);
-});
-
-app.route('/api/playlists').post((request, response) => {
-  let playlist = request.body;
-
-  const firstId = PLAYLISTS ? Math.max.apply(null, PLAYLISTS.map(playlistIterator => playlistIterator.id)) + 1 : 1;
-  playlist.id = firstId;
-  PLAYLISTS.push(playlist);
-  response.status(201).send(playlist);
-});
-
-app.route('/api/playlists/:id').put((request, response) => {
-  const playlistId = +request.params['id'];
-  const playlist = request.body;
-  const index = PLAYLISTS.findIndex(playlistIterator => playlistIterator.id === playlistId);
-  PLAYLISTS[index] = playlist;
-  response.status(200).send(playlist);
-});
-
-app.route('/api/playlists/:id').get((request, response) => {
-  const playlistId = +request.params['id'];
-  response.status(200).send(PLAYLISTS.find(playlistIterator => playlistIterator.id === playlistId));
-});
-
-app.route('/api/playlists/:id').delete((request, response) => {
-  const playlistId = +request.params['id'];
-  PLAYLISTS = PLAYLISTS.filter(playlistIterator => playlistIterator.id !== playlistId);
-  response.status(204).send({});
-});
 
 var PLAYLISTS = [
   {
@@ -644,41 +779,6 @@ var PLAYLISTS = [
     id: 16
   }
 ];
-
-
-app.route('/api/favoritos').get((request, response) => {
-  console.log(FAVORITOS);
-  response.send(FAVORITOS);
-});
-
-app.route('/api/favoritos').post((request, response) => {
-  let favorito = request.body;
-  console.log(favorito);
-  const firstId = FAVORITOS ? Math.max.apply(null, FAVORITOS.map(favoritoIterator => favoritoIterator.id)) + 1 : 1;
-  favorito.id = firstId;
-  FAVORITOS.push(favorito);
-  response.status(201).send(favorito);
-});
-
-app.route('/api/favoritos/:id').put((request, response) => {
-  const favoritoId = +request.params['id'];
-  const favorito = request.body;
-  const index = FAVORITOS.findIndex(favoritoIterator => favoritoIterator.id === favoritoId);
-  FAVORITOS[index] = favorito;
-  response.status(200).send(favorito);
-});
-
-app.route('/api/favoritos/:id').get((request, response) => {
-  const favoritoId = +request.params['id'];
-  response.status(200).send(FAVORITOS.find(favoritoIterator => favoritoIterator.id === favoritoId));
-});
-
-app.route('/api/favoritos/:id').delete((request, response) => {
-  const favoritoId = +request.params['id'];
-  FAVORITOS = FAVORITOS.filter(favoritoIterator => favoritoIterator.id !== favoritoId);
-  response.status(204).send({});
-});
-
 
 var FAVORITOS = [
   {

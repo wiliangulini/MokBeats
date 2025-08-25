@@ -3,7 +3,7 @@
   <article class="one pb-5">
     <div class="container-fluid w-100 p-0">
       <div class="position-absolute" id="navLeft" style="width: 13vw;">
-        <ul class="w-100">
+        <<ul class="w-100">
           <div class="control">
             <li class="nav-item p-0 close border-0" (click)="filtrar()">
               <a class="nav-link d-flex justify-content-center align-items-center p-0 border-0" type="button">
@@ -33,13 +33,13 @@
           <div class="control">
             <li data-toggle="collapse" data-target="#collapse02" aria-expanded="true" aria-controls="collapse02"
               class="d-flex align-items-center justify-content-between w-100">
-              <p class="m-0">Cantada <span id="up" class="ml-1 text-uppercase">Novidade</span></p><span
+              <p class="m-0">Vozes <span id="up" class="ml-1 text-uppercase">Novidade</span></p><span
                 class="ml-3 material-icons">add</span>
             </li>
             <div class="accordion w-100" id="accordion2">
               <div class="card">
                 <div id="collapse02" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion2">
-                  <div class="div2 pt-3" *ngFor="let g of cantada;">
+                  <div class="div2 pt-3" *ngFor="let g of vozes;">
                     <mat-checkbox>{{g}}</mat-checkbox>
                   </div>
                 </div>
@@ -110,11 +110,7 @@
             <li class="d-flex align-items-center justify-content-between w-100">Instrumentos <span
                 class="ml-3 material-icons">add</span></li>
           </div>
-          <div class="control">
-            <li class="d-flex align-items-center justify-content-between w-100">Avançado <span
-                class="ml-3 material-icons">add</span></li>
-          </div>
-        </ul>
+        </ul>>
       </div>
       <div id="cf" class="container-fluid mr-0 pt-4">
         <div class="row">

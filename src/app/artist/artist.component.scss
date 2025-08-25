@@ -91,26 +91,6 @@ article.one .container-fluid #cf .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d
 article.one .container-fluid #cf .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.flex-column.align-items-start.justify-content-center {
   height: 60vh;
 }
-// article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu.show {
-//   display: flex !important;
-//   flex-direction: column;
-// }
-// article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown button.bttn {
-//   background: transparent;
-//   border-radius: 999px;
-//   border: 2px solid rgba(255,255,255,.2);
-//   color: #FFF;
-//   padding: 2.5% 18%;
-//   position: relative;
-//   right: 46%;
-// }
-// article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu {
-//   background: #FFF !important;
-// }
-// article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu .dropdown-item {
-//   color: #585858;
-//   cursor: pointer;
-// }
 
 .dropdown-menu.show,
 .dropdown-menu {
@@ -142,6 +122,7 @@ article.one .container-fluid #cf .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d
   border-radius: 999px; /* Cantos arredondados para o botão */
   padding: 10px 20px; /* Espaçamento interno do botão */
   transition: background-color 0.3s ease, border-color 0.3s ease; /* Transição suave */
+  margin-right: 10px;
 }
 
 .bttn.dropdown-toggle:hover,

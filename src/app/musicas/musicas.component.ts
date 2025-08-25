@@ -50,7 +50,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   currentTrackIndex = 0;
   isPlaying: boolean = false;
 
-  cantada: Array<any> = [
+  vozes: Array<any> = [
     "Amostras/Efeitos",
     "Cantores principais",
     "Coro/Grupo",

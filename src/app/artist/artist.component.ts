@@ -32,7 +32,7 @@ export class ArtistComponent implements OnInit, AfterViewInit {
   select: any = 'Mais Relevantes';
   $$: any;
 
-  cantada: Array<any> = [
+  vozes: Array<any> = [
     "Amostras/Efeitos",
     "Cantores principais",
     "Coro/Grupo",

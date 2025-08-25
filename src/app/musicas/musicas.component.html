@@ -17,8 +17,8 @@
                 </svg>
               </a>
             </li>
-            <li data-toggle="collapse" data-target="#collapse01" aria-expanded="true" aria-controls="collapse01"
-              class="d-flex align-items-center justify-content-between w-100">Estilos <span
+            <li data-toggle="collapse" data-target="#collapse01" aria-expanded="false" aria-controls="collapse01"
+              class="d-flex align-items-center justify-content-between w-100">Gênero <span
                 class="ml-3 material-icons">add</span></li>
             <div class="accordion w-100" id="accordion1">
               <div class="card">
@@ -36,13 +36,13 @@
           <div class="control">
             <li data-toggle="collapse" data-target="#collapse02" aria-expanded="true" aria-controls="collapse02"
               class="d-flex align-items-center justify-content-between w-100">
-              <p class="m-0">Cantada <span id="up" class="ml-1 text-uppercase">Novidade</span></p><span
+              <p class="m-0">Vozes <span id="up" class="ml-1 text-uppercase">Novidade</span></p><span
                 class="ml-3 material-icons">add</span>
             </li>
             <div class="accordion w-100" id="accordion2">
               <div class="card">
                 <div id="collapse02" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion2">
-                  <div class="div2 pt-3" *ngFor="let g of cantada;">
+                  <div class="div2 pt-3" *ngFor="let g of vozes;">
                     <mat-checkbox>{{g}}</mat-checkbox>
                   </div>
                 </div>
@@ -50,7 +50,7 @@
             </div>
           </div>
           <div class="control">
-            <li data-toggle="collapse" data-target="#collapse03" aria-expanded="true" aria-controls="collapse03"
+            <li data-toggle="collapse" data-target="#collapse03" aria-expanded="false" aria-controls="collapse03"
               class="d-flex align-items-center justify-content-between w-100">Humor <span
                 class="ml-3 material-icons">add</span></li>
             <div class="accordion w-100" id="accordion3">
@@ -113,10 +113,6 @@
             <li class="d-flex align-items-center justify-content-between w-100">Instrumentos <span
                 class="ml-3 material-icons">add</span></li>
           </div>
-          <div class="control">
-            <li class="d-flex align-items-center justify-content-between w-100">Avançado <span
-                class="ml-3 material-icons">add</span></li>
-          </div>
         </ul>
       </div>
       <div id="cf" class="container-fluid mr-0 pt-4">
@@ -125,9 +121,9 @@
             class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column align-items-start justify-content-center">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex p-0">
               <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 p-0">
-                <h4 class="mb-4">Músicas livres de direitos - Músicas incríveis esperam por você</h4>
-                <h6>Descubra nossas de músicas livres de direitos exclusivas. Pesquise, ordene e filtre para encontrar a
-                  música ideal.</h6>
+                <h4 class="mb-4">Músicas incríveis esperam por você.</h4>
+                <h6>Descubra nossa biblioteca musical livre de direitos. Pesquise, ordene, filtre e encontre a música
+                  ideal.</h6>
               </div>
               <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 d-flex justify-content-end align-items-center">
                 <div class="popularidade">
@@ -580,7 +576,5 @@
       </div>
     </div>
   </section>
-  <!--  <app-i18next-test></app-i18next-test>-->
-  <!--  <app-player></app-player>-->
   <app-footer></app-footer>
 </main>

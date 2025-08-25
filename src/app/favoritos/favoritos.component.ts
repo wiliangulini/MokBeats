@@ -19,7 +19,7 @@ import {FavoritosService} from "./favoritos.service";
   styleUrls: ['./favoritos.component.scss']
 })
 export class FavoritosComponent implements OnInit, AfterViewInit, AfterViewChecked {
-  
+
   fav: any;
   trecho: any[] = [15, 30, 60];
   loop: any[] = [1, 2, 3, 4, 5, 6, 7];
@@ -36,7 +36,7 @@ export class FavoritosComponent implements OnInit, AfterViewInit, AfterViewCheck
   formG!: FormGroup;
   frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
   select: string = 'Adicionada em';
-  cantada: Array<any> = [
+  vozes: Array<any> = [
     "Amostras/Efeitos",
     "Cantores principais",
     "Coro/Grupo",
@@ -97,7 +97,7 @@ export class FavoritosComponent implements OnInit, AfterViewInit, AfterViewCheck
     this.music = this.musicService.convertida;
     this.humor = this.musicService.humor;
   }
-  
+
   ngOnInit(): void {
     this.scrollService.scrollUp();
 
@@ -134,17 +134,17 @@ export class FavoritosComponent implements OnInit, AfterViewInit, AfterViewCheck
         e.style.display = 'block';
       })
     }, 500);
-    
-    
+
+
     let div: any = document.querySelector('.container-fluid.app');
     div.style.overflow = 'auto'
   }
-  
-  
+
+
   ngAfterViewChecked() {
     this.cdRef.detectChanges();
   }
-  
+
   curtir(i: number): void {
     this.likeService.curtir(i);
   }

@@ -18,7 +18,7 @@ export class EfeitosSonorosComponent implements OnInit, AfterViewInit {
   valor: any;
   frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
   select: any = 'Mais Relevantes';
-  cantada: Array<any> = [
+  vozes: Array<any> = [
     "Amostras/Efeitos",
     "Cantores principais",
     "Coro/Grupo",

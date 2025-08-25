@@ -88,26 +88,6 @@ article.one .container-fluid {
   width: calc(100vw - 14vw);
   transition: all .5s ease-in-out;
 }
-// article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu.show {
-//   display: flex !important;
-//   flex-direction: column;
-// }
-// article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown button.bttn {
-//   background: transparent;
-//   border-radius: 999px;
-//   border: 2px solid rgba(255,255,255,.2);
-//   color: #FFF;
-//   padding: 2.5% 18%;
-//   position: relative;
-//   right: 46%;
-// }
-// article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu {
-//   background: #FFF !important;
-// }
-// article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .popularidade .dropdown .dropdown-menu .dropdown-item {
-//   color: #585858;
-//   cursor: pointer;
-// }
 .dropdown-menu.show {
   display: flex !important;
   flex-direction: column;
@@ -406,7 +386,7 @@ article.one {
   top: 10px !important;
 }
 .dropdown-menu .dropdown-item {
-  padding: 0 .5rem;
+  padding: 0.75rem 0.5rem;
 }
 .dropdown-item .span,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.loops .span {

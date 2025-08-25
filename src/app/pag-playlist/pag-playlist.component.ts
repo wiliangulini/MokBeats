@@ -14,7 +14,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   styleUrls: ['./pag-playlist.component.scss']
 })
 export class PagPlaylistComponent implements OnInit {
-  
+
   public favorite: Musica = {};
   trecho: any[] = [15, 30, 60];
   loop: any[] = [1, 2, 3, 4, 5, 6, 7];
@@ -29,8 +29,8 @@ export class PagPlaylistComponent implements OnInit {
   formG!: FormGroup;
   frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
   select: any = 'Mais Relevantes';
-  
-  cantada: Array<any> = [
+
+  vozes: Array<any> = [
     "Amostras/Efeitos",
     "Cantores principais",
     "Coro/Grupo",
@@ -75,9 +75,9 @@ export class PagPlaylistComponent implements OnInit {
   _playlist: any;
   namePlaylist: any;
   descriptionPlaylist: any;
-  
+
   @Output('ngModelChange') update: any = new EventEmitter();
-  
+
   constructor(
     private musicService: MusicasService,
     private authService: AuthService,
@@ -96,11 +96,11 @@ export class PagPlaylistComponent implements OnInit {
     this.music = this.musicService.convertida;
     this.humor = this.musicService.humor;
   }
-  
+
   ngOnInit(): void {
     this.scrollService.scrollUp();
     if (screen.width < 769) document.getElementById('navLeft')!.style.width = '0';
-    
+
     this.route.queryParams.subscribe((data: any) => {
       this._playlist = data;
       this.playlistService.list().subscribe((data: any) => {
@@ -117,13 +117,13 @@ export class PagPlaylistComponent implements OnInit {
       });
     });
   }
-  
+
   msToMinute(ms: any) {
     let minutes: any = Math.floor(ms / 60000);
     let seconds: any = ((ms % 60000) / 1000).toFixed(0);
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
-  
+
   curtir(i: number): void {
     this.favorite.id = this.arrMusica[i].id;
     this.favorite.nome_musica = this.arrMusica[i].nome_musica;
@@ -133,9 +133,9 @@ export class PagPlaylistComponent implements OnInit {
     this.favorite.trechos = this.arrMusica[i].trechos;
     this.favorite.loops = this.arrMusica[i].loops;
     this.musicService.sendFavorite(i, this.favorite);
-    
+
   }
-  
+
   filtrar(): void {
     let navleft = document.getElementById('navLeft');
     if(navleft!.getAttribute('style') == 'width: 0px;' || navleft!.getAttribute('style') == 'width: 0px; opacity: 0; z-index: 0;') {
@@ -148,7 +148,7 @@ export class PagPlaylistComponent implements OnInit {
       navleft!.style.zIndex = '0';
     }
   }
-  
+
   removeMusicPlayList(i: any): void {
     let idRemove: number = this.playlist.music[i].id;
     this.playlist.music = this.playlist.music.filter((obj: any) => obj.id !== idRemove);
@@ -158,7 +158,7 @@ export class PagPlaylistComponent implements OnInit {
       document.location.reload();
     }, 5500)
   }
-  
+
   save() {
     console.log(this.playlist);
     this.playlistService.save(this.playlist).subscribe((data: any) => {
@@ -170,9 +170,9 @@ export class PagPlaylistComponent implements OnInit {
       }
     });
   }
-  
+
   copiarLink(i: number): void { this.musicService.copiarLink(i); }
-  
+
   baixarAmostra(i: number): void {
     this.authService.verificaLogin();
     if(this.authService.userAutetic()) {
@@ -182,19 +182,19 @@ export class PagPlaylistComponent implements OnInit {
       this.musicService.baixarAmostra(i, this.musicDownload);
     }
   }
-  
+
   comprarLicensa(i: number): void { this.musicService.comprarLicensa(i); }
-  
+
   filtroP(e: any): void { this.select = e; }
-  
+
   onChangedEvent(event: any, elem: any): void {
     elem == 'bpm' ? this.number = event : this.duration = event;
-    
+
     if(elem == 'duracao') {
       let dateObj: any = new Date(this.duration * 1000);
       let minutes: any = dateObj.getUTCMinutes();
       let seconds: any = dateObj.getSeconds();
-      
+
       let timeString: any = minutes.toString().padStart(1) + ':' + seconds.toString().padStart(2, '0');
       this.durationAut = timeString;
     }

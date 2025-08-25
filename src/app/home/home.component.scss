@@ -51,6 +51,7 @@ form.form, #genero {
   font-weight: bold;
   text-transform: uppercase;
   outline: none;
+  padding-left: 2rem;
 }
 .form-group {
   margin: 0 !important;
@@ -109,6 +110,7 @@ input.form-control.mr-sm-2::placeholder {
 }
 .form-group {
   border-right: 1px solid #ddd;
+  padding-right: 15px;
 }
 button.btn-outline-success {
   height: 90%;
@@ -116,22 +118,6 @@ button.btn-outline-success {
   border-radius: 999px !important;
   margin: 6px 6px 0 !important;
 }
-
-//section.one .container .row h2,
-//section.one .container .row h3,
-//section.one .material-icons,
-//section.one .text p.h4 a,
-//section.one .text p.h6 a,
-//section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2 p,
-//section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 button.btn.btn-primary,
-//article h1, article h3,
-//section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p,
-//section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 a.btn,
-//section.three .container .row.trusted p,
-//section.four .container .row,
-//section.three {
-//  text-shadow: 0 0 8px #000;
-//}
 
 article h1, article h3,
 section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p,
@@ -246,15 +232,15 @@ section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p
 }
 section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h5 {
   font-size: 18px;
-  padding-right: 8%;
 }
 section.three .container .row.trusted {
   background: linear-gradient(45deg, #4B3A8F, #2f1ef1, #7b009c);
 }
 section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn {
-  width: 52%;
+  width: 63%;
   font-size: 17px;
   margin-top: 6%;
+  padding: 10px 0;
 }
 section.three {
   padding-bottom: 4.5% !important;
