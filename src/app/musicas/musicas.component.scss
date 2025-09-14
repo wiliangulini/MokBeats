@@ -845,12 +845,69 @@ nav ul.pagination li.page-item.next a span {
   .controlDivsInt.row {
     margin: 0;
     justify-content: space-around;
+    flex-wrap: nowrap;
   }
   /* A renderização agora é controlada por *ngIf em TS */
   article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 {
     padding-left: 0;
   }
 
+}
+
+/* Esconde Duração/BPM e Loops abaixo de 1366px */
+@media only screen and (max-width: 1365px) {
+  article.one .controlDivsInt .col-sm-1.col-md-1.col-lg-1.col-xl-1.one,
+  article.one .controlDivsInt .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops {
+    display: none !important;
+  }
+}
+
+/* Layout em linha para tablets (>=768px) até 1024px */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  article.one .controlDivsInt.row {
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+  article.one .controlDivsInt.row .info-col {
+    flex: 0 0 30% !important;
+    max-width: 30% !important;
+  }
+  article.one .controlDivsInt.row .wavesurfer {
+    flex: 1 1 50% !important;
+    max-width: 50% !important;
+  }
+  article.one .controlDivsInt.row .actions-col {
+    flex: 0 0 8% !important;
+    max-width: 8% !important;
+  }
+  article.one .controlDivsInt.row .licenca {
+    flex: 0 0 12% !important;
+    max-width: 12% !important;
+  }
+}
+
+/* Layout em linha para 1025px–1365px mantendo waveform maior */
+@media only screen and (min-width: 1025px) and (max-width: 1365px) {
+  article.one .controlDivsInt.row {
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+  article.one .controlDivsInt.row .info-col {
+    flex: 0 0 35% !important;
+    max-width: 35% !important;
+  }
+  article.one .controlDivsInt.row .wavesurfer {
+    flex: 1 1 45% !important;
+    max-width: 45% !important;
+  }
+  article.one .controlDivsInt.row .actions-col {
+    flex: 0 0 8% !important;
+    max-width: 8% !important;
+  }
+  article.one .controlDivsInt.row .licenca {
+    flex: 0 0 12% !important;
+    max-width: 12% !important;
+  }
 }
 @media only screen and (min-width: 300px) and (max-width: 374px) {
   .col-xl, .col-xl-auto, .col-xl-12, .col-xl-11, .col-xl-10, .col-xl-9, .col-xl-8, .col-xl-7, .col-xl-6, .col-xl-5, .col-xl-4, .col-xl-3, .col-xl-2, .col-xl-1, .col-lg, .col-lg-auto, .col-lg-12, .col-lg-11, .col-lg-10, .col-lg-9, .col-lg-8, .col-lg-7, .col-lg-6, .col-lg-5, .col-lg-4, .col-lg-3, .col-lg-2, .col-lg-1, .col-md, .col-md-auto, .col-md-12, .col-md-11, .col-md-10, .col-md-9, .col-md-8, .col-md-7, .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2, .col-md-1, .col-sm, .col-sm-auto, .col-sm-12, .col-sm-11, .col-sm-10, .col-sm-9, .col-sm-8, .col-sm-7, .col-sm-6, .col-sm-5, .col-sm-4, .col-sm-3, .col-sm-2, .col-sm-1, .col, .col-auto, .col-12, .col-11, .col-10, .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2, .col-1 {
