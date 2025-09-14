@@ -215,3 +215,35 @@ main .container-fluid .row.justify-content-center .col-sm-9.col-md-9.col-lg-9.co
   font-size: 80px;
   margin-bottom: 2%;
 }
+
+/* Responsividade */
+@media (max-width: 575.98px) {
+  main { margin-top: 8vh; }
+  main .container-fluid .row form { flex-direction: column; }
+  main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6,
+  .resumoCompra { flex: 0 0 100% !important; max-width: 100% !important; }
+  main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .card {
+    width: 95%; padding: 20px; box-shadow: 0 0 8px 0 #DDD;
+  }
+  main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column p.h2.font-weight-bold {
+    font-size: 28px;
+  }
+  main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column p.h6.mb-5 { font-size: 16px; }
+  main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .card .form-check { padding: 16px; }
+  main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .card .form-check .imgs { width: auto; }
+  main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column button[type='submit'].btn.btn-primary.font-weight-bold.text-uppercase { width: 100%; height: 52px; font-size: 16px; }
+  main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .form-group.d-flex.justify-content-start.align-items-center { width: 95%; }
+  .resumoCompra { padding: 24px 16px !important; }
+  .resumoCompra .total { margin-top: 24px; }
+  .resumoCompra .total .economize.d-flex { flex-direction: column; text-align: center; }
+  .resumoCompra .total .economize.d-flex .w-75, .resumoCompra .total .economize.d-flex .w-25 { width: 100% !important; }
+  .resumoCompra .security .securityInt, .resumoCompra .security .securityInt2 { width: 100%; }
+  main .container-fluid .row.justify-content-center .col-sm-9.col-md-9.col-lg-9.col-xl-9.d-flex.flex-column.align-items-center.justify-content-center a.font-weight-bold.text-uppercase.text-center.btn { width: 90%; height: 44px; font-size: 16px; }
+}
+@media (min-width: 768px) and (max-width: 1024.98px) {
+  main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .card { width: 85%; }
+  main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column button[type='submit'].btn.btn-primary.font-weight-bold.text-uppercase { width: 75%; }
+}
+@media (min-width: 1440px) {
+  main .container-fluid .row form .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.justify-content-center.align-items-center.flex-column .card { width: 70%; }
+}

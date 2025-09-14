@@ -43,3 +43,16 @@ section .container .row .div2 .navMusicas:hover {
   color: #4B3A8F !important;
   padding: 1.5% 0 !important;
 }
+
+/* Responsividade */
+@media (max-width: 575.98px) {
+  h1 { font-size: 26px; }
+  section .container .row .titleSearch { flex-direction: column; }
+  section .container .row .titleSearch > div { max-width: 100% !important; flex: 0 0 100% !important; }
+  section .container .row .titleSearch form span { width: 48px; right: 0; padding-left: 0; justify-content: center; }
+  section .container .row .titleSearch form input { border-radius: 0 999px 999px 0; }
+  section .container .row .div2 .navMusicas { width: 100%; font-size: 16px; padding: 12px 0; }
+}
+@media (min-width: 768px) and (max-width: 1024.98px) {
+  section .container .row .div2 .navMusicas { width: 50%; }
+}

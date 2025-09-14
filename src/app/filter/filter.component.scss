@@ -183,4 +183,9 @@ button.btn.btn-warning a {
     display: none !important;
   }
 
+  #humorAccordion .container-fluid .row button.btn.btn-warning,
+  #generoAccordion .container-fluid .row button.btn.btn-warning {
+    width: 100%;
+  }
+
 }

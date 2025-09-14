@@ -17,3 +17,15 @@ a.nav-link.h5.mb-0 {
 .talk {
   border-bottom: 1px solid;
 }
+
+/* Responsividade */
+@media (max-width: 575.98px) {
+  section { height: auto; padding: 8px 0; }
+  nav.w-100 { flex-wrap: wrap; }
+  nav .col-sm-2.col-md-2.col-lg-2.col-xl-2 { flex: 0 0 100%; max-width: 100%; margin-bottom: 8px; }
+  nav .navbar { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; flex: 0 0 100%; max-width: 100%; }
+  nav .navbar .nav-item { display: inline-block; }
+}
+@media (min-width: 768px) and (max-width: 1024.98px) {
+  section { height: auto; }
+}

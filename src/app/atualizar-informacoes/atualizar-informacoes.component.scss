@@ -41,3 +41,16 @@ form button.btn-warning:hover {
   color: #4B3A8F !important;
   padding: 1.5% 0 !important;
 }
+
+/* Responsividade */
+@media (max-width: 575.98px) {
+  h1.titleInt { font-size: 26px; }
+  .card { padding: 20px; }
+  input { font-size: 16px; }
+  .controlInt { flex-direction: column !important; }
+  .controlInt .w-50 { width: 100% !important; margin: 0 0 16px 0 !important; }
+  form button.btn-warning { width: 100%; padding: 12px 0; }
+}
+@media (min-width: 768px) and (max-width: 1024.98px) {
+  form button.btn-warning { width: 75%; }
+}

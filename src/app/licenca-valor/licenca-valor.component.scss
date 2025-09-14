@@ -193,3 +193,25 @@ section.faq.access .container .row .col-sm-8.col-md-8.col-lg-10.col-xl-12 a.btn.
   width: 30%;
   cursor: pointer;
 }
+
+/* Responsividade */
+@media (max-width: 575.98px) {
+  main { margin-top: 8vh; }
+  section.one .container { max-width: 100% !important; top: 0; }
+  section.one .container .row { margin: 0; }
+  section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card { max-width: 100%; flex: 0 0 100%; margin-bottom: 16px; }
+  section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body { height: auto; }
+  #myTab, #myTab1, #myTab2 { padding: 6px; border-radius: 16px; }
+  #myTab .nav-item a, #myTab1 .nav-item a, #myTab2 .nav-item a { font-size: 16px; }
+  section.two { padding: 32px 0; }
+  section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 p.h1 { font-size: 28px; text-align: center; }
+  section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 p.h5 { font-size: 16px; text-align: center; }
+  .table-responsive { overflow-x: auto; }
+}
+@media (min-width: 768px) and (max-width: 1024.98px) {
+  section.one .container { max-width: 90% !important; top: 0; }
+  section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card { max-width: 48%; flex: 0 0 48%; }
+}
+@media (min-width: 1440px) {
+  section.one .container { max-width: 70% !important; }
+}

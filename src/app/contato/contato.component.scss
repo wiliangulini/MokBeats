@@ -37,3 +37,14 @@ span.mail {
   background-color: #38b553;
   color: #FFF;
 }
+
+/* Responsividade */
+@media (max-width: 575.98px) {
+  section .container { padding: 24px 16px; border-radius: 12px; }
+  section .container .row div h1 { font-size: 28px; padding: 0; }
+  section .container .row .card { max-width: 100%; flex: 0 0 100%; max-height: unset; height: auto; margin-bottom: 16px; }
+  .btn.btn-whats { width: 100%; }
+}
+@media (min-width: 768px) and (max-width: 1024.98px) {
+  section .container .row .card { max-width: 100%; flex: 0 0 100%; }
+}

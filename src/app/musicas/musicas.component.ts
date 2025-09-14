@@ -3,6 +3,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  HostListener,
   EventEmitter,
   OnInit,
   Output,
@@ -30,6 +31,8 @@ import WaveSurfer from "wavesurfer.js";
 })
 export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked {
   isLoading: boolean = true;
+  // Controla renderização do waveform por breakpoint
+  isDesktop: boolean = true;
   @ViewChildren(WaveSurferTestComponent) waveSurfers!: QueryList<WaveSurferTestComponent>;
   public favorite: Musica = {};
   trecho: any[] = [15, 30, 60];
@@ -134,11 +137,18 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   ngOnInit(): void {
     this.scrollService.scrollUp();
+    // Define se deve renderizar o waveform na página músicas (>=768px)
+    this.isDesktop = window.innerWidth >= 768;
     if (screen.width < 769) {
       document.getElementById('navLeft')!.style.width = '0';
     }
     this.loadArtistas();
     this.loadInstrumentos();
+  }
+
+  @HostListener('window:resize', [])
+  onResize() {
+    this.isDesktop = window.innerWidth >= 768;
   }
 
   ngAfterViewInit() {
@@ -250,15 +260,30 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     });
 
     this.currentTrackIndex = this.playMusic.id - 1;
-    if(this.isPlaying) {
-      const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
-      if (currentWaveSurfer) {
+    if (this.isDesktop) {
+      if(this.isPlaying) {
+        const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
+        if (currentWaveSurfer) {
+          this.musicPlayerService.onPlayPause('pause', this.id);
+          this.toogleButton();
+          this.isPlaying = false;
+        }
+      } else {
+        this.playNextTrack();
+      }
+    } else {
+      // Mobile: não depende do componente WaveSurfer na lista
+      if (this.isPlaying) {
         this.musicPlayerService.onPlayPause('pause', this.id);
         this.toogleButton();
         this.isPlaying = false;
+      } else {
+        this.musicPlayerService.setCurrentMusicID(this.playMusic.id);
+        this.musicPlayerService.setCurrentMusicUrl(this.playMusic.url);
+        this.musicPlayerService.onPlayPause('play', this.id);
+        this.toogleButton();
+        this.isPlaying = true;
       }
-    } else {
-      this.playNextTrack();
     }
   }
 
@@ -282,15 +307,26 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   playNextTrack() {
-    const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
-    if (currentWaveSurfer) {
-      console.log(currentWaveSurfer)
-      this.playMusic = currentWaveSurfer.music;
-      this.musicPlayerService.setCurrentMusicID(this.playMusic.id);
-      this.musicPlayerService.setCurrentMusicUrl(this.playMusic.url);
-      this.musicPlayerService.onPlayPause('play', this.id);
-      this.toogleButton();
-      this.isPlaying = true;
+    if (this.isDesktop) {
+      const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
+      if (currentWaveSurfer) {
+        console.log(currentWaveSurfer)
+        this.playMusic = currentWaveSurfer.music;
+        this.musicPlayerService.setCurrentMusicID(this.playMusic.id);
+        this.musicPlayerService.setCurrentMusicUrl(this.playMusic.url);
+        this.musicPlayerService.onPlayPause('play', this.id);
+        this.toogleButton();
+        this.isPlaying = true;
+      }
+    } else {
+      // Mobile: avança e toca via serviço
+      if (this.playMusic) {
+        this.musicPlayerService.setCurrentMusicID(this.playMusic.id);
+        this.musicPlayerService.setCurrentMusicUrl(this.playMusic.url);
+        this.musicPlayerService.onPlayPause('play', this.id);
+        this.toogleButton();
+        this.isPlaying = true;
+      }
     }
   }
 

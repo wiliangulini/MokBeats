@@ -130,7 +130,8 @@
               <div class="card">
                 <div id="collapse07" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion7">
                   <div class="div2 pt-3" *ngFor="let instrumento of instrumentos;">
-                    <mat-checkbox [value]="instrumento" (change)="onInstrumentoChange($event)">{{instrumento}}</mat-checkbox>
+                    <mat-checkbox [value]="instrumento"
+                      (change)="onInstrumentoChange($event)">{{instrumento}}</mat-checkbox>
                   </div>
                 </div>
               </div>
@@ -235,7 +236,7 @@
                         (songFinished)="onSongFinished(i)"
                       >
                       </app-wavesurfer>-->
-                  <app-wave-surfer-test [music]="itens" [idContainer]="'waveform-' + i"
+                  <app-wave-surfer-test *ngIf="isDesktop" [music]="itens" [idContainer]="'waveform-' + i"
                     (songFinished)="onSongFinished(i)"></app-wave-surfer-test>
                 </div>
                 <div

@@ -804,6 +804,10 @@ nav ul.pagination li.page-item.next a span {
   display: none;
 }
 @media only screen and (min-width: 320px) and (max-width: 768px) {
+  #imgPerfil {
+    width: 100% !important;
+    height: auto !important;
+  }
   article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 .visualizacao {
     display: none;
   }

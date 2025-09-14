@@ -846,6 +846,7 @@ nav ul.pagination li.page-item.next a span {
     margin: 0;
     justify-content: space-around;
   }
+  /* A renderização agora é controlada por *ngIf em TS */
   article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-4.col-md-4.col-lg-4.col-xl-4 {
     padding-left: 0;
   }

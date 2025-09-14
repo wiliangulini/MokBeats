@@ -39,3 +39,15 @@ button.btn.btn-warning.text-uppercase.p14 span.material-icons,
 .modal-body .card .row.newPlayList div.d-flex p.h6.mb-0.font-weight-bold {
   font-family: WalsheimBold;
 }
+
+/* Responsividade */
+@media (max-width: 575.98px) {
+  .modal-dialog { margin: 0; max-width: 100% !important; }
+  .modal-body .card.border-0 { padding: 0 16px 20px 16px; }
+  h1.font-weight-bold { font-size: 22px; }
+  .modal-body .card .row.newPlayList div.d-flex.justify-content-between.align-items-center.w-100 {
+    min-height: 72px;
+    padding: 16px 0;
+  }
+  .buttons .btn { padding: 6px 12px; }
+}

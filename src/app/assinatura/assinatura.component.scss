@@ -38,3 +38,18 @@ section .container .row .assinatura .btn-warning:hover {
 section .container .row .contato a.h5 {
   color: #4B3A8F;
 }
+
+/* Responsividade */
+@media (max-width: 575.98px) {
+  h1 { font-size: 28px; }
+  section .container .row .assinatura p.h5.text-center { width: 100%; font-size: 16px; }
+  section .container .row .assinatura .btn-warning { width: 100%; padding: 12px 0; }
+  section .container .row .contato a.h5,
+  section .container .row .contato p.h5 { font-size: 16px; }
+}
+@media (min-width: 576px) and (max-width: 767.98px) {
+  section .container .row .assinatura .btn-warning { width: 75%; }
+}
+@media (min-width: 1440px) {
+  section { padding: 3% 0; }
+}

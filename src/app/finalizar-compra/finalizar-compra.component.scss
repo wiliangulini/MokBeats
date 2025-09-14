@@ -54,3 +54,22 @@ small.total .h6.h5.font-weight-bold.text-uppercase {
 p.h5.mb-5 {
   font-size: 18px !important;
 }
+
+/* Responsividade */
+@media (max-width: 575.98px) {
+  section { margin-top: 8vh; padding: 24px 0; }
+  h1.titleInt { font-size: 26px; }
+  .card { padding: 20px; }
+  input { font-size: 16px; }
+  input.numeroCartao { max-width: 100% !important; }
+  section .container-fluid .row { width: 100% !important; margin: 0; }
+  section .container-fluid .row form button.btn-warning { width: 100%; padding: 12px 0; }
+  .matRadioBtn { margin-right: 8px; }
+}
+@media (min-width: 768px) and (max-width: 1024.98px) {
+  section .container-fluid .row { width: 90%; }
+  section .container-fluid .row form button.btn-warning { width: 75%; }
+}
+@media (min-width: 1440px) {
+  section { padding: 3% 0; }
+}

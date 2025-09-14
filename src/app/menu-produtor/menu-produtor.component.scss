@@ -53,3 +53,21 @@ button.btn.btn-secondary.w-75 {
   width: 40%;
   padding: 1.5%;
 }
+
+/* Responsividade */
+@media (max-width: 575.98px) {
+  .modal-content {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+    border-radius: 0;
+  }
+  .card.pl-4.pr-4.pb-3.pt-3.flex-column { width: 100%; margin-left: 0; padding: 16px; }
+  .indique span.material-icons { font-size: 28px; }
+  .controlCard { flex-direction: column; }
+  .controlCard .card.likes,
+  .controlCard .card.playlist { width: 100%; margin-bottom: 12px; }
+  button.btn.btn-secondary.w-75 { position: static; width: 100%; margin-top: 16px; }
+}
+@media (min-width: 768px) and (max-width: 1024.98px) {
+  .modal-content { right: 0; left: 0; top: 5vh; bottom: 5vh; margin: 0 16px; }
+}

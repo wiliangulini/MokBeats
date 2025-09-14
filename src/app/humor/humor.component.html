@@ -1,13 +1,13 @@
 <app-filter></app-filter>
-<section id="genero" class="genero pl-5 pt-0 pr-5 pb-3">
+<section id="genero" class="genero px-3 px-lg-5 pt-0 pb-3">
   <div class="container-fluid">
     <div class="row title justify-content-start align-items-center mb-5">
       <h1>Humor</h1>
     </div>
-    <div class="row mb-5">
-      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 w-100" style="column-count: 5; column-fill: balance">
-        <div class="div2 pt-3 pb-3" *ngFor="let g of humor;" style="break-inside: avoid-column;">
-          <a href="" class="h5">{{ g }}</a>
+    <div class="row mb-5 row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-3">
+      <div class="col" *ngFor="let g of humor;">
+        <div class="div2 pt-3 pb-3 h-100">
+          <a href="" class="h5 d-block">{{ g }}</a>
         </div>
       </div>
     </div>

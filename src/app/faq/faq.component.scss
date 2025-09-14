@@ -103,3 +103,20 @@ section.faqTxt .container .row .assinatura.w-75 p.h1 {
 .talk:hover {
   font-weight: bold;
 }
+
+/* Responsividade */
+@media (max-width: 575.98px) {
+  section.faq { height: auto; padding: 40px 0; }
+  section.faq .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 h1 { font-size: 32px; width: 100%; }
+  section.faq .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 p.h5 { width: 100%; font-size: 16px; }
+  section.faqTxt .container .row { flex-direction: column; }
+  section.faqTxt .container .row .menuLeft.w-25, section.faqTxt .container .row .control.w-75 { width: 100% !important; }
+  section.faqTxt .container .row .menuLeft.w-25 ul li { margin-bottom: 10px; }
+  section.faqTxt .container .row .control.w-75 > div { width: 100% !important; }
+  table.license thead th, table.license tbody th, table.license tbody td { padding: 12px; }
+}
+@media (min-width: 768px) and (max-width: 1024.98px) {
+  section.faq .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 h1 { font-size: 42px; width: 60%; }
+  section.faqTxt .container .row .menuLeft.w-25 { width: 35% !important; }
+  section.faqTxt .container .row .control.w-75 { width: 65% !important; }
+}
