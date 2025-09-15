@@ -458,8 +458,9 @@ export class MusicasService extends CrudService<Musica> {
     return this.http.post(`${environment.API}musicas/filtro`, filtros);
   }
 
-  getGenresFull(): Observable<any> {
-    return this.http.get(`${environment.API}genres-full`);
+  getGenresFull(query?: string): Observable<any> {
+    const opts: any = query ? { params: { q: query } } : {};
+    return this.http.get(`${environment.API}genres-full`, opts);
   }
 
   getSubgeneros(genero: string): Observable<any> {
@@ -467,7 +468,8 @@ export class MusicasService extends CrudService<Musica> {
   }
 
   getStemsByMusicId(id: number): Observable<any> {
-    return this.http.get(`${environment.API}musicas/${id}/stems`);
+    // Usa o endpoint mais novo (alias de compatibilidade no backend)
+    return this.http.get(`${environment.API}tracks/${id}/stems`);
   }
 
   getLatestUniqueByProducer(limit: number): Observable<any> {

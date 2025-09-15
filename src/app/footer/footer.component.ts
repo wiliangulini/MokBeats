@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {ScrollService} from "../service/scroll.service";
+import { ConfigService } from "../service/config.service";
 
 @Component({
   selector: 'app-footer',
@@ -37,15 +38,23 @@ export class FooterComponent implements OnInit {
     {value: 'HUB', viewValue: 'HUB'},
   ];
 
-  url: string = 'https://api.whatsapp.com/send?phone=5546991161666&text=Entre+em+contato+agora';
+  url: string = 'https://wa.me/5546991161666';
   // ao clicar no botao do rodape deve redirecionar o link, fazer evento de click com addEventListener
 
   constructor(
     private router: Router,
     private scrollService: ScrollService,
+    private configService: ConfigService,
   ) { }
 
   ngOnInit(): void {
+    // Carrega número de WhatsApp do backend e normaliza para wa.me/E.164
+    this.configService.getConfig().subscribe((cfg: any) => {
+      try {
+        const digits = String(cfg?.whatsapp || '').replace(/\D+/g, '');
+        if (digits) this.url = `https://wa.me/${digits}`;
+      } catch (_) {}
+    });
   }
 
   infoFunction(data: string) {
@@ -59,10 +68,7 @@ export class FooterComponent implements OnInit {
     } else if(data === 'Informações de Licença') {
       this.router.navigate(['/preco']).then();
     } else if(data === 'Fale Conosco via WhatsApp') {
-      this.scrollService.scrollUp();
-      setTimeout(() => {
-        location.reload();
-      }, 750);
+      window.open(this.url, '_blank');
     }
   }
 

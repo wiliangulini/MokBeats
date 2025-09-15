@@ -359,7 +359,10 @@
             </div>
           </div>
         </div>
-        <div class="submitForm w-100 d-flex justify-content-center align-items-center">
+        <div class="submitForm w-100 d-flex justify-content-between align-items-center">
+          <button type="button" class="btn btn-secondary" title="Em breve" disabled>
+            Registro blockchain (API)
+          </button>
           <button type="button" class="btn btn-primary btnSubmit" (click)="onUpload()" [disabled]="form.invalid || !files">ENVIAR</button>
         </div>
       </form>

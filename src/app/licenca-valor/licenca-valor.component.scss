@@ -64,6 +64,24 @@ section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card {
   flex: 0 0 32.5%;
   padding-top: 35px;
 }
+/* Destaque de proporções: laterais menores, centro maior */
+section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.one,
+section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.three {
+  transform: scale(0.9);
+}
+section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.two {
+  transform: scale(1.12);
+  z-index: 2;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+@media (max-width: 991.98px) {
+  section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.one,
+  section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.two,
+  section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.three {
+    transform: none;
+    box-shadow: none;
+  }
+}
 section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-header,
 section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-footer {
   background: transparent;

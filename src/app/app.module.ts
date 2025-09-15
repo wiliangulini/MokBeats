@@ -31,6 +31,7 @@ import {MusicasComponent} from './musicas/musicas.component';
 import {MusicasService} from "./musicas/musicas.service";
 import {PoliticaPrivacidadeComponent} from './politica-privacidade/politica-privacidade.component';
 import {ScrollService} from "./service/scroll.service";
+import { ConfigService } from './service/config.service';
 import {FaqComponent} from './faq/faq.component';
 import {ProdutoresComponent} from './produtores/produtores.component';
 import {MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule} from "@angular/material/radio";
@@ -140,6 +141,7 @@ import { PlaceholderEllipsisDirective } from './directives/placeholder-ellipsis.
     EfeitosSonorosService,
     ScrollService,
     FavoritosService,
+    ConfigService,
     {
       provide: MAT_RADIO_DEFAULT_OPTIONS,
       useValue: { color: 'accent' },
