@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "build": "ng build --configuration=production",
+    "build": "ng build --configuration=production --base-href /",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:focus": "ng run MokBeats_FrontEnd:test-focus --watch=false --browsers=ChromeHeadless",
