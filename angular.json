@@ -113,6 +113,28 @@
               "node_modules/bootstrap/dist/js/bootstrap.bundle.js"
             ]
           }
+        },
+        "test-focus": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.focus.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.focus.json",
+            "karmaConfig": "karma.conf.js",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "src/styles.scss"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.js"
+            ]
+          }
         }
       }
     }

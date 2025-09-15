@@ -6,21 +6,65 @@
         <div class="title mb-5">
           <h1 class="titleInt font-weight-bold">Informações de Contato</h1>
         </div>
-        <form class="d-flex flex-column justify-content-center align-items-center w-100" [formGroup]="form">
+        <form class="d-flex flex-column justify-content-center align-items-center w-100" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div #errorSummaryRef class="alert alert-danger w-100" *ngIf="submitted && (form.invalid || errorSummary.length)">
+            <strong>Por favor, corrija os itens abaixo:</strong>
+            <ul class="mb-0">
+              <li *ngFor="let msg of errorSummary">{{ msg }}</li>
+            </ul>
+          </div>
           <div class="card mb-4">
-            <input type="text" formControlName="nomeContato" placeholder="Nome de Contato" class="w-100" required/>
-            <input type="text" formControlName="nomeEmpresa" placeholder="Nome da Empresa" class="w-100" />
-            <input type="number" formControlName="numberPhone" placeholder="Número de Telefone" class="w-100" required/>
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>Nome de Contato</mat-label>
+              <input matInput type="text" formControlName="nomeContato" placeholder="Nome de Contato" required />
+              <mat-error *ngIf="form.get('nomeContato')?.hasError('required') && (form.get('nomeContato')?.dirty || form.get('nomeContato')?.touched)">Nome de Contato é obrigatório.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>Nome da Empresa</mat-label>
+              <input matInput type="text" formControlName="nomeEmpresa" placeholder="Nome da Empresa" />
+              <mat-error *ngIf="form.get('nomeEmpresa')?.hasError('required') && (form.get('nomeEmpresa')?.dirty || form.get('nomeEmpresa')?.touched)">Nome da Empresa é obrigatório.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>Número de Telefone</mat-label>
+              <input matInput type="tel" formControlName="numberPhone" placeholder="Número de Telefone" required />
+              <mat-error *ngIf="form.get('numberPhone')?.hasError('required') && (form.get('numberPhone')?.dirty || form.get('numberPhone')?.touched)">Número de Telefone é obrigatório.</mat-error>
+            </mat-form-field>
+
             <div class="controlInt d-flex justify-content-center align-items-center w-100">
-              <input type="text" formControlName="pais" placeholder="País" class="w-50 mr-2" required/>
-              <input type="text" formControlName="estado" placeholder="Estado" class="w-50 ml-2" required/>
+              <mat-form-field appearance="fill" class="w-50 mr-2 mb-3">
+                <mat-label>País</mat-label>
+                <input matInput type="text" formControlName="pais" placeholder="País" required />
+                <mat-error *ngIf="form.get('pais')?.hasError('required') && (form.get('pais')?.dirty || form.get('pais')?.touched)">País é obrigatório.</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="w-50 ml-2 mb-3">
+                <mat-label>Estado</mat-label>
+                <input matInput type="text" formControlName="estado" placeholder="Estado" required />
+                <mat-error *ngIf="form.get('estado')?.hasError('required') && (form.get('estado')?.dirty || form.get('estado')?.touched)">Estado é obrigatório.</mat-error>
+              </mat-form-field>
             </div>
-            <input type="text" formControlName="endereco" placeholder="Endereço" class="w-100" required/>
+
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>Endereço</mat-label>
+              <input matInput type="text" formControlName="endereco" placeholder="Endereço" required />
+              <mat-error *ngIf="form.get('endereco')?.hasError('required') && (form.get('endereco')?.dirty || form.get('endereco')?.touched)">Endereço é obrigatório.</mat-error>
+            </mat-form-field>
+
             <div class="controlInt d-flex justify-content-center align-items-center w-100">
-              <input type="text" formControlName="cidade" placeholder="Cidade" class="w-50 mr-2" required/>
-              <input type="text" formControlName="cep" placeholder="CEP" class="w-50 ml-2" required/>
+              <mat-form-field appearance="fill" class="w-50 mr-2 mb-3">
+                <mat-label>Cidade</mat-label>
+                <input matInput type="text" formControlName="cidade" placeholder="Cidade" required />
+                <mat-error *ngIf="form.get('cidade')?.hasError('required') && (form.get('cidade')?.dirty || form.get('cidade')?.touched)">Cidade é obrigatória.</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="w-50 ml-2 mb-3">
+                <mat-label>CEP</mat-label>
+                <input matInput type="text" formControlName="cep" placeholder="CEP" required />
+                <mat-error *ngIf="form.get('cep')?.hasError('required') && (form.get('cep')?.dirty || form.get('cep')?.touched)">CEP é obrigatório.</mat-error>
+              </mat-form-field>
             </div>
-            <button type="submit" class="btn-warning font-weight-bold text-uppercase text-center">atualizar informações</button>
+
+            <button type="submit" class="btn-warning font-weight-bold text-uppercase text-center" [disabled]="form.invalid">atualizar informações</button>
           </div>
         </form>
       </div>

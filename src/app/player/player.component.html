@@ -162,6 +162,9 @@
           track custom
           <span class="material-icons iconTrackCustom">keyboard_arrow_down</span>
         </button>
+        <button type="button" (click)="resetStems()" class="font-weight-bold text-uppercase text-center">
+          reset volumes
+        </button>
       </div>
     </div>
     <div class="row justify-content-center align-items-center" style="display: none;" id="trackCustom">
@@ -175,7 +178,9 @@
           <span class="material-icons muteOff1 d-none">volume_off</span>
         </button>
         </div>
-        <div class="row track col-11" id="trackCustom1"></div>
+        <div class="row track col-11" id="trackCustom1">
+          <span class="stem-badge">{{ stemLabels[0] || 'STEM 1' }}</span>
+        </div>
       </div>
       <div class="row col-12 justify-content-between align-items-center p-0">
         <div class="row icon">
@@ -187,7 +192,9 @@
           <span class="material-icons muteOff2 d-none">volume_off</span>
         </button>
         </div>
-        <div class="row track col-11" id="trackCustom2"></div>
+        <div class="row track col-11" id="trackCustom2">
+          <span class="stem-badge">{{ stemLabels[1] || 'STEM 2' }}</span>
+        </div>
       </div>
       <div class="row col-12 justify-content-between align-items-center p-0">
         <div class="row icon">
@@ -199,7 +206,9 @@
           <span class="material-icons muteOff3 d-none">volume_off</span>
         </button>
         </div>
-        <div class="row track col-11" id="trackCustom3"></div>
+        <div class="row track col-11" id="trackCustom3">
+          <span class="stem-badge">{{ stemLabels[2] || 'STEM 3' }}</span>
+        </div>
       </div>
       <div class="row col-12 justify-content-between align-items-center p-0">
         <div class="row icon">
@@ -211,9 +220,14 @@
           <span class="material-icons muteOff4 d-none">volume_off</span>
         </button>
         </div>
-        <div class="row track col-11" id="trackCustom4"></div>
+        <div class="row track col-11" id="trackCustom4">
+          <span class="stem-badge">{{ stemLabels[3] || 'STEM 4' }}</span>
+        </div>
       </div>
     </div>
   </div>
+  <button id="showPlayerBtn" type="button" (click)="showPlayer()" title="Mostrar player">
+    <span class="material-icons">keyboard_arrow_up</span>
+    <span class="material-icons">audiotrack</span>
+  </button>
 </section>
-

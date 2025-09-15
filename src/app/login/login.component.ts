@@ -1,5 +1,5 @@
 import {AfterContentInit, Component, OnInit} from '@angular/core';
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { AuthService } from "./auth.service";
@@ -38,12 +38,12 @@ export class LoginComponent implements OnInit, AfterContentInit {
     public activeModal: NgbActiveModal,
   ) {
     this.form = this.fb.group({
-      email: [],
-      senha: [],
-      typePerson: [],
-      emailLog: [],
-      senhaLog: [],
-      emailReset: [],
+      email: ['', [Validators.required, Validators.email]],
+      senha: ['', [Validators.required, Validators.minLength(8)]],
+      typePerson: [''],
+      emailLog: ['', [Validators.required, Validators.email]],
+      senhaLog: ['', [Validators.required, Validators.minLength(8)]],
+      emailReset: ['', [Validators.required, Validators.email]],
     })
   }
 
@@ -161,11 +161,31 @@ export class LoginComponent implements OnInit, AfterContentInit {
   }
 
   fazerLogin() {
-    this.authService.fazerLogin(this.usuario)
+    // Validar apenas os campos de login
+    const emailCtrl = this.form.get('emailLog');
+    const passCtrl = this.form.get('senhaLog');
+    emailCtrl?.markAsTouched();
+    passCtrl?.markAsTouched();
+    if (emailCtrl?.invalid || passCtrl?.invalid) {
+      return;
+    }
+
+    this.authService.fazerLogin(this.usuario).subscribe({
+      next: () => {
+        // sucesso: fecha modal
+        try { this.activeModal.close(); } catch (_) {}
+      },
+      error: (err) => {
+        // erro 401 ou outros: exibe mensagem simples no console e mantém modal aberto
+        console.error('Falha no login', err);
+        alert('E-mail ou senha inválidos.');
+      }
+    });
   }
 
   onSubmit() {
+    try { this.form.markAllAsTouched(); } catch (_) {}
     console.log('enviou');
-    this.activeModal.close();
+    // manter modal aberto; fluxo de cadastro/reset será integrado ao backend futuramente
   }
 }

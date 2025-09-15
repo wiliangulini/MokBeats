@@ -29,7 +29,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
   arrayControl: any[] = [];
   private subscription?: Subscription;
   wavesurfer!: WaveSurfer;
-  trackCustom!: WaveSurfer;
+  stems: WaveSurfer[] = [];
+  stemLabels: string[] = [];
 
   constructor(
     private musicService: MusicasService,
@@ -44,6 +45,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
       this.musicId = musicId;
       if(this.currentMusicUrl.length > 0) {
         if (action === 'play') {
+          this.playerService.showPlayer();
           this.playMusic(musicId);
         } else if (action === 'pause') {
           this.pauseMusic(musicId);
@@ -54,6 +56,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
       console.log(url);
       this.currentMusicUrl = url;
       if(url.length > 0) {
+        // Exibe o player assim que uma música for selecionada
+        this.playerService.showPlayer();
         this.playMusicUrl(url);
       }
     });
@@ -61,7 +65,20 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
       console.log(id)
       if(id > -1) {
         this.idMusicPlay(id);
+        this.loadStems(id);
       }
+    });
+
+    // Responde às solicitações de seek vindas da lista
+    this.musicPlayerService.seekRequest$.subscribe(({ musicId, time }) => {
+      try {
+        if (this.idMusicCurrent === musicId && this.wavesurfer) {
+          this.wavesurfer.setTime(time);
+          // Mantém stems sincronizados ao seek originado na lista
+          try { this.stems.forEach(s => { try { s.setTime(time); } catch(e){} }); } catch (e) {}
+          // stems e tempo global já são ajustados pelos handlers de seek/audioprocess
+        }
+      } catch (e) {}
     });
   }
 
@@ -77,6 +94,14 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
   }
 
   ngAfterViewInit(): void {
+    // Aplicar estado minimizado persistido
+    try {
+      const minimized = localStorage.getItem('playerMinimized') === 'true';
+      if (minimized) {
+        this.playerService.hidePlayer();
+      }
+    } catch (e) {}
+
     this.wavesurfer = WaveSurfer.create({
       container: '#waveform',
       waveColor: '#fff',
@@ -94,6 +119,29 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
           dragToSeek: true,
         }),
       ],
+    });
+
+    // Sincronizar stems com a faixa principal
+    this.wavesurfer.on('play', () => {
+      this.stems.forEach(s => { try { s.play(); } catch(e){} });
+    });
+    this.wavesurfer.on('pause', () => {
+      this.stems.forEach(s => { try { s.pause(); } catch(e){} });
+    });
+    (this.wavesurfer as any).on('seek', (progress: number) => {
+      try {
+        const time = progress * (this.wavesurfer.getDuration() || 0);
+        this.stems.forEach(s => { try { s.setTime(time); } catch(e){} });
+        // Atualiza o progresso global para sincronizar com a lista
+        this.musicPlayerService.setCurrentTime(time);
+      } catch (e) {}
+    });
+    (this.wavesurfer as any).on('audioprocess', () => {
+      this.syncStemsTimeToMain();
+      try {
+        const time = (this.wavesurfer as any)?.getCurrentTime?.() || 0;
+        this.musicPlayerService.setCurrentTime(time);
+      } catch (e) {}
     });
 
     const mutedTrack1: any = document.getElementById('mutedTrack1');
@@ -117,105 +165,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
     const muteOff4: any = document.querySelector('.muteOff4');
     this.volumeInitial4 = document.querySelector('#mutedTrack4')!.getAttribute('value');
 
-    this.trackCustom = WaveSurfer.create({
-      container: '#trackCustom1',
-      waveColor: '#fff',
-      progressColor: '#dcad54',
-      minPxPerSec: 100,
-      url: '../../assets/audios/MokBeats_Future_Forest_(DRUMS).mp3',
-      hideScrollbar: true,
-      fillParent: true,
-      height: 0,
-      backend: 'MediaElement',
-      plugins: [
-        Minimap.create({
-          height: 40,
-          waveColor: '#fff',
-          progressColor: '#dcad54',
-          dragToSeek: true,
-        }),
-      ],
-    });
-    this.trackCustom = WaveSurfer.create({
-      container: '#trackCustom2',
-      waveColor: '#fff',
-      progressColor: '#dcad54',
-      minPxPerSec: 100,
-      url: '../../assets/audios/MokBeats_Future_Forest_(EFEITOS).mp3',
-      hideScrollbar: true,
-      fillParent: true,
-      height: 0,
-      backend: 'MediaElement',
-      plugins: [
-        Minimap.create({
-          height: 40,
-          waveColor: '#fff',
-          progressColor: '#dcad54',
-          dragToSeek: true,
-        }),
-      ],
-    });
-    this.trackCustom = WaveSurfer.create({
-      container: '#trackCustom3',
-      waveColor: '#fff',
-      progressColor: '#dcad54',
-      minPxPerSec: 100,
-      url: '../../assets/audios/MokBeats_Future_Forest_(HARMONIAS).mp3',
-      hideScrollbar: true,
-      fillParent: true,
-      height: 0,
-      backend: 'MediaElement',
-      plugins: [
-        Minimap.create({
-          height: 40,
-          waveColor: '#fff',
-          progressColor: '#dcad54',
-          dragToSeek: true,
-        }),
-      ],
-    });
-    this.trackCustom = WaveSurfer.create({
-      container: '#trackCustom4',
-      waveColor: '#fff',
-      progressColor: '#dcad54',
-      minPxPerSec: 100,
-      url: '../../assets/audios/MokBeats_Future_Forest_(MELODIAS).mp3',
-      hideScrollbar: true,
-      fillParent: true,
-      height: 0,
-      backend: 'MediaElement',
-      plugins: [
-        Minimap.create({
-          height: 40,
-          waveColor: '#fff',
-          progressColor: '#dcad54',
-          dragToSeek: true,
-        }),
-      ],
-    });
-
-    this.trackCustom.on('ready', () => {
+    // A configuração dos controles de volume dos stems ocorrerá após loadStems()
+    // Uma vez que cada stem terá sua própria instância de WaveSurfer.
+    {
       if(mutedTrack1) {
-        mutedTrack1.addEventListener('input', (e: any) => {
-          let vol: any = e.target.value;
-          this.trackCustom.setVolume(vol / 100);
-          if(vol == '0') {
-            this.muteOffAdd(muteOn1, muteOff1);
-          } else {
-            this.muteOnAdd(muteOn1, muteOff1);
-          }
-        });
-        volumeOnTrackCustom1.addEventListener('click', (e: any) => {
-          if(muteOn1.classList.contains('d-flex')) {
-            this.trackCustom.setMuted(true);
-            this.muteOffAdd(muteOn1, muteOff1);
-            mutedTrack1.value = '0';
-          } else if (muteOff1.classList.contains('d-flex')) {
-            this.trackCustom.setMuted(false);
-            this.muteOnAdd(muteOn1, muteOff1);
-            mutedTrack1.value = this.volumeInitial;
-          }
-        });
+        // Handlers serão ligados em bindStemControls(0, ...)
       }
       let volbox1: any = document.querySelector('.volbox1');
       let volboxAdd1 = () => {
@@ -245,28 +199,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
         })
       })
 
-      if(mutedTrack2) {
-        mutedTrack2.addEventListener('input', (e: any) => {
-          let vol: any = e.target.value;
-          this.trackCustom.setVolume(vol / 100);
-          if(vol == '0') {
-            this.muteOffAdd(muteOn2, muteOff2);
-          } else {
-            this.muteOnAdd(muteOn2, muteOff2);
-          }
-        });
-        volumeOnTrackCustom2.addEventListener('click', (e: any) => {
-          if(muteOn2.classList.contains('d-flex')) {
-            this.trackCustom.setMuted(true);
-            this.muteOffAdd(muteOn2, muteOff2);
-            mutedTrack2.value = '0';
-          } else if (muteOff2.classList.contains('d-flex')) {
-            this.trackCustom.setMuted(false);
-            this.muteOnAdd(muteOn2, muteOff2);
-            mutedTrack2.value = this.volumeInitial;
-          }
-        });
-      }
+      // handlers serão ligados em bindStemControls(1, ...)
       let volbox2: any = document.querySelector('.volbox2');
       let volboxAdd2 = () => {
         volbox2.classList.add('d-flex');
@@ -295,28 +228,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
         })
       })
 
-      if(mutedTrack3) {
-        mutedTrack3.addEventListener('input', (e: any) => {
-          let vol: any = e.target.value;
-          this.trackCustom.setVolume(vol / 100);
-          if(vol == '0') {
-            this.muteOffAdd(muteOn3, muteOff3);
-          } else {
-            this.muteOnAdd(muteOn3, muteOff3);
-          }
-        });
-        volumeOnTrackCustom3.addEventListener('click', (e: any) => {
-          if(muteOn3.classList.contains('d-flex')) {
-            this.trackCustom.setMuted(true);
-            this.muteOffAdd(muteOn3, muteOff3);
-            mutedTrack3.value = '0';
-          } else if (muteOff3.classList.contains('d-flex')) {
-            this.trackCustom.setMuted(false);
-            this.muteOnAdd(muteOn3, muteOff3);
-            mutedTrack3.value = this.volumeInitial;
-          }
-        });
-      }
+      // handlers serão ligados em bindStemControls(2, ...)
       let volbox3: any = document.querySelector('.volbox3');
       let volboxAdd3 = () => {
         volbox3.classList.add('d-flex');
@@ -345,28 +257,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
         })
       })
 
-      if(mutedTrack4) {
-        mutedTrack4.addEventListener('input', (e: any) => {
-          let vol: any = e.target.value;
-          this.trackCustom.setVolume(vol / 100);
-          if(vol == '0') {
-            this.muteOffAdd(muteOn4, muteOff4);
-          } else {
-            this.muteOnAdd(muteOn4, muteOff4);
-          }
-        });
-        volumeOnTrackCustom3.addEventListener('click', (e: any) => {
-          if(muteOn4.classList.contains('d-flex')) {
-            this.trackCustom.setMuted(true);
-            this.muteOffAdd(muteOn4, muteOff4);
-            mutedTrack4.value = '0';
-          } else if (muteOff4.classList.contains('d-flex')) {
-            this.trackCustom.setMuted(false);
-            this.muteOnAdd(muteOn4, muteOff4);
-            mutedTrack4.value = this.volumeInitial;
-          }
-        });
-      }
+      // handlers serão ligados em bindStemControls(3, ...)
       let volbox4: any = document.querySelector('.volbox4');
       let volboxAdd4 = () => {
         volbox4.classList.add('d-flex');
@@ -394,7 +285,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
           volboxRemove4();
         })
       })
-    });
+    }
 
     const prev10: any = document.querySelector('.prev10sec');
     const next10: any = document.querySelector('.next10sec');
@@ -409,8 +300,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
     this.volumeInitial = document.querySelector('#volumeSlider')!.getAttribute('value');
 
     const formatTime = (seconds: any) => {
-      const minutes = Math.floor(seconds / 60);
-      const secondsRemainder = Math.round(seconds) % 60;
+      const total = Math.round(Number(seconds) || 0);
+      const minutes = Math.floor(total / 60);
+      const secondsRemainder = total % 60;
       const paddedSeconds = `0${secondsRemainder}`.slice(-2);
       return `${minutes}:${paddedSeconds}`
     }
@@ -511,6 +403,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
         this.wavesurfer.setTime(0);
         this.playMusic(this.idMusicCurrent)
       })
+      // Handlers de seek/audioprocess já adicionados no ngAfterViewInit
     }
   }
 
@@ -522,12 +415,15 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
     this.wavesurfer.play();
     this.playerService.tooglePlayPause();
     this.isPlaying2 = true;
+    // Tocar stems juntos (fallback por elementos <audio>)
+    this.getStemAudios().forEach(a => { try { a.play(); } catch(e){} });
   }
 
   pauseMusic(musicId: any) {
     this.wavesurfer.pause();
     this.playerService.tooglePlayPause();
     this.isPlaying2 = false;
+    this.getStemAudios().forEach(a => { try { a.pause(); } catch(e){} });
   }
 
   playPause(): void {
@@ -565,6 +461,140 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
   hidePlayer() {
     this.playerService.hidePlayer();
   }
+  showPlayer() {
+    this.playerService.showPlayer();
+  }
+  private getStemAudios(): HTMLAudioElement[] {
+    const sel = ['#trackCustom1', '#trackCustom2', '#trackCustom3', '#trackCustom4']
+      .map(id => `${id} audio`).join(',');
+    return Array.from(document.querySelectorAll(sel)) as HTMLAudioElement[];
+  }
+  private syncStemsTimeToMain() {
+    try {
+      const time = (this.wavesurfer as any)?.getCurrentTime?.() || 0;
+      this.getStemAudios().forEach(a => { try { a.currentTime = time; } catch(e){} });
+    } catch (e) {}
+  }
+
+  private destroyStems() {
+    try { this.stems.forEach(s => s.destroy()); } catch(e){}
+    this.stems = [];
+  }
+
+  private bindStemControls(index: number) {
+    const stem = this.stems[index];
+    if (!stem) return;
+    const volInput: any = document.getElementById(`mutedTrack${index+1}`);
+    const volumeBtn: any = document.getElementById(`volumeOnTrackCustom${index+1}`);
+    const muteOn: any = document.querySelector(`.muteOn${index+1}`);
+    const muteOff: any = document.querySelector(`.muteOff${index+1}`);
+    const volbox: any = document.querySelector(`.volbox${index+1}`);
+    const initial = (document.querySelector(`#mutedTrack${index+1}`) as HTMLElement)?.getAttribute('value') || '75';
+    stem.on('ready', () => {
+      // Estados persistidos
+      const volKey = this.getStemVolKey(index);
+      const mutedKey = this.getStemMutedKey(index);
+      try {
+        const storedVol = localStorage.getItem(volKey);
+        const storedMuted = localStorage.getItem(mutedKey) === 'true';
+        if (storedVol && volInput) {
+          volInput.value = storedVol;
+          stem.setVolume((Number(storedVol) || 0) / 100);
+        }
+        if (storedMuted) {
+          stem.setMuted(true);
+          this.muteOffAdd(muteOn, muteOff);
+          if (volInput) volInput.value = '0';
+        } else {
+          this.muteOnAdd(muteOn, muteOff);
+        }
+      } catch (e) {}
+      if(volInput) {
+        volInput.addEventListener('input', (e: any) => {
+          let vol: any = e.target.value;
+          stem.setVolume((vol || 0) / 100);
+          if(vol == '0') {
+            this.muteOffAdd(muteOn, muteOff);
+            try { localStorage.setItem(mutedKey, 'true'); } catch(e){}
+          } else {
+            this.muteOnAdd(muteOn, muteOff);
+            try {
+              localStorage.setItem(mutedKey, 'false');
+              localStorage.setItem(volKey, String(vol));
+            } catch(e){}
+          }
+        });
+      }
+      if(volumeBtn) {
+        volumeBtn.addEventListener('click', () => {
+          if(muteOn?.classList?.contains('d-flex')) {
+            stem.setMuted(true);
+            this.muteOffAdd(muteOn, muteOff);
+            if (volInput) volInput.value = '0';
+            try { localStorage.setItem(mutedKey, 'true'); } catch(e){}
+          } else if (muteOff?.classList?.contains('d-flex')) {
+            stem.setMuted(false);
+            this.muteOnAdd(muteOn, muteOff);
+            if (volInput) volInput.value = initial;
+            try {
+              localStorage.setItem(mutedKey, 'false');
+              localStorage.setItem(volKey, String(initial));
+            } catch(e){}
+          }
+        });
+        // Hover box for slider
+        const add = () => { volbox?.classList?.add('d-flex'); volInput?.classList?.add('d-flex'); };
+        const rmv = () => { volbox?.classList?.remove('d-flex'); volInput?.classList?.remove('d-flex'); };
+        volumeBtn.addEventListener('mouseover', () => { add(); volbox?.addEventListener('mouseover', add); volInput?.addEventListener('mouseover', add); });
+        volumeBtn.addEventListener('mouseout', () => { rmv(); volbox?.addEventListener('mouseout', rmv); volInput?.addEventListener('mouseout', rmv); });
+      }
+    });
+  }
+
+  private loadStems(id: number) {
+    // Limpa instâncias anteriores
+    this.destroyStems();
+    const containers = ['#trackCustom1', '#trackCustom2', '#trackCustom3', '#trackCustom4'];
+    // Limpa DOM dos containers para garantir recriação
+    containers.forEach(sel => {
+      const el = document.querySelector(sel) as HTMLElement | null;
+      if (el) el.innerHTML = '';
+    });
+    this.musicService.getStemsByMusicId(id).subscribe((data: any[]) => {
+      for (let i = 0; i < containers.length; i++) {
+        const url = data?.[i]?.url;
+        this.stemLabels[i] = data?.[i]?.label || `STEM ${i+1}`;
+        const s = WaveSurfer.create({
+          container: containers[i],
+          waveColor: '#fff',
+          progressColor: '#dcad54',
+          minPxPerSec: 100,
+          url: url,
+          hideScrollbar: true,
+          fillParent: true,
+          height: 0,
+          backend: 'MediaElement',
+          plugins: [
+            Minimap.create({
+              height: 40,
+              waveColor: '#fff',
+              progressColor: '#dcad54',
+              dragToSeek: true,
+            }),
+          ],
+        });
+        this.stems.push(s);
+        this.bindStemControls(i);
+      }
+    });
+  }
+
+  private getStemVolKey(index: number): string {
+    return `player:stemVol:${this.idMusicCurrent}:${index}`;
+  }
+  private getStemMutedKey(index: number): string {
+    return `player:stemMuted:${this.idMusicCurrent}:${index}`;
+  }
   muteOnAdd(elm: any, elm2: any): void {
     let muteOn: any = elm;
     let muteOff: any = elm2;
@@ -595,6 +625,40 @@ export class PlayerComponent implements OnInit, AfterViewInit, AfterViewChecked,
   }
   baixarAmostra(i: any) {
     console.log(i);
+  }
+
+  resetStems() {
+    // Reset player principal
+    try {
+      const mainVol: any = document.getElementById('volumeSlider');
+      if (mainVol) {
+        mainVol.value = '75';
+        this.wavesurfer.setMuted(false);
+        this.wavesurfer.setVolume(0.75);
+        const muteOn: any = document.querySelector('.muteOn');
+        const muteOff: any = document.querySelector('.muteOff');
+        this.muteOnAdd(muteOn, muteOff);
+      }
+    } catch (e) {}
+    // Reset stems
+    for (let i = 0; i < 4; i++) {
+      const stem = this.stems[i];
+      const volInput: any = document.getElementById(`mutedTrack${i+1}`);
+      const muteOn: any = document.querySelector(`.muteOn${i+1}`);
+      const muteOff: any = document.querySelector(`.muteOff${i+1}`);
+      const volKey = this.getStemVolKey(i);
+      const mutedKey = this.getStemMutedKey(i);
+      try {
+        if (stem) {
+          stem.setMuted(false);
+          stem.setVolume(0.75);
+        }
+        if (volInput) volInput.value = '75';
+        this.muteOnAdd(muteOn, muteOff);
+        localStorage.setItem(volKey, '75');
+        localStorage.setItem(mutedKey, 'false');
+      } catch (e) {}
+    }
   }
 
 }

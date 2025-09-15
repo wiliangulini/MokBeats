@@ -14,14 +14,14 @@ export class GeneroComponent implements OnInit, AfterContentInit {
   constructor(
     private musicService: MusicasService,
   ) {
-    this.titles = this.musicService.convertida2;
-    this.music = this.musicService.convertida;
-    console.log(this.titles);
-    console.log(this.music);
     window.scroll(0, 0);
   }
 
   ngOnInit(): void {
+    this.musicService.getGenresFull().subscribe((map: any) => {
+      this.titles = Object.keys(map);
+      this.music = Object.keys(map).map((k: string) => map[k]);
+    });
   }
 
   ngAfterContentInit() {

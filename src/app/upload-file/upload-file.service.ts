@@ -56,6 +56,10 @@ export class UploadFileService extends CrudService<UPLOADS>{
     return this.http.request(request);
   }
 
+  uploadProducerTrack(fd: FormData) {
+    return this.http.post(`${environment.API}producers/track`, fd);
+  }
+
   public list2(): Observable<Musicas[]> {
     return this.http.get<Musicas[]>(this.musicasUrl);
   }

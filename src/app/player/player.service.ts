@@ -26,5 +26,16 @@ export class PlayerService {
   hidePlayer() {
     document.getElementById('controlPlayer')!.classList.remove('showPlayer');
     document.getElementById('controlPlayer')!.classList.add('hidePlayer');
+    const show = document.getElementById('showPlayerBtn');
+    if (show) show.style.display = 'flex';
+    try { localStorage.setItem('playerMinimized', 'true'); } catch(e){}
+  }
+
+  showPlayer() {
+    document.getElementById('controlPlayer')!.classList.remove('hidePlayer');
+    document.getElementById('controlPlayer')!.classList.add('showPlayer');
+    const show = document.getElementById('showPlayerBtn');
+    if (show) show.style.display = 'none';
+    try { localStorage.setItem('playerMinimized', 'false'); } catch(e){}
   }
 }

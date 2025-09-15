@@ -88,3 +88,7 @@ textarea.mat-input-element {
 .mat-form-field-appearance-fill .mat-form-field-underline::before {
   background-color: #ced4da !important;
 }
+
+.mat-form-field-appearance-fill .mat-form-field-infix {
+  padding-bottom: 0 !important;
+}

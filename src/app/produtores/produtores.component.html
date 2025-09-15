@@ -40,13 +40,46 @@
     </div>
     <div class="row form">
       <form [formGroup]="form" class="w-100 mt-5 d-flex flex-column align-items-center justify-content-center">
+        <div #errorSummaryRef class="alert alert-danger w-100" *ngIf="submitted && (form.invalid || errorSummary.length)">
+          <strong>Por favor, corrija os itens abaixo:</strong>
+          <ul class="mb-0">
+            <li *ngFor="let msg of errorSummary">{{ msg }}</li>
+          </ul>
+        </div>
         <p class="h5 font-weight-bold mb-4">Envie sua música</p>
-        <input type="text" formControlName="nome" name="Nome" placeholder="Nome" class="w-100" />
-        <input type="text" formControlName="sobrenome" name="Sobrenome" placeholder="Sobrenome" class="w-100" />
-        <input type="text" formControlName="artista_banda" name="Artista/Nome da banda" placeholder="Artista/Nome da banda" class="w-100" />
-        <input type="email" formControlName="email" name="E-mail" placeholder="E-mail" class="w-100" />
-        <input type="email" formControlName="confirmEmail" name="confirmeEmail" placeholder="Confirme o e-mail" class="w-100" />
-        <input type="text" formControlName="fonteAcesso" name="fonteAcesso" placeholder="Como você ficou sabendo sobre nós?" class="w-100" />
+        <mat-form-field appearance="fill" class="w-100 mb-3">
+          <mat-label>Nome</mat-label>
+          <input matInput type="text" formControlName="nome" placeholder="Nome" />
+          <mat-error *ngIf="form.get('nome')?.hasError('required') && (form.get('nome')?.dirty || form.get('nome')?.touched)">Nome é obrigatório.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100 mb-3">
+          <mat-label>Sobrenome</mat-label>
+          <input matInput type="text" formControlName="sobrenome" placeholder="Sobrenome" />
+          <mat-error *ngIf="form.get('sobrenome')?.hasError('required') && (form.get('sobrenome')?.dirty || form.get('sobrenome')?.touched)">Sobrenome é obrigatório.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100 mb-3">
+          <mat-label>Artista/Nome da banda</mat-label>
+          <input matInput type="text" formControlName="artista_banda" placeholder="Artista/Nome da banda" />
+          <mat-error *ngIf="form.get('artista_banda')?.hasError('required') && (form.get('artista_banda')?.dirty || form.get('artista_banda')?.touched)">Artista/Banda é obrigatório.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100 mb-3">
+          <mat-label>E-mail</mat-label>
+          <input matInput type="email" formControlName="email" placeholder="E-mail" />
+          <mat-error *ngIf="form.get('email')?.hasError('required') && (form.get('email')?.dirty || form.get('email')?.touched)">E-mail é obrigatório.</mat-error>
+          <mat-error *ngIf="form.get('email')?.hasError('email') && (form.get('email')?.dirty || form.get('email')?.touched)">E-mail inválido.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100 mb-3">
+          <mat-label>Confirme o e-mail</mat-label>
+          <input matInput type="email" formControlName="confirmEmail" placeholder="Confirme o e-mail" />
+          <mat-error *ngIf="form.get('confirmEmail')?.hasError('required') && (form.get('confirmEmail')?.dirty || form.get('confirmEmail')?.touched)">Confirmação de e-mail é obrigatória.</mat-error>
+          <mat-error *ngIf="form.get('confirmEmail')?.hasError('email') && (form.get('confirmEmail')?.dirty || form.get('confirmEmail')?.touched)">E-mail inválido.</mat-error>
+          <mat-error *ngIf="form.hasError('emailsMismatch') && (form.get('confirmEmail')?.dirty || form.get('confirmEmail')?.touched)">Os e-mails não coincidem.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100 mb-3">
+          <mat-label>Como você ficou sabendo sobre nós?</mat-label>
+          <input matInput type="text" formControlName="fonteAcesso" placeholder="Como você ficou sabendo sobre nós?" />
+          <mat-error *ngIf="form.get('fonteAcesso')?.hasError('required') && (form.get('fonteAcesso')?.dirty || form.get('fonteAcesso')?.touched)">Este campo é obrigatório.</mat-error>
+        </mat-form-field>
         <div class="row w-100 justify-content-between align-items-center">
 
           <div class="collapseControl">
@@ -64,22 +97,45 @@
             </a>
         </div>
         <div class="controlPai w-100 d-flex">
-          <div class="controlInt col-sm-6 col-md-6 col-lg-6 col-xl-6 m-0 d-flex pl-0">
+          <div class="controlInt col-sm-6 col-md-6 col-lg-6 col-xl-6 m-0 d-flex pl-0 flex-column">
             <mat-form-field appearance="fill" class="w-100 mb-3">
-              <mat-label>Escolher gênero da música(s)</mat-label>
-              <mat-select formControlName="generoMusic">
-                <mat-option *ngFor="let gen of generoMusic" [value]="gen">
+              <mat-label>Gênero primário</mat-label>
+              <mat-select formControlName="genrePrimary" (selectionChange)="onGenreChange($event.value)">
+                <mat-option *ngFor="let gen of generos" [value]="gen">
                   {{gen}}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="form.get('genrePrimary')?.hasError('required') && (form.get('genrePrimary')?.dirty || form.get('genrePrimary')?.touched)">Selecione um gênero.</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>Subgênero (opcional)</mat-label>
+              <mat-select formControlName="genreSecondary">
+                <mat-option *ngFor="let sub of subgeneros" [value]="sub">
+                  {{sub}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.get('stemsType')?.hasError('required') && (form.get('stemsType')?.dirty || form.get('stemsType')?.touched)">Selecione um tipo de stem.</mat-error>
             </mat-form-field>
           </div>
           <div class="controlInt col-sm-6 col-md-6 col-lg-6 col-xl-6 m-0 d-flex">
             <mat-form-field appearance="fill" class="w-100 mb-3">
               <mat-label>Escolher Stems da música(s)</mat-label>
-              <mat-select formControlName="generoMusic">
+              <mat-select formControlName="stemsType">
                 <mat-option *ngFor="let stems of typeStems" [value]="stems.value">
                   {{stems['viewValue']}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.get('mood')?.hasError('required') && (form.get('mood')?.dirty || form.get('mood')?.touched)">Selecione um humor.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="controlPai w-100 d-flex">
+          <div class="controlInt col-sm-6 col-md-6 col-lg-6 col-xl-6 m-0 d-flex pl-0">
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>Humor</mat-label>
+              <mat-select formControlName="mood">
+                <mat-option *ngFor="let h of humores" [value]="h">
+                  {{h}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -102,18 +158,7 @@
         <div class="controlInt d-flex w-100">
           <div class="CWE justify-content-start align-items-center w-100" #CWE>
             <div id="card" class="card card-body" style="opacity: 0;">
-              <div class="tracks10" *ngIf="rulesVal === 0"><span class="span rules">{{ rules }}</span></div>
-              <div class="tracks40" *ngIf="rulesVal === 1">
-                <mat-form-field appearance="fill">
-                  <mat-label>Selecione Música ou Álbum</mat-label>
-                  <mat-select formControlName="selectOption"  [(ngModel)]="selectOption">
-                    <mat-option *ngFor="let food of oneOrAlbum" [value]="food.value" (click)="optionSelect(selectOption)">
-                      {{food["viewValue"]}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <span class="span rules1" id="rules1">{{ rules }}</span>
-              </div>
+              <span class="span rules">{{ rules }}</span>
             </div>
           </div>
         </div>
@@ -122,10 +167,96 @@
           <textarea
             class="h-100 w-100"
             matInput
-            formControlName="textarea"
-            (change)="onCommentChange($event)">
+              formControlName="textarea"
+              (change)="onCommentChange($event)">
           </textarea>
+          <mat-error *ngIf="form.get('textarea')?.hasError('required') && (form.get('textarea')?.dirty || form.get('textarea')?.touched)">Campo obrigatório.</mat-error>
         </mat-form-field>
+        <div class="w-100 d-flex align-items-center mb-2">
+          <mat-checkbox formControlName="isRemix" class="mr-2 mb-0 p-0">
+            <p class="h6 mb-0">É remix desta música (opcional)</p>
+          </mat-checkbox>
+        </div>
+        <div class="w-100 d-flex" *ngIf="form.get('isRemix')?.value">
+          <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 pl-0 pr-2">
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>Referenciar Produtor Original (opcional)</mat-label>
+              <mat-select formControlName="remixProducer">
+                <mat-option [value]="''">Não especificar</mat-option>
+                <mat-option *ngFor="let a of artistas" [value]="a">{{ a }}</mat-option>
+                <mat-option [value]="'__OUTRO__'">Outro (digitar)</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 pr-0 pl-2" *ngIf="form.get('remixProducer')?.value === '__OUTRO__'">
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>Nome do Produtor (Outro)</mat-label>
+              <input matInput type="text" formControlName="remixProducerOther" placeholder="Digite o nome do produtor" minlength="3" maxlength="80" />
+              <mat-error *ngIf="form.get('remixProducerOther')?.hasError('required') && (form.get('remixProducerOther')?.dirty || form.get('remixProducerOther')?.touched)">
+                Informe o nome do produtor.
+              </mat-error>
+              <mat-error *ngIf="form.get('remixProducerOther')?.hasError('minlength') && (form.get('remixProducerOther')?.dirty || form.get('remixProducerOther')?.touched)">
+                Mínimo de 3 caracteres.
+              </mat-error>
+              <mat-error *ngIf="form.get('remixProducerOther')?.hasError('maxlength') && (form.get('remixProducerOther')?.dirty || form.get('remixProducerOther')?.touched)">
+                Máximo de 80 caracteres.
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="w-100 d-flex">
+          <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 pl-0 pr-2">
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>ISRC (obrigatório)</mat-label>
+              <input matInput type="text" formControlName="isrc" placeholder="Ex.: QMRSZ2400001" />
+              <mat-error *ngIf="form.get('isrc')?.hasError('required') && (form.get('isrc')?.dirty || form.get('isrc')?.touched)">
+                ISRC é obrigatório.
+              </mat-error>
+              <mat-error *ngIf="form.get('isrc')?.hasError('pattern') && (form.get('isrc')?.dirty || form.get('isrc')?.touched)">
+                ISRC deve conter 12 caracteres alfanuméricos.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 pr-0 pl-2">
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>UPC (obrigatório)</mat-label>
+              <input matInput type="text" formControlName="upc" placeholder="Ex.: 012345678901" />
+              <mat-error *ngIf="form.get('upc')?.hasError('required') && (form.get('upc')?.dirty || form.get('upc')?.touched)">
+                UPC é obrigatório.
+              </mat-error>
+              <mat-error *ngIf="form.get('upc')?.hasError('pattern') && (form.get('upc')?.dirty || form.get('upc')?.touched)">
+                UPC deve conter 12 dígitos (UPC-A) ou 6 dígitos (UPC-E).
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="w-100 d-flex">
+          <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 pl-0 pr-2">
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>Registro adicional</mat-label>
+              <mat-select formControlName="registryType">
+                <mat-option *ngFor="let t of registryTypes" [value]="t.value">{{t.viewValue}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-2 pl-2" *ngIf="form.get('registryType')?.value === 'HASH'">
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>Tipo de HASH</mat-label>
+              <mat-select formControlName="hashType">
+                <mat-option *ngFor="let h of hashTypes" [value]="h.value">{{h.viewValue}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-0 pl-2" *ngIf="form.get('registryType')?.value">
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>Valor</mat-label>
+              <input matInput type="text" formControlName="registryValue" [placeholder]="registryPlaceholder" />
+              <mat-error *ngIf="form.get('registryValue')?.hasError('pattern') && (form.get('registryValue')?.dirty || form.get('registryValue')?.touched)">
+                Valor inválido para o tipo selecionado.
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
         <mat-form-field class="d-flex justify-content-center align-items-center w-100 textarea mb-4">
           <mat-label class="h6 m-0 p-0">Digite aqui uma breve descrição de sua música.</mat-label>
           <textarea
@@ -134,6 +265,7 @@
               formControlName="textarea1"
               (change)="onCommentChange($event)">
           </textarea>
+          <mat-error *ngIf="form.get('textarea1')?.hasError('required') && (form.get('textarea1')?.dirty || form.get('textarea1')?.touched)">Campo obrigatório.</mat-error>
         </mat-form-field>
         <div class="control w-100 d-flex flex-column align-items-start justify-content-start">
           <p class="h5 font-weight-bold mb-2">Upload de arquivo</p>
@@ -145,13 +277,90 @@
 
           <div id="controlFile" class="showFile w-100"></div>
         </div>
+        <div class="control w-100 d-flex flex-column align-items-start justify-content-start mt-3">
+          <p class="h5 font-weight-bold mb-2">Loops obrigatórios (15s, 30s, 60s)</p>
+          <div class="d-flex w-100">
+            <label class="upload d-flex justify-content-center align-items-center mr-2" style="width: 33%;">
+              <span class="h6 m-0">Loop 15s</span>
+              <input type="file" accept="audio/*" (change)="onLoopFileChange($event, 'loop15')" />
+            </label>
+            <label class="upload d-flex justify-content-center align-items-center mr-2" style="width: 33%;">
+              <span class="h6 m-0">Loop 30s</span>
+              <input type="file" accept="audio/*" (change)="onLoopFileChange($event, 'loop30')" />
+            </label>
+            <label class="upload d-flex justify-content-center align-items-center" style="width: 33%;">
+              <span class="h6 m-0">Loop 60s</span>
+              <input type="file" accept="audio/*" (change)="onLoopFileChange($event, 'loop60')" />
+            </label>
+          </div>
+          <div class="d-flex flex-column w-100 mt-2">
+            <small class="text-danger" *ngIf="form.get('loop15')?.hasError('required') && (form.get('loop15')?.touched)">Selecione o loop de 15s.</small>
+            <small class="text-danger" *ngIf="form.get('loop30')?.hasError('required') && (form.get('loop30')?.touched)">Selecione o loop de 30s.</small>
+            <small class="text-danger" *ngIf="form.get('loop60')?.hasError('required') && (form.get('loop60')?.touched)">Selecione o loop de 60s.</small>
+          </div>
+        </div>
         <div class="terms mt-5 w-100 d-flex justify-content-center align-items-center">
           <mat-checkbox formControlName="politicaDePrivacidade" class="mr-2 mb-0 p-0">
             <p class="h6">Eu aceito os termos da <a [routerLink]="['/politica-de-privacidade']" class="color">Política de Privacidade</a></p>
           </mat-checkbox>
+          <small class="text-danger ml-2" *ngIf="form.get('politicaDePrivacidade')?.hasError('required') && (form.get('politicaDePrivacidade')?.dirty || form.get('politicaDePrivacidade')?.touched)">Obrigatório aceitar a política.</small>
+        </div>
+        <div class="w-100 d-flex flex-column mt-4">
+          <p class="h5 font-weight-bold mb-2">Redes Sociais (opcional)</p>
+          <div class="w-100 d-flex">
+            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 pl-0 pr-2">
+              <mat-form-field appearance="fill" class="w-100 mb-3">
+                <mat-label>Facebook</mat-label>
+                <input matInput type="url" formControlName="facebookUrl" placeholder="https://facebook.com/sua_pagina" />
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 pr-0 pl-2">
+              <mat-form-field appearance="fill" class="w-100 mb-3">
+                <mat-label>Instagram</mat-label>
+                <input matInput type="url" formControlName="instagramUrl" placeholder="https://instagram.com/seu_perfil" />
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="w-100 d-flex">
+            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 pl-0 pr-2">
+              <mat-form-field appearance="fill" class="w-100 mb-1">
+                <mat-label>WhatsApp (apenas números)</mat-label>
+                <input matInput type="tel" formControlName="whatsapp" placeholder="Ex.: 5541999999999" />
+              </mat-form-field>
+              <small class="text-muted" *ngIf="whatsappPreview">Link: {{ whatsappPreview }}</small>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 pr-0 pl-2">
+              <mat-form-field appearance="fill" class="w-100 mb-3">
+                <mat-label>LinkedIn</mat-label>
+                <input matInput type="url" formControlName="linkedinUrl" placeholder="https://www.linkedin.com/in/voce" />
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="w-100 d-flex">
+            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 pl-0 pr-2">
+              <mat-form-field appearance="fill" class="w-100 mb-3">
+                <mat-label>Spotify</mat-label>
+                <input matInput type="url" formControlName="spotifyUrl" placeholder="https://open.spotify.com/artist/..." />
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 pr-0 pl-2">
+              <mat-form-field appearance="fill" class="w-100 mb-3">
+                <mat-label>Google/YouTube</mat-label>
+                <input matInput type="url" formControlName="googleUrl" placeholder="https://youtube.com/@seu_canal" />
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="w-100 d-flex">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 pl-0 pr-0">
+              <mat-form-field appearance="fill" class="w-100 mb-3">
+                <mat-label>Outro</mat-label>
+                <input matInput type="url" formControlName="otherUrl" placeholder="https://..." />
+              </mat-form-field>
+            </div>
+          </div>
         </div>
         <div class="submitForm w-100 d-flex justify-content-center align-items-center">
-          <button type="button" class="btn btn-primary btnSubmit" (click)="onUpload()" [disabled]="!files">ENVIAR</button>
+          <button type="button" class="btn btn-primary btnSubmit" (click)="onUpload()" [disabled]="form.invalid || !files">ENVIAR</button>
         </div>
       </form>
     </div>

@@ -13,10 +13,13 @@ export class HumorComponent implements OnInit {
   constructor(
     private musicService: MusicasService,
   ) {
-    this.humor = this.musicService.humor;
+    this.humor = [];
   }
 
   ngOnInit(): void {
+    this.musicService.getHumores().subscribe((data: any) => {
+      this.humor = data || [];
+    });
   }
 
   ngAfterContentInit() {

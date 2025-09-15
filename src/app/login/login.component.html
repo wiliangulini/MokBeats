@@ -11,8 +11,12 @@
           <div id="register" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center register">
             <h1>Crie sua Conta</h1>
             <p class="h5 w-75 text-center">Crie uma conta para fazer login na MokBeats, e poder comprar ou entao vender suas musicas!!!</p>
-            <input class="form-control mb-3 mt-3" type="email" formControlName="email"  placeholder="Email" [(ngModel)]="cadastro.email" />
-            <input class="form-control mb-3" type="password" formControlName="senha" placeholder="Senha" [(ngModel)]="cadastro.senha" />
+            <input class="form-control mb-1 mt-3" type="email" formControlName="email"  placeholder="Email" [(ngModel)]="cadastro.email" />
+            <small class="text-danger d-block mb-2" *ngIf="form.get('email')?.hasError('required') && (form.get('email')?.touched || form.get('email')?.dirty)">E-mail é obrigatório.</small>
+            <small class="text-danger d-block mb-2" *ngIf="form.get('email')?.hasError('email') && (form.get('email')?.touched || form.get('email')?.dirty)">E-mail inválido.</small>
+            <input class="form-control mb-1" type="password" formControlName="senha" placeholder="Senha" [(ngModel)]="cadastro.senha" />
+            <small class="text-danger d-block mb-2" *ngIf="form.get('senha')?.hasError('required') && (form.get('senha')?.touched || form.get('senha')?.dirty)">Senha é obrigatória.</small>
+            <small class="text-danger d-block mb-2" *ngIf="form.get('senha')?.hasError('minlength') && (form.get('senha')?.touched || form.get('senha')?.dirty)">A senha deve ter pelo menos 8 caracteres.</small>
             <div class="ls-select status forma">
               <div class="control">
                 <p id="forma" class="txt m-0">Tipo de Conta</p>
@@ -36,15 +40,21 @@
           <div id="login" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center login">
             <h1>Login</h1>
             <p class="h5 w-50 text-center">Faça login na MokBeats, e poder comprar ou entao vender suas musicas!!!</p>
-            <input class="form-control mb-3 mt-3" type="email" formControlName="emailLog"  placeholder="Email" [(ngModel)]="usuario.email" />
-            <input class="form-control mb-3" type="password" formControlName="senhaLog" placeholder="Senha" [(ngModel)]="usuario.senha" />
+            <input class="form-control mb-1 mt-3" type="email" formControlName="emailLog"  placeholder="Email" [(ngModel)]="usuario.email" />
+            <small class="text-danger d-block mb-2" *ngIf="form.get('emailLog')?.hasError('required') && (form.get('emailLog')?.touched || form.get('emailLog')?.dirty)">E-mail é obrigatório.</small>
+            <small class="text-danger d-block mb-2" *ngIf="form.get('emailLog')?.hasError('email') && (form.get('emailLog')?.touched || form.get('emailLog')?.dirty)">E-mail inválido.</small>
+            <input class="form-control mb-1" type="password" formControlName="senhaLog" placeholder="Senha" [(ngModel)]="usuario.senha" />
+            <small class="text-danger d-block mb-2" *ngIf="form.get('senhaLog')?.hasError('required') && (form.get('senhaLog')?.touched || form.get('senhaLog')?.dirty)">Senha é obrigatória.</small>
+            <small class="text-danger d-block mb-2" *ngIf="form.get('senhaLog')?.hasError('minlength') && (form.get('senhaLog')?.touched || form.get('senhaLog')?.dirty)">A senha deve ter pelo menos 8 caracteres.</small>
             <button type="submit" class="btn btn-primary w-50 mb-3" (click)="fazerLogin()">Fazer Login</button>
             <a (click)="resetPassword()" class="btn btnReset">Esquecia a senha</a>
           </div>
           <div id="resetPass" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center resetPass">
             <h1>Esqueceu a Senha?</h1>
             <p class="h5 w-50 text-center">Envie um email que lhe notificaremos com um link pra troca de senha.</p>
-            <input class="form-control mb-3 mt-3" type="email" formControlName="emailReset"  placeholder="Email" [(ngModel)]="resetPass.email" />
+            <input class="form-control mb-1 mt-3" type="email" formControlName="emailReset"  placeholder="Email" [(ngModel)]="resetPass.email" />
+            <small class="text-danger d-block mb-2" *ngIf="form.get('emailReset')?.hasError('required') && (form.get('emailReset')?.touched || form.get('emailReset')?.dirty)">E-mail é obrigatório.</small>
+            <small class="text-danger d-block mb-2" *ngIf="form.get('emailReset')?.hasError('email') && (form.get('emailReset')?.touched || form.get('emailReset')?.dirty)">E-mail inválido.</small>
             <button type="submit" class="btn btn-primary w-50 mb-3">Enviar</button>
             <a (click)="back()" class="btn btnReset">voltar</a>
           </div>

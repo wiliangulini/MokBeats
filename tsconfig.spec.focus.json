@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.spec.json",
+  "include": [
+    "src/test.ts",
+    "src/test.focus.ts",
+    "src/app/**/*.behavior.spec.ts"
+  ]
+}

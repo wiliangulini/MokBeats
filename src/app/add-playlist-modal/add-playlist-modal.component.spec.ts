@@ -14,6 +14,8 @@ describe('AddPlaylistModalComponent', () => {
 
     fixture = TestBed.createComponent(AddPlaylistModalComponent);
     component = fixture.componentInstance;
+    // Define uma música para evitar undefined no template
+    (component as any).newMusicPlaylist = { id: 1, nome_musica: 'Teste', nome_produtor: 'Prod' };
     fixture.detectChanges();
   });
 

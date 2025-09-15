@@ -14,18 +14,33 @@ export class WaveSurferTestComponent implements OnInit, AfterViewInit ,OnDestroy
   @Input() idContainer!: any;
   @Output() songFinished = new EventEmitter<void>();
   private subscription!: Subscription;
+  private timeSub?: Subscription;
+  private idSub?: Subscription;
   wavesurfer!: WaveSurfer;
+  private isCurrent: boolean = false;
 
   constructor(private musicPlayerService: MusicPlayerService) {}
 
   ngOnInit() {
+    // Controla play/pause por ação, mas sem reproduzir áudio neste componente
     this.subscription = this.musicPlayerService.playPauseAction$.subscribe(({ action, musicId }) => {
-      if (this.music.id === musicId) {
-        if (action === 'play') {
-          this.playWave();
-        } else if (action === 'pause') {
-          this.pauseWave();
-        }
+      this.isCurrent = (this.music.id === musicId);
+      // Não chamamos play/pause do WaveSurfer local; a posição será movida pelo tempo global.
+    });
+
+    // Atualiza a flag de música atual
+    this.idSub = this.musicPlayerService.currentMusicID$.subscribe((id) => {
+      this.isCurrent = (id === this.music.id);
+      if (!this.isCurrent && this.wavesurfer) {
+        // Ao trocar de faixa, reseta visual desta waveform
+        try { this.wavesurfer.setTime(0); } catch (e) {}
+      }
+    });
+
+    // Sincroniza tempo com o player principal
+    this.timeSub = this.musicPlayerService.currentTime$.subscribe((time) => {
+      if (this.isCurrent && this.wavesurfer) {
+        try { this.wavesurfer.setTime(time); } catch (e) {}
       }
     });
   }
@@ -96,6 +111,17 @@ export class WaveSurferTestComponent implements OnInit, AfterViewInit ,OnDestroy
               console.log(`📊 WaveSurfer loaded for ${this.music.nome_musica}`);
             }
           });
+
+          // Propaga seek quando usuário interagir na lista (somente se for a faixa atual)
+          (this.wavesurfer as any).on('seek', (progress: number) => {
+            try {
+              const duration = this.wavesurfer.getDuration() || 0;
+              const time = progress * duration;
+              if (this.isCurrent) {
+                this.musicPlayerService.requestSeek(this.music.id, time);
+              }
+            } catch (e) {}
+          });
         }
       }, 50);
 
@@ -108,24 +134,23 @@ export class WaveSurferTestComponent implements OnInit, AfterViewInit ,OnDestroy
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+    if (this.idSub) {
+      this.idSub.unsubscribe();
+    }
+    if (this.timeSub) {
+      this.timeSub.unsubscribe();
+    }
     if (this.wavesurfer) {
       this.wavesurfer.destroy();
     }
   }
 
   playWave() {
-    console.log('play', 'this.playWave')
-    if (this.wavesurfer) {
-      this.wavesurfer.play().catch(error => {
-        console.error('Error playing audio:', error);
-      });
-    }
+    // Mantido para compatibilidade, mas não reproduz aqui (só visual)
   }
 
   pauseWave() {
-    if (this.wavesurfer) {
-      this.wavesurfer.pause();
-    }
+    // Mantido para compatibilidade, mas controle é centralizado no player
   }
 
 }

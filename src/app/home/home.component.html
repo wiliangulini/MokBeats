@@ -48,8 +48,8 @@
         </div>
         <div
           class="col-sm-2 col-md-2 col-lg-2 col-xl-2 one d-flex align-items-center justify-content-center pl-2 pr-2 pt-0 pb-0">
-          <p class="h6 mr-3 mb-0">2 min 25 seg</p>
-          <p class="h6 mb-0">95 bpm</p>
+          <p class="h6 mr-3 mb-0">{{ musica?.duracao ? formatDur(musica.duracao) : '' }}</p>
+          <p class="h6 mb-0" *ngIf="musica?.bpm">{{ musica.bpm }} bpm</p>
         </div>
         <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 p-0 loops d-flex align-items-center justify-content-around">
           <p class="h6">15</p>

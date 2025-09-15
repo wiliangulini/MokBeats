@@ -457,4 +457,20 @@ export class MusicasService extends CrudService<Musica> {
   filterMusicas(filtros: any): Observable<any> {
     return this.http.post(`${environment.API}musicas/filtro`, filtros);
   }
+
+  getGenresFull(): Observable<any> {
+    return this.http.get(`${environment.API}genres-full`);
+  }
+
+  getSubgeneros(genero: string): Observable<any> {
+    return this.http.get(`${environment.API}subgeneros`, { params: { genero } });
+  }
+
+  getStemsByMusicId(id: number): Observable<any> {
+    return this.http.get(`${environment.API}musicas/${id}/stems`);
+  }
+
+  getLatestUniqueByProducer(limit: number): Observable<any> {
+    return this.http.get(`${environment.API}tracks/latest-unique-by-producer`, { params: { limit } as any });
+  }
 }

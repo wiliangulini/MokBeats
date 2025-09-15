@@ -53,6 +53,18 @@
   justify-content: flex-end;
   align-items: center;
 }
+.row.track { position: relative; }
+.row.track .stem-badge {
+  position: absolute;
+  left: 8px;
+  top: 2px;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 11px;
+}
 section .container-fluid .row.audioCanva,
 section .container-fluid .row.player {
   background: #000;
@@ -224,6 +236,26 @@ span.material-icons.prev10sec {
   align-items: center;
 }
 #hide span {
+  color: #FFF;
+}
+/* Botão para reabrir o player quando minimizado */
+#showPlayerBtn {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: #212529;
+  color: #FFF;
+  border: 1px solid #ddd;
+  border-radius: 33px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: auto;
+  padding: 6px 10px;
+  z-index: 20;
+}
+#showPlayerBtn span.material-icons {
   color: #FFF;
 }
 button.btn.btn-icons.mobile {

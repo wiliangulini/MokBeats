@@ -64,30 +64,26 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   ngAfterViewInit() {
-     // Recupera a string JSON do localStorage
-    const arrMusicaString = localStorage.getItem('arrMusica');
-
-    // Verifica se os dados existem antes de tentar fazer o parse
-    if (arrMusicaString) {
-      // Converte a string JSON de volta para um array de objetos
-      const arrMusica = JSON.parse(arrMusicaString);
-
-      // Pega apenas os primeiros 5 itens do array
-      this.primeirasCincoMusicas = arrMusica.slice(0, 5);
-
-    } else if (!arrMusicaString) {
-      this.musicService.list().subscribe((data: any) => {
-        this.arrMusica = data;
-        let arrMusica = JSON.stringify(this.arrMusica);
-        localStorage.setItem('arrMusica', arrMusica);
-
-      // Pega apenas os primeiros 5 itens do array
-      this.primeirasCincoMusicas = this.arrMusica.slice(0, 5);
-      console.log(this.primeirasCincoMusicas)
+    this.musicService.getLatestUniqueByProducer(5).subscribe((data: any) => {
+      this.primeirasCincoMusicas = Array.isArray(data) ? data : [];
+    }, err => {
+      console.error(err);
+      // Fallback simples
+      this.musicService.list().subscribe((all: any) => {
+        this.primeirasCincoMusicas = (all || []).slice(0,5);
       });
-    }
-      console.log(this.primeirasCincoMusicas)
+    });
     this.form.get('genero')?.setValue(this.generoM[0].viewValue);
+  }
+
+  // Formata duração em "X min YY seg" com zero à esquerda nos segundos
+  formatDur(ms?: number): string {
+    if (!ms && ms !== 0) return '';
+    const totalSeconds = Math.floor((ms || 0) / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const pad = seconds.toString().padStart(2, '0');
+    return `${minutes} min ${pad} seg`;
   }
 
   routeNav(txt: string): void {
