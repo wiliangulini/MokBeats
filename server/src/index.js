@@ -13,6 +13,28 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+// Auth básico (mock) para destravar login no front
+// Aceita qualquer e-mail válido e senha com 8+ caracteres, retorna um token
+app.post('/api/auth/login', (req, res) => {
+  try {
+    const { email, password } = req.body || {};
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRe.test(email)) {
+      return res.status(400).json({ message: 'E-mail inválido.' });
+    }
+    if (!password || String(password).length < 8) {
+      return res.status(400).json({ message: 'Senha deve ter no mínimo 8 caracteres.' });
+    }
+
+    // Gera um token simples (mock) — em produção real, emitir JWT
+    const token = Buffer.from(`${email}:${Date.now()}`).toString('base64');
+    return res.status(200).json({ token, user: { email } });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: 'Erro ao autenticar.' });
+  }
+});
+
 const multipartMiddleware = multipart({ uploadDir: './uploads' });
 app.post('/api/uploads/', multipartMiddleware, (req, res) => {
   const files = req.files;

@@ -27,7 +27,7 @@ export type UPLOADS = {
 })
 export class UploadFileService extends CrudService<UPLOADS>{
 
-  private musicasUrl: string = 'http://localhost:3100/api/musicas';
+  private musicasUrl: string = `${environment.API}musicas`;
 
   constructor(
     protected override http: HttpClient

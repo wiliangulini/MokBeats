@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  API: 'http://localhost:3100/api/'
+  // Use caminho relativo em produção e faça o proxy/reverse-proxy no servidor
+  API: '/api/'
 };

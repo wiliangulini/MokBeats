@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  API: 'http://localhost:3100/api/'
+  // Use caminho relativo em dev e utilize o proxy do Angular (proxy.conf.json)
+  API: '/api/'
 };
 
 /*
