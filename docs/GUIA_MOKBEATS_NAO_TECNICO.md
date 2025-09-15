@@ -26,7 +26,30 @@ Este guia explica, passo a passo, como baixar e rodar o projeto MokBeats no seu 
   1. Dê permissão ao script uma única vez: `chmod +x start.sh`
   2. Execute: `./start.sh`
 - No Windows (Git Bash):
-  - Execute: `bash start.sh`
+ - Execute: `bash start.sh`
+
+4.1) Rodar no Windows (CMD ou PowerShell) — start.bat / start.ps1
+- O projeto inclui scripts próprios para Windows que não exigem permissões de administrador.
+- Opção A — CMD (Prompt de Comando):
+  1. Abra o Prompt de Comando.
+  2. Vá até a pasta do projeto (ex.: `cd C:\Users\SeuUsuario\Desktop\MokBeats`).
+  3. Execute: `start.bat`
+- Opção B — PowerShell:
+  1. Abra o PowerShell.
+  2. Vá até a pasta do projeto: `cd .\MokBeats`.
+  3. Se aparecer aviso de política de execução de scripts, rode apenas para esta sessão: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
+  4. Execute: `./start.ps1`
+
+O que os scripts do Windows fazem
+- Baixam e usam o Node.js 16.20.2 de forma portátil (sem instalar para o sistema) caso você não tenha Node 16.
+- Instalam automaticamente as dependências do frontend (raiz) e backend (`server/`).
+- Sobem a API (`node server/src/index.js`) e o site (`npm run start`).
+- Abrem o navegador em http://localhost:4200.
+- Mantêm os processos rodando até você apertar Enter (no PowerShell). No CMD, apenas rode o `start.bat` — ele chama o PowerShell internamente.
+
+Como parar no Windows
+- Se executou `start.ps1` no PowerShell: volte à janela e pressione Enter para encerrar.
+- Se usou `start.bat` no CMD: feche as janelas abertas ou encerre os processos conforme solicitado pelo PowerShell.
 
 O que o script faz por você
 - Instala o NVM (gerenciador de versões do Node.js).
@@ -89,7 +112,8 @@ Como parar
   - Feche outras janelas que estejam rodando o projeto e tente novamente.
   - Backend com PM2: `pm2 stop mok-backend && pm2 delete mok-backend` (apenas se o script não encerrou).
 - Windows sem WSL:
-  - Use o “Git Bash” para rodar `bash start.sh`.
+  - Opção 1: Use o “Git Bash” para rodar `bash start.sh`.
+  - Opção 2 (recomendado): use `start.bat` (CMD) ou `start.ps1` (PowerShell), conforme explicado em 4.1.
 
 9) Como atualizar ou reinstalar
 - Se houver mudanças no projeto, basta repetir o processo:
@@ -109,4 +133,3 @@ Como parar
 
 Precisa de ajuda?
 - Se algo não funcionar, tire um print do erro e compartilhe com a equipe. Este guia foi pensado para evitar etapas técnicas, mas estamos por perto para ajudar.
-
