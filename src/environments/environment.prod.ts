@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  // Use caminho relativo em produção e faça o proxy/reverse-proxy no servidor
-  API: '/api/'
+  // Reverse proxy do servidor expõe o backend sob o prefixo /api
+  apiBaseUrl: '/api'
 };

@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // Use caminho relativo em dev e utilize o proxy do Angular (proxy.conf.json)
-  API: '/api/'
+  // Proxy local redireciona /api para o backend em desenvolvimento
+  apiBaseUrl: '/api'
 };
 
 /*

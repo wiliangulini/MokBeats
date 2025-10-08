@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   public fazerLogin(usuario: UsuarioLogin): Observable<any> {
-    return this.http.post(`${environment.API}auth/login`, {
+    return this.http.post(`${environment.apiBaseUrl}/auth/login`, {
       email: usuario?.email,
       password: usuario?.senha,
     }).pipe(

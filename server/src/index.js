@@ -417,32 +417,32 @@ app.route('/api/humores').get((request, response) => {
 
 app.route('/api/genres-full').get((request, response) => {
   const query = request.query.q;
-  
+
   if (!query) {
     return response.status(200).send(GENERO_MAP);
   }
-  
+
   // Filtrar gêneros e subgêneros por query
   const filtered = {};
   const lowerQuery = query.toLowerCase();
-  
+
   Object.keys(GENERO_MAP).forEach(genero => {
     // Inclui se o gênero principal contém a query
     if (genero.toLowerCase().includes(lowerQuery)) {
       filtered[genero] = GENERO_MAP[genero];
       return;
     }
-    
+
     // Ou se algum subgênero contém a query
-    const matchedSubs = GENERO_MAP[genero].filter(sub => 
+    const matchedSubs = GENERO_MAP[genero].filter(sub =>
       sub.toLowerCase().includes(lowerQuery)
     );
-    
+
     if (matchedSubs.length > 0) {
       filtered[genero] = matchedSubs;
     }
   });
-  
+
   response.status(200).send(filtered);
 });
 
@@ -594,17 +594,17 @@ app.route('/api/tracks/:id/stems').get((req, res) => {
 // Stub login para testes
 app.route('/api/auth/login').post((req, res) => {
   const { email, password } = req.body;
-  
+
   // Credenciais de teste fixas
-  if (email === 'test@mokbeats.com' && password === 'test123') {
-    return res.status(200).json({ 
+  if (email === 'test@mokbeats.com' && password === 'test12345') {
+    return res.status(200).json({
       token: 'mock-jwt-token-' + Date.now(),
       user: { email, name: 'Test User' }
     });
   }
-  
-  return res.status(401).json({ 
-    error: 'Credenciais inválidas' 
+
+  return res.status(401).json({
+    error: 'Credenciais inválidas'
   });
 });
 

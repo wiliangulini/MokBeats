@@ -26,6 +26,7 @@ export type Musica = {
 })
 export class MusicasService extends CrudService<Musica> {
 
+  private readonly baseUrl = environment.apiBaseUrl;
   hearth: any;
   hearth1: any;
   addMusicPlaylist: any;
@@ -355,7 +356,7 @@ export class MusicasService extends CrudService<Musica> {
     private cartService: CarrinhoService,
     private activeModal: NgbActiveModal,
   ) {
-    super(http, `${environment.API}musicas`);
+    super(http, `${environment.apiBaseUrl}/musicas`);
     this.genero.map((obj: any) => {
       Object.keys(obj).map((chave: any) => {
         this.convertida2.push(chave);
@@ -439,40 +440,40 @@ export class MusicasService extends CrudService<Musica> {
 
   // Métodos para filtros
   getArtistas(): Observable<any> {
-    return this.http.get(`${environment.API}artistas`);
+    return this.http.get(`${this.baseUrl}/artistas`);
   }
 
   getInstrumentos(): Observable<any> {
-    return this.http.get(`${environment.API}instrumentos`);
+    return this.http.get(`${this.baseUrl}/instrumentos`);
   }
 
   getGeneros(): Observable<any> {
-    return this.http.get(`${environment.API}generos`);
+    return this.http.get(`${this.baseUrl}/generos`);
   }
 
   getHumores(): Observable<any> {
-    return this.http.get(`${environment.API}humores`);
+    return this.http.get(`${this.baseUrl}/humores`);
   }
 
   filterMusicas(filtros: any): Observable<any> {
-    return this.http.post(`${environment.API}musicas/filtro`, filtros);
+    return this.http.post(`${this.baseUrl}/musicas/filtro`, filtros);
   }
 
   getGenresFull(query?: string): Observable<any> {
     const opts: any = query ? { params: { q: query } } : {};
-    return this.http.get(`${environment.API}genres-full`, opts);
+    return this.http.get(`${this.baseUrl}/genres-full`, opts);
   }
 
   getSubgeneros(genero: string): Observable<any> {
-    return this.http.get(`${environment.API}subgeneros`, { params: { genero } });
+    return this.http.get(`${this.baseUrl}/subgeneros`, { params: { genero } });
   }
 
   getStemsByMusicId(id: number): Observable<any> {
     // Usa o endpoint mais novo (alias de compatibilidade no backend)
-    return this.http.get(`${environment.API}tracks/${id}/stems`);
+    return this.http.get(`${this.baseUrl}/tracks/${id}/stems`);
   }
 
   getLatestUniqueByProducer(limit: number): Observable<any> {
-    return this.http.get(`${environment.API}tracks/latest-unique-by-producer`, { params: { limit } as any });
+    return this.http.get(`${this.baseUrl}/tracks/latest-unique-by-producer`, { params: { limit } as any });
   }
 }

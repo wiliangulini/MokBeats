@@ -140,7 +140,7 @@ export class ArtistComponent implements OnInit, AfterViewInit {
 
   // onUpload() {
   //   if (this.files.size > 0) {
-  //     this.uploadFileService.upload(this.files, environment.API + 'uploads').subscribe((data: any) => {
+  //     this.uploadFileService.upload(this.files, environment.apiBaseUrl + '/uploads').subscribe((data: any) => {
   //       if(data.type == 4) {
   //         console.log(data);
   //         console.log('"Upload CONCLUIDO"');

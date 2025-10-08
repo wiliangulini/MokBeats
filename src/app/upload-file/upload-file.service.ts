@@ -1,8 +1,8 @@
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {CrudService} from "../service/crud-service";
-import {environment} from "../../environments/environment";
+import { CrudService } from "../service/crud-service";
+import { environment } from "../../environments/environment";
 
 export class Musicas {
   id?: number;
@@ -27,12 +27,13 @@ export type UPLOADS = {
 })
 export class UploadFileService extends CrudService<UPLOADS>{
 
-  private musicasUrl: string = `${environment.API}musicas`;
+  private readonly baseUrl = environment.apiBaseUrl;
+  private readonly musicasUrl: string = `${this.baseUrl}/musicas`;
 
   constructor(
     protected override http: HttpClient
   ) {
-    super(http, `${environment.API}uploads`);
+    super(http, `${environment.apiBaseUrl}/uploads`);
   }
 
   override list(): Observable<UPLOADS> {
@@ -57,7 +58,7 @@ export class UploadFileService extends CrudService<UPLOADS>{
   }
 
   uploadProducerTrack(fd: FormData) {
-    return this.http.post(`${environment.API}producers/track`, fd);
+    return this.http.post(`${this.baseUrl}/producers/track`, fd);
   }
 
   public list2(): Observable<Musicas[]> {

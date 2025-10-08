@@ -22,7 +22,7 @@ export class FavoritosService extends CrudService<Musica> {
     protected override http: HttpClient,
     private authService: AuthService,
   ) {
-    super(http, `${environment.API}favoritos`);
+    super(http, `${environment.apiBaseUrl}/favoritos`);
     this.favorit = [];
     this.list().subscribe((data: any) => {
       this.arrMusica = data;

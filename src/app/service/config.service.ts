@@ -8,7 +8,6 @@ export class ConfigService {
   constructor(private http: HttpClient) {}
 
   getConfig(): Observable<any> {
-    return this.http.get(`${environment.API}config`);
+    return this.http.get(`${environment.apiBaseUrl}/config`);
   }
 }
-

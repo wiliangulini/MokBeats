@@ -14,7 +14,7 @@ export class PlaylistService extends CrudService<playlists>{
   constructor(
     protected override http: HttpClient,
   ) {
-    super(http, `${environment.API}playlists`);
+    super(http, `${environment.apiBaseUrl}/playlists`);
   }
 
   override list(): Observable<playlists> {
