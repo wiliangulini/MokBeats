@@ -40,7 +40,7 @@
       <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex border-bottom"
         *ngFor="let musica of primeirasCincoMusicas; let i = index;">
         <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start">
-          <span class="material-icons">{{icon}}</span>
+          <span id="playPauseHome" class="material-icons" (click)="onPlayPause(play_pause, musica.id, i)" style="cursor: pointer;">{{icon[i]}}</span>
           <div class="text d-flex flex-column align-items-start justify-content-start">
             <p class="h4"><a href="#">{{musica.nome_musica}}</a></p>
             <p class="h6"><a href="#">{{musica.nome_produtor}}</a></p>
@@ -117,28 +117,28 @@
   <div class="container">
     <div class="row m-0">
       <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex">
-        <div class="control w-50 d-flex justify-content-center align-items-center flex-column">
-          <div class="controlInt mb-5 w-100 d-flex justify-content-center align-items-center flex-column">
+        <div id="control1" class="control w-50 d-flex gap-5 justify-content-between align-items-center flex-column">
+          <div class="controlInt w-100 d-flex justify-content-center align-items-center flex-column">
             <span class="material-icons">music_note</span>
-            <p class="h5 mt-3 text-center">Música Exclusiva</p>
+            <p class="h5 m-0 text-center">Música Exclusiva</p>
           </div>
-          <div class="controlInt mb-5 w-100 d-flex justify-content-center align-items-center flex-column">
+          <div class="controlInt w-100 d-flex justify-content-center align-items-center flex-column">
             <span class="material-icons">all_inclusive</span>
-            <p class="h5 mt-3 text-center">Pague uma vez, use para sempre!</p>
+            <p class="h5 m-0 text-center">Pague uma vez, use para sempre!</p>
           </div>
         </div>
-        <div class="control w-50 d-flex justify-content-center align-items-center flex-column">
-          <div class="controlInt mb-5 w-100 d-flex justify-content-center align-items-center flex-column">
+        <div id="control2" class="control w-50 d-flex gap-5 justify-content-between align-items-center flex-column">
+          <div class="controlInt w-100 d-flex justify-content-center align-items-center flex-column">
             <span class="material-icons">workspace_premium</span>
-            <p class="h5 mt-3 text-center">100% Livre de Direitos</p>
+            <p class="h5 m-0 text-center">100% Livre de Direitos</p>
           </div>
-          <div class="controlInt mb-5 w-100 d-flex justify-content-center align-items-center flex-column">
+          <div class="controlInt adjust w-100 d-flex justify-content-center align-items-center flex-column">
             <span class="material-icons">slideshow</span>
-            <p class="h5 mt-3 text-center">Seguro para YouTube e Vimeo</p>
+            <p class="h5 m-0 text-center">Seguro para YouTube e Vimeo</p>
           </div>
         </div>
       </div>
-      <div class="pl-5 col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex flex-column align-items-center justify-content-center">
+      <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex flex-column align-items-center justify-content-center">
         <p class="h1 text-center">Música Incrível, Licenças Simples</p>
         <p class="h5 text-center">Livre para usar e criar.</p>
         <a type="button" (click)="routeNav('precos')" class="btn btn-warning">DESCUBRA NOSSAS LICENÇAS</a>

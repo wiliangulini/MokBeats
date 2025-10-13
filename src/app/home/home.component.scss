@@ -220,23 +220,36 @@ section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.video {
   max-width: 60%;
   flex: 0 0 60%;
 }
+#control1, #control2 {
+  gap: 2rem;
+}
+#control1 .controlInt, #control2 .controlInt {
+  gap: 1.75rem;
+}
 section.three .container {
   padding: 4% 0 0;
   background: #FFF;
 }
+section.three .container .row.m-0 {
+  padding-bottom: 4%;
+}
+section.three .container .row .controlInt.adjust.w-100.d-flex.justify-content-center.align-items-center.flex-column {
+  height: 156px;
+}
 section.three .container .row .control .controlInt span.material-icons {
   font-size: 85px;
 }
-section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h1 {
+section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h1 {
   font-size: 3.5rem;
 }
-section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h5 {
+section.three .container .row .control .controlInt p.h5,
+section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h5 {
   font-size: 18px;
 }
 section.three .container .row.trusted {
   background: linear-gradient(45deg, #4B3A8F, #2f1ef1, #7b009c);
 }
-section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn {
+section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn {
   width: 63%;
   font-size: 17px;
   margin-top: 6%;
@@ -340,16 +353,16 @@ section.four .container .row form:focus-within .control .inputInt {
     position: relative;
     top: 5%;
   }
-  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h1 {
+  section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h1 {
     font-size: 2.5rem;
   }
   section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p.h5,
-  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h5,
-  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn,
+  section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h5,
+  section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn,
   section.three .container .row .control .controlInt p.h5 {
-    font-size: 16px;
+    font-size: 16px !important;
   }
-  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn {
+  section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn {
     width: 70%;
   }
   section.three .container .row .control .controlInt span.material-icons {
@@ -423,19 +436,19 @@ section.four .container .row form:focus-within .control .inputInt {
     padding: 0;
   }
 
-  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h1 {
+  section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h1 {
     font-size: 2.3rem;
     margin-bottom: 6%;
   }
-  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h5 {
+  section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h5 {
     font-size: 16px;
     padding-right: 0%;
   }
-  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn {
+  section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn {
     width: 85%;
   }
   section.two .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 p.h5,
-  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn,
+  section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn,
   section.three .container .row .control .controlInt p.h5.mt-3,
   section.three.pt-5.pb-5 .container .row p.h5.mb-0.d-flex {
     font-size: 16px;
@@ -566,22 +579,22 @@ section.four .container .row form:focus-within .control .inputInt {
   section.three .container .row .control .controlInt p.h5.mt-3 {
     font-size: 16px;
   }
-  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h1 {
+  section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h1 {
     font-size: 2.5rem;
     text-align: center;
   }
-  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.flex-column.align-items-start.justify-content-start {
+  section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex.flex-column.align-items-start.justify-content-start {
     align-items: center !important;
     justify-content: center !important;
     margin-bottom: 7% !important;
     padding: 0 5% !important;
   }
-  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h5 {
+  section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h5 {
     font-size: 17px;
     padding-right: 0;
     text-align: center;
   }
-  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn {
+  section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex a.btn {
     width: 85% !important;
     font-size: 16px;
   }
@@ -637,7 +650,7 @@ section.four .container .row form:focus-within .control .inputInt {
   article.container-fluid {
     padding: 0 5px;
   }
-  section.three .container .row .pl-5.col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h1 {
+  section.three .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.d-flex p.h1 {
     font-size: 2rem;
   }
   article h1.font-weight-bold {

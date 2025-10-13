@@ -47,7 +47,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   instrumentos: any[] = [];
   musicas: any = {};
   number: number | undefined;
-  
+
   // Filtros selecionados
   selectedGeneros: string[] = [];
   selectedSubgeneros: string[] = [];
@@ -55,7 +55,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   selectedHumores: string[] = [];
   selectedArtistas: string[] = [];
   selectedInstrumentos: string[] = [];
-  
+
   // Flag para controlar se os filtros devem ser aplicados
   filtersInitialized: boolean = false;
   formG!: FormGroup;
@@ -158,12 +158,12 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.arrMusica = data;
       let arrMusica = JSON.stringify(this.arrMusica);
       localStorage.setItem('arrMusica', arrMusica);
-      
+
       // Habilitar filtros após carregar as músicas
       setTimeout(() => {
         this.filtersInitialized = true;
       }, 500);
-      
+
       this.playlistService.list().subscribe((data: any) => {
         this.isLoading = false;
         data.forEach((e: any) => {
@@ -568,7 +568,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     }
 
     const filtros: any = {};
-    
+
     if (this.selectedGeneros.length > 0) filtros.genero = this.selectedGeneros;
     if (this.selectedSubgeneros.length > 0) filtros.subgenero = this.selectedSubgeneros;
     if (this.selectedVozes.length > 0) filtros.vozes = this.selectedVozes;
@@ -593,7 +593,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     this.selectedInstrumentos = [];
     this.number = undefined;
     this.duration = undefined;
-    
+
     // Recarrega todas as músicas
     this.musicService.list().subscribe((data: any) => {
       this.arrMusica = data;

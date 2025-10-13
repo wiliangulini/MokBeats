@@ -5,6 +5,7 @@ import { AuthService } from "../login/auth.service";
 import { Musica, MusicasService } from "../musicas/musicas.service";
 import { Router } from "@angular/router";
 import { ScrollService } from "../service/scroll.service";
+import { MusicPlayerService } from "../service/music-player.service";
 
 interface GeneroM {
   value: string;
@@ -20,9 +21,12 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   form: FormGroup;
   public mokbeats: any = {};
-  icon: string = 'play_circle';
+  icon: string[] = [];
   musicAdd: any;
   musicDownload: any[] = [];
+  play_pause: string = 'play';
+  isPlaying: boolean = false;
+  currentTrackIndex: number = -1;
 
   dados: Array<any> = [
     { value: 'Sweet Spot', viewValue: 'Sweet Spot' },
@@ -46,7 +50,8 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     private authService: AuthService,
     private musicService: MusicasService,
     private scrollService: ScrollService,
-    private router: Router
+    private router: Router,
+    private musicPlayerService: MusicPlayerService
   ) {
     this.form = this.fb.group({
       search: [],
@@ -66,11 +71,15 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   ngAfterViewInit() {
     this.musicService.getLatestUniqueByProducer(5).subscribe((data: any) => {
       this.primeirasCincoMusicas = Array.isArray(data) ? data : [];
+      // Inicializa os ícones como 'play_circle' para cada música
+      this.icon = this.primeirasCincoMusicas.map(() => 'play_circle');
     }, err => {
       console.error(err);
       // Fallback simples
       this.musicService.list().subscribe((all: any) => {
         this.primeirasCincoMusicas = (all || []).slice(0,5);
+        // Inicializa os ícones como 'play_circle' para cada música
+        this.icon = this.primeirasCincoMusicas.map(() => 'play_circle');
       });
     });
     this.form.get('genero')?.setValue(this.generoM[0].viewValue);
@@ -124,5 +133,49 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     console.log(this.mokbeats.search);
     console.log(this.mokbeats.genero);
     console.log(this.mokbeats.email);
+  }
+
+  onPlayPause(action: string, musicId: number, index: number): void {
+    this.play_pause = action;
+
+    // Encontra a música selecionada
+    const selectedMusic = this.primeirasCincoMusicas[index];
+
+    if (!selectedMusic) return;
+
+    // Mostra o player
+    this.playerShow();
+
+    // Alterna entre play e pause
+    if (this.isPlaying && this.currentTrackIndex === index) {
+      // Se está tocando a mesma música, pausa
+      this.musicPlayerService.onPlayPause('pause', musicId);
+      this.icon[index] = 'play_circle';
+      this.isPlaying = false;
+      this.play_pause = 'play';
+    } else {
+      // Se não está tocando ou é outra música, toca
+      // Pausa a música anterior se houver
+      if (this.currentTrackIndex >= 0 && this.currentTrackIndex !== index) {
+        this.icon[this.currentTrackIndex] = 'play_circle';
+      }
+
+      // Define a música atual
+      this.currentTrackIndex = index;
+      this.musicPlayerService.setCurrentMusicID(selectedMusic.id);
+      this.musicPlayerService.setCurrentMusicUrl(selectedMusic.url);
+      this.musicPlayerService.onPlayPause('play', musicId);
+      this.icon[index] = 'pause_circle';
+      this.isPlaying = true;
+      this.play_pause = 'pause';
+    }
+  }
+
+  playerShow(): void {
+    const controlPlayer: any = document.querySelector('#controlPlayer');
+    if (controlPlayer) {
+      controlPlayer.classList.remove('hidePlayer');
+      controlPlayer.classList.add('showPlayer');
+    }
   }
 }
