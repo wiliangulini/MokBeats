@@ -20,7 +20,9 @@
             <div class="ls-select status forma">
               <div class="control">
                 <p id="forma" class="txt m-0">Tipo de Conta</p>
-                <img id="arrow2" class="img-fluid" src="./assets/images/arrowDownGrey.webp" alt="seta pra baixo" />
+                <span id="arrow2" class="material-icons">
+                  keyboard_arrow_down
+                </span>
               </div>
               <div class="down two val" style="display: none;">
                 <label id="ter1" class="radiocontainer d-flex">
@@ -35,7 +37,7 @@
             </div>
             <small>As senhas devem ter pelo menos 8 caracteres.</small>
             <button type="submit" class="btn btn-primary w-50 mb-4 mt-4" (click)="onSubmit()">Criar Conta</button>
-            <p class="h6 w-75 text-center">Ao clicar, concordo com os <a href="#">Termos do site</a>, e a <a (click)="politica()">Política de privacidade</a></p>
+            <p class="h6 w-75 text-center">Ao clicar, concordo com os <a [routerLink]="['/termos-do-site']" (click)="closeModal()">Termos do site</a>, e a <a (click)="politica()">Política de privacidade</a></p>
           </div>
           <div id="login" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center login">
             <h1>Login</h1>
@@ -52,7 +54,7 @@
           <div id="resetPass" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center resetPass">
             <h1>Esqueceu a Senha?</h1>
             <p class="h5 w-50 text-center">Envie um email que lhe notificaremos com um link pra troca de senha.</p>
-            <input class="form-control mb-1 mt-3" type="email" formControlName="emailReset"  placeholder="Email" [(ngModel)]="resetPass.email" />
+            <input class="form-control mb-2 mt-3" type="email" formControlName="emailReset"  placeholder="Email" [(ngModel)]="resetPass.email" />
             <small class="text-danger d-block mb-2" *ngIf="form.get('emailReset')?.hasError('required') && (form.get('emailReset')?.touched || form.get('emailReset')?.dirty)">E-mail é obrigatório.</small>
             <small class="text-danger d-block mb-2" *ngIf="form.get('emailReset')?.hasError('email') && (form.get('emailReset')?.touched || form.get('emailReset')?.dirty)">E-mail inválido.</small>
             <button type="submit" class="btn btn-primary w-50 mb-3">Enviar</button>

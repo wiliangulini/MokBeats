@@ -97,10 +97,10 @@
             </a>
         </div>
         <div class="controlPai w-100 d-flex">
-          <div class="controlInt col-sm-6 col-md-6 col-lg-6 col-xl-6 m-0 d-flex pl-0 flex-column">
+          <div class="controlInt col-sm-12 col-md-12 col-lg-12 col-xl-12 m-0 d-flex pl-0 flex-column">
             <mat-form-field appearance="fill" class="w-100 mb-3">
               <mat-label>Gênero primário</mat-label>
-              <mat-select formControlName="genrePrimary" (selectionChange)="onGenreChange($event.value)">
+              <mat-select id="genrePrimary" formControlName="genrePrimary" (selectionChange)="onGenreChange($event.value)">
                 <mat-option *ngFor="let gen of generos" [value]="gen">
                   {{gen}}
                 </mat-option>
@@ -116,8 +116,18 @@
               </mat-select>
               <mat-error *ngIf="form.get('stemsType')?.hasError('required') && (form.get('stemsType')?.dirty || form.get('stemsType')?.touched)">Selecione um tipo de stem.</mat-error>
             </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>Humor</mat-label>
+              <mat-select formControlName="mood">
+                <mat-option *ngFor="let h of humores" [value]="h">
+                  {{h}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
-          <div class="controlInt col-sm-6 col-md-6 col-lg-6 col-xl-6 m-0 d-flex">
+        </div>
+        <div class="controlPai w-100 d-flex">
+          <div class="controlInt col-sm-6 col-md-6 col-lg-6 col-xl-6 m-0 d-flex pl-0">
             <mat-form-field appearance="fill" class="w-100 mb-3">
               <mat-label>Escolher Stems da música(s)</mat-label>
               <mat-select formControlName="stemsType">
@@ -126,18 +136,6 @@
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="form.get('mood')?.hasError('required') && (form.get('mood')?.dirty || form.get('mood')?.touched)">Selecione um humor.</mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="controlPai w-100 d-flex">
-          <div class="controlInt col-sm-6 col-md-6 col-lg-6 col-xl-6 m-0 d-flex pl-0">
-            <mat-form-field appearance="fill" class="w-100 mb-3">
-              <mat-label>Humor</mat-label>
-              <mat-select formControlName="mood">
-                <mat-option *ngFor="let h of humores" [value]="h">
-                  {{h}}
-                </mat-option>
-              </mat-select>
             </mat-form-field>
           </div>
         </div>
@@ -267,36 +265,61 @@
           </textarea>
           <mat-error *ngIf="form.get('textarea1')?.hasError('required') && (form.get('textarea1')?.dirty || form.get('textarea1')?.touched)">Campo obrigatório.</mat-error>
         </mat-form-field>
-        <div class="control w-100 d-flex flex-column align-items-start justify-content-start">
-          <p class="h5 font-weight-bold mb-2">Upload de arquivo</p>
-          <label class="upload d-flex justify-content-center align-items-center" id="upload">
-            <svg class="mr-3" width="24" height="24" viewBox="0 0 32 32"><path d="M27.25,28.953H4.75a1,1,0,0,1-1-1V21.221a1,1,0,0,1,2,0v5.732h20.5V21.221a1,1,0,1,1,2,0v6.732A1,1,0,0,1,27.25,28.953Z"></path><path d="M22.128,16.9a1,1,0,0,0-1.414,0L17,20.607V4.047a1,1,0,0,0-2,0v16.56L11.286,16.9A1,1,0,0,0,9.872,18.31l5.42,5.417a1,1,0,0,0,1.417,0l5.42-5.417A1,1,0,0,0,22.128,16.9Z"></path></svg>
-            <span class="h6 m-0">Carregue seus arquivos aqui</span>
-            <input multiple type="file" formControlName="upload" name="upload" class="w-100 input-file" (change)="onChange($event)" min="2" max="5" accept="*/*" id="file" />
-          </label>
-
-          <div id="controlFile" class="showFile w-100"></div>
-        </div>
-        <div class="control w-100 d-flex flex-column align-items-start justify-content-start mt-3">
-          <p class="h5 font-weight-bold mb-2">Loops obrigatórios (15s, 30s, 60s)</p>
-          <div class="d-flex w-100">
-            <label class="upload d-flex justify-content-center align-items-center mr-2" style="width: 33%;">
-              <span class="h6 m-0">Loop 15s</span>
-              <input type="file" accept="audio/*" (change)="onLoopFileChange($event, 'loop15')" />
-            </label>
-            <label class="upload d-flex justify-content-center align-items-center mr-2" style="width: 33%;">
-              <span class="h6 m-0">Loop 30s</span>
-              <input type="file" accept="audio/*" (change)="onLoopFileChange($event, 'loop30')" />
-            </label>
-            <label class="upload d-flex justify-content-center align-items-center" style="width: 33%;">
-              <span class="h6 m-0">Loop 60s</span>
-              <input type="file" accept="audio/*" (change)="onLoopFileChange($event, 'loop60')" />
-            </label>
-          </div>
-          <div class="d-flex flex-column w-100 mt-2">
-            <small class="text-danger" *ngIf="form.get('loop15')?.hasError('required') && (form.get('loop15')?.touched)">Selecione o loop de 15s.</small>
-            <small class="text-danger" *ngIf="form.get('loop30')?.hasError('required') && (form.get('loop30')?.touched)">Selecione o loop de 30s.</small>
-            <small class="text-danger" *ngIf="form.get('loop60')?.hasError('required') && (form.get('loop60')?.touched)">Selecione o loop de 60s.</small>
+        <app-custom-file-upload
+          class="w-100"
+          title="Upload de arquivo"
+          subtitle="Carregue seus arquivos aqui"
+          [multiple]="true"
+          [maxFiles]="5"
+          accept="*/*"
+          formControlName="upload"
+          (filesSelected)="onMainFilesSelected($event)"
+        ></app-custom-file-upload>
+        <div class="w-100 mt-3">
+          <p class="h5 font-weight-bold mb-3">Loops obrigatórios (15s, 30s, 60s)</p>
+          <div class="d-flex w-100 gap-3" style="gap: 1rem;">
+            <div style="flex: 1;">
+              <app-custom-file-upload
+                title=""
+                subtitle="Loop 15s"
+                [multiple]="false"
+                accept="audio/*"
+                [showDuration]="true"
+                [expectedDuration]="15"
+                formControlName="loop15"
+              ></app-custom-file-upload>
+              <small class="text-danger" *ngIf="form.get('loop15')?.hasError('required') && (form.get('loop15')?.touched)">
+                Loop de 15s é obrigatório.
+              </small>
+            </div>
+            <div style="flex: 1;">
+              <app-custom-file-upload
+                title=""
+                subtitle="Loop 30s"
+                [multiple]="false"
+                accept="audio/*"
+                [showDuration]="true"
+                [expectedDuration]="30"
+                formControlName="loop30"
+              ></app-custom-file-upload>
+              <small class="text-danger" *ngIf="form.get('loop30')?.hasError('required') && (form.get('loop30')?.touched)">
+                Loop de 30s é obrigatório.
+              </small>
+            </div>
+            <div style="flex: 1;">
+              <app-custom-file-upload
+                title=""
+                subtitle="Loop 60s"
+                [multiple]="false"
+                accept="audio/*"
+                [showDuration]="true"
+                [expectedDuration]="60"
+                formControlName="loop60"
+              ></app-custom-file-upload>
+              <small class="text-danger" *ngIf="form.get('loop60')?.hasError('required') && (form.get('loop60')?.touched)">
+                Loop de 60s é obrigatório.
+              </small>
+            </div>
           </div>
         </div>
         <div class="terms mt-5 w-100 d-flex justify-content-center align-items-center">

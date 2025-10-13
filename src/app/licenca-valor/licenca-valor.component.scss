@@ -9,7 +9,9 @@ section.one .container {
   position: relative;
   top: 43px;
 }
-#myTab, #myTab1, #myTab2 {
+#myTab,
+#myTab1,
+#myTab2 {
   visibility: visible;
   animation-duration: 1s;
   animation-delay: 0.4s;
@@ -40,7 +42,7 @@ section.one .container {
 #myTab2 .nav-item a.active,
 #myTab1 .nav-item a.active,
 #myTab .nav-item a.active {
-  background-color: #4B3A8F;
+  background-color: #4b3a8f;
   color: white;
 }
 .blackBar {
@@ -61,7 +63,11 @@ section.one .container {
   -ms-border-radius: 8.5px 8.5px 0 0;
   -o-border-radius: 8.5px 8.5px 0 0;
 }
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body {
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-body {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -76,6 +82,9 @@ section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body
 #myTab2 .nav-item,
 #myTab .nav-item {
   width: 95%;
+}
+.effect_sons {
+  line-height: 2.5rem;
 }
 section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card {
   border: 0;
@@ -96,7 +105,7 @@ section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.three {
 section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.two {
   transform: scale(1.12);
   z-index: 2;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 @media (max-width: 991.98px) {
   section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.one,
@@ -106,19 +115,48 @@ section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.two {
     box-shadow: none;
   }
 }
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-header,
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-footer {
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-header,
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-footer {
   background: transparent;
 }
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body {
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-body {
   height: 54vh;
 }
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-header {
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-header
+  p.h3.font-weight-bold.text-center {
+  margin: 0;
+}
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-header {
   border-radius: 10px;
   border-bottom: 0;
-  padding: .75rem !important;
+  padding: 0 !important;
+  gap: 0.5rem;
   max-height: 90px;
   height: 100%;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
 }
 .price.d-flex.justify-content-center.align-items-center {
   gap: 0.25rem;
@@ -126,60 +164,140 @@ section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-head
 .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.two {
   padding-top: 30px !important;
 }
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body .cardInt.priceDad {
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-body
+  .cardInt.priceDad {
   margin: 8% 0 0;
 }
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body .cardInt.inc .trackDescription {
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-body
+  .cardInt.inc
+  .trackDescription {
   margin-top: 2rem !important;
 }
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body .cardInt.inc .trackDescription .incInt {
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-body
+  .cardInt.inc
+  .trackDescription
+  .incInt {
   width: 100%;
   margin-bottom: 3%;
 }
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body .cardInt.inc .trackDescription .incInt p.h6 {
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-body
+  .cardInt.inc
+  .trackDescription
+  .incInt
+  p.h6 {
   font-size: 18px;
   margin: 0 0 0 3%;
 }
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body .cardInt.priceDad .price p.h6,
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-body
+  .cardInt.priceDad
+  .price
+  p.h6,
 small.small {
   color: #828282;
   font-weight: bold;
 }
-section.faq.access .container .row .col-sm-8.col-md-8.col-lg-10.col-xl-12 a.btn.btn-warning,
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body .cardInt.btn button.btn.btn-warning {
-  background-color: #4B3A8F;
+section.faq.access
+  .container
+  .row
+  .col-sm-8.col-md-8.col-lg-10.col-xl-12
+  a.btn.btn-warning,
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-body
+  .cardInt.btn
+  button.btn.btn-warning {
+  background-color: #4b3a8f;
   border: 0;
   padding: 2% 0;
   border-radius: 30px;
   margin: 4% 0;
-  transition: all .35s linear;
+  transition: all 0.35s linear;
 }
-section.faq.access .container .row .col-sm-8.col-md-8.col-lg-10.col-xl-12 a.btn.btn-warning:hover {
+section.faq.access
+  .container
+  .row
+  .col-sm-8.col-md-8.col-lg-10.col-xl-12
+  a.btn.btn-warning:hover {
   padding: 18.5px 0 !important;
 }
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body .cardInt.btn button.btn.btn-warning:hover {
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-body
+  .cardInt.btn
+  button.btn.btn-warning:hover {
   padding: 2.5% 0 !important;
 }
-section.faq.access .container .row .col-sm-8.col-md-8.col-lg-10.col-xl-12 a.btn.btn-warning:hover,
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body .cardInt.btn button.btn.btn-warning:hover {
-  box-shadow: 0 0 10px 0 #4B3A8F !important;
-  border: 1px solid #4B3A8F !important;
-  background-color: #FFF !important;
-  color: #4B3A8F !important;
+section.faq.access
+  .container
+  .row
+  .col-sm-8.col-md-8.col-lg-10.col-xl-12
+  a.btn.btn-warning:hover,
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-body
+  .cardInt.btn
+  button.btn.btn-warning:hover {
+  box-shadow: 0 0 10px 0 #4b3a8f !important;
+  border: 1px solid #4b3a8f !important;
+  background-color: #fff !important;
+  color: #4b3a8f !important;
 }
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-footer {
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-footer {
   height: 65px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 2%;
+  padding: 0;
 }
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-footer .faq p.faqInt a {
-  color: #4B3A8F;
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-footer
+  .faq
+  p.faqInt
+  a {
+  color: #4b3a8f;
   font-weight: bold;
 }
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-footer .faq p.faqInt {
-  border-bottom: 2px solid #4B3A8F;
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-footer
+  .faq
+  p.faqInt {
+  border-bottom: 2px solid #4b3a8f;
   margin-bottom: 0;
   font-size: 14px;
 }
@@ -193,18 +311,38 @@ section.faq.access .container .row .col-sm-8.col-md-8.col-lg-10.col-xl-12 p.h1,
 section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 p.h1 {
   font-size: 45px;
 }
-section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body .cardInt.btn button.btn.btn-warning,
+section.one
+  .container
+  .row
+  .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+  .card-body
+  .cardInt.btn
+  button.btn.btn-warning,
 .blackBar,
 table.license,
-section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .control.d-flex .column.d-flex .material-icons.mr-2.p-0,
+section.two
+  .container
+  .row
+  .col-sm-12.col-md-12.col-lg-12.col-xl-12
+  .control.d-flex
+  .column.d-flex
+  .material-icons.mr-2.p-0,
 section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 p,
-section.faq.access .container .row .col-sm-8.col-md-8.col-lg-10.col-xl-12 a.btn.btn-warning {
-  color: #FFF;
+section.faq.access
+  .container
+  .row
+  .col-sm-8.col-md-8.col-lg-10.col-xl-12
+  a.btn.btn-warning {
+  color: #fff;
 }
-section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .control.d-flex {
+section.two
+  .container
+  .row
+  .col-sm-12.col-md-12.col-lg-12.col-xl-12
+  .control.d-flex {
   padding: 0 4%;
   position: relative;
-  right: .5%;
+  right: 0.5%;
 }
 table.license th {
   border-top: 0;
@@ -231,17 +369,24 @@ table.license tbody td {
   vertical-align: middle;
 }
 section.faq.access {
-  background-color: #FFF;
+  background-color: #fff;
   padding: 6% 0;
 }
-section.faq.access .container .row .col-sm-8.col-md-8.col-lg-10.col-xl-12 a.btn.btn-warning {
+section.faq.access
+  .container
+  .row
+  .col-sm-8.col-md-8.col-lg-10.col-xl-12
+  a.btn.btn-warning {
   width: 30%;
   cursor: pointer;
 }
 
 @media only screen and (min-width: 1440px) and (max-width: 1600px) {
   main {
-    zoom: 80% !important;
+    zoom: 90% !important;
+  }
+  p.h2.font-weight-bold {
+    font-size: 30px;
   }
   .card-footer {
     border: 0;
@@ -250,7 +395,9 @@ section.faq.access .container .row .col-sm-8.col-md-8.col-lg-10.col-xl-12 a.btn.
     font-size: 13px !important;
     margin-top: 20px;
   }
-  section.one .container { max-width: 70% !important; }
+  section.one .container {
+    max-width: 70% !important;
+  }
   .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.one {
     padding-bottom: 20px;
   }
@@ -259,23 +406,80 @@ section.faq.access .container .row .col-sm-8.col-md-8.col-lg-10.col-xl-12 a.btn.
     padding: 20px 10px !important;
     gap: 1rem;
   }
-}
-/* Responsividade */
-@media (max-width: 575.98px) {
-  main { margin-top: 8vh; }
-  section.one .container { max-width: 100% !important; top: 0; }
-  section.one .container .row { margin: 0; }
-  section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card { max-width: 100%; flex: 0 0 100%; margin-bottom: 16px; }
-  section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card .card-body { height: auto; }
-  #myTab, #myTab1, #myTab2 { padding: 6px; border-radius: 16px; }
-  #myTab .nav-item a, #myTab1 .nav-item a, #myTab2 .nav-item a { font-size: 16px; }
-  section.two { padding: 32px 0; }
-  section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 p.h1 { font-size: 28px; text-align: center; }
-  section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 p.h5 { font-size: 16px; text-align: center; }
-  .table-responsive { overflow-x: auto; }
-}
-@media (min-width: 768px) and (max-width: 1024.98px) {
-  section.one .container { max-width: 90% !important; top: 0; }
-  section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card { max-width: 48%; flex: 0 0 48%; }
+  section.one
+    .container
+    .row
+    .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+    .card-body
+    .cardInt.inc
+    .trackDescription
+    .incInt
+    p.h6 {
+    font-size: 16px;
+  }
+  p.font-weight-bold.h4.mb-0 {
+    font-size: 20px;
+    text-align: center;
+  }
 }
 
+/* Responsividade */
+@media (max-width: 575.98px) {
+  main {
+    margin-top: 8vh;
+  }
+  section.one .container {
+    max-width: 100% !important;
+    top: 0;
+  }
+  section.one .container .row {
+    margin: 0;
+  }
+  section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card {
+    max-width: 100%;
+    flex: 0 0 100%;
+    margin-bottom: 16px;
+  }
+  section.one
+    .container
+    .row
+    .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+    .card-body {
+    height: auto;
+  }
+  #myTab,
+  #myTab1,
+  #myTab2 {
+    padding: 6px;
+    border-radius: 16px;
+  }
+  #myTab .nav-item a,
+  #myTab1 .nav-item a,
+  #myTab2 .nav-item a {
+    font-size: 16px;
+  }
+  section.two {
+    padding: 32px 0;
+  }
+  section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 p.h1 {
+    font-size: 28px;
+    text-align: center;
+  }
+  section.two .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 p.h5 {
+    font-size: 16px;
+    text-align: center;
+  }
+  .table-responsive {
+    overflow-x: auto;
+  }
+}
+@media (min-width: 768px) and (max-width: 1024.98px) {
+  section.one .container {
+    max-width: 90% !important;
+    top: 0;
+  }
+  section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card {
+    max-width: 48%;
+    flex: 0 0 48%;
+  }
+}

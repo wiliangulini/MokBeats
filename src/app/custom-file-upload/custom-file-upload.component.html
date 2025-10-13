@@ -1,0 +1,55 @@
+<div class="custom-file-upload">
+  <p class="h5 font-weight-bold mb-2">{{ title }}</p>
+
+  <label class="upload-area d-flex justify-content-center align-items-center" [class.dragging]="isDragging"
+    [class.disabled]="disabled" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)">
+    <svg class="mr-3" width="24" height="24" viewBox="0 0 32 32">
+      <path
+        d="M27.25,28.953H4.75a1,1,0,0,1-1-1V21.221a1,1,0,0,1,2,0v5.732h20.5V21.221a1,1,0,1,1,2,0v6.732A1,1,0,0,1,27.25,28.953Z">
+      </path>
+      <path
+        d="M22.128,16.9a1,1,0,0,0-1.414,0L17,20.607V4.047a1,1,0,0,0-2,0v16.56L11.286,16.9A1,1,0,0,0,9.872,18.31l5.42,5.417a1,1,0,0,0,1.417,0l5.42-5.417A1,1,0,0,0,22.128,16.9Z">
+      </path>
+    </svg>
+    <span class="h6 m-0">{{ subtitle }}</span>
+    <input type="file" class="w-100 input-file" [accept]="accept" [multiple]="multiple" [disabled]="disabled"
+      (change)="onFileSelected($event)" />
+  </label>
+
+  <!-- Mensagem de erro -->
+  <div class="alert alert-danger mt-2 mb-0" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Preview dos arquivos selecionados -->
+  <div class="files-preview w-100 mt-3" *ngIf="files.length > 0">
+    <div class="file-item mt-2 w-100 d-flex justify-content-between align-items-center"
+      *ngFor="let file of files; let i = index">
+      <div class="file-info d-flex justify-content-start align-items-center h6 m-0">
+        <span class="material-icons mr-2">
+          {{ file.isAudio ? 'music_note' : 'insert_drive_file' }}
+        </span>
+        <div class="d-flex flex-column">
+          <span class="file-name">{{ file.name }}</span>
+          <small class="text-muted" *ngIf="file.duration">
+            Duração: {{ file.duration }}
+          </small>
+        </div>
+      </div>
+      <div class="file-actions d-flex justify-content-end align-items-center h6 m-0">
+        <span class="file-size pr-2">{{ file.size }}</span>
+        <button type="button" class="btn btn-sm btn-link text-danger p-0" (click)="removeFile(i)" [disabled]="disabled"
+          title="Remover arquivo">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Botão para limpar todos os arquivos (apenas para multiple) -->
+    <button type="button" class="btn btn-sm btn-outline-secondary mt-2" *ngIf="multiple && files.length > 1"
+      (click)="clearAll()" [disabled]="disabled">
+      Limpar todos
+    </button>
+  </div>
+</div>

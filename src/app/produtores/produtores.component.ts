@@ -182,8 +182,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     remover enviroment e criar as urls.
     */
 
-    // Mantido apenas upload; selects são carregados no ngOnInit
-    this.uploadFile();
+    // Ajustes de estilo do Material
     let matForm: any = document.querySelectorAll('.mat-form-field-wrapper');
     let matFormInt: any = document.querySelectorAll('.mat-form-field-infix');
     let matFormInt1: any = document.querySelectorAll('.mat-form-field-flex');
@@ -216,17 +215,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     });
   }
 
-  private removeTracks(): void {
-
-    let divPreview: any = this.$$('.uploaded');
-    if (divPreview !== null) {
-      if (divPreview.parentNode && divPreview.innerText.length > 0) {
-        document.querySelectorAll('.uploaded').forEach((e: any): void => {
-          e.parentNode.removeChild(e);
-        });
-      }
-    }
-  }
+  // Método removeTracks() removido - não mais necessário com o novo componente de upload
 
   markCheckbox(e: any) {
     console.log(this.checkBoxProducer);
@@ -258,7 +247,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       this.rules = 'Nesta opção você poderá enviar 1 música completa + 1 a 4 stems. Todos os stems precisam ter a mesma duração da música completa.';
     } else if (val === 'trackNoStems') {
       this.rules = 'Nesta opção você poderá enviar somente 1 música completa (sem stems).';
-      this.removeTracks();
+      // removeTracks() não mais necessário - o componente de upload gerencia isso automaticamente
     }
     this.cardAnimate();
   }
@@ -299,69 +288,24 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     }
   }
 
-  // optionSelect removido
-
-  private loop(event: any, num: number): void {
-    this.numero = num;
-    let showFile = this.$$('.showFile');
-    let arrayUpload: FileList = event.target.files;
-    let div: any = `
-        <div class='uploaded mt-4 w-100 d-flex justify-content-between align-items-center'>
-          <div class='files d-flex justify-content-start align-items-center  h6 m-0'>
-            <span class='material-icons'>music_note</span>
-            <span class='uploaded-files pl-1'></span>
-          </div>
-          <div class='size d-flex justify-content-end align-items-center h6 m-0'>
-            <span class='size-file pr-1'></span>
-            <span class='material-icons'>done</span>
-          </div>
-        </div>`;
-
-    if(arrayUpload.length > num) {
-      this.snackBar.open(`A OPÇÃO QUE VOCÊ SELECIONOU PERMITE UM NÚMERO MÁXIMO DE ${num} UPLOADS!`, '', {duration: 20000});
-      this.uploadFile();
-    } else {
-      showFile.innerHTML = div;
-      let divPreview: any = this.$$('.uploaded');
-      let previewFile = this.$$('.uploaded-files');
-      let previewSize = this.$$('.size-file');
-      let controlF: any = this.$$('#controlFile .uploaded.mt-4 .size.d-flex');
-      let controlFMaterial: any = this.$$('#controlFile .uploaded.mt-4 .size.d-flex .material-icons');
-      divPreview.style.display = 'flex';
-      divPreview.style.padding = '20px 10px';
-      divPreview.style.background = '#DDD';
-      divPreview.style.borderRadius = '8px';
-      controlF.style.color = '#4B3A8F';
-      controlFMaterial.style.fontSize = '21px';
-      for (let i: number = 0; i < arrayUpload.length; i++) {
-        let fileItem: any = divPreview.cloneNode(true);
-        (i > 0) ? showFile.append(fileItem) : null;
-        let s: number = arrayUpload[i].size / 1000000;
-        let size = s.toFixed(1);
-        previewFile.innerText = arrayUpload[i].name;
-        previewSize.innerText = size + 'MB';
-      }
-    }
-  }
+  // Métodos loop(), uploadFile() e onLoopFileChange() removidos - substituídos pelo componente custom-file-upload
 
 
   files!: Set<File>;
-  onChange(event: any) {
-    console.log(event)
+
+  onMainFilesSelected(fileList: FileList): void {
+    console.log('Arquivos selecionados:', fileList);
     // Usar ViewChild se disponível, senão fallback para querySelector
     const submitBtn = this.submitButton?.nativeElement || document.querySelector('.btnSubmit');
     submitBtn?.classList.add('hover');
-    
-    const selectedFiles: FileList = event.srcElement.files;
-    console.log(selectedFiles);
+
     const fileNames: any[] = [];
     this.files = new Set();
-    for(let i = 0; i < selectedFiles.length; i++) {
-      fileNames.push(selectedFiles[i].name);
-      this.files.add(selectedFiles[i]);
+    for(let i = 0; i < fileList.length; i++) {
+      fileNames.push(fileList[i].name);
+      this.files.add(fileList[i]);
     }
-    console.log(fileNames);
-    this.form.get('upload')?.setValue(selectedFiles.length);
+    console.log('Nomes dos arquivos:', fileNames);
     this.form.get('upload')?.markAsTouched();
   }
   onUpload() {
@@ -464,16 +408,7 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     ctrl.updateValueAndValidity();
   }
 
-  // Handlers de file inputs específicos dos loops
-  onLoopFileChange(e: any, kind: 'loop15'|'loop30'|'loop60') {
-    const file: File = e?.target?.files?.[0];
-    if (file) {
-      this.form.get(kind)?.setValue(file);
-      this.form.get(kind)?.markAsTouched();
-    } else {
-      this.form.get(kind)?.reset();
-    }
-  }
+  // onLoopFileChange() removido - agora é gerenciado pelo componente custom-file-upload via ControlValueAccessor
 
   private getFileDurationMs(file: File): Promise<number> {
     return new Promise((resolve, reject) => {
@@ -612,22 +547,5 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
       }
     } catch (e) {}
   }
-
-
-
-
-  uploadFile(): void {
-    let fileChooser = this.$$('.input-file');
-
-    fileChooser.onchange = (e: any): void => {
-      if (this.producer == 'trackWithStems') {
-        this.loop(e, 5); // 1 música + até 4 stems (máx. 5 arquivos)
-        if (e.target?.files?.length < 2) {
-          this.snackBar.open('Envie também pelo menos 1 stem além da música completa.', '', {duration: 6000});
-        }
-      } else if (this.producer == 'trackNoStems') {
-        this.loop(e, 1); // somente 1 música
-      }
-    };
-  }
+  // uploadFile() removido - não mais necessário com o componente custom-file-upload
 }

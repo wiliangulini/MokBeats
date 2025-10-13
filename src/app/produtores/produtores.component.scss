@@ -2,6 +2,10 @@ mat-form-field input {
   margin-bottom: 0 !important;
   border-bottom: 0 !important;
 }
+mat-form-field mat-select {
+  padding-bottom: 0.5rem;
+  padding-top: 0.35rem;
+}
 .mat-form-field-appearance-fill .mat-form-field-infix {
   padding-bottom: 0 !important;
 }
@@ -187,7 +191,9 @@ mat-form-field {
 }
 
 @media only screen and (min-width: 320px) and (max-width: 768px) {
-
+.d-flex.w-100.gap-3 {
+  flex-direction: column;
+}
 .comboFlex {
   display: flex !important;
   justify-content: center !important;

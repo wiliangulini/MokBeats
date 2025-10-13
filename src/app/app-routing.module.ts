@@ -23,6 +23,7 @@ import {ArtistComponent} from "./artist/artist.component";
 import {CarrinhoComponent} from "./carrinho/carrinho.component";
 import {UsuarioArtistaComponent} from "./usuario-artista/usuario-artista.component";
 import {PlayerComponent} from "./player/player.component";
+import { TermosPrivacidadeComponent } from "./termos-privacidade/termos-privacidade.component";
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'efeitos-sonoros', component: EfeitosSonorosComponent },
   { path: 'precos', component: LicencaValorComponent },
   { path: 'politica-de-privacidade', component: PoliticaPrivacidadeComponent },
+  { path: 'termos-do-site', component: TermosPrivacidadeComponent },
   { path: 'genero', component: GeneroComponent },
   { path: 'humor', component: HumorComponent },
   { path: 'faq', component: FaqComponent },
