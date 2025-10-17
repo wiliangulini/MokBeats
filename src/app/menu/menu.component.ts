@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {NgbModal, NgbNavbar} from "@ng-bootstrap/ng-bootstrap";
 import { LoginComponent } from "../login/login.component";
 import {AuthService} from "../login/auth.service";
 import {MusicasService} from "../musicas/musicas.service";
 import {MenuProdutorComponent} from "../menu-produtor/menu-produtor.component";
-import {empty} from "rxjs";
+import {empty, Subscription} from "rxjs";
 import {CarrinhoService} from "../service/carrinho.service";
 
 @Component({
@@ -12,7 +12,7 @@ import {CarrinhoService} from "../service/carrinho.service";
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent implements OnInit, OnDestroy {
 
   @ViewChild('nav', {static: true}) nav!: ElementRef;
   @ViewChild('navbarToggler', {static: false}) navbarToggler!: ElementRef;
@@ -20,6 +20,10 @@ export class MenuComponent implements OnInit {
   // Estado do menu mobile
   isMenuOpen: boolean = false;
   isMobile: boolean = false;
+
+  // Estado de autenticação do usuário
+  isUserLoggedIn: boolean = false;
+  private authSubscription!: Subscription;
 
   @HostListener('window:scroll') onWindowScroll() {
     let url: string = location.href;
@@ -82,6 +86,20 @@ export class MenuComponent implements OnInit {
     }
 
     this.checkScreenSize();
+
+    // Subscrever ao estado de autenticação
+    this.authSubscription = this.authService.authStatus$.subscribe(
+      (isLoggedIn: boolean) => {
+        this.isUserLoggedIn = isLoggedIn;
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    // Cancelar a subscrição para evitar memory leak
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
   }
 
   /**

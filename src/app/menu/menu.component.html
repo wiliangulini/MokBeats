@@ -77,7 +77,8 @@
         <li routerLinkActive="active" class="nav-item">
           <a class="nav-link person-link" (click)="modalOpen()">
             <span class="material-icons">person</span>
-            <span class="txt-mobile">Sua Conta</span>
+            <span class="txt-mobile" *ngIf="!isUserLoggedIn">Login / Cadastro</span>
+            <span class="txt-mobile" *ngIf="isUserLoggedIn">Sua Conta</span>
           </a>
         </li>
       </ul>
