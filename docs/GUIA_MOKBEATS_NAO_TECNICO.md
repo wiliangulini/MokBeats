@@ -80,7 +80,7 @@ Como parar
 
 6) Login de teste (apenas para desenvolvimento)
 - E-mail: `test@mokbeats.com`
-- Senha: `test123`
+- Senha: `test12345`
 
 7) Dicas de uso (resumo)
 - Página Inicial (Home):

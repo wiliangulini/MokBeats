@@ -68,6 +68,13 @@ button.btn.btn-secondary.w-75 {
   .controlCard .card.playlist { width: 100%; margin-bottom: 12px; }
   button.btn.btn-secondary.w-75 { position: static; width: 100%; margin-top: 16px; }
 }
-@media (min-width: 768px) and (max-width: 1024.98px) {
-  .modal-content { right: 0; left: 0; top: 5vh; bottom: 5vh; margin: 0 16px; }
+@media (min-width: 768px) and (max-width: 1023px) {
+  .modal-content {
+    right: 0;
+    left: auto;
+    top: 0;
+    bottom: 0;
+    width: 400px;
+    max-width: 50vw;
+  }
 }

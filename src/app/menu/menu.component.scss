@@ -316,6 +316,7 @@ nav.navbar {
 // =================
 // BREAKPOINT: 1024px (Desktop)
 // =================
+
 @media only screen and (min-width: 1024px) {
   nav.navbar {
     .container-fluid {
@@ -422,6 +423,26 @@ nav.navbar {
   }
 }
 
+
+// =================
+// BREAKPOINT: 1024px - 1100px (Desktop)
+// =================
+@media only screen and (min-width: 1024px) and (max-width: 1100px) {
+  .menu-items {
+    width: 62%;
+    left: 51%;
+  }
+}
+// =================
+// BREAKPOINT: 1024px - 1100px (Desktop)
+// =================
+@media only screen and (min-width: 1101px) and (max-width: 1200px) {
+  .menu-items {
+    width: 62%;
+    left: 54.5%;
+  }
+}
+
 // =================
 // BREAKPOINT: 1280px
 // =================
@@ -438,6 +459,9 @@ nav.navbar {
 
   .menu-controls .nav-item .nav-link .material-icons {
     font-size: 32px;
+  }
+  .menu-items {
+    width: 56%;
   }
 }
 
@@ -467,4 +491,9 @@ nav.navbar {
 a.nav-link,
 a.nav-link span.material-icons {
   cursor: pointer !important;
+}
+@media only screen and (min-width: 1513px) {
+  .menu-items {
+    width: auto;
+  }
 }
