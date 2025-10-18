@@ -444,16 +444,16 @@
                   [attr.data-music-index]="i"
                 >
                   <p class="h6 mb-0" id="duracao">
-                    <ng-container *ngIf="itens.duracaoCarregando; else showDuration">
+                    <ng-container
+                      *ngIf="itens.duracaoCarregando; else showDuration"
+                    >
                       --:--
                     </ng-container>
                     <ng-template #showDuration>
                       <ng-container *ngIf="itens.duracaoReal; else fallback">
                         {{ formatTime(itens.duracaoReal) }}
                       </ng-container>
-                      <ng-template #fallback>
-                        --:--
-                      </ng-template>
+                      <ng-template #fallback> --:-- </ng-template>
                     </ng-template>
                   </p>
                   <p class="h6 mb-0" id="bpm">{{ itens.bpm }}</p>

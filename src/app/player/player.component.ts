@@ -39,6 +39,7 @@ export class PlayerComponent
   wavesurfer!: WaveSurfer;
   stems: WaveSurfer[] = [];
   stemLabels: string[] = [];
+  private lastLoadedStemsMusicId: number = -1;
 
   constructor(
     private musicService: MusicasService,
@@ -75,7 +76,11 @@ export class PlayerComponent
       console.log(id);
       if (id > -1) {
         this.idMusicPlay(id);
-        this.loadStems(id);
+        // Só recarrega stems se for uma música diferente
+        if (this.lastLoadedStemsMusicId !== id) {
+          this.loadStems(id);
+          this.lastLoadedStemsMusicId = id;
+        }
       }
     });
 
@@ -139,8 +144,11 @@ export class PlayerComponent
 
     // Sincronizar stems com a faixa principal
     this.wavesurfer.on('play', () => {
+      const currentTime = (this.wavesurfer as any)?.getCurrentTime?.() || 0;
       this.stems.forEach((s) => {
         try {
+          // Sincroniza o tempo antes de tocar
+          s.setTime(currentTime);
           s.play();
         } catch (e) {}
       });
@@ -165,7 +173,6 @@ export class PlayerComponent
       } catch (e) {}
     });
     (this.wavesurfer as any).on('audioprocess', () => {
-      this.syncStemsTimeToMain();
       try {
         const time = (this.wavesurfer as any)?.getCurrentTime?.() || 0;
         this.musicPlayerService.setCurrentTime(time);
@@ -460,23 +467,14 @@ export class PlayerComponent
     this.wavesurfer.play();
     this.playerService.tooglePlayPause();
     this.isPlaying2 = true;
-    // Tocar stems juntos (fallback por elementos <audio>)
-    this.getStemAudios().forEach((a) => {
-      try {
-        a.play();
-      } catch (e) {}
-    });
+    // Stems são controlados automaticamente pelo evento 'play' do wavesurfer principal (linha 141)
   }
 
   pauseMusic(musicId: any) {
     this.wavesurfer.pause();
     this.playerService.tooglePlayPause();
     this.isPlaying2 = false;
-    this.getStemAudios().forEach((a) => {
-      try {
-        a.pause();
-      } catch (e) {}
-    });
+    // Stems são controlados automaticamente pelo evento 'pause' do wavesurfer principal (linha 148)
   }
 
   playPause(): void {
@@ -518,27 +516,6 @@ export class PlayerComponent
   }
   showPlayer() {
     this.playerService.showPlayer();
-  }
-  private getStemAudios(): HTMLAudioElement[] {
-    const sel = [
-      '#trackCustom1',
-      '#trackCustom2',
-      '#trackCustom3',
-      '#trackCustom4',
-    ]
-      .map((id) => `${id} audio`)
-      .join(',');
-    return Array.from(document.querySelectorAll(sel)) as HTMLAudioElement[];
-  }
-  private syncStemsTimeToMain() {
-    try {
-      const time = (this.wavesurfer as any)?.getCurrentTime?.() || 0;
-      this.getStemAudios().forEach((a) => {
-        try {
-          a.currentTime = time;
-        } catch (e) {}
-      });
-    } catch (e) {}
   }
 
   private destroyStems() {
