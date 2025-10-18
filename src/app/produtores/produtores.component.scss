@@ -261,5 +261,19 @@ mat-form-field {
   button.btn.btn-success {
     width: 100% !important;
   }
-
+  section.submit .container .row form .submitForm button  {
+    font-size: 14px;
+    width: 65%;
+  }
+  section.submit .container .row form .submitForm button.btnSubmit {
+    width: 30%;
+  }
+}
+@media only screen and (max-width: 350px) {
+  section.one, section.submit {
+    zoom: 80%;
+  }
+  section.submit .container .row form .submitForm button  {
+    font-size: 13px;
+  }
 }

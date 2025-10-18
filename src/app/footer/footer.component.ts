@@ -66,7 +66,7 @@ export class FooterComponent implements OnInit {
     } else if(data === 'Entre em Contato') {
       this.router.navigate(['/contato']).then();
     } else if(data === 'Informações de Licença') {
-      this.router.navigate(['/preco']).then();
+      this.router.navigate(['/precos']).then();
     } else if(data === 'Fale Conosco via WhatsApp') {
       window.open(this.url, '_blank');
     }
