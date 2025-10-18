@@ -722,7 +722,7 @@ app.post('/api/producers/track', multipartMiddleware, (req, res) => {
         }
         for (let i = 0; i < stemsMs.length; i++) {
           if (!eq(toInt(stemsMs[i]), tms, TOL)) {
-            return res.status(422).json({ message: `Stem #${i+1} não possui a mesma duração da música completa.` });
+            return res.status(422).json({ message: `Stem #${i + 1} não possui a mesma duração da música completa.` });
           }
         }
       }
@@ -781,6 +781,7 @@ var MUSICAS = [
     // url: '../../assets/audios/Tipo_Minato.mp3',
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -798,6 +799,7 @@ var MUSICAS = [
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     // url: '../../assets/audios/Vibe_Shisui.mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -815,6 +817,7 @@ var MUSICAS = [
     // url: '../../assets/audios/Tipo_Minato.mp3',
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -832,6 +835,7 @@ var MUSICAS = [
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     // url: '../../assets/audios/Vibe_Shisui.mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -849,6 +853,7 @@ var MUSICAS = [
     // url: '../../assets/audios/Tipo_Minato.mp3',
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -866,6 +871,7 @@ var MUSICAS = [
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     // url: '../../assets/audios/Vibe_Shisui.mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -883,6 +889,7 @@ var MUSICAS = [
     // url: '../../assets/audios/Tipo_Minato.mp3',
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -900,6 +907,7 @@ var MUSICAS = [
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     // url: '../../assets/audios/Vibe_Shisui.mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -917,6 +925,7 @@ var MUSICAS = [
     // url: '../../assets/audios/Tipo_Minato.mp3',
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -934,6 +943,7 @@ var MUSICAS = [
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     // url: '../../assets/audios/Vibe_Shisui.mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -951,6 +961,7 @@ var MUSICAS = [
     // url: '../../assets/audios/Tipo_Minato.mp3',
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -968,6 +979,7 @@ var MUSICAS = [
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     // url: '../../assets/audios/Vibe_Shisui.mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -985,6 +997,7 @@ var MUSICAS = [
     // url: '../../assets/audios/Tipo_Minato.mp3',
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -1002,6 +1015,7 @@ var MUSICAS = [
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     // url: '../../assets/audios/Vibe_Shisui.mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -1019,6 +1033,7 @@ var MUSICAS = [
     // url: '../../assets/audios/Tipo_Minato.mp3',
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -1036,6 +1051,7 @@ var MUSICAS = [
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     // url: '../../assets/audios/Vibe_Shisui.mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -1052,6 +1068,7 @@ var MUSICAS = [
     // url: '../../assets/audios/Tipo_Minato.mp3',
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -1068,6 +1085,7 @@ var MUSICAS = [
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     // url: '../../assets/audios/Vibe_Shisui.mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -1084,6 +1102,7 @@ var MUSICAS = [
     // url: '../../assets/audios/Tipo_Minato.mp3',
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -1100,6 +1119,7 @@ var MUSICAS = [
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     // url: '../../assets/audios/Vibe_Shisui.mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -1116,6 +1136,7 @@ var MUSICAS = [
     // url: '../../assets/audios/Tipo_Minato.mp3',
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -1132,6 +1153,7 @@ var MUSICAS = [
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     // url: '../../assets/audios/Vibe_Shisui.mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -1148,6 +1170,7 @@ var MUSICAS = [
     // url: '../../assets/audios/Tipo_Minato.mp3',
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -1164,6 +1187,7 @@ var MUSICAS = [
     url: '../../assets/audios/MokBeats_Future_Forest_(FULL).mp3',
     // url: '../../assets/audios/Vibe_Shisui.mp3',
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7,
@@ -1494,6 +1518,7 @@ var FAVORITOS = [
     nome_musica: "HighFrenetic",
     nome_produtor: "Xalaika",
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7
@@ -1503,6 +1528,7 @@ var FAVORITOS = [
     nome_musica: "Maleficus Chaos",
     nome_produtor: "Luan Bolico",
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7
@@ -1512,6 +1538,7 @@ var FAVORITOS = [
     nome_musica: "Impertinent",
     nome_produtor: "Hagy Fantasy",
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7
@@ -1521,6 +1548,7 @@ var FAVORITOS = [
     nome_musica: "The Funkster",
     nome_produtor: "Sweet Spot",
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7
@@ -1530,6 +1558,7 @@ var FAVORITOS = [
     nome_musica: "Code",
     nome_produtor: "Bonieky",
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7
@@ -1539,6 +1568,7 @@ var FAVORITOS = [
     nome_musica: "The Funkster",
     nome_produtor: "Sweet Spot",
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7
@@ -1548,6 +1578,7 @@ var FAVORITOS = [
     nome_musica: "HighFrenetic",
     nome_produtor: "Xalaika",
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7
@@ -1557,6 +1588,7 @@ var FAVORITOS = [
     nome_musica: "Maleficus Chaos",
     nome_produtor: "Luan Bolico",
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7
@@ -1566,6 +1598,7 @@ var FAVORITOS = [
     nome_musica: "Impertinent",
     nome_produtor: "Hagy Fantasy",
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7
@@ -1575,6 +1608,7 @@ var FAVORITOS = [
     nome_musica: "The Funkster",
     nome_produtor: "Sweet Spot",
     duracao: 180000,
+    duracaoReal: 193.5, // Duração real em segundos (3:05)
     bpm: 95,
     trechos: 60,
     loops: 7

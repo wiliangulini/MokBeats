@@ -396,7 +396,9 @@ export class MusicasComponent
       const cached = localStorage.getItem(this.CACHE_KEY);
       if (cached) {
         const parsed = JSON.parse(cached);
-        this.durationCache = new Map(Object.entries(parsed).map(([k, v]) => [Number(k), v as number]));
+        this.durationCache = new Map(
+          Object.entries(parsed).map(([k, v]) => [Number(k), v as number])
+        );
       }
     } catch (error) {
       console.error('Erro ao carregar cache de durações:', error);
@@ -418,21 +420,39 @@ export class MusicasComponent
 
   // Carrega a duração real de uma música
   carregarDuracaoReal(musica: Musica, index: number): void {
-    if (!musica.id || !musica.url) return;
+    if (!musica.id) return;
 
-    // Verifica se já está no cache
+    // 1. Prioriza duracaoReal vindo do backend
+    if (musica.duracaoReal && musica.duracaoReal > 0) {
+      this.arrMusica[index].duracaoReal = musica.duracaoReal;
+      this.arrMusica[index].duracaoCarregando = false;
+      // Salva no cache para persistir
+      this.durationCache.set(musica.id, musica.duracaoReal);
+      this.saveDurationCache();
+      return;
+    }
+
+    // 2. Verifica se já está no cache
     if (this.durationCache.has(musica.id)) {
       this.arrMusica[index].duracaoReal = this.durationCache.get(musica.id);
       this.arrMusica[index].duracaoCarregando = false;
       return;
     }
 
-    // Marca como carregando
+    // 3. Se não tem URL, não pode calcular
+    if (!musica.url) {
+      this.arrMusica[index].duracaoCarregando = false;
+      return;
+    }
+
+    // 4. Marca como carregando
     this.arrMusica[index].duracaoCarregando = true;
 
-    // Carrega duração real do áudio
-    this.audioService.getAudioduration(musica.url)
+    // 5. Carrega duração real do áudio via audioService
+    this.audioService
+      .getAudioduration(musica.url)
       .then((duracao) => {
+        console.log(duracao);
         this.arrMusica[index].duracaoReal = duracao;
         this.arrMusica[index].duracaoCarregando = false;
 
@@ -443,7 +463,10 @@ export class MusicasComponent
         }
       })
       .catch((error) => {
-        console.error(`Erro ao carregar duração da música ${musica.nome_musica}:`, error);
+        console.error(
+          `Erro ao carregar duração da música ${musica.nome_musica}:`,
+          error
+        );
         this.arrMusica[index].duracaoCarregando = false;
         // Em caso de erro, duracaoReal permanece undefined
       });
@@ -455,7 +478,7 @@ export class MusicasComponent
     const options = {
       root: null, // viewport
       rootMargin: '50px', // carrega 50px antes de entrar no viewport
-      threshold: 0.1 // 10% visível
+      threshold: 0.1, // 10% visível
     };
 
     this.intersectionObserver = new IntersectionObserver((entries) => {
@@ -485,8 +508,21 @@ export class MusicasComponent
     // Aguarda um pouco para garantir que os elementos foram renderizados
     setTimeout(() => {
       const musicCards = document.querySelectorAll('.music-card-duration');
-      musicCards.forEach((card) => {
-        this.intersectionObserver?.observe(card);
+
+      // Carrega imediatamente as primeiras 10 músicas (above the fold)
+      const immediateLoadCount = Math.min(10, this.arrMusica.length);
+      for (let i = 0; i < immediateLoadCount; i++) {
+        if (this.arrMusica[i]) {
+          this.carregarDuracaoReal(this.arrMusica[i], i);
+        }
+      }
+
+      // Observa os demais cards para lazy loading
+      musicCards.forEach((card, index) => {
+        // Só observa se for além das primeiras 10
+        if (index >= immediateLoadCount) {
+          this.intersectionObserver?.observe(card);
+        }
       });
     }, 100);
   }
