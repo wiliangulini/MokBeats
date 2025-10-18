@@ -230,12 +230,6 @@
                   </div>
                 </div>
                 <div class="wavesurfer">
-                  <!--<app-wavesurfer
-                        [audioUrl]="itens"
-                        [containerId]="'waveform-' + i"
-                        (songFinished)="onSongFinished(i)"
-                      >
-                      </app-wavesurfer>-->
                   <app-wave-surfer-test *ngIf="isDesktop" [music]="itens" [idContainer]="'waveform-' + i"
                     (songFinished)="onSongFinished(i)"></app-wave-surfer-test>
                 </div>

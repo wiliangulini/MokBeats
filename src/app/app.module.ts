@@ -61,7 +61,6 @@ import {UsuarioArtistaComponent} from './usuario-artista/usuario-artista.compone
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {CartModalComponent} from "./carrinho/cartModal/cart-modal.component";
 import { I18nextTestComponent } from './i18next-test/i18next-test.component';
-import { WavesurferComponent } from './wavesurfer/wavesurfer.component';
 import { WaveSurferTestComponent } from './wave-surfer-test/wave-surfer-test.component';
 import { PlaceholderEllipsisDirective } from './directives/placeholder-ellipsis.directive';
 import { TermosPrivacidadeComponent } from './termos-privacidade/termos-privacidade.component';
@@ -107,7 +106,6 @@ import { CustomFileUploadComponent } from './custom-file-upload/custom-file-uplo
     UsuarioArtistaComponent,
     CartModalComponent,
     I18nextTestComponent,
-    WavesurferComponent,
     WaveSurferTestComponent,
     PlaceholderEllipsisDirective,
     TermosPrivacidadeComponent,

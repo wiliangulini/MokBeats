@@ -1,5 +1,4 @@
-import {AfterViewInit, Component, OnInit, QueryList, ViewChildren} from '@angular/core';
-import {WavesurferComponent} from "./wavesurfer/wavesurfer.component";
+import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 
 @Component({
   selector: 'app-root',
