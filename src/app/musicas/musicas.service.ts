@@ -1,14 +1,14 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { AddPlaylistModalComponent } from "../add-playlist-modal/add-playlist-modal.component";
-import { DownloadAmostraComponent } from "../download-amostra/download-amostra.component";
-import { AuthService } from "../login/auth.service";
-import { FavoritosService } from "../favoritos/favoritos.service";
-import { environment } from "../../environments/environment";
-import { HttpClient } from "@angular/common/http";
-import { CarrinhoService } from "../service/carrinho.service";
-import { CrudService } from "../service/crud-service";
-import { Observable } from "rxjs";
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { AddPlaylistModalComponent } from '../add-playlist-modal/add-playlist-modal.component';
+import { DownloadAmostraComponent } from '../download-amostra/download-amostra.component';
+import { FavoritosService } from '../favoritos/favoritos.service';
+import { AuthService } from '../login/auth.service';
+import { CarrinhoService } from '../service/carrinho.service';
+import { CrudService } from '../service/crud-service';
 
 export type Musica = {
   id?: number;
@@ -19,13 +19,12 @@ export type Musica = {
   bpm?: number;
   trechos?: number;
   loops?: number;
-}
+};
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MusicasService extends CrudService<Musica> {
-
   private readonly baseUrl = environment.apiBaseUrl;
   hearth: any;
   hearth1: any;
@@ -36,315 +35,295 @@ export class MusicasService extends CrudService<Musica> {
 
   public genero: any = [
     {
-      "Blues": [
-        "Aleatória",
-        "Blues eletrificado",
-        "Blues acústico",
-        "Blues-rock",
-        "Chicago",
-        "Delta blues",
-        "Memphis",
-        "St. Louis",
-        "Zydeco"
+      Blues: [
+        'Aleatória',
+        'Blues eletrificado',
+        'Blues acústico',
+        'Blues-rock',
+        'Chicago',
+        'Delta blues',
+        'Memphis',
+        'St. Louis',
+        'Zydeco',
       ],
-      "Cantores": [
-        "Alemães",
-        "Brasil",
-        "China",
-        "Dinamarqueses",
-        "Finlândia",
-        "França",
-        "Grécia",
-        "Itália",
-        "Japão",
-        "K-Pop",
-        "México",
-        "Rússia",
-        "Espanha",
-        "Suécia",
-        "Índia",
+      Cantores: [
+        'Alemães',
+        'Brasil',
+        'China',
+        'Dinamarqueses',
+        'Finlândia',
+        'França',
+        'Grécia',
+        'Itália',
+        'Japão',
+        'K-Pop',
+        'México',
+        'Rússia',
+        'Espanha',
+        'Suécia',
+        'Índia',
       ],
-      "Clássica": [
-        "Barroca",
-        "Canto gregoriano",
-        "Clássica moderna/Neoclássica",
-        "Composições originais",
-        "Medieval",
-        "Período clássico",
-        "Período romântico",
-        "Renascimento",
-        "Século XX",
-        "Valsa",
-        "Ópera",
+      Clássica: [
+        'Barroca',
+        'Canto gregoriano',
+        'Clássica moderna/Neoclássica',
+        'Composições originais',
+        'Medieval',
+        'Período clássico',
+        'Período romântico',
+        'Renascimento',
+        'Século XX',
+        'Valsa',
+        'Ópera',
       ],
-      "Corporativo": [
-        "Incidental",
-        "Inspiradora",
-        "Motivacional",
+      Corporativo: ['Incidental', 'Inspiradora', 'Motivacional'],
+      'Dance/Tecno': [
+        'Bhangra Trap',
+        'Bounce',
+        'Break',
+        'Dance',
+        'Dance Pop',
+        'Deep House',
+        'Drum and Bass (DnB)',
+        'Dubstep',
+        'EDM',
+        'Future House',
+        'Glitch House',
+        'House',
+        'House Progressivo',
+        'Industrial',
+        'Jersey Club',
+        'Nu Disco',
+        'Rave',
+        'Tech House',
+        'Tecno',
+        'Trance',
+        'Trap',
+        'Tropical House',
       ],
-      "Dance/Tecno": [
-        "Bhangra Trap",
-        "Bounce",
-        "Break",
-        "Dance",
-        "Dance Pop",
-        "Deep House",
-        "Drum and Bass (DnB)",
-        "Dubstep",
-        "EDM",
-        "Future House",
-        "Glitch House",
-        "House",
-        "House Progressivo",
-        "Industrial",
-        "Jersey Club",
-        "Nu Disco",
-        "Rave",
-        "Tech House",
-        "Tecno",
-        "Trance",
-        "Trap",
-        "Tropical House",
+      'Datas comemorativas': [
+        'Dia da Independência',
+        'Dia das Bruxas',
+        'Ano Novo',
+        'Natal',
+        'Patriótica/Presidencial',
       ],
-      "Datas comemorativas": [
-        "Dia da Independência",
-        "Dia das Bruxas",
-        "Ano Novo",
-        "Natal",
-        "Patriótica/Presidencial",
+      Eletrônica: [
+        'ASMR',
+        'Chill out',
+        'Chillwave',
+        'Downtempo',
+        'Drones',
+        'Etéreo',
+        'Experimental',
+        'Future Bass',
+        'Futurewave',
+        'Lounge',
+        'Minimalista',
+        'Trip-hop',
+        'Vaporwave',
       ],
-      "Eletrônica": [
-        "ASMR",
-        "Chill out",
-        "Chillwave",
-        "Downtempo",
-        "Drones",
-        "Etéreo",
-        "Experimental",
-        "Future Bass",
-        "Futurewave",
-        "Lounge",
-        "Minimalista",
-        "Trip-hop",
-        "Vaporwave",
+      Folk: ['Acústico', 'Folk pop', 'Folk rock', 'Folktronica', 'Indie Folk'],
+      'Hip Hop': [
+        'Crunk',
+        'Gangsta',
+        'Hick Hop',
+        'Hip hop old school',
+        'Hyphy',
+        'Rap',
+        'Rap emo',
+        'Trap',
+        'Twerk',
       ],
-      "Folk": [
-        "Acústico",
-        "Folk pop",
-        "Folk rock",
-        "Folktronica",
-        "Indie Folk",
+      'Infantil/Crianças': [
+        'Animada',
+        'Divertida/Engraçada',
+        'Suave/Canção de ninar',
       ],
-      "Hip Hop": [
-        "Crunk",
-        "Gangsta",
-        "Hick Hop",
-        "Hip hop old school",
-        "Hyphy",
-        "Rap",
-        "Rap emo",
-        "Trap",
-        "Twerk"
+      Jazz: [
+        'Acid jazz',
+        'Balada jazz',
+        'Dixieland',
+        'Exótica',
+        'Fusion',
+        'Jazz cigano',
+        'Jazz latino',
+        'Jazz moderno',
+        'Lounge jazz',
+        'Ragtime',
+        'Smooth jazz',
+        'Swing',
       ],
-      "Infantil/Crianças": [
-        "Animada",
-        "Divertida/Engraçada",
-        "Suave/Canção de ninar",
+      Jogos: [
+        '8bits',
+        '8bits/Chiptune',
+        'Aventura',
+        'Batalha',
+        'Corrida',
+        'Crianças',
+        'Fantasia',
       ],
-      "Jazz": [
-        "Acid jazz",
-        "Balada jazz",
-        "Dixieland",
-        "Exótica",
-        "Fusion",
-        "Jazz cigano",
-        "Jazz latino",
-        "Jazz moderno",
-        "Lounge jazz",
-        "Ragtime",
-        "Smooth jazz",
-        "Swing",
+      Latina: [
+        'Bachata',
+        'Bossa Nova',
+        'Brasileira/Samba',
+        'Conjunto',
+        'Cubana/Salsa',
+        'Cúmbia',
+        'Espanhola/Flamenca',
+        'Jarocho',
+        'Mariachi',
+        'Norteño',
+        'Peruana',
+        'Reggaeton',
+        'Rock latino',
+        'Rumba',
+        'Tango',
+        'Tex-Mex',
       ],
-      "Jogos": [
-        "8bits",
-        "8bits/Chiptune",
-        "Aventura",
-        "Batalha",
-        "Corrida",
-        "Crianças",
-        "Fantasia",
+      Mundo: [
+        'Africana',
+        'Afro-cubana',
+        'Asiática',
+        'Balinesa',
+        'Balcânica',
+        'Bollywood',
+        'Cajun',
+        'Calipso',
+        'Celta',
+        'Chinesa',
+        'Coreana',
+        'Dinamarquesa',
+        'Estilo gamelão',
+        'Etíope',
+        'Europeia',
+        'Alemã',
+        'Gnawa',
+        'Grega',
+        'Havaiana',
+        'Indiana',
+        'Indígena norte-americana',
+        'Irlandesa',
+        'Italiana',
+        'Japonesa',
+        'Klezmer',
+        'Mediterrânea',
+        'Mongol',
+        'Norueguesa',
+        'Polca',
+        'Polinésia',
+        'Portuguesa',
+        'Escandinava',
+        'Tailandesa',
+        'Vietnamita',
+        'Do Oriente Médio',
       ],
-      "Latina": [
-        "Bachata",
-        "Bossa Nova",
-        "Brasileira/Samba",
-        "Conjunto",
-        "Cubana/Salsa",
-        "Cúmbia",
-        "Espanhola/Flamenca",
-        "Jarocho",
-        "Mariachi",
-        "Norteño",
-        "Peruana",
-        "Reggaeton",
-        "Rock latino",
-        "Rumba",
-        "Tango",
-        "Tex-Mex",
+      'New age': [
+        'Drones',
+        'Elementos de música mundial',
+        'Etéreo',
+        'Lounge',
+        'Orquestral',
       ],
-      "Mundo": [
-        "Africana",
-        "Afro-cubana",
-        "Asiática",
-        "Balinesa",
-        "Balcânica",
-        "Bollywood",
-        "Cajun",
-        "Calipso",
-        "Celta",
-        "Chinesa",
-        "Coreana",
-        "Dinamarquesa",
-        "Estilo gamelão",
-        "Etíope",
-        "Europeia",
-        "Alemã",
-        "Gnawa",
-        "Grega",
-        "Havaiana",
-        "Indiana",
-        "Indígena norte-americana",
-        "Irlandesa",
-        "Italiana",
-        "Japonesa",
-        "Klezmer",
-        "Mediterrânea",
-        "Mongol",
-        "Norueguesa",
-        "Polca",
-        "Polinésia",
-        "Portuguesa",
-        "Escandinava",
-        "Tailandesa",
-        "Vietnamita",
-        "Do Oriente Médio",
+      Noticiário: ['Identidade auditiva', 'Manchetes'],
+      'Piano/Solo instrumental': ['Drama humano'],
+      Pop: [
+        'Adulto contemporâneo',
+        'Afrobeat',
+        'Balada',
+        'Cantor/Compositor',
+        'Dream Pop',
+        'Electro Pop',
+        'Indie Pop',
+        'New Wave',
+        'Pop chiclete',
+        'Pop rock',
+        'Suave/Easy listening',
+        'Synthpop',
       ],
-      "New age": [
-        "Drones",
-        "Elementos de música mundial",
-        "Etéreo",
-        "Lounge",
-        "Orquestral",
+      Reggae: ['Dancehall', 'Polinésia', 'Soca'],
+      'Rhythm and blues': [
+        'Disco',
+        'Doo-Wop',
+        'Funk',
+        'Gospel',
+        'Motown R&B alternativo',
+        'R&B pop',
+        'Soul',
+        'Soul contemporâneo',
+        'Soul pop',
       ],
-      "Noticiário": [
-        "Identidade auditiva",
-        "Manchetes",
+      Rock: [
+        'Alternativo/Grunge',
+        'Blues Rock',
+        'Boogie-Woogie',
+        'Death Metal',
+        'Emo',
+        'Funk Rock',
+        'Hard Rock',
+        'Hardcore',
+        'Heartland Rock',
+        'Heavy Metal',
+        'Indie Rock',
+        'Mersey Beat',
+        'Pop Punk',
+        'Pop rock',
+        'Punk rock',
+        'Raga rock',
+        'Rock clássico',
+        'Rock n roll',
+        'Rock retrô',
+        'Rockabilly',
+        'Rocktrônica',
+        'Ska',
+        'Soft rock',
+        'Southern rock',
+        'Spaghetti Western',
+        'Surf rock',
+        'Swamp Rock',
       ],
-      "Piano/Solo instrumental": [
-        "Drama humano",
+      Sertanejo: [
+        'Bluegrass',
+        'Faroeste',
+        'Honky Tonk',
+        'Raízes americanas',
+        'Sertaneja tradicional',
+        'Sertanejo folk',
+        'Sertanejo pop',
+        'Sertanejo rock',
+        'Swing texano',
       ],
-      "Pop": [
-        "Adulto contemporâneo",
-        "Afrobeat",
-        "Balada",
-        "Cantor/Compositor",
-        "Dream Pop",
-        "Electro Pop",
-        "Indie Pop",
-        "New Wave",
-        "Pop chiclete",
-        "Pop rock",
-        "Suave/Easy listening",
-        "Synthpop",
-      ],
-      "Reggae": [
-        "Dancehall",
-        "Polinésia",
-        "Soca",
-      ],
-      "Rhythm and blues": [
-        "Disco",
-        "Doo-Wop",
-        "Funk",
-        "Gospel",
-        "Motown R&B alternativo",
-        "R&B pop",
-        "Soul",
-        "Soul contemporâneo",
-        "Soul pop",
-      ],
-      "Rock": [
-        "Alternativo/Grunge",
-        "Blues Rock",
-        "Boogie-Woogie",
-        "Death Metal",
-        "Emo",
-        "Funk Rock",
-        "Hard Rock",
-        "Hardcore",
-        "Heartland Rock",
-        "Heavy Metal",
-        "Indie Rock",
-        "Mersey Beat",
-        "Pop Punk",
-        "Pop rock",
-        "Punk rock",
-        "Raga rock",
-        "Rock clássico",
-        "Rock n roll",
-        "Rock retrô",
-        "Rockabilly",
-        "Rocktrônica",
-        "Ska",
-        "Soft rock",
-        "Southern rock",
-        "Spaghetti Western",
-        "Surf rock",
-        "Swamp Rock",
-      ],
-      "Sertanejo": [
-        "Bluegrass",
-        "Faroeste",
-        "Honky Tonk",
-        "Raízes americanas",
-        "Sertaneja tradicional",
-        "Sertanejo folk",
-        "Sertanejo pop",
-        "Sertanejo rock",
-        "Swing texano",
-      ]
-    }
+    },
   ];
 
   public humor: any = [
-    "Ação / Esportes",
-    "Aventura / Descoberta",
-    "Aeróbica / Exercícios",
-    "Agressivo",
-    "Comédia / Engraçado",
-    "Crime / Suspense / Espionagem",
-    "Sombrio / Melancólico",
-    "Épico / Orquestral",
-    "Moda / Estilo de Vida",
-    "Bem-Estar / Sentir-se Bem",
-    "Suave / Leve",
-    "Feliz / Alegre",
-    "Terror / Assustador",
-    "Mágico / Místico",
-    "Militar / Patriótico",
-    "Relaxamento / Meditação",
-    "Religioso / Cristão",
-    "Romântico / Sentimental",
-    "Triste / Nostálgico",
-    "Ficção Científica / Futurista",
-    "Sexy / Sensual",
-    "Estranho / Bizarro",
-    "Suspense / Drama",
-    "Trilhas de Fundo",
-    "Inspirador / Elevado",
-    "Casamento",
+    'Ação / Esportes',
+    'Aventura / Descoberta',
+    'Aeróbica / Exercícios',
+    'Agressivo',
+    'Comédia / Engraçado',
+    'Crime / Suspense / Espionagem',
+    'Sombrio / Melancólico',
+    'Épico / Orquestral',
+    'Moda / Estilo de Vida',
+    'Bem-Estar / Sentir-se Bem',
+    'Suave / Leve',
+    'Feliz / Alegre',
+    'Terror / Assustador',
+    'Mágico / Místico',
+    'Militar / Patriótico',
+    'Relaxamento / Meditação',
+    'Religioso / Cristão',
+    'Romântico / Sentimental',
+    'Triste / Nostálgico',
+    'Ficção Científica / Futurista',
+    'Sexy / Sensual',
+    'Estranho / Bizarro',
+    'Suspense / Drama',
+    'Trilhas de Fundo',
+    'Inspirador / Elevado',
+    'Casamento',
   ];
-
 
   public arrMusica!: Musica[];
 
@@ -354,7 +333,7 @@ export class MusicasService extends CrudService<Musica> {
     private likeService: FavoritosService,
     protected override http: HttpClient,
     private cartService: CarrinhoService,
-    private activeModal: NgbActiveModal,
+    private activeModal: NgbActiveModal
   ) {
     super(http, `${environment.apiBaseUrl}/musicas`);
     this.genero.map((obj: any) => {
@@ -405,15 +384,28 @@ export class MusicasService extends CrudService<Musica> {
       this.list().subscribe((data: any) => {
         this.arrMusica = data;
         this.addMusicPlaylist = music;
-        document.querySelectorAll('.addPlaylist').forEach((e: any, index: any) => {
-          if (this.arrMusica[index].id == this.addMusicPlaylist.id) {
-            e.classList.add('amarelo');
-            const activeModal = this.modalService.open(AddPlaylistModalComponent, { size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false });
-            activeModal.componentInstance.addNewMusicPlaylist(this.addMusicPlaylist);
-            activeModal.result.then();
-          }
-        });
-      })
+        document
+          .querySelectorAll('.addPlaylist')
+          .forEach((e: any, index: any) => {
+            if (this.arrMusica[index].id == this.addMusicPlaylist.id) {
+              e.classList.add('amarelo');
+              const activeModal = this.modalService.open(
+                AddPlaylistModalComponent,
+                {
+                  size: 'lg',
+                  modalDialogClass: 'modal-dialog-centered',
+                  container: 'body',
+                  backdrop: 'static',
+                  keyboard: false,
+                }
+              );
+              activeModal.componentInstance.addNewMusicPlaylist(
+                this.addMusicPlaylist
+              );
+              activeModal.result.then();
+            }
+          });
+      });
     }
   }
 
@@ -427,7 +419,13 @@ export class MusicasService extends CrudService<Musica> {
   public baixarAmostra(i: number, md: any) {
     console.log(md);
     this.downloadMusic = md;
-    this.modalService.open(DownloadAmostraComponent, { size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false });
+    this.modalService.open(DownloadAmostraComponent, {
+      size: 'lg',
+      modalDialogClass: 'modal-dialog-centered',
+      container: 'body',
+      backdrop: 'static',
+      keyboard: false,
+    });
   }
 
   public comprarLicensa(i: any) {
@@ -474,6 +472,8 @@ export class MusicasService extends CrudService<Musica> {
   }
 
   getLatestUniqueByProducer(limit: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/tracks/latest-unique-by-producer`, { params: { limit } as any });
+    return this.http.get(`${this.baseUrl}/tracks/latest-unique-by-producer`, {
+      params: { limit } as any,
+    });
   }
 }

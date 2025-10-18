@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from "rxjs";
-import WaveSurfer from "wavesurfer.js";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlayerService {
-
   tooglePlayPause() {
     let play: any = document.querySelector('#play');
     let pause: any = document.querySelector('#pause');
@@ -28,7 +25,9 @@ export class PlayerService {
     document.getElementById('controlPlayer')!.classList.add('hidePlayer');
     const show = document.getElementById('showPlayerBtn');
     if (show) show.style.display = 'flex';
-    try { localStorage.setItem('playerMinimized', 'true'); } catch (e) { }
+    try {
+      localStorage.setItem('playerMinimized', 'true');
+    } catch (e) {}
   }
 
   showPlayer() {
@@ -36,6 +35,8 @@ export class PlayerService {
     document.getElementById('controlPlayer')!.classList.add('showPlayer');
     const show = document.getElementById('showPlayerBtn');
     if (show) show.style.display = 'none';
-    try { localStorage.setItem('playerMinimized', 'false'); } catch (e) { }
+    try {
+      localStorage.setItem('playerMinimized', 'false');
+    } catch (e) {}
   }
 }

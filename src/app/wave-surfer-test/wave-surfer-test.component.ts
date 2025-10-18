@@ -1,15 +1,25 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {Subscription} from "rxjs";
-import {MusicPlayerService} from "../service/music-player.service";
-import WaveSurfer from "wavesurfer.js";
-import Minimap from "wavesurfer.js/dist/plugins/minimap";
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { Subscription } from 'rxjs';
+import WaveSurfer from 'wavesurfer.js';
+import Minimap from 'wavesurfer.js/dist/plugins/minimap';
+import { MusicPlayerService } from '../service/music-player.service';
 
 @Component({
   selector: 'app-wave-surfer-test',
   templateUrl: './wave-surfer-test.component.html',
-  styleUrls: ['./wave-surfer-test.component.scss']
+  styleUrls: ['./wave-surfer-test.component.scss'],
 })
-export class WaveSurferTestComponent implements OnInit, AfterViewInit ,OnDestroy {
+export class WaveSurferTestComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @Input() music!: any;
   @Input() idContainer!: any;
   @Output() songFinished = new EventEmitter<void>();
@@ -23,24 +33,30 @@ export class WaveSurferTestComponent implements OnInit, AfterViewInit ,OnDestroy
 
   ngOnInit() {
     // Controla play/pause por ação, mas sem reproduzir áudio neste componente
-    this.subscription = this.musicPlayerService.playPauseAction$.subscribe(({ action, musicId }) => {
-      this.isCurrent = (this.music.id === musicId);
-      // Não chamamos play/pause do WaveSurfer local; a posição será movida pelo tempo global.
-    });
+    this.subscription = this.musicPlayerService.playPauseAction$.subscribe(
+      ({ action, musicId }) => {
+        this.isCurrent = this.music.id === musicId;
+        // Não chamamos play/pause do WaveSurfer local; a posição será movida pelo tempo global.
+      }
+    );
 
     // Atualiza a flag de música atual
     this.idSub = this.musicPlayerService.currentMusicID$.subscribe((id) => {
-      this.isCurrent = (id === this.music.id);
+      this.isCurrent = id === this.music.id;
       if (!this.isCurrent && this.wavesurfer) {
         // Ao trocar de faixa, reseta visual desta waveform
-        try { this.wavesurfer.setTime(0); } catch (e) {}
+        try {
+          this.wavesurfer.setTime(0);
+        } catch (e) {}
       }
     });
 
     // Sincroniza tempo com o player principal
     this.timeSub = this.musicPlayerService.currentTime$.subscribe((time) => {
       if (this.isCurrent && this.wavesurfer) {
-        try { this.wavesurfer.setTime(time); } catch (e) {}
+        try {
+          this.wavesurfer.setTime(time);
+        } catch (e) {}
       }
     });
   }
@@ -82,8 +98,8 @@ export class WaveSurferTestComponent implements OnInit, AfterViewInit ,OnDestroy
             waveColor: '#fff',
             progressColor: '#dcad54',
             dragToSeek: true,
-          })
-        ]
+          }),
+        ],
       });
 
       // Aguardar a criação antes de carregar
@@ -124,7 +140,6 @@ export class WaveSurferTestComponent implements OnInit, AfterViewInit ,OnDestroy
           });
         }
       }, 50);
-
     } catch (error) {
       console.error('Error creating WaveSurfer:', error);
     }
@@ -152,5 +167,4 @@ export class WaveSurferTestComponent implements OnInit, AfterViewInit ,OnDestroy
   pauseWave() {
     // Mantido para compatibilidade, mas controle é centralizado no player
   }
-
 }

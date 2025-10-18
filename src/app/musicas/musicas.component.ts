@@ -3,37 +3,40 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  HostListener,
   EventEmitter,
+  HostListener,
   OnInit,
   Output,
   QueryList,
-  ViewChildren
+  ViewChildren,
 } from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {Router} from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
-import {PlaylistService} from '../create-playlist-modal/playlist.service';
-import {FavoritosService} from '../favoritos/favoritos.service';
-import {AuthService} from '../login/auth.service';
-import {ScrollService} from '../service/scroll.service';
-import {Musica, MusicasService} from './musicas.service';
-import {PlayerService} from "../player/player.service";
-import {MusicPlayerService} from "../service/music-player.service";
-import {WaveSurferTestComponent} from "../wave-surfer-test/wave-surfer-test.component";
-import {AudioService} from "../service/audio.service";
-import WaveSurfer from "wavesurfer.js";
+import WaveSurfer from 'wavesurfer.js';
+import { PlaylistService } from '../create-playlist-modal/playlist.service';
+import { FavoritosService } from '../favoritos/favoritos.service';
+import { AuthService } from '../login/auth.service';
+import { PlayerService } from '../player/player.service';
+import { AudioService } from '../service/audio.service';
+import { MusicPlayerService } from '../service/music-player.service';
+import { ScrollService } from '../service/scroll.service';
+import { WaveSurferTestComponent } from '../wave-surfer-test/wave-surfer-test.component';
+import { Musica, MusicasService } from './musicas.service';
 
 @Component({
   selector: 'app-musicas',
   templateUrl: './musicas.component.html',
-  styleUrls: ['./musicas.component.scss']
+  styleUrls: ['./musicas.component.scss'],
 })
-export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class MusicasComponent
+  implements OnInit, AfterViewInit, AfterViewChecked
+{
   isLoading: boolean = true;
   // Controla renderização do waveform por breakpoint
   isDesktop: boolean = true;
-  @ViewChildren(WaveSurferTestComponent) waveSurfers!: QueryList<WaveSurferTestComponent>;
+  @ViewChildren(WaveSurferTestComponent)
+  waveSurfers!: QueryList<WaveSurferTestComponent>;
   public favorite: Musica = {};
   trecho: any[] = [15, 30, 60];
   loop: any[] = [1, 2, 3, 4, 5, 6, 7];
@@ -59,7 +62,8 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   // Flag para controlar se os filtros devem ser aplicados
   filtersInitialized: boolean = false;
   formG!: FormGroup;
-  frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
+  frase: string =
+    'Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.';
   select: any = 'Mais Relevantes';
   audioUrl: string = '';
   durationUrl: number | null = null;
@@ -67,45 +71,45 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   isPlaying: boolean = false;
 
   vozes: Array<any> = [
-    "Amostras/Efeitos",
-    "Cantores principais",
-    "Coro/Grupo",
-    "Oohs e Aahs",
-    "Todos os Cantores",
-  ]
+    'Amostras/Efeitos',
+    'Cantores principais',
+    'Coro/Grupo',
+    'Oohs e Aahs',
+    'Todos os Cantores',
+  ];
   arrFilter: Array<any> = [
-    "Popularidade",
-    "Mais relevantes",
-    "Mais recentes",
-    "Ordem alfabética",
-    "Artista",
-    "BPM (mais baixos primeiro)",
-    "BPM (mais altos primeiro)",
-    "Duração (mais curtas primeiro)",
-    "Duração (mais longas primeiro)",
-  ]
+    'Popularidade',
+    'Mais relevantes',
+    'Mais recentes',
+    'Ordem alfabética',
+    'Artista',
+    'BPM (mais baixos primeiro)',
+    'BPM (mais altos primeiro)',
+    'Duração (mais curtas primeiro)',
+    'Duração (mais longas primeiro)',
+  ];
   arrVExtendida: Array<any> = [
-    {value: "Baixo por sintetizador", viewValue: "Baixo por sintetizador"},
-    {value: "Chill", viewValue: "Chill"},
-    {value: "Dance", viewValue: "Dance"},
-    {value: "Dance Pop", viewValue: "Dance Pop"},
-    {value: "Dance/Tecno", viewValue: "Dance/Tecno"},
-    {value: "Electro pop", viewValue: "Electro pop"},
-    {value: "Exciting", viewValue: "Exciting"},
-    {value: "Futurista", viewValue: "Futurista"},
-    {value: "Futuristic", viewValue: "Futuristic"},
-    {value: "Groovy", viewValue: "Groovy"},
-    {value: "Guitarra", viewValue: "Guitarra"},
-    {value: "Hip", viewValue: "Hip"},
-    {value: "Mesmerizing", viewValue: "Mesmerizing"},
-    {value: "Moda/Estilo de vida", viewValue: "Moda/Estilo de vida"},
-    {value: "Pulsing", viewValue: "Pulsing"},
-    {value: "Sentimento bom", viewValue: "Sentimento bom"},
-    {value: "Sintetizador", viewValue: "Sintetizador"},
-    {value: "Smooth", viewValue: "Smooth"},
-    {value: "Technology", viewValue: "Technology"},
-    {value: "Trippy", viewValue: "Trippy"},
-  ]
+    { value: 'Baixo por sintetizador', viewValue: 'Baixo por sintetizador' },
+    { value: 'Chill', viewValue: 'Chill' },
+    { value: 'Dance', viewValue: 'Dance' },
+    { value: 'Dance Pop', viewValue: 'Dance Pop' },
+    { value: 'Dance/Tecno', viewValue: 'Dance/Tecno' },
+    { value: 'Electro pop', viewValue: 'Electro pop' },
+    { value: 'Exciting', viewValue: 'Exciting' },
+    { value: 'Futurista', viewValue: 'Futurista' },
+    { value: 'Futuristic', viewValue: 'Futuristic' },
+    { value: 'Groovy', viewValue: 'Groovy' },
+    { value: 'Guitarra', viewValue: 'Guitarra' },
+    { value: 'Hip', viewValue: 'Hip' },
+    { value: 'Mesmerizing', viewValue: 'Mesmerizing' },
+    { value: 'Moda/Estilo de vida', viewValue: 'Moda/Estilo de vida' },
+    { value: 'Pulsing', viewValue: 'Pulsing' },
+    { value: 'Sentimento bom', viewValue: 'Sentimento bom' },
+    { value: 'Sintetizador', viewValue: 'Sintetizador' },
+    { value: 'Smooth', viewValue: 'Smooth' },
+    { value: 'Technology', viewValue: 'Technology' },
+    { value: 'Trippy', viewValue: 'Trippy' },
+  ];
   arrMusica: Musica[] = [];
   btnPlay: any;
   btnTrue: boolean = false;
@@ -123,7 +127,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     private router: Router,
     private cdRef: ChangeDetectorRef,
     private musicPlayerService: MusicPlayerService,
-    private audioService: AudioService,
+    private audioService: AudioService
   ) {
     this.formG = this.fb.group({
       checkbox: [],
@@ -167,11 +171,11 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.playlistService.list().subscribe((data: any) => {
         this.isLoading = false;
         data.forEach((e: any) => {
-          if(e.music.length > 0) {
-            for(let i: number = 0; i < e.music.length; i++) {
+          if (e.music.length > 0) {
+            for (let i: number = 0; i < e.music.length; i++) {
               playlist.push(e.music[i]);
             }
-          } else if(e.music.length == undefined && e.music.id > 0) {
+          } else if (e.music.length == undefined && e.music.id > 0) {
             playlist.push(e.music);
           }
         });
@@ -179,21 +183,21 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
           const duplicatePlaylist = setPlaylist.has(data.id);
           setPlaylist.add(data.id);
           return !duplicatePlaylist;
-        })
+        });
         filterMusicPlaylist.sort((a, b) => {
-          if(a.id > b.id) return 1;
-          if(a.id < b.id) return -1;
+          if (a.id > b.id) return 1;
+          if (a.id < b.id) return -1;
           return 0;
         });
         let addplaylist: any = document.querySelectorAll('.addPlaylist');
         addplaylist.forEach((e: any, index: any) => {
-          for(let i of filterMusicPlaylist){
-            if(i.id === this.arrMusica[index]?.id) {
-              e.classList.add('amarelo')
+          for (let i of filterMusicPlaylist) {
+            if (i.id === this.arrMusica[index]?.id) {
+              e.classList.add('amarelo');
             }
           }
         });
-      })
+      });
       this.likeService.list().subscribe((data: any) => {
         let fav: any[] = [];
         data.forEach((e: any) => {
@@ -202,24 +206,24 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
         let hearthLike = document.querySelectorAll('.hearth');
         let hearthLike1 = document.querySelectorAll('.hearth1');
         hearthLike.forEach((e: any, index: number) => {
-          for(let i of fav) {
-            if(i.id === this.arrMusica[index]?.id) {
-              e.style.display = 'none'
+          for (let i of fav) {
+            if (i.id === this.arrMusica[index]?.id) {
+              e.style.display = 'none';
             }
           }
-        })
+        });
         hearthLike1.forEach((e: any, index: number) => {
-          for(let i of fav) {
-            if(i.id === this.arrMusica[index]?.id) {
-              e.style.display = 'block'
+          for (let i of fav) {
+            if (i.id === this.arrMusica[index]?.id) {
+              e.style.display = 'block';
             }
           }
-        })
+        });
       });
-    })
+    });
     document.querySelectorAll('.mat-checkbox-frame')?.forEach((e: any) => {
-      e.style.borderColor = "#FFF";
-    })
+      e.style.borderColor = '#FFF';
+    });
 
     //  essa função mostra todos itens do querylist conforme é sendo prenchido no ngFor.
     // this.waveSurfers.changes.subscribe((data: any) => {
@@ -228,13 +232,12 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     //     console.log(e);
     //   })
     // })
-
   }
 
   ngAfterViewChecked() {
-    if(!this.btnTrue) {
+    if (!this.btnTrue) {
       this.btnPlay = document.querySelectorAll('button.svg.play');
-      if(this.btnPlay.length > 0) {
+      if (this.btnPlay.length > 0) {
         this.btnPlay.forEach((e: any, i: number) => {
           e.setAttribute('data-key', this.arrMusica[i].id);
         });
@@ -254,15 +257,16 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     this.action = action;
     this.playerShow();
     this.arrMusica.forEach((music: any) => {
-      if(music.id === this.id) {
+      if (music.id === this.id) {
         this.playMusic = music;
       }
     });
 
     this.currentTrackIndex = this.playMusic.id - 1;
     if (this.isDesktop) {
-      if(this.isPlaying) {
-        const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
+      if (this.isPlaying) {
+        const currentWaveSurfer =
+          this.waveSurfers.toArray()[this.currentTrackIndex];
         if (currentWaveSurfer) {
           this.musicPlayerService.onPlayPause('pause', this.id);
           this.toogleButton();
@@ -290,14 +294,13 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   toogleButton() {
     let spanPlay: any = document.querySelectorAll('span.spanPlay');
     let spanPause: any = document.querySelectorAll('span.spanPause');
-    if(this.action == 'play') {
+    if (this.action == 'play') {
       this.play_pause = 'pause';
       spanPause[this.currentTrackIndex].classList.add('d-flex');
       spanPause[this.currentTrackIndex].classList.remove('d-none');
       spanPlay[this.currentTrackIndex].classList.remove('d-flex');
       spanPlay[this.currentTrackIndex].classList.add('d-none');
-    }
-    else if (this.action == 'pause') {
+    } else if (this.action == 'pause') {
       this.play_pause = 'play';
       spanPlay[this.currentTrackIndex].classList.add('d-flex');
       spanPlay[this.currentTrackIndex].classList.remove('d-none');
@@ -308,9 +311,10 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   playNextTrack() {
     if (this.isDesktop) {
-      const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
+      const currentWaveSurfer =
+        this.waveSurfers.toArray()[this.currentTrackIndex];
       if (currentWaveSurfer) {
-        console.log(currentWaveSurfer)
+        console.log(currentWaveSurfer);
         this.playMusic = currentWaveSurfer.music;
         this.musicPlayerService.setCurrentMusicID(this.playMusic.id);
         this.musicPlayerService.setCurrentMusicUrl(this.playMusic.url);
@@ -331,8 +335,9 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   onSongFinished(index: number) {
-    const currentWaveSurfer = this.waveSurfers.toArray()[this.currentTrackIndex];
-    console.log(currentWaveSurfer)
+    const currentWaveSurfer =
+      this.waveSurfers.toArray()[this.currentTrackIndex];
+    console.log(currentWaveSurfer);
     if (index === this.currentTrackIndex) {
       this.currentTrackIndex++;
       this.id++;
@@ -352,15 +357,17 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   pagArtist(data: any) {
     console.log(data);
-    this.router.navigate(['/pagina-artista'], {queryParams: {nome_produtor: data.nome_produtor}});
+    this.router.navigate(['/pagina-artista'], {
+      queryParams: { nome_produtor: data.nome_produtor },
+    });
   }
 
   formatTime = (seconds: any) => {
     const minutes = Math.floor(seconds / 60);
     const secondsRemainder = Math.round(seconds) % 60;
     const paddedSeconds = `0${secondsRemainder}`.slice(-2);
-    return `${minutes}:${paddedSeconds}`
-  }
+    return `${minutes}:${paddedSeconds}`;
+  };
 
   dur!: any;
   msToMinute(ms: any) {
@@ -378,12 +385,14 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     this.favorite.trechos = this.arrMusica[i].trechos;
     this.favorite.loops = this.arrMusica[i].loops;
     this.musicService.sendFavorite(i, this.favorite);
-
   }
 
   filtrar(): void {
     let navleft: any = document.getElementById('navLeft');
-    if(navleft!.getAttribute('style') == 'width: 0px;' || navleft!.getAttribute('style') == 'width: 0px; opacity: 0; z-index: 0;') {
+    if (
+      navleft!.getAttribute('style') == 'width: 0px;' ||
+      navleft!.getAttribute('style') == 'width: 0px; opacity: 0; z-index: 0;'
+    ) {
       navleft!.style.width = '96vw';
       navleft!.style.opacity = '1';
       navleft!.style.zIndex = '99999';
@@ -414,7 +423,7 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   baixarAmostra(i: number): void {
     this.authService.verificaLogin();
-    if(this.authService.userAutetic()) {
+    if (this.authService.userAutetic()) {
       this.musicDownload = [];
       this.musicDownload.push(this.arrMusica[i].nome_musica);
       this.musicDownload.push(this.arrMusica[i].nome_produtor);
@@ -422,19 +431,26 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     }
   }
 
-  comprarLicensa(i: any): void { this.musicService.comprarLicensa(i); }
+  comprarLicensa(i: any): void {
+    this.musicService.comprarLicensa(i);
+  }
 
-  filtroP(e: any): void { this.select = e; }
+  filtroP(e: any): void {
+    this.select = e;
+  }
 
   onChangedEvent(event: any, elem: any): void {
-    elem == 'bpm' ? this.number = event : this.duration = event;
+    elem == 'bpm' ? (this.number = event) : (this.duration = event);
 
-    if(elem == 'duracao') {
+    if (elem == 'duracao') {
       let dateObj: any = new Date(this.duration * 1000);
       let minutes: any = dateObj.getUTCMinutes();
       let seconds: any = dateObj.getSeconds();
 
-      let timeString: any = minutes.toString().padStart(1) + ':' + seconds.toString().padStart(2, '0');
+      let timeString: any =
+        minutes.toString().padStart(1) +
+        ':' +
+        seconds.toString().padStart(2, '0');
       this.durationAut = timeString;
     }
     // Só aplica filtros se há um valor definido
@@ -550,14 +566,15 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
   // Método para aplicar todos os filtros
   applyFilters(): void {
     // Verifica se há algum filtro selecionado
-    const hasFilters = this.selectedGeneros.length > 0 ||
-                      this.selectedSubgeneros.length > 0 ||
-                      this.selectedVozes.length > 0 ||
-                      this.selectedHumores.length > 0 ||
-                      this.selectedArtistas.length > 0 ||
-                      this.selectedInstrumentos.length > 0 ||
-                      (this.number && this.number > 0) ||
-                      (this.duration && this.duration > 0);
+    const hasFilters =
+      this.selectedGeneros.length > 0 ||
+      this.selectedSubgeneros.length > 0 ||
+      this.selectedVozes.length > 0 ||
+      this.selectedHumores.length > 0 ||
+      this.selectedArtistas.length > 0 ||
+      this.selectedInstrumentos.length > 0 ||
+      (this.number && this.number > 0) ||
+      (this.duration && this.duration > 0);
 
     if (!hasFilters) {
       // Se não há filtros, recarrega todas as músicas
@@ -570,11 +587,14 @@ export class MusicasComponent implements OnInit, AfterViewInit, AfterViewChecked
     const filtros: any = {};
 
     if (this.selectedGeneros.length > 0) filtros.genero = this.selectedGeneros;
-    if (this.selectedSubgeneros.length > 0) filtros.subgenero = this.selectedSubgeneros;
+    if (this.selectedSubgeneros.length > 0)
+      filtros.subgenero = this.selectedSubgeneros;
     if (this.selectedVozes.length > 0) filtros.vozes = this.selectedVozes;
     if (this.selectedHumores.length > 0) filtros.humor = this.selectedHumores;
-    if (this.selectedArtistas.length > 0) filtros.artistas = this.selectedArtistas;
-    if (this.selectedInstrumentos.length > 0) filtros.instrumentos = this.selectedInstrumentos;
+    if (this.selectedArtistas.length > 0)
+      filtros.artistas = this.selectedArtistas;
+    if (this.selectedInstrumentos.length > 0)
+      filtros.instrumentos = this.selectedInstrumentos;
     if (this.number && this.number > 0) filtros.bpmMax = this.number;
     if (this.duration && this.duration > 0) filtros.duracaoMax = this.duration;
 
