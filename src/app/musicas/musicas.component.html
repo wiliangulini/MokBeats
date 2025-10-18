@@ -440,10 +440,21 @@
                   ></app-wave-surfer-test>
                 </div>
                 <div
-                  class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around pl-2 pr-2 pt-0 pb-0"
+                  class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around pl-2 pr-2 pt-0 pb-0 music-card-duration"
+                  [attr.data-music-index]="i"
                 >
                   <p class="h6 mb-0" id="duracao">
-                    {{ this.msToMinute(itens.duracao) }}
+                    <ng-container *ngIf="itens.duracaoCarregando; else showDuration">
+                      --:--
+                    </ng-container>
+                    <ng-template #showDuration>
+                      <ng-container *ngIf="itens.duracaoReal; else fallback">
+                        {{ formatTime(itens.duracaoReal) }}
+                      </ng-container>
+                      <ng-template #fallback>
+                        --:--
+                      </ng-template>
+                    </ng-template>
                   </p>
                   <p class="h6 mb-0" id="bpm">{{ itens.bpm }}</p>
                 </div>

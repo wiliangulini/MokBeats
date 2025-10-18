@@ -19,6 +19,8 @@ export type Musica = {
   bpm?: number;
   trechos?: number;
   loops?: number;
+  duracaoReal?: number; // Duração real em segundos obtida do áudio
+  duracaoCarregando?: boolean; // Flag para indicar que está carregando
 };
 
 @Injectable({

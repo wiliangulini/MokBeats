@@ -5,6 +5,7 @@ import {
   Component,
   EventEmitter,
   HostListener,
+  OnDestroy,
   OnInit,
   Output,
   QueryList,
@@ -30,7 +31,7 @@ import { Musica, MusicasService } from './musicas.service';
   styleUrls: ['./musicas.component.scss'],
 })
 export class MusicasComponent
-  implements OnInit, AfterViewInit, AfterViewChecked
+  implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy
 {
   isLoading: boolean = true;
   // Controla renderização do waveform por breakpoint
@@ -148,6 +149,8 @@ export class MusicasComponent
     }
     this.loadArtistas();
     this.loadInstrumentos();
+    // Carrega cache de durações do localStorage
+    this.loadDurationCache();
   }
 
   @HostListener('window:resize', [])
@@ -162,6 +165,10 @@ export class MusicasComponent
       this.arrMusica = data;
       let arrMusica = JSON.stringify(this.arrMusica);
       localStorage.setItem('arrMusica', arrMusica);
+
+      // Inicializa Intersection Observer e observa os cards de música
+      this.initIntersectionObserver();
+      this.observeMusicCards();
 
       // Habilitar filtros após carregar as músicas
       setTimeout(() => {
@@ -362,9 +369,11 @@ export class MusicasComponent
     });
   }
 
+  // Formata segundos para o formato mm:ss (igual ao player)
   formatTime = (seconds: any) => {
-    const minutes = Math.floor(seconds / 60);
-    const secondsRemainder = Math.round(seconds) % 60;
+    const total = Math.round(Number(seconds) || 0);
+    const minutes = Math.floor(total / 60);
+    const secondsRemainder = total % 60;
     const paddedSeconds = `0${secondsRemainder}`.slice(-2);
     return `${minutes}:${paddedSeconds}`;
   };
@@ -374,6 +383,119 @@ export class MusicasComponent
     let minutes: any = Math.floor(ms / 60000);
     let seconds: any = ((ms % 60000) / 1000).toFixed(0);
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
+
+  // Cache localStorage para durações
+  private readonly CACHE_KEY = 'music_duration_cache_v1';
+  private durationCache: Map<number, number> = new Map();
+  private intersectionObserver?: IntersectionObserver;
+
+  // Carrega cache do localStorage
+  private loadDurationCache(): void {
+    try {
+      const cached = localStorage.getItem(this.CACHE_KEY);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        this.durationCache = new Map(Object.entries(parsed).map(([k, v]) => [Number(k), v as number]));
+      }
+    } catch (error) {
+      console.error('Erro ao carregar cache de durações:', error);
+    }
+  }
+
+  // Salva cache no localStorage
+  private saveDurationCache(): void {
+    try {
+      const cacheObj: any = {};
+      this.durationCache.forEach((value, key) => {
+        cacheObj[key] = value;
+      });
+      localStorage.setItem(this.CACHE_KEY, JSON.stringify(cacheObj));
+    } catch (error) {
+      console.error('Erro ao salvar cache de durações:', error);
+    }
+  }
+
+  // Carrega a duração real de uma música
+  carregarDuracaoReal(musica: Musica, index: number): void {
+    if (!musica.id || !musica.url) return;
+
+    // Verifica se já está no cache
+    if (this.durationCache.has(musica.id)) {
+      this.arrMusica[index].duracaoReal = this.durationCache.get(musica.id);
+      this.arrMusica[index].duracaoCarregando = false;
+      return;
+    }
+
+    // Marca como carregando
+    this.arrMusica[index].duracaoCarregando = true;
+
+    // Carrega duração real do áudio
+    this.audioService.getAudioduration(musica.url)
+      .then((duracao) => {
+        this.arrMusica[index].duracaoReal = duracao;
+        this.arrMusica[index].duracaoCarregando = false;
+
+        // Salva no cache
+        if (musica.id) {
+          this.durationCache.set(musica.id, duracao);
+          this.saveDurationCache();
+        }
+      })
+      .catch((error) => {
+        console.error(`Erro ao carregar duração da música ${musica.nome_musica}:`, error);
+        this.arrMusica[index].duracaoCarregando = false;
+        // Em caso de erro, duracaoReal permanece undefined
+      });
+  }
+
+  // Inicializa o Intersection Observer para lazy loading das durações
+  private initIntersectionObserver(): void {
+    // Configuração do observer: carrega quando o elemento está 10% visível
+    const options = {
+      root: null, // viewport
+      rootMargin: '50px', // carrega 50px antes de entrar no viewport
+      threshold: 0.1 // 10% visível
+    };
+
+    this.intersectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const element = entry.target as HTMLElement;
+          const index = Number(element.getAttribute('data-music-index'));
+
+          if (!isNaN(index) && this.arrMusica[index]) {
+            const musica = this.arrMusica[index];
+
+            // Só carrega se ainda não tem duração real e não está carregando
+            if (!musica.duracaoReal && !musica.duracaoCarregando) {
+              this.carregarDuracaoReal(musica, index);
+            }
+
+            // Para de observar este elemento após carregar
+            this.intersectionObserver?.unobserve(element);
+          }
+        }
+      });
+    }, options);
+  }
+
+  // Observa os cards de música para lazy loading
+  private observeMusicCards(): void {
+    // Aguarda um pouco para garantir que os elementos foram renderizados
+    setTimeout(() => {
+      const musicCards = document.querySelectorAll('.music-card-duration');
+      musicCards.forEach((card) => {
+        this.intersectionObserver?.observe(card);
+      });
+    }, 100);
+  }
+
+  // Limpa o observer quando o componente for destruído
+  ngOnDestroy(): void {
+    if (this.intersectionObserver) {
+      this.intersectionObserver.disconnect();
+    }
   }
 
   curtir(i: number): void {
