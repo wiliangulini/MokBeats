@@ -4,11 +4,12 @@ Este documento contém instruções completas para fazer deploy do sistema de pe
 
 ## 📋 Pré-requisitos
 
-- VPS com Ubuntu/Debian
-- Acesso SSH à VPS
-- Node.js instalado
-- PM2 configurado
-- Arquivos de áudio em `assets/audios/` na VPS
+- VPS com Ubuntu/Debian (Ubuntu 24.04 LTS)
+- Acesso SSH à VPS (root@147.79.87.156)
+- Node.js instalado (v14+)
+- PM2 instalado e configurado
+- ⚠️ **CRÍTICO:** Arquivos de áudio (.mp3) em `/var/www/mokbeats/assets/audios/`
+- ⚠️ **CRÍTICO:** Arquivo `.env` em `/var/www/mokbeats/server/` com `NODE_ENV=production`
 
 ---
 
@@ -70,85 +71,196 @@ dpkg -l | grep audiowaveform
 
 ## 📦 Passo 2: Fazer Upload dos Arquivos para VPS
 
-### Opção A: Via Git (Recomendado)
+### Opção A: Via rsync (Recomendado)
+
+**Usar o script automatizado ([BUILD_AND_DEPLOY.md](../../BUILD_AND_DEPLOY.md)):**
 
 ```bash
 # Na sua máquina local
 cd /home/hustler/Documentos/projetos/MokBeats
-git add server/
+./deploy-to-vps.sh
+```
+
+**Ou manualmente:**
+
+```bash
+# Na sua máquina local
+cd /home/hustler/Documentos/projetos/MokBeats
+
+# 1. Upload do frontend (build Angular)
+npm run build
+rsync -avz --delete dist/* root@147.79.87.156:/var/www/mokbeats/
+
+# 2. Upload do backend
+rsync -avz --delete --exclude=node_modules server/ root@147.79.87.156:/var/www/mokbeats/server/
+
+# 3. ⚠️ CRÍTICO: Upload dos arquivos de áudio
+rsync -avz src/assets/audios/ root@147.79.87.156:/var/www/mokbeats/assets/audios/
+```
+
+### Opção B: Via Git
+
+```bash
+# Na sua máquina local
+cd /home/hustler/Documentos/projetos/MokBeats
+git add .
 git commit -m "feat: Add peaks generation system with audiowaveform"
 git push origin main
 
 # Na VPS
-ssh usuario@seu-servidor.com
-cd /caminho/do/projeto
+ssh root@147.79.87.156
+cd /var/www/mokbeats
 git pull origin main
+
+# ⚠️ IMPORTANTE: Arquivos de áudio devem ser enviados separadamente via rsync
+# pois são muito grandes para Git
 ```
 
-### Opção B: Via SCP
+**⚠️ Verificar estrutura de diretórios criada:**
 
 ```bash
-# Na sua máquina local
-cd /home/hustler/Documentos/projetos/MokBeats
+# Na VPS
+ssh root@147.79.87.156
 
-# Upload da pasta server inteira
-scp -r server/ usuario@seu-servidor.com:/caminho/do/projeto/
+# Verificar estrutura completa
+ls -la /var/www/mokbeats/
+# Deve conter: index.html, assets/, server/
 
-# Ou arquivos específicos
-scp server/scripts/process-audio.js usuario@seu-servidor.com:/caminho/do/projeto/server/scripts/
-scp server/scripts/generate-peaks.js usuario@seu-servidor.com:/caminho/do/projeto/server/scripts/
-scp server/src/index.js usuario@seu-servidor.com:/caminho/do/projeto/server/src/
-scp server/data/musicas.json usuario@seu-servidor.com:/caminho/do/projeto/server/data/
+ls -la /var/www/mokbeats/assets/audios/
+# Deve conter: *.mp3 (arquivos de áudio)
+
+ls -la /var/www/mokbeats/server/
+# Deve conter: src/, scripts/, data/, package.json
 ```
 
 ---
 
-## 🎵 Passo 3: Gerar Peaks Reais na VPS
+## 🎵 Passo 3: Criar arquivo .env e Gerar Peaks
+
+**⚠️ PASSO CRÍTICO:** Este arquivo determina o caminho correto para os áudios!
+
+### 3.1. Criar arquivo .env na VPS
 
 ```bash
 # Conectar à VPS
-ssh usuario@seu-servidor.com
+ssh root@147.79.87.156
 
 # Navegar até o diretório do servidor
-cd /caminho/do/projeto/server
+cd /var/www/mokbeats/server
 
-# IMPORTANTE: Verificar se os arquivos de áudio existem
-ls -lh assets/audios/*.mp3
+# Criar arquivo .env para produção
+cat > .env << 'EOF'
+# Configuração de Ambiente - Produção (VPS)
+NODE_ENV=production
 
-# Se os arquivos estiverem em outro local, ajustar os caminhos no musicas.json
-# Editar: nano data/musicas.json
-# Exemplo: trocar "../../assets/audios/" por "assets/audios/"
+# Caminho base para arquivos de áudio
+# Na VPS: os áudios estão em ../assets/audios/
+AUDIO_BASE_PATH=../
+EOF
 
-# Executar script de geração de peaks
+# Verificar arquivo criado
+cat .env
+
+# Saída esperada:
+# NODE_ENV=production
+# AUDIO_BASE_PATH=../
+```
+
+### 3.2. Verificar arquivos de áudio
+
+```bash
+# Ainda na VPS (/var/www/mokbeats/server)
+
+# Verificar se os arquivos de áudio existem
+ls -lh /var/www/mokbeats/assets/audios/*.mp3
+
+# Contar quantos arquivos MP3 existem
+find /var/www/mokbeats/assets/audios -name "*.mp3" | wc -l
+
+# Verificar tamanho total dos arquivos
+du -sh /var/www/mokbeats/assets/audios/
+```
+
+**Se os arquivos NÃO existirem:**
+
+```bash
+# No seu computador local
+cd /home/hustler/Documentos/projetos/MokBeats
+rsync -avz src/assets/audios/ root@147.79.87.156:/var/www/mokbeats/assets/audios/
+```
+
+### 3.3. Executar script de geração de peaks
+
+```bash
+# Na VPS (/var/www/mokbeats/server)
 node scripts/generate-peaks.js
 ```
 
-### Saída Esperada
+### Saída Esperada (SUCESSO)
+
+**Com .env correto e arquivos de áudio presentes:**
 
 ```
 🎵 Iniciando processamento de músicas...
 
+🔧 Ambiente: production
+📁 Base path para áudios: /var/www/mokbeats
+
+✅ 24 músicas carregadas do JSON
+
 [1/24] Processando: HighFrenetic
-  📁 Arquivo: /caminho/assets/audios/MokBeats_Future_Forest_(FULL).mp3
+  📁 Arquivo: ../../assets/audios/MokBeats_Future_Forest_(FULL).mp3
   ⚙️  Gerando peaks...
   ✅ 3870 peaks gerados com sucesso
 
 [2/24] Processando: Maleficus Chaos
-  📁 Arquivo: /caminho/assets/audios/MokBeats_Future_Forest_(FULL).mp3
+  📁 Arquivo: ../../assets/audios/MokBeats_Future_Forest_(FULL).mp3
   ⚙️  Gerando peaks...
   ✅ 3870 peaks gerados com sucesso
 
 ...
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📝 Salvando arquivo JSON...
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 ✨ Processamento concluído!
+
 📊 Estatísticas:
    - Total de músicas: 24
    - Processadas com sucesso: 24
    - Erros/avisos: 0
-   - Arquivo salvo: /caminho/do/projeto/server/data/musicas.json
+   - Arquivos únicos processados: 5
+   - Peaks reutilizados: 19
+   - Arquivo salvo: /var/www/mokbeats/server/data/musicas.json
+   - Tamanho do arquivo: 8.64 KB
 
-🎉 Arquivo musicas.json criado com sucesso!
+🎉 Todas as músicas foram processadas com sucesso!
+   O frontend agora carregará waveforms instantaneamente.
 ```
+
+### Saída de ERRO (sem .env ou sem arquivos)
+
+**Se esquecer de criar o .env:**
+
+```
+🎵 Iniciando processamento de músicas...
+
+🔧 Ambiente: development                           ← ERRADO!
+📁 Base path para áudios: /var/www/mokbeats/src   ← CAMINHO ERRADO!
+
+✅ 24 músicas carregadas do JSON
+
+[1/24] Processando: HighFrenetic
+  📁 Arquivo: ../../assets/audios/MokBeats_Future_Forest_(FULL).mp3
+  ⚠️  Arquivo não encontrado: /var/www/mokbeats/src/assets/audios/...
+  ℹ️  Mantendo peaks vazios para esta música
+
+⚠️  24 música(s) não foram processadas.
+   Verifique se os arquivos de áudio existem nos caminhos corretos.
+```
+
+**Solução:** Criar arquivo .env conforme Passo 3.1
 
 ---
 
