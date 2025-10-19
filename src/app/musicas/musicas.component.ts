@@ -22,6 +22,7 @@ import { MusicPlayerService } from '../service/music-player.service';
 import { ScrollService } from '../service/scroll.service';
 import { WaveSurferTestComponent } from '../wave-surfer-test/wave-surfer-test.component';
 import { Musica, MusicasService } from './musicas.service';
+import { AudioPreloaderService } from '../service/audio-preloader.service';
 
 @Component({
   selector: 'app-musicas',
@@ -136,7 +137,8 @@ export class MusicasComponent
     private playlistService: PlaylistService,
     private likeService: FavoritosService,
     private router: Router,
-    private musicPlayerService: MusicPlayerService
+    private musicPlayerService: MusicPlayerService,
+    private audioPreloader: AudioPreloaderService
   ) {
     this.formG = this.fb.group({
       checkbox: [],
@@ -248,6 +250,9 @@ export class MusicasComponent
 
         this.isLoading = false;
         this.scheduleDomUpdates();
+
+        // Pré-carrega áudios da página atual para reprodução instantânea
+        this.preloadCurrentPageAudios();
       },
       error: (error) => {
         console.error('Erro ao carregar dados:', error);
@@ -258,6 +263,22 @@ export class MusicasComponent
         this.isLoading = false;
       },
     });
+  }
+
+  /**
+   * Pré-carrega áudios da página atual em background
+   * Executa após carregar metadados e peaks
+   */
+  private preloadCurrentPageAudios(): void {
+    // Extrai URLs dos áudios da página atual
+    const audioUrls = this.arrMusica
+      .filter(musica => musica.url) // Filtra músicas com URL válida
+      .map(musica => musica.url as string);
+
+    if (audioUrls.length > 0) {
+      console.log(`🎵 Iniciando preload de ${audioUrls.length} áudio(s) da página ${this.currentPage}`);
+      this.audioPreloader.preloadAudios(audioUrls);
+    }
   }
 
   /**

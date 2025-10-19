@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import WaveSurfer from 'wavesurfer.js';
 import Minimap from 'wavesurfer.js/dist/plugins/minimap';
 import { MusicPlayerService } from '../service/music-player.service';
+import { AudioPreloaderService } from '../service/audio-preloader.service';
 
 @Component({
   selector: 'app-wave-surfer-test',
@@ -32,7 +33,10 @@ export class WaveSurferTestComponent
   private intersectionObserver?: IntersectionObserver;
   private isInitialized: boolean = false;
 
-  constructor(private musicPlayerService: MusicPlayerService) {}
+  constructor(
+    private musicPlayerService: MusicPlayerService,
+    private audioPreloader: AudioPreloaderService
+  ) {}
 
   ngOnInit() {
     // Controla play/pause por ação, mas sem reproduzir áudio neste componente
@@ -144,15 +148,30 @@ export class WaveSurferTestComponent
       // Aguardar a criação antes de carregar
       setTimeout(() => {
         if (this.wavesurfer) {
+          // Verifica se áudio está em cache primeiro
+          const cachedBlobUrl = this.audioPreloader.getCachedBlobUrl(this.music.url);
+
           // Prioriza peaks pré-gerados para carregamento instantâneo
           if (this.music.peaks && Array.isArray(this.music.peaks)) {
             console.log(`⚡ Carregando waveform com peaks pré-gerados para ${this.music.nome_musica}`);
-            // Carrega apenas os peaks (sem download de áudio)
-            this.wavesurfer.load(this.music.url, this.music.peaks);
+
+            // Se áudio está em cache, usa Blob URL (instantâneo)
+            // Caso contrário, usa URL original (será baixado quando der play)
+            const audioUrl = cachedBlobUrl || this.music.url;
+
+            if (cachedBlobUrl) {
+              console.log(`💾 Usando áudio do cache para ${this.music.nome_musica}`);
+            }
+
+            // Carrega peaks com URL apropriada
+            this.wavesurfer.load(audioUrl, this.music.peaks);
           } else if (this.music.url) {
             // Fallback: carrega e processa o áudio completo (método antigo)
             console.log(`🎵 Carregando waveform processando áudio para ${this.music.nome_musica}`);
-            this.wavesurfer.load(this.music.url);
+
+            // Usa cache se disponível
+            const audioUrl = cachedBlobUrl || this.music.url;
+            this.wavesurfer.load(audioUrl);
           }
 
           this.wavesurfer.setMuted(true);
