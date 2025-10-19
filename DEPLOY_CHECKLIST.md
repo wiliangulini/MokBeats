@@ -186,7 +186,7 @@
   # Criar arquivo .env
   cat > .env << 'EOF'
   NODE_ENV=production
-  AUDIO_BASE_PATH=../
+  AUDIO_BASE_PATH=../../
   EOF
 
   # Verificar
