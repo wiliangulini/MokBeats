@@ -14,42 +14,57 @@ Este documento contém instruções completas para fazer deploy do sistema de pe
 
 ## 🔧 Passo 1: Instalar Audiowaveform na VPS
 
-### Via APT (Ubuntu/Debian)
+### ⚠️ IMPORTANTE: O método via APT padrão NÃO funciona no Ubuntu 24.04 LTS
+
+**MÉTODO CORRETO - Via PPA (Chris Needham):**
 
 ```bash
 # Conectar à VPS via SSH
-ssh usuario@seu-servidor.com
+ssh root@147.79.87.156
 
-# Atualizar repositórios
-sudo apt-get update
+# 1. Atualizar repositórios
+sudo apt update
 
-# Instalar audiowaveform
-sudo apt-get install -y audiowaveform
+# 2. Instalar software-properties-common (se não estiver instalado)
+sudo apt install -y software-properties-common
 
-# Verificar instalação
+# 3. Adicionar o PPA do audiowaveform
+sudo add-apt-repository -y ppa:chris-needham/ppa
+
+# 4. Atualizar repositórios novamente
+sudo apt update
+
+# 5. Instalar audiowaveform
+sudo apt install -y audiowaveform
+
+# 6. Verificar instalação
 audiowaveform --version
 ```
 
-### Se APT não funcionar: Compilar do Source
+**Saída esperada:**
+
+```
+Audio Waveform Image Generator v1.x.x
+```
+
+### 🔍 Verificação da Instalação
+
+Após a instalação, verificar se está funcionando corretamente:
 
 ```bash
-# Instalar dependências
-sudo apt-get install -y git make cmake gcc g++ libmad0-dev libid3tag0-dev libsndfile1-dev libgd-dev libboost-filesystem-dev libboost-program-options-dev libboost-regex-dev
+# Verificar se o comando está disponível
+which audiowaveform
 
-# Clonar repositório
-git clone https://github.com/bbc/audiowaveform.git
-cd audiowaveform
+# Deve retornar: /usr/bin/audiowaveform
 
-# Compilar e instalar
-mkdir build
-cd build
-cmake ..
-make
-sudo make install
+# Verificar pacote instalado
+dpkg -l | grep audiowaveform
 
-# Verificar
-audiowaveform --version
+# Testar com um arquivo (opcional)
+# audiowaveform -i arquivo.mp3 -o waveform.dat --pixels-per-second 20
 ```
+
+**⚠️ Nota Importante:** Este método via PPA é o ÚNICO que funciona no Ubuntu 24.04 LTS. Métodos via APT padrão ou SNAP não funcionam e não devem ser utilizados.
 
 ---
 
@@ -108,7 +123,7 @@ ls -lh assets/audios/*.mp3
 node scripts/generate-peaks.js
 ```
 
-### Saída Esperada:
+### Saída Esperada
 
 ```
 🎵 Iniciando processamento de músicas...
@@ -137,17 +152,49 @@ node scripts/generate-peaks.js
 
 ---
 
-## 🔄 Passo 4: Reiniciar Servidor com PM2
+## 🔄 Passo 4: Configurar e Iniciar Backend com PM2
+
+### 4.1. Instalar Dependências do Backend
 
 ```bash
-# Parar servidor atual
-pm2 stop index
+# Na VPS, navegar até o diretório do servidor
+cd /var/www/mokbeats/server
 
-# Reiniciar com novo código
-pm2 restart index
+# Instalar dependências npm
+npm install
+```
 
-# Verificar logs
-pm2 logs index
+**Dependências esperadas (ver package.json):**
+
+- express
+- cors
+- body-parser
+- connect-multiparty
+
+### 4.2. Configurar PM2
+
+```bash
+# Se houver processo antigo rodando, parar
+pm2 stop all
+pm2 delete all
+
+# Iniciar novo backend com nome específico
+cd /var/www/mokbeats/server
+pm2 start src/index.js --name mok-backend
+
+# Configurar PM2 para iniciar automaticamente no boot
+pm2 save
+pm2 startup
+
+# Executar o comando que o PM2 sugerir (começará com sudo)
+# Exemplo: sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u root --hp /root
+```
+
+### 4.3. Verificar Logs e Status
+
+```bash
+# Verificar logs em tempo real
+pm2 logs mok-backend
 
 # Deve aparecer:
 # ✅ 24 músicas carregadas do JSON com peaks reais
@@ -155,6 +202,28 @@ pm2 logs index
 
 # Verificar status
 pm2 status
+
+# Monitoramento em tempo real
+pm2 monit
+```
+
+### 4.4. Comandos Úteis do PM2
+
+```bash
+# Reiniciar backend
+pm2 restart mok-backend
+
+# Ver logs apenas do backend
+pm2 logs mok-backend --lines 100
+
+# Parar backend
+pm2 stop mok-backend
+
+# Ver informações detalhadas
+pm2 info mok-backend
+
+# Limpar logs
+pm2 flush
 ```
 
 ---
@@ -205,11 +274,13 @@ nano data/musicas.json
 **Verificações:**
 
 1. Conferir se `musicas.json` tem peaks preenchidos:
+
    ```bash
    cat data/musicas.json | grep -A 2 "peaks"
    ```
 
 2. Verificar logs do servidor:
+
    ```bash
    pm2 logs index
    ```
@@ -234,13 +305,15 @@ node src/index.js
 
 ## 📊 Comparação de Performance
 
-### Antes (Peaks Sintéticos):
+### Antes (Peaks Sintéticos)
+
 - ❌ Precisão: Aproximada (ondas matemáticas)
 - ❌ Tamanho: ~7.7MB por música (download de áudio)
 - ❌ Tempo de carregamento: 5-15 segundos
 - ❌ Uso de banda: 77-185MB por página
 
-### Depois (Peaks Reais):
+### Depois (Peaks Reais)
+
 - ✅ Precisão: Pixel-perfect (dados reais do áudio)
 - ✅ Tamanho: ~10-20KB por música (apenas peaks)
 - ✅ Tempo de carregamento: <100ms (instantâneo)

@@ -2,6 +2,8 @@ import {AfterContentInit, Component} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {PlaylistService} from "../create-playlist-modal/playlist.service";
 import {FavoritosService} from "../favoritos/favoritos.service";
+import {AuthService} from "../login/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-menu-produtor',
@@ -22,6 +24,8 @@ export class MenuProdutorComponent implements AfterContentInit {
     private activeModal: NgbActiveModal,
     private playlistService: PlaylistService,
     private likeService: FavoritosService,
+    private authService: AuthService,
+    private router: Router,
   ) { }
 
   ngAfterContentInit(): void {
@@ -54,5 +58,16 @@ export class MenuProdutorComponent implements AfterContentInit {
 
   closeModal() {
     return this.activeModal.close();
+  }
+
+  logout() {
+    // Faz logout removendo o token e atualizando o estado de autenticação
+    this.authService.logout();
+
+    // Fecha o modal
+    this.activeModal.close();
+
+    // Redireciona para a página inicial
+    this.router.navigate(['/']);
   }
 }
