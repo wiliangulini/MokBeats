@@ -333,7 +333,7 @@ ls -la node_modules/
 
 O script `generate-peaks.js` precisa saber onde encontrar os arquivos de áudio:
 - **Desenvolvimento** (local): `/home/hustler/.../src/assets/audios/` → `AUDIO_BASE_PATH=../../src`
-- **Produção** (VPS): `/var/www/mokbeats/assets/audios/` → `AUDIO_BASE_PATH=../`
+- **Produção** (VPS): `/var/www/mokbeats/assets/audios/` → `AUDIO_BASE_PATH=../../`
 
 O arquivo `.env` com `NODE_ENV=production` informa ao script qual caminho usar.
 
@@ -352,8 +352,8 @@ cat > .env << 'EOF'
 NODE_ENV=production
 
 # Caminho base para arquivos de áudio
-# Na VPS: os áudios estão em ../assets/audios/
-AUDIO_BASE_PATH=../
+# Na VPS: os áudios estão em ../../assets/audios/
+AUDIO_BASE_PATH=../../
 EOF
 
 # Verificar arquivo criado
@@ -367,8 +367,8 @@ cat .env
 NODE_ENV=production
 
 # Caminho base para arquivos de áudio
-# Na VPS: os áudios estão em ../assets/audios/
-AUDIO_BASE_PATH=../
+# Na VPS: os áudios estão em ../../assets/audios/
+AUDIO_BASE_PATH=../../
 ```
 
 **Verificar permissões:**

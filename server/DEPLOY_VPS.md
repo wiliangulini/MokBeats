@@ -154,8 +154,8 @@ cat > .env << 'EOF'
 NODE_ENV=production
 
 # Caminho base para arquivos de áudio
-# Na VPS: os áudios estão em ../assets/audios/
-AUDIO_BASE_PATH=../
+# Na VPS: os áudios estão em ../../assets/audios/
+AUDIO_BASE_PATH=../../
 EOF
 
 # Verificar arquivo criado
@@ -163,7 +163,7 @@ cat .env
 
 # Saída esperada:
 # NODE_ENV=production
-# AUDIO_BASE_PATH=../
+# AUDIO_BASE_PATH=../../
 ```
 
 ### 3.2. Verificar arquivos de áudio
@@ -297,8 +297,8 @@ cat > .env << 'EOF'
 NODE_ENV=production
 
 # Caminho base para arquivos de áudio
-# Na VPS: os áudios estão em ../assets/audios/
-AUDIO_BASE_PATH=../
+# Na VPS: os áudios estão em ../../assets/audios/
+AUDIO_BASE_PATH=../../
 EOF
 
 # Verificar arquivo criado
@@ -309,7 +309,7 @@ cat .env
 
 O script `generate-peaks.js` precisa saber onde encontrar os arquivos de áudio:
 - **Desenvolvimento** (local): `../../src/assets/audios/`
-- **Produção** (VPS): `../assets/audios/`
+- **Produção** (VPS): `../../assets/audios/`
 
 O arquivo `.env` define automaticamente o caminho correto para cada ambiente.
 
