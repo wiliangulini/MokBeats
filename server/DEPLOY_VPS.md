@@ -315,6 +315,8 @@ O arquivo `.env` define automaticamente o caminho correto para cada ambiente.
 
 **⚠️ Importante:** Sem o `.env` configurado, a geração de peaks falhará!
 
+> ℹ️ Certifique-se de que Node.js/NPM estejam disponíveis para o mesmo usuário que executa o deploy (`root` por padrão). Se você usa NVM, carregue o ambiente (`. ~/.nvm/nvm.sh`) ou instale Node.js globalmente antes desta etapa.
+
 ### 4.3. Gerar Peaks dos Áudios
 
 Agora, com o `.env` configurado, gere os peaks:
