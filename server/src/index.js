@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const multipart = require('connect-multiparty');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 app.use(bodyParser.json());
@@ -15,8 +16,23 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Servir arquivos de áudio estáticos com cache headers otimizados
-// Os arquivos ficam em ../src/assets/audios/
-const audioPath = path.join(__dirname, '../../src/assets/audios');
+// Detecta ambiente automaticamente:
+// - DESENVOLVIMENTO: ../../src/assets/audios/ (pasta src existe)
+// - PRODUÇÃO (VPS): ../../assets/audios/ (sem pasta src)
+const devPath = path.join(__dirname, '../../src/assets/audios');
+const prodPath = path.join(__dirname, '../../assets/audios');
+
+// Verifica qual caminho existe no sistema de arquivos
+const audioPath = fs.existsSync(devPath) ? devPath : prodPath;
+const environment = fs.existsSync(devPath) ? 'DESENVOLVIMENTO' : 'PRODUÇÃO';
+
+console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+console.log(`🎵 Configuração de Áudio:`);
+console.log(`   Ambiente: ${environment}`);
+console.log(`   Caminho: ${audioPath}`);
+console.log(`   Existe: ${fs.existsSync(audioPath) ? '✅' : '❌'}`);
+console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+
 app.use('/assets/audios', express.static(audioPath, {
   // Cache de 10 minutos (600 segundos)
   maxAge: '600000',
