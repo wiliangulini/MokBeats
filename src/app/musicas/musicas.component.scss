@@ -165,22 +165,35 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
   flex: 0 0 54.5% !important;
 }
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .controlDivs .controlDivsInt .wavesurfer {
-  max-width: 36%;
   width: 100%;
-  //background: blue;
+  padding: 0 10px;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+
+  // Garante que o componente wavesurfer ocupe todo o espaço
+  app-wave-surfer-test {
+    width: 100%;
+    display: block;
+  }
 }
 //article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-between {
 //  left: 1% !important;
 //}
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2.p-0.loops.d-flex.align-items-center.justify-content-between,
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2.p-0.loops.d-flex.align-items-center.justify-content-around,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-between,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-around {
   max-width: 16%;
   flex: 0 0 16%;
 }
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2.p-0.loops.d-flex.align-items-center.justify-content-around,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-around {
   justify-content: space-between !important;
   padding: 0 1.5% !important;
 }
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2.p-0.loops.d-flex.align-items-center.justify-content-between .titlesMusic.four,
+article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2.p-0.loops.d-flex.align-items-center.justify-content-between .titlesMusic.five,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-between .titlesMusic.four,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops.d-flex.align-items-center.justify-content-between .titlesMusic.five {
   right: 5%;

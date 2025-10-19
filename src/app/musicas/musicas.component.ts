@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 import WaveSurfer from 'wavesurfer.js';
 import { PlaylistService } from '../create-playlist-modal/playlist.service';
@@ -173,36 +174,6 @@ export class MusicasComponent
     });
   }
 
-  private fetchPlaylists(): void {
-    this.playlistService.list().subscribe({
-      next: (playlists: any[]) => {
-        this.pendingPlaylistIds = this.extractPlaylistMusicIds(playlists || []);
-        this.scheduleHighlightUpdate();
-      },
-      error: (error) => {
-        console.error('Erro ao carregar playlists:', error);
-        this.pendingPlaylistIds = new Set<number>();
-        this.scheduleHighlightUpdate();
-      },
-    });
-  }
-
-  private fetchFavoritos(): void {
-    this.likeService.list().subscribe({
-      next: (favoritos: any[]) => {
-        this.pendingFavoritoIds = new Set(
-          (favoritos || []).map((fav: any) => fav?.id).filter((id: number) => !!id)
-        );
-        this.scheduleHighlightUpdate();
-      },
-      error: (error) => {
-        console.error('Erro ao carregar favoritos:', error);
-        this.pendingFavoritoIds = new Set<number>();
-        this.scheduleHighlightUpdate();
-      },
-    });
-  }
-
   private scheduleDomUpdates(): void {
     this.schedulePlayButtonBinding();
     this.scheduleHighlightUpdate();
@@ -243,15 +214,21 @@ export class MusicasComponent
       ? this.musicService.filterMusicas({ ...filtros, page, limit: this.itemsPerPage })
       : this.musicService.listPaginated(page, this.itemsPerPage);
 
-    musicasRequest.subscribe({
-      next: (musicas: any) => {
-        if (musicas?.data && musicas?.pagination) {
-          this.arrMusica = musicas.data;
-          this.totalItems = musicas.pagination.totalItems;
-          this.currentPage = musicas.pagination.currentPage;
+    // Executa todas as requisições em paralelo para otimizar tempo de carregamento
+    forkJoin({
+      musicas: musicasRequest,
+      playlists: this.playlistService.list(),
+      favoritos: this.likeService.list()
+    }).subscribe({
+      next: (result) => {
+        // Processa músicas
+        if (result.musicas?.data && result.musicas?.pagination) {
+          this.arrMusica = result.musicas.data;
+          this.totalItems = result.musicas.pagination.totalItems;
+          this.currentPage = result.musicas.pagination.currentPage;
         } else {
-          this.arrMusica = musicas || [];
-          this.totalItems = Array.isArray(musicas) ? musicas.length : 0;
+          this.arrMusica = result.musicas || [];
+          this.totalItems = Array.isArray(result.musicas) ? result.musicas.length : 0;
           this.currentPage = page;
         }
 
@@ -261,15 +238,23 @@ export class MusicasComponent
           this.filtersInitialized = true;
         }
 
+        // Processa playlists
+        this.pendingPlaylistIds = this.extractPlaylistMusicIds(result.playlists || []);
+
+        // Processa favoritos
+        this.pendingFavoritoIds = new Set(
+          (result.favoritos || []).map((fav: any) => fav?.id).filter((id: number) => !!id)
+        );
+
         this.isLoading = false;
         this.scheduleDomUpdates();
-        this.fetchPlaylists();
-        this.fetchFavoritos();
       },
       error: (error) => {
-        console.error('Erro ao carregar músicas:', error);
+        console.error('Erro ao carregar dados:', error);
         this.arrMusica = [];
         this.totalItems = 0;
+        this.pendingPlaylistIds = new Set<number>();
+        this.pendingFavoritoIds = new Set<number>();
         this.isLoading = false;
       },
     });

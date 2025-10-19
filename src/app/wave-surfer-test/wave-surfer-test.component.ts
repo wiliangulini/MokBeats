@@ -22,12 +22,15 @@ export class WaveSurferTestComponent
 {
   @Input() music!: any;
   @Input() idContainer!: any;
+  @Input() lazyLoad: boolean = true;
   @Output() songFinished = new EventEmitter<void>();
   private subscription!: Subscription;
   private timeSub?: Subscription;
   private idSub?: Subscription;
   wavesurfer!: WaveSurfer;
   private isCurrent: boolean = false;
+  private intersectionObserver?: IntersectionObserver;
+  private isInitialized: boolean = false;
 
   constructor(private musicPlayerService: MusicPlayerService) {}
 
@@ -62,10 +65,46 @@ export class WaveSurferTestComponent
   }
 
   ngAfterViewInit() {
-    // Delay para garantir que o container DOM esteja disponível
-    setTimeout(() => {
-      this.initWaveSurfer();
-    }, 150);
+    if (this.lazyLoad) {
+      // Implementa lazy loading com Intersection Observer
+      this.setupIntersectionObserver();
+    } else {
+      // Carrega imediatamente se lazy loading estiver desabilitado
+      setTimeout(() => {
+        this.initWaveSurfer();
+      }, 150);
+    }
+  }
+
+  private setupIntersectionObserver(): void {
+    const container = document.querySelector(`#${this.idContainer}`);
+    if (!container) {
+      // Se container não existe ainda, tenta novamente
+      setTimeout(() => this.setupIntersectionObserver(), 100);
+      return;
+    }
+
+    // Configura observer para detectar quando elemento está visível
+    const options = {
+      root: null, // viewport
+      rootMargin: '50px', // Carrega 50px antes de entrar no viewport
+      threshold: 0.1 // 10% do elemento visível
+    };
+
+    this.intersectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !this.isInitialized) {
+          this.isInitialized = true;
+          this.initWaveSurfer();
+          // Desconecta observer após inicialização
+          if (this.intersectionObserver) {
+            this.intersectionObserver.disconnect();
+          }
+        }
+      });
+    }, options);
+
+    this.intersectionObserver.observe(container);
   }
 
   private initWaveSurfer() {
@@ -104,11 +143,17 @@ export class WaveSurferTestComponent
 
       // Aguardar a criação antes de carregar
       setTimeout(() => {
-        if (this.wavesurfer && this.music.url) {
-          // Carrega e processa o áudio real para gerar waveform autêntica
-          // Comportamento idêntico ao player component
-          console.log(`🎵 Carregando waveform real para ${this.music.nome_musica}`);
-          this.wavesurfer.load(this.music.url);
+        if (this.wavesurfer) {
+          // Prioriza peaks pré-gerados para carregamento instantâneo
+          if (this.music.peaks && Array.isArray(this.music.peaks)) {
+            console.log(`⚡ Carregando waveform com peaks pré-gerados para ${this.music.nome_musica}`);
+            // Carrega apenas os peaks (sem download de áudio)
+            this.wavesurfer.load(this.music.url, this.music.peaks);
+          } else if (this.music.url) {
+            // Fallback: carrega e processa o áudio completo (método antigo)
+            console.log(`🎵 Carregando waveform processando áudio para ${this.music.nome_musica}`);
+            this.wavesurfer.load(this.music.url);
+          }
 
           this.wavesurfer.setMuted(true);
 
@@ -158,6 +203,9 @@ export class WaveSurferTestComponent
     }
     if (this.timeSub) {
       this.timeSub.unsubscribe();
+    }
+    if (this.intersectionObserver) {
+      this.intersectionObserver.disconnect();
     }
     if (this.wavesurfer) {
       this.wavesurfer.destroy();

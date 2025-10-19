@@ -817,8 +817,38 @@ function toArray(x) {
   return [x];
 }
 
+/**
+ * Carrega músicas do arquivo JSON com peaks pré-calculados
+ * Se o arquivo não existir, retorna array vazio
+ * @returns {Array} Array de músicas com peaks reais
+ */
+function loadMusicasFromJSON() {
+  const fs = require('fs');
+  const path = require('path');
+  const jsonPath = path.join(__dirname, '../data/musicas.json');
 
-var MUSICAS = [
+  try {
+    if (fs.existsSync(jsonPath)) {
+      const data = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+      console.log(`✅ ${data.musicas.length} músicas carregadas do JSON com peaks reais`);
+      return data.musicas;
+    } else {
+      console.warn('⚠️  Arquivo musicas.json não encontrado. Execute: node scripts/generate-peaks.js');
+      return [];
+    }
+  } catch (error) {
+    console.error('❌ Erro ao carregar musicas.json:', error.message);
+    return [];
+  }
+}
+
+// Carrega músicas do JSON (com peaks reais) ou usa fallback se não existir
+var MUSICAS = loadMusicasFromJSON();
+
+// Fallback: Se JSON não existir, usa dados hardcoded (sem peaks reais)
+if (MUSICAS.length === 0) {
+  console.warn('⚠️  Usando dados hardcoded como fallback. Para peaks reais, execute: node scripts/generate-peaks.js');
+  MUSICAS = [
   {
     id: 1,
     nome_musica: "HighFrenetic",
@@ -835,7 +865,8 @@ var MUSICAS = [
     humor: "Bem-Estar / Sentir-se Bem",
     instrumentos: ["Sintetizador", "Bateria Eletrônica", "Baixo Sintetizado"],
     vozes: "Instrumental",
-    created_at: "2024-01-15T10:30:00Z"
+    created_at: "2024-01-15T10:30:00Z",
+    peaks: []
   },
   {
     id: 2,
@@ -853,7 +884,8 @@ var MUSICAS = [
     humor: "Agressivo",
     instrumentos: ["Guitarra Elétrica", "Bateria", "Baixo Elétrico"],
     vozes: "Instrumental",
-    created_at: "2024-01-20T14:15:00Z"
+    created_at: "2024-01-20T14:15:00Z",
+    peaks: []
   },
   {
     id: 3,
@@ -871,7 +903,8 @@ var MUSICAS = [
     humor: "Feliz / Alegre",
     instrumentos: ["Piano", "Violão", "Baixo Acústico", "Bateria"],
     vozes: "Instrumental",
-    created_at: "2024-01-25T09:45:00Z"
+    created_at: "2024-01-25T09:45:00Z",
+    peaks: []
   },
   {
     id: 4,
@@ -889,7 +922,8 @@ var MUSICAS = [
     humor: "Bem-Estar / Sentir-se Bem",
     instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
     vozes: "Instrumental",
-    created_at: "2024-01-30T11:20:00Z"
+    created_at: "2024-01-30T11:20:00Z",
+    peaks: []
   },
   {
     id: 5,
@@ -907,7 +941,8 @@ var MUSICAS = [
     humor: "Ficção Científica / Futurista",
     instrumentos: ["Sintetizador Modular", "Sequenciador", "Drum Machine"],
     vozes: "Instrumental",
-    created_at: "2024-02-04T16:10:00Z"
+    created_at: "2024-02-04T16:10:00Z",
+    peaks: []
   },
   {
     id: 6,
@@ -925,7 +960,8 @@ var MUSICAS = [
     humor: "Bem-Estar / Sentir-se Bem",
     instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
     vozes: "Instrumental",
-    created_at: "2024-02-09T13:30:00Z"
+    created_at: "2024-02-09T13:30:00Z",
+    peaks: []
   },
   {
     id: 7,
@@ -943,7 +979,8 @@ var MUSICAS = [
     humor: "Bem-Estar / Sentir-se Bem",
     instrumentos: ["Sintetizador", "Bateria Eletrônica", "Baixo Sintetizado"],
     vozes: "Instrumental",
-    created_at: "2024-02-14T08:00:00Z"
+    created_at: "2024-02-14T08:00:00Z",
+    peaks: []
   },
   {
     id: 8,
@@ -961,7 +998,8 @@ var MUSICAS = [
     humor: "Agressivo",
     instrumentos: ["Guitarra Elétrica", "Bateria", "Baixo Elétrico"],
     vozes: "Instrumental",
-    created_at: "2024-02-19T15:45:00Z"
+    created_at: "2024-02-19T15:45:00Z",
+    peaks: []
   },
   {
     id: 9,
@@ -979,7 +1017,8 @@ var MUSICAS = [
     humor: "Feliz / Alegre",
     instrumentos: ["Piano", "Violão", "Baixo Acústico", "Bateria"],
     vozes: "Instrumental",
-    created_at: "2024-02-24T12:15:00Z"
+    created_at: "2024-02-24T12:15:00Z",
+    peaks: []
   },
   {
     id: 10,
@@ -997,7 +1036,8 @@ var MUSICAS = [
     humor: "Bem-Estar / Sentir-se Bem",
     instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
     vozes: "Instrumental",
-    created_at: "2024-02-29T17:25:00Z"
+    created_at: "2024-02-29T17:25:00Z",
+    peaks: []
   },
   {
     id: 11,
@@ -1015,7 +1055,8 @@ var MUSICAS = [
     humor: "Ficção Científica / Futurista",
     instrumentos: ["Sintetizador Modular", "Sequenciador", "Drum Machine"],
     vozes: "Instrumental",
-    created_at: "2024-03-05T14:00:00Z"
+    created_at: "2024-03-05T14:00:00Z",
+    peaks: []
   },
   {
     id: 12,
@@ -1033,7 +1074,8 @@ var MUSICAS = [
     humor: "Bem-Estar / Sentir-se Bem",
     instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
     vozes: "Instrumental",
-    created_at: "2024-03-10T10:35:00Z"
+    created_at: "2024-03-10T10:35:00Z",
+    peaks: []
   },
   {
     id: 13,
@@ -1051,7 +1093,8 @@ var MUSICAS = [
     humor: "Bem-Estar / Sentir-se Bem",
     instrumentos: ["Sintetizador", "Bateria Eletrônica", "Baixo Sintetizado"],
     vozes: "Instrumental",
-    created_at: "2024-03-15T16:50:00Z"
+    created_at: "2024-03-15T16:50:00Z",
+    peaks: []
   },
   {
     id: 14,
@@ -1069,7 +1112,8 @@ var MUSICAS = [
     humor: "Agressivo",
     instrumentos: ["Guitarra Elétrica", "Bateria", "Baixo Elétrico"],
     vozes: "Instrumental",
-    created_at: "2024-03-20T09:10:00Z"
+    created_at: "2024-03-20T09:10:00Z",
+    peaks: []
   },
   {
     id: 15,
@@ -1087,7 +1131,8 @@ var MUSICAS = [
     humor: "Feliz / Alegre",
     instrumentos: ["Piano", "Violão", "Baixo Acústico", "Bateria"],
     vozes: "Instrumental",
-    created_at: "2024-03-25T13:40:00Z"
+    created_at: "2024-03-25T13:40:00Z",
+    peaks: []
   },
   {
     id: 16,
@@ -1104,7 +1149,8 @@ var MUSICAS = [
     subgenero: "Funk",
     humor: "Bem-Estar / Sentir-se Bem",
     instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
-    vozes: "Instrumental"
+    vozes: "Instrumental",
+    peaks: []
   },
   {
     id: 17,
@@ -1121,7 +1167,8 @@ var MUSICAS = [
     subgenero: "Experimental",
     humor: "Ficção Científica / Futurista",
     instrumentos: ["Sintetizador Modular", "Sequenciador", "Drum Machine"],
-    vozes: "Instrumental"
+    vozes: "Instrumental",
+    peaks: []
   },
   {
     id: 18,
@@ -1138,7 +1185,8 @@ var MUSICAS = [
     subgenero: "Funk",
     humor: "Bem-Estar / Sentir-se Bem",
     instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
-    vozes: "Instrumental"
+    vozes: "Instrumental",
+    peaks: []
   },
   {
     id: 19,
@@ -1155,7 +1203,8 @@ var MUSICAS = [
     subgenero: "Dance",
     humor: "Bem-Estar / Sentir-se Bem",
     instrumentos: ["Sintetizador", "Bateria Eletrônica", "Baixo Sintetizado"],
-    vozes: "Instrumental"
+    vozes: "Instrumental",
+    peaks: []
   },
   {
     id: 20,
@@ -1172,7 +1221,8 @@ var MUSICAS = [
     subgenero: "Hard Rock",
     humor: "Agressivo",
     instrumentos: ["Guitarra Elétrica", "Bateria", "Baixo Elétrico"],
-    vozes: "Instrumental"
+    vozes: "Instrumental",
+    peaks: []
   },
   {
     id: 21,
@@ -1189,7 +1239,8 @@ var MUSICAS = [
     subgenero: "Indie Pop",
     humor: "Feliz / Alegre",
     instrumentos: ["Piano", "Violão", "Baixo Acústico", "Bateria"],
-    vozes: "Instrumental"
+    vozes: "Instrumental",
+    peaks: []
   },
   {
     id: 22,
@@ -1206,7 +1257,8 @@ var MUSICAS = [
     subgenero: "Funk",
     humor: "Bem-Estar / Sentir-se Bem",
     instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
-    vozes: "Instrumental"
+    vozes: "Instrumental",
+    peaks: []
   },
   {
     id: 23,
@@ -1223,7 +1275,8 @@ var MUSICAS = [
     subgenero: "Experimental",
     humor: "Ficção Científica / Futurista",
     instrumentos: ["Sintetizador Modular", "Sequenciador", "Drum Machine"],
-    vozes: "Instrumental"
+    vozes: "Instrumental",
+    peaks: []
   },
   {
     id: 24,
@@ -1240,9 +1293,11 @@ var MUSICAS = [
     subgenero: "Funk",
     humor: "Bem-Estar / Sentir-se Bem",
     instrumentos: ["Baixo Elétrico", "Guitarra Funk", "Bateria", "Teclados"],
-    vozes: "Instrumental"
+    vozes: "Instrumental",
+    peaks: []
   }
-];
+  ]; // Fim do fallback
+}
 
 // Enriquecimento do modelo in-memory com arrays de stems e loops
 // Mantemos o campo numérico existente `loops` para compatibilidade com o front atual

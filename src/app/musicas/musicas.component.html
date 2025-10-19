@@ -372,7 +372,16 @@
               </div>
             </div>
             <div
+              class="col-sm-4 col-md-4 col-lg-4 col-xl-4 d-flex align-items-center justify-content-start"
+              *ngIf="isDesktop"
+            >
+              <div class="titlesMusic position-relative">
+                <p>Waveform</p>
+              </div>
+            </div>
+            <div
               class="col-sm-1 col-md-1 col-lg-1 col-xl-1 d-flex align-items-center justify-content-between"
+              [ngClass]="{'col-sm-1': isDesktop, 'col-sm-5': !isDesktop}"
             >
               <div class="titlesMusic one position-relative">
                 <p>Duração</p>
@@ -382,7 +391,8 @@
               </div>
             </div>
             <div
-              class="col-sm-3 col-md-3 col-lg-3 col-xl-3 p-0 loops d-flex align-items-center justify-content-between"
+              class="col-sm-2 col-md-2 col-lg-2 col-xl-2 p-0 loops d-flex align-items-center justify-content-between"
+              [ngClass]="{'col-sm-2': isDesktop, 'col-sm-3': !isDesktop}"
             >
               <div class="titlesMusic three position-relative">
                 <p>Instrumental</p>
@@ -431,24 +441,33 @@
                     </p>
                   </div>
                 </div>
-                <div class="wavesurfer">
+                <div
+                  class="col-sm-4 col-md-4 col-lg-4 col-xl-4 wavesurfer d-flex align-items-center"
+                  *ngIf="isDesktop"
+                >
                   <app-wave-surfer-test
-                    *ngIf="isDesktop"
                     [music]="itens"
                     [idContainer]="'waveform-' + i"
+                    [lazyLoad]="true"
                     (songFinished)="onSongFinished(i)"
                   ></app-wave-surfer-test>
                 </div>
                 <div
                   class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around pl-2 pr-2 pt-0 pb-0"
+                  [ngClass]="{'col-sm-1': isDesktop, 'col-sm-5': !isDesktop}"
                 >
                   <p class="h6 mb-0" id="duracao">
-                    {{ itens.duracaoReal ? formatTime(itens.duracaoReal) : '--:--' }}
+                    {{
+                      itens.duracaoReal
+                        ? formatTime(itens.duracaoReal)
+                        : "--:--"
+                    }}
                   </p>
                   <p class="h6 mb-0" id="bpm">{{ itens.bpm }}</p>
                 </div>
                 <div
-                  class="col-sm-3 col-md-3 col-lg-3 col-xl-3 p-0 loops d-flex align-items-center justify-content-around"
+                  class="col-sm-2 col-md-2 col-lg-2 col-xl-2 p-0 loops d-flex align-items-center justify-content-around"
+                  [ngClass]="{'col-sm-2': isDesktop, 'col-sm-3': !isDesktop}"
                 >
                   <span class="svgInstrumental span">
                     <svg width="16" height="16" viewBox="0 0 16 16">
