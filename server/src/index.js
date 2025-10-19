@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const multipart = require('connect-multiparty');
+const path = require('path');
 
 const app = express();
 app.use(bodyParser.json());
@@ -12,6 +13,27 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
+
+// Servir arquivos de áudio estáticos com cache headers otimizados
+// Os arquivos ficam em ../src/assets/audios/
+const audioPath = path.join(__dirname, '../../src/assets/audios');
+app.use('/assets/audios', express.static(audioPath, {
+  // Cache de 10 minutos (600 segundos)
+  maxAge: '600000',
+  // Headers adicionais de cache
+  setHeaders: (res, filePath) => {
+    // Cache público (pode ser armazenado por proxies/CDN)
+    res.setHeader('Cache-Control', 'public, max-age=600');
+    // Permite validação condicional (304 Not Modified)
+    res.setHeader('ETag', 'true');
+    // Habilita range requests para streaming
+    res.setHeader('Accept-Ranges', 'bytes');
+    // Tipo MIME correto para MP3
+    if (filePath.endsWith('.mp3')) {
+      res.setHeader('Content-Type', 'audio/mpeg');
+    }
+  }
+}));
 
 // Auth básico (mock) para destravar login no front
 // Aceita qualquer e-mail válido e senha com 8+ caracteres, retorna um token
@@ -1299,6 +1321,22 @@ if (MUSICAS.length === 0) {
   ]; // Fim do fallback
 }
 
+// Função para normalizar URLs de áudio
+// Converte caminhos relativos (../../assets/audios/file.mp3) para absolutos (/assets/audios/file.mp3)
+// Isso permite que o backend sirva os arquivos através do endpoint estático
+function normalizeAudioUrl(url) {
+  if (!url) return url;
+
+  // Se URL já é absoluta ou começa com /, mantém
+  if (url.startsWith('http') || url.startsWith('/assets/')) {
+    return url;
+  }
+
+  // Extrai apenas o nome do arquivo de caminhos relativos
+  const fileName = url.split('/').pop();
+  return `/assets/audios/${fileName}`;
+}
+
 // Enriquecimento do modelo in-memory com arrays de stems e loops
 // Mantemos o campo numérico existente `loops` para compatibilidade com o front atual
 // e adicionamos:
@@ -1310,10 +1348,12 @@ if (MUSICAS.length === 0) {
 // NOTA: Peaks não são mais gerados no backend. O WaveSurfer no frontend
 // processará o áudio real para gerar waveforms autênticos.
 MUSICAS = MUSICAS.map(m => {
+  // Normaliza URL do áudio principal para usar endpoint do backend
+  m.url = normalizeAudioUrl(m.url);
   try {
     const stemsBase = (getStemsForId(m.id) || []).map((s, idx) => ({
       id: idx + 1,
-      url: s.url,
+      url: normalizeAudioUrl(s.url), // Normaliza URLs dos stems também
       duration_ms: m.duracao || 0,
       type: s.label || `STEM ${idx + 1}`,
     }));
@@ -1328,6 +1368,8 @@ MUSICAS = MUSICAS.map(m => {
     return m;
   }
 });
+
+console.log(`✅ ${MUSICAS.length} músicas carregadas com URLs normalizadas para /assets/audios/`);
 
 var PLAYLISTS = [
   {
