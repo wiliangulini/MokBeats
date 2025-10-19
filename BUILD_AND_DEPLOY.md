@@ -18,8 +18,44 @@ Fazer build do projeto Angular localmente e fazer deploy completo na VPS, inclui
 
 - Frontend Angular (dist/) → `/var/www/mokbeats/`
 - Backend Node.js (server/) → `/var/www/mokbeats/server/`
+- Arquivos de áudio (assets/audios/) → `/var/www/mokbeats/assets/audios/`
 - Gerar peaks reais dos áudios na VPS
 - Configurar PM2 para rodar o backend
+
+---
+
+## 🚀 DEPLOY RÁPIDO (Opção Automatizada)
+
+### Script Automatizado (Recomendado)
+
+**Para fazer deploy completo em um único comando:**
+
+```bash
+cd /home/hustler/Documentos/projetos/MokBeats
+./deploy-to-vps.sh
+```
+
+**O que o script faz automaticamente:**
+
+1. ✅ Verifica/executa build do Angular
+2. ✅ Envia frontend (dist/) para VPS
+3. ✅ Envia backend (server/) para VPS
+4. ✅ Envia arquivos de áudio (opcional)
+5. ✅ Cria arquivo .env na VPS com NODE_ENV=production
+6. ✅ Instala dependências do backend
+7. ✅ Gera peaks reais dos áudios
+8. ✅ Reinicia PM2 automaticamente
+
+**Vantagens:**
+- Processo completo em ~5-10 minutos
+- Sem esquecer nenhum passo
+- Validação automática de cada etapa
+
+---
+
+## 📖 DEPLOY MANUAL (Passo a Passo)
+
+Se preferir fazer deploy manualmente ou entender cada etapa:
 
 ---
 
@@ -207,14 +243,41 @@ rsync -avz --delete --exclude=node_modules server/ root@147.79.87.156:/var/www/m
 # ⚠️ IMPORTANTE: node_modules é excluído automaticamente (será instalado na VPS)
 ```
 
-### Passo 3.3: Verificar Arquivos de Áudio
+### Passo 3.3: Upload dos Arquivos de Áudio
 
-**Na VPS:**
+**⚠️ PASSO CRÍTICO:** Os arquivos de áudio devem estar presentes na VPS antes de gerar os peaks!
+
+**No seu computador local:**
+
+```bash
+# Navegar até diretório do projeto
+cd /home/hustler/Documentos/projetos/MokBeats
+
+# Enviar todos os arquivos de áudio para VPS
+rsync -avz src/assets/audios/ root@147.79.87.156:/var/www/mokbeats/assets/audios/
+
+# A senha SSH será solicitada: ***REMOVIDA***
+```
+
+**Saída esperada:**
+
+```
+building file list ... done
+MokBeats_Future_Forest_(FULL).mp3
+MokBeats_Future_Forest_(DRUMS).mp3
+MokBeats_Future_Forest_(EFEITOS).mp3
+...
+
+sent 87.5M bytes  received 234 bytes  3.2M bytes/sec
+total size is 87.3M  speedup is 1.00
+```
+
+**Verificar na VPS:**
 
 ```bash
 ssh root@147.79.87.156
 
-# Verificar se áudios estão no lugar correto
+# Verificar se áudios foram enviados corretamente
 ls -lah /var/www/mokbeats/assets/audios/
 
 # Deve listar arquivos .mp3 como:
@@ -223,14 +286,17 @@ ls -lah /var/www/mokbeats/assets/audios/
 # - MokBeats_Future_Forest_(EFEITOS).mp3
 # - MokBeats_Future_Forest_(HARMONIAS).mp3
 # - MokBeats_Future_Forest_(MELODIAS).mp3
+
+# Contar quantos arquivos MP3 foram enviados
+find /var/www/mokbeats/assets/audios -name "*.mp3" | wc -l
+# Deve retornar o número correto de arquivos (ex: 24)
 ```
 
-**⚠️ Se áudios não estiverem presentes:**
+**Por que este passo é importante:**
 
-```bash
-# No seu computador local, enviar áudios:
-rsync -avz src/assets/audios/ root@147.79.87.156:/var/www/mokbeats/assets/audios/
-```
+- ⚠️ Sem os arquivos de áudio, o script `generate-peaks.js` falhará
+- ⚠️ Os peaks não podem ser gerados sem o arquivo de áudio original
+- ⚠️ Este é o erro que aconteceu no deploy anterior: áudios não foram enviados
 
 ---
 
@@ -259,12 +325,26 @@ ls -la node_modules/
 - connect-multiparty
 - dotenv (gerenciamento de variáveis de ambiente)
 
-### Passo 4.2: Configurar Variáveis de Ambiente
+### Passo 4.2: Configurar Variáveis de Ambiente (.env)
 
-**⚠️ IMPORTANTE:** O backend usa variáveis de ambiente para localizar os arquivos de áudio.
+**⚠️ PASSO OBRIGATÓRIO E CRÍTICO:** Sem este arquivo, o script de peaks NÃO funcionará!
+
+**Por que o arquivo .env é necessário?**
+
+O script `generate-peaks.js` precisa saber onde encontrar os arquivos de áudio:
+- **Desenvolvimento** (local): `/home/hustler/.../src/assets/audios/` → `AUDIO_BASE_PATH=../../src`
+- **Produção** (VPS): `/var/www/mokbeats/assets/audios/` → `AUDIO_BASE_PATH=../`
+
+O arquivo `.env` com `NODE_ENV=production` informa ao script qual caminho usar.
+
+**Criar arquivo .env na VPS:**
 
 ```bash
-# Ainda em /var/www/mokbeats/server
+# Conectar à VPS
+ssh root@147.79.87.156
+
+# Navegar para diretório do servidor
+cd /var/www/mokbeats/server
 
 # Criar arquivo .env para produção
 cat > .env << 'EOF'
@@ -280,16 +360,31 @@ EOF
 cat .env
 ```
 
-**Conteúdo esperado do .env na VPS:**
+**Saída esperada (conteúdo do .env):**
+
 ```
+# Configuração de Ambiente - Produção (VPS)
 NODE_ENV=production
+
+# Caminho base para arquivos de áudio
+# Na VPS: os áudios estão em ../assets/audios/
 AUDIO_BASE_PATH=../
 ```
 
-**Por que isso é necessário?**
-- **Local** (desenvolvimento): áudios em `/home/hustler/.../src/assets/audios/`
-- **VPS** (produção): áudios em `/var/www/mokbeats/assets/audios/`
-- O `.env` define o caminho correto para cada ambiente automaticamente
+**Verificar permissões:**
+
+```bash
+# Garantir que o arquivo tem permissões corretas
+chmod 644 /var/www/mokbeats/server/.env
+
+# Confirmar que existe
+ls -la /var/www/mokbeats/server/.env
+```
+
+**⚠️ ATENÇÃO:** Este foi o erro que aconteceu no deploy anterior:
+- Sem o `.env`, o script detectou ambiente como `development`
+- Com ambiente `development`, ele procurou áudios em `/var/www/mokbeats/src/assets/audios/` (ERRADO!)
+- Com `.env` correto, ele procurará em `/var/www/mokbeats/assets/audios/` (CERTO!)
 
 ### Passo 4.3: Gerar Peaks Reais dos Áudios
 
@@ -482,23 +577,36 @@ pm2 flush
 
 ## 📝 Checklist de Deploy Completo
 
+**Preparação Local:**
 - [ ] Build local executado (`npm run build`)
 - [ ] Pasta `dist/` gerada com sucesso
+
+**Upload para VPS:**
 - [ ] Upload do frontend para `/var/www/mokbeats/`
 - [ ] Upload do backend para `/var/www/mokbeats/server/`
-- [ ] Arquivos de áudio em `/var/www/mokbeats/assets/audios/`
+- [ ] ⚠️ **CRÍTICO:** Arquivos de áudio em `/var/www/mokbeats/assets/audios/`
+
+**Configuração na VPS:**
+- [ ] ⚠️ **CRÍTICO:** Arquivo `.env` criado em `/var/www/mokbeats/server/` com `NODE_ENV=production`
 - [ ] Audiowaveform instalado na VPS via PPA
 - [ ] Dependências do backend instaladas (`npm install`)
-- [ ] Peaks gerados (`node scripts/generate-peaks.js`)
-- [ ] Arquivo `data/musicas.json` criado com peaks
+- [ ] Peaks gerados com sucesso (`node scripts/generate-peaks.js`)
+- [ ] Arquivo `data/musicas.json` atualizado com peaks reais
+
+**PM2 e Backend:**
 - [ ] PM2 configurado com nome `mok-backend`
 - [ ] PM2 startup configurado
 - [ ] Backend rodando (verificar `pm2 status`)
 - [ ] Logs do backend sem erros
+
+**Validação Final:**
 - [ ] API respondendo (`curl localhost:3100/api/musicas`)
 - [ ] Apache configurado e rodando
 - [ ] Site acessível pelo navegador
 - [ ] Waveform carregando rápido (peaks reais)
+
+**Pontos de Atenção:**
+- ⚠️ Os 2 passos marcados como CRÍTICOS são essenciais - sem eles, os peaks não serão gerados
 
 ---
 
