@@ -139,8 +139,8 @@ cat > .env << 'ENVFILE'
 NODE_ENV=production
 
 # Caminho base para arquivos de áudio
-# Na VPS: os áudios estão em ../assets/audios/
-AUDIO_BASE_PATH=../
+# Na VPS: os áudios estão em ../../assets/audios/
+AUDIO_BASE_PATH=../../
 ENVFILE
 
 echo "✓ Arquivo .env criado com sucesso"
