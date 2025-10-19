@@ -178,6 +178,8 @@
   npm install
   ```
 
+  ℹ️ Se usar NVM, certifique-se de que `npm` está disponível para o usuário que executará o deploy (padrão: `root`) ou instale Node.js globalmente no servidor.
+
 - [ ] **Configurar variáveis de ambiente (.env)**
 
   ```bash
