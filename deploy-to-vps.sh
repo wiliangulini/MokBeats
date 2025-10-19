@@ -156,7 +156,7 @@ fi
 
 # Passo 6: Instalar dependências do backend na VPS
 print_step "6. Instalando dependências do backend na VPS..."
-ssh ${VPS_USER}@${VPS_IP} "cd ${VPS_PATH}/server && npm install"
+ssh ${VPS_USER}@${VPS_IP} "bash -lc 'if [ -f \$HOME/.nvm/nvm.sh ]; then . \$HOME/.nvm/nvm.sh; fi; if ! command -v npm >/dev/null 2>&1; then echo \"✗ npm não encontrado na VPS. Instale Node.js (ex.: via NodeSource) antes de continuar.\"; exit 1; fi; cd ${VPS_PATH}/server && npm install'"
 if [ $? -eq 0 ]; then
   print_success "Dependências instaladas"
 else

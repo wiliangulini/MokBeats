@@ -317,6 +317,8 @@ npm install
 ls -la node_modules/
 ```
 
+> ℹ️ Se você utiliza NVM, garanta que Node.js esteja disponível para o usuário utilizado no deploy (`root` por padrão) ou instale Node.js globalmente (ex.: via NodeSource). Sem `npm`, o script de deploy será interrompido nesta etapa.
+
 **Dependências instaladas (package.json):**
 
 - express
