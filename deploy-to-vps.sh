@@ -105,6 +105,37 @@ else
   exit 1
 fi
 
+# Passo 3.5: Upload do arquivo musicas.json (peaks pré-gerados)
+print_step "3.5. Enviando arquivo musicas.json com peaks pré-gerados..."
+if [ -f "server/data/musicas.json" ]; then
+  # Criar diretório data/ na VPS se não existir
+  ssh ${VPS_USER}@${VPS_IP} "mkdir -p ${VPS_PATH}/server/data"
+
+  # Obter informações do arquivo
+  FILE_SIZE=$(du -h server/data/musicas.json | cut -f1)
+  MUSICAS_COUNT=$(grep -o '"id":' server/data/musicas.json 2>/dev/null | wc -l)
+
+  print_info "Arquivo local encontrado:"
+  print_info "  - Tamanho: ${FILE_SIZE}"
+  print_info "  - Músicas: ${MUSICAS_COUNT}"
+
+  # Enviar musicas.json
+  rsync -avz server/data/musicas.json ${VPS_USER}@${VPS_IP}:${VPS_PATH}/server/data/
+
+  if [ $? -eq 0 ]; then
+    print_success "musicas.json enviado com sucesso (peaks pré-gerados)"
+    print_info "Geração de peaks na VPS será PULADA (economiza tempo)"
+    SKIP_PEAKS=true
+  else
+    print_error "Erro ao enviar musicas.json"
+    exit 1
+  fi
+else
+  print_warning "Arquivo server/data/musicas.json não encontrado localmente"
+  print_info "Peaks serão gerados na VPS (processo mais lento)"
+  SKIP_PEAKS=false
+fi
+
 # Passo 4: Upload dos Arquivos de Áudio
 print_step "4. Verificando arquivos de áudio..."
 if [ -d "src/assets/audios" ]; then
@@ -164,15 +195,27 @@ else
   exit 1
 fi
 
-# Passo 7: Gerar peaks dos áudios
-print_step "7. Gerando peaks dos áudios..."
-print_info "Este processo pode demorar alguns minutos..."
-ssh ${VPS_USER}@${VPS_IP} "cd ${VPS_PATH}/server && node scripts/generate-peaks.js"
-if [ $? -eq 0 ]; then
-  print_success "Peaks gerados com sucesso"
+# Passo 7: Gerar peaks dos áudios (APENAS se não foi enviado no Passo 3.5)
+if [ "$SKIP_PEAKS" = true ]; then
+  print_step "7. Geração de peaks..."
+  print_success "PULADO - Arquivo musicas.json já foi enviado com peaks pré-gerados"
+  print_info "Economizou tempo ao não precisar gerar peaks na VPS"
 else
-  print_error "Erro ao gerar peaks (verifique se audiowaveform está instalado)"
-  exit 1
+  print_step "7. Gerando peaks dos áudios na VPS..."
+  print_info "Este processo pode demorar alguns minutos..."
+  print_warning "Certifique-se de que audiowaveform está instalado na VPS"
+
+  ssh ${VPS_USER}@${VPS_IP} "cd ${VPS_PATH}/server && node scripts/generate-peaks.js"
+
+  if [ $? -eq 0 ]; then
+    print_success "Peaks gerados com sucesso"
+  else
+    print_error "Erro ao gerar peaks"
+    print_error "Possíveis causas:"
+    print_error "  - audiowaveform não está instalado (instale: sudo snap install audiowaveform)"
+    print_error "  - Arquivos de áudio não foram enviados para a VPS"
+    exit 1
+  fi
 fi
 
 # Passo 8: Reiniciar PM2
