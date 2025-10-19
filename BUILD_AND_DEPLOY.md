@@ -257,8 +257,41 @@ ls -la node_modules/
 - cors
 - body-parser
 - connect-multiparty
+- dotenv (gerenciamento de variáveis de ambiente)
 
-### Passo 4.2: Gerar Peaks Reais dos Áudios
+### Passo 4.2: Configurar Variáveis de Ambiente
+
+**⚠️ IMPORTANTE:** O backend usa variáveis de ambiente para localizar os arquivos de áudio.
+
+```bash
+# Ainda em /var/www/mokbeats/server
+
+# Criar arquivo .env para produção
+cat > .env << 'EOF'
+# Configuração de Ambiente - Produção (VPS)
+NODE_ENV=production
+
+# Caminho base para arquivos de áudio
+# Na VPS: os áudios estão em ../assets/audios/
+AUDIO_BASE_PATH=../
+EOF
+
+# Verificar arquivo criado
+cat .env
+```
+
+**Conteúdo esperado do .env na VPS:**
+```
+NODE_ENV=production
+AUDIO_BASE_PATH=../
+```
+
+**Por que isso é necessário?**
+- **Local** (desenvolvimento): áudios em `/home/hustler/.../src/assets/audios/`
+- **VPS** (produção): áudios em `/var/www/mokbeats/assets/audios/`
+- O `.env` define o caminho correto para cada ambiente automaticamente
+
+### Passo 4.3: Gerar Peaks Reais dos Áudios
 
 ```bash
 # Ainda em /var/www/mokbeats/server
@@ -268,9 +301,20 @@ node scripts/generate-peaks.js
 **Saída esperada:**
 
 ```
-🎵 Gerando peaks para 24 músicas...
-✅ Peaks gerados para: MokBeats_Future_Forest_(FULL).mp3
-✅ Peaks gerados para: ...
+🎵 Iniciando processamento de músicas...
+
+🔧 Ambiente: production
+📁 Base path para áudios: /var/www/mokbeats
+
+✅ 24 músicas carregadas do JSON
+
+[1/24] Processando: HighFrenetic
+  📁 Arquivo: ../../assets/audios/MokBeats_Future_Forest_(FULL).mp3
+  ⚙️  Gerando peaks...
+  ✅ 3870 peaks gerados com sucesso
+
+[2/24] Processando: Maleficus Chaos
+  ...
 📝 Arquivo musicas.json atualizado com 24 músicas
 ✅ Processo concluído!
 ```
@@ -284,7 +328,7 @@ cat /var/www/mokbeats/server/data/musicas.json | head -50
 # Deve conter array "peaks" preenchido para cada música
 ```
 
-### Passo 4.3: Configurar PM2
+### Passo 4.4: Configurar PM2
 
 ```bash
 # Parar processos antigos (se existirem)
@@ -305,7 +349,7 @@ pm2 startup
 # Exemplo: sudo env PATH=$PATH:/usr/bin...
 ```
 
-### Passo 4.4: Verificar Backend Funcionando
+### Passo 4.5: Verificar Backend Funcionando
 
 ```bash
 # Ver logs do backend
