@@ -1,3 +1,6 @@
+// Carregar variáveis de ambiente
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
+
 const fs = require('fs');
 const path = require('path');
 const { generatePeaksFromAudio } = require('./process-audio');
@@ -9,7 +12,8 @@ const { generatePeaksFromAudio } = require('./process-audio');
 
 // Configuração
 const JSON_PATH = path.join(__dirname, '../data/musicas.json');
-const AUDIO_BASE_PATH = path.join(__dirname, '../../src'); // Base para resolver URLs relativas
+// Base para resolver URLs relativas - usa variável de ambiente ou fallback para desenvolvimento
+const AUDIO_BASE_PATH = path.join(__dirname, process.env.AUDIO_BASE_PATH || '../../src');
 
 /**
  * Carrega músicas do arquivo JSON existente
@@ -57,6 +61,12 @@ function resolveAudioPath(relativeUrl) {
  */
 async function processAllMusic() {
   console.log('🎵 Iniciando processamento de músicas...\n');
+
+  // Mostrar ambiente e configuração
+  const environment = process.env.NODE_ENV || 'development';
+  console.log(`🔧 Ambiente: ${environment}`);
+  console.log(`📁 Base path para áudios: ${AUDIO_BASE_PATH}`);
+  console.log('');
 
   const musicas = loadMusicasFromJSON();
   const results = [];

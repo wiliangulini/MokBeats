@@ -170,8 +170,65 @@ npm install
 - cors
 - body-parser
 - connect-multiparty
+- dotenv (gerenciamento de variáveis de ambiente)
 
-### 4.2. Configurar PM2
+### 4.2. Configurar Variáveis de Ambiente (.env)
+
+**⚠️ PASSO OBRIGATÓRIO:** Criar arquivo `.env` com configurações de produção.
+
+```bash
+# Criar arquivo .env na VPS
+cd /var/www/mokbeats/server
+
+cat > .env << 'EOF'
+# Configuração de Ambiente - Produção (VPS)
+NODE_ENV=production
+
+# Caminho base para arquivos de áudio
+# Na VPS: os áudios estão em ../assets/audios/
+AUDIO_BASE_PATH=../
+EOF
+
+# Verificar arquivo criado
+cat .env
+```
+
+**Por que isso é necessário?**
+
+O script `generate-peaks.js` precisa saber onde encontrar os arquivos de áudio:
+- **Desenvolvimento** (local): `../../src/assets/audios/`
+- **Produção** (VPS): `../assets/audios/`
+
+O arquivo `.env` define automaticamente o caminho correto para cada ambiente.
+
+**⚠️ Importante:** Sem o `.env` configurado, a geração de peaks falhará!
+
+### 4.3. Gerar Peaks dos Áudios
+
+Agora, com o `.env` configurado, gere os peaks:
+
+```bash
+cd /var/www/mokbeats/server
+node scripts/generate-peaks.js
+```
+
+**Saída esperada (com .env correto):**
+```
+🎵 Iniciando processamento de músicas...
+
+🔧 Ambiente: production
+📁 Base path para áudios: /var/www/mokbeats
+
+✅ 24 músicas carregadas do JSON
+
+[1/24] Processando: HighFrenetic
+  📁 Arquivo: ../../assets/audios/MokBeats_Future_Forest_(FULL).mp3
+  ⚙️  Gerando peaks...
+  ✅ 3870 peaks gerados com sucesso
+...
+```
+
+### 4.4. Configurar PM2
 
 ```bash
 # Se houver processo antigo rodando, parar
@@ -190,7 +247,7 @@ pm2 startup
 # Exemplo: sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u root --hp /root
 ```
 
-### 4.3. Verificar Logs e Status
+### 4.5. Verificar Logs e Status
 
 ```bash
 # Verificar logs em tempo real
@@ -207,7 +264,7 @@ pm2 status
 pm2 monit
 ```
 
-### 4.4. Comandos Úteis do PM2
+### 4.6. Comandos Úteis do PM2
 
 ```bash
 # Reiniciar backend
