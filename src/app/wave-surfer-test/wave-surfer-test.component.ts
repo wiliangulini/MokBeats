@@ -105,7 +105,11 @@ export class WaveSurferTestComponent
       // Aguardar a criação antes de carregar
       setTimeout(() => {
         if (this.wavesurfer && this.music.url) {
+          // Carrega e processa o áudio real para gerar waveform autêntica
+          // Comportamento idêntico ao player component
+          console.log(`🎵 Carregando waveform real para ${this.music.nome_musica}`);
           this.wavesurfer.load(this.music.url);
+
           this.wavesurfer.setMuted(true);
 
           this.wavesurfer.on('finish', () => {

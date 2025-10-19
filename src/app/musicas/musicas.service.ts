@@ -350,6 +350,13 @@ export class MusicasService extends CrudService<Musica> {
     return super.list();
   }
 
+  // Método para listar músicas com paginação
+  listPaginated(page: number = 1, limit: number = 10): Observable<any> {
+    return this.http.get(`${this.baseUrl}/musicas`, {
+      params: { page: page.toString(), limit: limit.toString() }
+    });
+  }
+
   override save(record: any): Observable<Musica> {
     return super.save(record);
   }
@@ -455,6 +462,7 @@ export class MusicasService extends CrudService<Musica> {
     return this.http.get(`${this.baseUrl}/humores`);
   }
 
+  // Método para filtrar músicas (com suporte a paginação)
   filterMusicas(filtros: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/musicas/filtro`, filtros);
   }

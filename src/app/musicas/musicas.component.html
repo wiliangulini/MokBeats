@@ -440,21 +440,10 @@
                   ></app-wave-surfer-test>
                 </div>
                 <div
-                  class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around pl-2 pr-2 pt-0 pb-0 music-card-duration"
-                  [attr.data-music-index]="i"
+                  class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around pl-2 pr-2 pt-0 pb-0"
                 >
                   <p class="h6 mb-0" id="duracao">
-                    <ng-container
-                      *ngIf="itens.duracaoCarregando; else showDuration"
-                    >
-                      --:--
-                    </ng-container>
-                    <ng-template #showDuration>
-                      <ng-container *ngIf="itens.duracaoReal; else fallback">
-                        {{ formatTime(itens.duracaoReal) }}
-                      </ng-container>
-                      <ng-template #fallback> --:-- </ng-template>
-                    </ng-template>
+                    {{ itens.duracaoReal ? formatTime(itens.duracaoReal) : '--:--' }}
                   </p>
                   <p class="h6 mb-0" id="bpm">{{ itens.bpm }}</p>
                 </div>
@@ -699,34 +688,15 @@
         </div>
       </div>
     </div>
-    <div class="container">
+    <div class="container" id="pageNavigation">
       <div class="row justify-content-center align-items-center mt-5">
-        <nav
-          aria-label="Page navigation example"
-          class="d-flex justify-content-center align-items-center w-75"
-        >
-          <ul
-            class="pagination mb-0 w-75 d-flex justify-content-center align-items-center"
-          >
-            <li class="page-item previous">
-              <a class="page-link" href="" aria-label="Previous">
-                <span aria-hidden="true" class="material-icons"
-                  >navigate_next</span
-                >
-              </a>
-            </li>
-            <li class="page-item active"><a class="page-link" href="">1</a></li>
-            <li class="page-item"><a class="page-link" href="">2</a></li>
-            <li class="page-item"><a class="page-link" href="">3</a></li>
-            <li class="page-item next">
-              <a class="page-link" href="" aria-label="Next">
-                <span aria-hidden="true" class="material-icons"
-                  >navigate_next</span
-                >
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <app-pagination
+          *ngIf="!isLoading && totalPages > 0"
+          [currentPage]="currentPage"
+          [totalPages]="totalPages"
+          [maxVisiblePages]="5"
+          (pageChange)="onPageChange($event)"
+        ></app-pagination>
       </div>
     </div>
   </article>

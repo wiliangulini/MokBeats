@@ -48,6 +48,7 @@ import { EditPlaylistModalComponent } from './create-playlist-modal/edit-playlis
 import { CustomFileUploadComponent } from './custom-file-upload/custom-file-upload.component';
 import { PlaceholderEllipsisDirective } from './directives/placeholder-ellipsis.directive';
 import { DownloadAmostraComponent } from './download-amostra/download-amostra.component';
+import { PaginationComponent } from './shared/pagination/pagination.component';
 import { EfeitosSonorosComponent } from './efeitos-sonoros/efeitosSonoros.component';
 import { EfeitosSonorosService } from './efeitos-sonoros/efeitosSonoros.service';
 import { FaqComponent } from './faq/faq.component';
@@ -123,6 +124,7 @@ import { WaveSurferTestComponent } from './wave-surfer-test/wave-surfer-test.com
     PlaceholderEllipsisDirective,
     TermosPrivacidadeComponent,
     CustomFileUploadComponent,
+    PaginationComponent,
   ],
   imports: [
     BrowserModule,

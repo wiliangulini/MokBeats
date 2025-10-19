@@ -364,7 +364,29 @@ const CONFIG = {
 };
 
 app.route('/api/musicas').get((request, response) => {
-  response.send(MUSICAS);
+  const page = parseInt(request.query.page) || 1;
+  const limit = parseInt(request.query.limit) || 24; // default: retorna todas
+
+  // Se não houver parâmetros de paginação, retorna todas as músicas (compatibilidade)
+  if (!request.query.page && !request.query.limit) {
+    return response.send(MUSICAS);
+  }
+
+  // Calcula índices de paginação
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+  const paginatedData = MUSICAS.slice(startIndex, endIndex);
+
+  // Retorna dados paginados com metadados
+  response.send({
+    data: paginatedData,
+    pagination: {
+      currentPage: page,
+      totalPages: Math.ceil(MUSICAS.length / limit),
+      totalItems: MUSICAS.length,
+      itemsPerPage: limit
+    }
+  });
 });
 
 app.route('/api/musicas').post((request, response) => {
@@ -515,7 +537,30 @@ app.route('/api/musicas/filtro').post((request, response) => {
     );
   }
 
-  response.status(200).send(musicasFiltradas);
+  // Paginação após filtros
+  const page = parseInt(filtros.page) || 1;
+  const limit = parseInt(filtros.limit) || musicasFiltradas.length;
+
+  // Se não houver parâmetros de paginação, retorna todos os resultados filtrados (compatibilidade)
+  if (!filtros.page && !filtros.limit) {
+    return response.status(200).send(musicasFiltradas);
+  }
+
+  // Aplica paginação
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+  const paginatedData = musicasFiltradas.slice(startIndex, endIndex);
+
+  // Retorna dados filtrados e paginados com metadados
+  response.status(200).send({
+    data: paginatedData,
+    pagination: {
+      currentPage: page,
+      totalPages: Math.ceil(musicasFiltradas.length / limit),
+      totalItems: musicasFiltradas.length,
+      itemsPerPage: limit
+    }
+  });
 });
 
 // Últimas sem repetir produtor (baseado em created_at desc, fallback id desc)
@@ -1206,6 +1251,9 @@ var MUSICAS = [
 //  - `loops_variants: { len_sec, url, duration_ms }[]`
 // As URLs de stems são as mesmas usadas pela simulação de getStemsForId,
 // durations dos stems seguem a duração completa da faixa; os loops usam 15/30/60s.
+//
+// NOTA: Peaks não são mais gerados no backend. O WaveSurfer no frontend
+// processará o áudio real para gerar waveforms autênticos.
 MUSICAS = MUSICAS.map(m => {
   try {
     const stemsBase = (getStemsForId(m.id) || []).map((s, idx) => ({
@@ -1219,6 +1267,7 @@ MUSICAS = MUSICAS.map(m => {
       { len_sec: 30, url: m.url, duration_ms: 30000 },
       { len_sec: 60, url: m.url, duration_ms: 60000 },
     ];
+
     return { ...m, stems: stemsBase, loops_variants: loopsVariants };
   } catch (_) {
     return m;

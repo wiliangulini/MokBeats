@@ -5,7 +5,6 @@ import {
   Component,
   EventEmitter,
   HostListener,
-  OnDestroy,
   OnInit,
   Output,
   QueryList,
@@ -15,11 +14,11 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import WaveSurfer from 'wavesurfer.js';
+import { forkJoin } from 'rxjs';
 import { PlaylistService } from '../create-playlist-modal/playlist.service';
 import { FavoritosService } from '../favoritos/favoritos.service';
 import { AuthService } from '../login/auth.service';
 import { PlayerService } from '../player/player.service';
-import { AudioService } from '../service/audio.service';
 import { MusicPlayerService } from '../service/music-player.service';
 import { ScrollService } from '../service/scroll.service';
 import { WaveSurferTestComponent } from '../wave-surfer-test/wave-surfer-test.component';
@@ -31,7 +30,7 @@ import { Musica, MusicasService } from './musicas.service';
   styleUrls: ['./musicas.component.scss'],
 })
 export class MusicasComponent
-  implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy
+  implements OnInit, AfterViewInit, AfterViewChecked
 {
   isLoading: boolean = true;
   // Controla renderização do waveform por breakpoint
@@ -117,6 +116,16 @@ export class MusicasComponent
   wavesurfer!: WaveSurfer;
   @Output('ngModelChange') update: any = new EventEmitter();
 
+  // Propriedades de paginação
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  totalItems: number = 0;
+  currentFilters: any = null;
+
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
+
   constructor(
     private musicService: MusicasService,
     private playerService: PlayerService,
@@ -127,8 +136,7 @@ export class MusicasComponent
     private likeService: FavoritosService,
     private router: Router,
     private cdRef: ChangeDetectorRef,
-    private musicPlayerService: MusicPlayerService,
-    private audioService: AudioService
+    private musicPlayerService: MusicPlayerService
   ) {
     this.formG = this.fb.group({
       checkbox: [],
@@ -149,8 +157,6 @@ export class MusicasComponent
     }
     this.loadArtistas();
     this.loadInstrumentos();
-    // Carrega cache de durações do localStorage
-    this.loadDurationCache();
   }
 
   @HostListener('window:resize', [])
@@ -159,86 +165,127 @@ export class MusicasComponent
   }
 
   ngAfterViewInit() {
-    let playlist: any[] = [];
-    const setPlaylist = new Set();
-    this.musicService.list().subscribe((data: any) => {
-      this.arrMusica = data;
-      let arrMusica = JSON.stringify(this.arrMusica);
-      localStorage.setItem('arrMusica', arrMusica);
+    // Carrega dados iniciais com paginação (página 1, 10 itens)
+    this.loadMusicas(1);
 
-      // Inicializa Intersection Observer e observa os cards de música
-      this.initIntersectionObserver();
-      this.observeMusicCards();
-
-      // Habilitar filtros após carregar as músicas
-      setTimeout(() => {
-        this.filtersInitialized = true;
-      }, 500);
-
-      this.playlistService.list().subscribe((data: any) => {
-        this.isLoading = false;
-        data.forEach((e: any) => {
-          if (e.music.length > 0) {
-            for (let i: number = 0; i < e.music.length; i++) {
-              playlist.push(e.music[i]);
-            }
-          } else if (e.music.length == undefined && e.music.id > 0) {
-            playlist.push(e.music);
-          }
-        });
-        const filterMusicPlaylist = playlist.filter((data: any) => {
-          const duplicatePlaylist = setPlaylist.has(data.id);
-          setPlaylist.add(data.id);
-          return !duplicatePlaylist;
-        });
-        filterMusicPlaylist.sort((a, b) => {
-          if (a.id > b.id) return 1;
-          if (a.id < b.id) return -1;
-          return 0;
-        });
-        let addplaylist: any = document.querySelectorAll('.addPlaylist');
-        addplaylist.forEach((e: any, index: any) => {
-          for (let i of filterMusicPlaylist) {
-            if (i.id === this.arrMusica[index]?.id) {
-              e.classList.add('amarelo');
-            }
-          }
-        });
-      });
-      this.likeService.list().subscribe((data: any) => {
-        let fav: any[] = [];
-        data.forEach((e: any) => {
-          fav.push(e);
-        });
-        let hearthLike = document.querySelectorAll('.hearth');
-        let hearthLike1 = document.querySelectorAll('.hearth1');
-        hearthLike.forEach((e: any, index: number) => {
-          for (let i of fav) {
-            if (i.id === this.arrMusica[index]?.id) {
-              e.style.display = 'none';
-            }
-          }
-        });
-        hearthLike1.forEach((e: any, index: number) => {
-          for (let i of fav) {
-            if (i.id === this.arrMusica[index]?.id) {
-              e.style.display = 'block';
-            }
-          }
-        });
-      });
-    });
+    // Estiliza checkboxes
     document.querySelectorAll('.mat-checkbox-frame')?.forEach((e: any) => {
       e.style.borderColor = '#FFF';
     });
+  }
 
-    //  essa função mostra todos itens do querylist conforme é sendo prenchido no ngFor.
-    // this.waveSurfers.changes.subscribe((data: any) => {
-    //   console.log(data);
-    //   this.waveSurfers.forEach((e: any) => {
-    //     console.log(e);
-    //   })
-    // })
+  /**
+   * Carrega músicas com paginação e dados auxiliares (playlists e favoritos)
+   * Usa forkJoin para paralelizar requisições HTTP
+   */
+  loadMusicas(page: number = 1, filtros?: any): void {
+    this.isLoading = true;
+
+    // Determina qual endpoint usar (paginado ou filtrado)
+    const musicasRequest = filtros
+      ? this.musicService.filterMusicas({ ...filtros, page, limit: this.itemsPerPage })
+      : this.musicService.listPaginated(page, this.itemsPerPage);
+
+    // Executa 3 requisições em paralelo
+    forkJoin({
+      musicas: musicasRequest,
+      playlists: this.playlistService.list(),
+      favoritos: this.likeService.list()
+    }).subscribe(({ musicas, playlists, favoritos }) => {
+      // Processa resposta de músicas (pode ser paginada ou não)
+      if (musicas.data && musicas.pagination) {
+        // Resposta paginada do backend
+        this.arrMusica = musicas.data;
+        this.totalItems = musicas.pagination.totalItems;
+        this.currentPage = musicas.pagination.currentPage;
+      } else {
+        // Resposta não paginada (compatibilidade com list() sem parâmetros)
+        this.arrMusica = musicas;
+        this.totalItems = musicas.length;
+      }
+
+      // Salva no localStorage para compatibilidade
+      localStorage.setItem('arrMusica', JSON.stringify(this.arrMusica));
+
+      // Extrai IDs de músicas em playlists usando Set (O(n))
+      const playlistMusicIds = this.extractPlaylistMusicIds(playlists as any[]);
+
+      // Extrai IDs de favoritos usando Set (O(n))
+      const favoritoIds = new Set((favoritos as any[]).map((fav: any) => fav.id));
+
+      // Aguarda renderização do DOM antes de aplicar classes
+      setTimeout(() => {
+        this.applyPlaylistClasses(playlistMusicIds);
+        this.applyFavoriteClasses(favoritoIds);
+        this.filtersInitialized = true;
+        this.isLoading = false;
+      }, 100);
+    });
+  }
+
+  /**
+   * Extrai IDs de músicas presentes em playlists
+   * Retorna Set para busca O(1)
+   */
+  private extractPlaylistMusicIds(playlists: any[]): Set<number> {
+    const ids = new Set<number>();
+    playlists.forEach((playlist: any) => {
+      // Normaliza música como array
+      const musicList = Array.isArray(playlist.music)
+        ? playlist.music
+        : (playlist.music?.id ? [playlist.music] : []);
+
+      // Adiciona IDs ao Set
+      musicList.forEach((music: any) => {
+        if (music?.id) ids.add(music.id);
+      });
+    });
+    return ids;
+  }
+
+  /**
+   * Aplica classe 'amarelo' a músicas que estão em playlists
+   * Complexidade: O(n) onde n = número de músicas exibidas
+   */
+  private applyPlaylistClasses(playlistMusicIds: Set<number>): void {
+    const elements = document.querySelectorAll('.addPlaylist');
+    elements.forEach((element: any, index: number) => {
+      const musicId = this.arrMusica[index]?.id;
+      if (musicId && playlistMusicIds.has(musicId)) {
+        element.classList.add('amarelo');
+      } else {
+        element.classList.remove('amarelo');
+      }
+    });
+  }
+
+  /**
+   * Aplica estilos a músicas favoritadas
+   * Complexidade: O(n) onde n = número de músicas exibidas
+   */
+  private applyFavoriteClasses(favoritoIds: Set<number>): void {
+    const hearthElements = document.querySelectorAll('.hearth');
+    const hearth1Elements = document.querySelectorAll('.hearth1');
+
+    this.arrMusica.forEach((musica: any, index: number) => {
+      const isFavorite = musica?.id && favoritoIds.has(musica.id);
+
+      if (hearthElements[index]) {
+        (hearthElements[index] as HTMLElement).style.display = isFavorite ? 'none' : 'block';
+      }
+      if (hearth1Elements[index]) {
+        (hearth1Elements[index] as HTMLElement).style.display = isFavorite ? 'block' : 'none';
+      }
+    });
+  }
+
+  /**
+   * Callback quando o usuário muda de página
+   */
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.loadMusicas(page, this.currentFilters);
+    this.scrollService.scrollUp();
   }
 
   ngAfterViewChecked() {
@@ -385,154 +432,6 @@ export class MusicasComponent
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
 
-  // Cache localStorage para durações
-  private readonly CACHE_KEY = 'music_duration_cache_v1';
-  private durationCache: Map<number, number> = new Map();
-  private intersectionObserver?: IntersectionObserver;
-
-  // Carrega cache do localStorage
-  private loadDurationCache(): void {
-    try {
-      const cached = localStorage.getItem(this.CACHE_KEY);
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        this.durationCache = new Map(
-          Object.entries(parsed).map(([k, v]) => [Number(k), v as number])
-        );
-      }
-    } catch (error) {
-      console.error('Erro ao carregar cache de durações:', error);
-    }
-  }
-
-  // Salva cache no localStorage
-  private saveDurationCache(): void {
-    try {
-      const cacheObj: any = {};
-      this.durationCache.forEach((value, key) => {
-        cacheObj[key] = value;
-      });
-      localStorage.setItem(this.CACHE_KEY, JSON.stringify(cacheObj));
-    } catch (error) {
-      console.error('Erro ao salvar cache de durações:', error);
-    }
-  }
-
-  // Carrega a duração real de uma música
-  carregarDuracaoReal(musica: Musica, index: number): void {
-    if (!musica.id) return;
-
-    // 1. Prioriza duracaoReal vindo do backend
-    if (musica.duracaoReal && musica.duracaoReal > 0) {
-      this.arrMusica[index].duracaoReal = musica.duracaoReal;
-      this.arrMusica[index].duracaoCarregando = false;
-      // Salva no cache para persistir
-      this.durationCache.set(musica.id, musica.duracaoReal);
-      this.saveDurationCache();
-      return;
-    }
-
-    // 2. Verifica se já está no cache
-    if (this.durationCache.has(musica.id)) {
-      this.arrMusica[index].duracaoReal = this.durationCache.get(musica.id);
-      this.arrMusica[index].duracaoCarregando = false;
-      return;
-    }
-
-    // 3. Se não tem URL, não pode calcular
-    if (!musica.url) {
-      this.arrMusica[index].duracaoCarregando = false;
-      return;
-    }
-
-    // 4. Marca como carregando
-    this.arrMusica[index].duracaoCarregando = true;
-
-    // 5. Carrega duração real do áudio via audioService
-    this.audioService
-      .getAudioduration(musica.url)
-      .then((duracao) => {
-        console.log(duracao);
-        this.arrMusica[index].duracaoReal = duracao;
-        this.arrMusica[index].duracaoCarregando = false;
-
-        // Salva no cache
-        if (musica.id) {
-          this.durationCache.set(musica.id, duracao);
-          this.saveDurationCache();
-        }
-      })
-      .catch((error) => {
-        console.error(
-          `Erro ao carregar duração da música ${musica.nome_musica}:`,
-          error
-        );
-        this.arrMusica[index].duracaoCarregando = false;
-        // Em caso de erro, duracaoReal permanece undefined
-      });
-  }
-
-  // Inicializa o Intersection Observer para lazy loading das durações
-  private initIntersectionObserver(): void {
-    // Configuração do observer: carrega quando o elemento está 10% visível
-    const options = {
-      root: null, // viewport
-      rootMargin: '50px', // carrega 50px antes de entrar no viewport
-      threshold: 0.1, // 10% visível
-    };
-
-    this.intersectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const element = entry.target as HTMLElement;
-          const index = Number(element.getAttribute('data-music-index'));
-
-          if (!isNaN(index) && this.arrMusica[index]) {
-            const musica = this.arrMusica[index];
-
-            // Só carrega se ainda não tem duração real e não está carregando
-            if (!musica.duracaoReal && !musica.duracaoCarregando) {
-              this.carregarDuracaoReal(musica, index);
-            }
-
-            // Para de observar este elemento após carregar
-            this.intersectionObserver?.unobserve(element);
-          }
-        }
-      });
-    }, options);
-  }
-
-  // Observa os cards de música para lazy loading
-  private observeMusicCards(): void {
-    // Aguarda um pouco para garantir que os elementos foram renderizados
-    setTimeout(() => {
-      const musicCards = document.querySelectorAll('.music-card-duration');
-
-      // Carrega imediatamente as primeiras 10 músicas (above the fold)
-      const immediateLoadCount = Math.min(10, this.arrMusica.length);
-      for (let i = 0; i < immediateLoadCount; i++) {
-        if (this.arrMusica[i]) {
-          this.carregarDuracaoReal(this.arrMusica[i], i);
-        }
-      }
-
-      // Observa os demais cards para lazy loading
-      musicCards.forEach((card, index) => {
-        // Só observa se for além das primeiras 10
-        if (index >= immediateLoadCount) {
-          this.intersectionObserver?.observe(card);
-        }
-      });
-    }, 100);
-  }
-
-  // Limpa o observer quando o componente for destruído
-  ngOnDestroy(): void {
-    if (this.intersectionObserver) {
-      this.intersectionObserver.disconnect();
-    }
-  }
 
   curtir(i: number): void {
     this.favorite.id = this.arrMusica[i].id;
@@ -735,13 +634,13 @@ export class MusicasComponent
       (this.duration && this.duration > 0);
 
     if (!hasFilters) {
-      // Se não há filtros, recarrega todas as músicas
-      this.musicService.list().subscribe((data: any) => {
-        this.arrMusica = data;
-      });
+      // Se não há filtros, recarrega primeira página sem filtros
+      this.currentFilters = null;
+      this.loadMusicas(1);
       return;
     }
 
+    // Monta objeto de filtros
     const filtros: any = {};
 
     if (this.selectedGeneros.length > 0) filtros.genero = this.selectedGeneros;
@@ -756,9 +655,10 @@ export class MusicasComponent
     if (this.number && this.number > 0) filtros.bpmMax = this.number;
     if (this.duration && this.duration > 0) filtros.duracaoMax = this.duration;
 
-    this.musicService.filterMusicas(filtros).subscribe((data: any) => {
-      this.arrMusica = data;
-    });
+    // Salva filtros atuais e reseta para página 1
+    this.currentFilters = filtros;
+    this.currentPage = 1;
+    this.loadMusicas(1, filtros);
   }
 
   // Método para resetar todos os filtros
@@ -772,9 +672,9 @@ export class MusicasComponent
     this.number = undefined;
     this.duration = undefined;
 
-    // Recarrega todas as músicas
-    this.musicService.list().subscribe((data: any) => {
-      this.arrMusica = data;
-    });
+    // Limpa filtros atuais e recarrega primeira página
+    this.currentFilters = null;
+    this.currentPage = 1;
+    this.loadMusicas(1);
   }
 }
