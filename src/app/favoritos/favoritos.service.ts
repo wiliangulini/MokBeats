@@ -24,12 +24,9 @@ export class FavoritosService extends CrudService<Musica> {
   ) {
     super(http, `${environment.apiBaseUrl}/favoritos`);
     this.favorit = [];
-    this.list().subscribe((data: any) => {
-      this.arrMusica = data;
-    })
   }
 
-  override list(): Observable<Musica> {
+  override list(): Observable<Musica[]> {
     return super.list();
   }
 
@@ -45,6 +42,7 @@ export class FavoritosService extends CrudService<Musica> {
     this.authService.verificaLogin();
     this.list().subscribe((data: any) => {
       this.favoritos = data;
+      this.arrMusica = data;
 
       for(let index = 0; this.favoritos.length > index; index++) {
         if(this.favoritos[index] === this.favoritos[i]) {
@@ -74,6 +72,7 @@ export class FavoritosService extends CrudService<Musica> {
   sendFavorite(elm: any) {
     this.list().subscribe((data: any) => {
       this.favoritos = data;
+      this.arrMusica = data;
 
       for (let i= 0; i < this.arrMusica.length; i++) {
         if(this.favoritos[i]?.id == elm.id) {

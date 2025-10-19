@@ -346,7 +346,7 @@ export class MusicasService extends CrudService<Musica> {
     });
   }
 
-  override list(): Observable<Musica> {
+  override list(): Observable<Musica[]> {
     return super.list();
   }
 

@@ -1,10 +1,9 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   HostListener,
+  OnDestroy,
   OnInit,
   Output,
   QueryList,
@@ -14,7 +13,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import WaveSurfer from 'wavesurfer.js';
-import { forkJoin } from 'rxjs';
 import { PlaylistService } from '../create-playlist-modal/playlist.service';
 import { FavoritosService } from '../favoritos/favoritos.service';
 import { AuthService } from '../login/auth.service';
@@ -30,7 +28,7 @@ import { Musica, MusicasService } from './musicas.service';
   styleUrls: ['./musicas.component.scss'],
 })
 export class MusicasComponent
-  implements OnInit, AfterViewInit, AfterViewChecked
+  implements OnInit, AfterViewInit, OnDestroy
 {
   isLoading: boolean = true;
   // Controla renderização do waveform por breakpoint
@@ -69,6 +67,10 @@ export class MusicasComponent
   durationUrl: number | null = null;
   currentTrackIndex = 0;
   isPlaying: boolean = false;
+  private pendingPlaylistIds: Set<number> = new Set<number>();
+  private pendingFavoritoIds: Set<number> = new Set<number>();
+  private highlightTimeoutId: any;
+  private playButtonBindingTimeoutId: any;
 
   vozes: Array<any> = [
     'Amostras/Efeitos',
@@ -111,8 +113,6 @@ export class MusicasComponent
     { value: 'Trippy', viewValue: 'Trippy' },
   ];
   arrMusica: Musica[] = [];
-  btnPlay: any;
-  btnTrue: boolean = false;
   wavesurfer!: WaveSurfer;
   @Output('ngModelChange') update: any = new EventEmitter();
 
@@ -135,7 +135,6 @@ export class MusicasComponent
     private playlistService: PlaylistService,
     private likeService: FavoritosService,
     private router: Router,
-    private cdRef: ChangeDetectorRef,
     private musicPlayerService: MusicPlayerService
   ) {
     this.formG = this.fb.group({
@@ -174,10 +173,68 @@ export class MusicasComponent
     });
   }
 
-  /**
-   * Carrega músicas com paginação e dados auxiliares (playlists e favoritos)
-   * Usa forkJoin para paralelizar requisições HTTP
-   */
+  private fetchPlaylists(): void {
+    this.playlistService.list().subscribe({
+      next: (playlists: any[]) => {
+        this.pendingPlaylistIds = this.extractPlaylistMusicIds(playlists || []);
+        this.scheduleHighlightUpdate();
+      },
+      error: (error) => {
+        console.error('Erro ao carregar playlists:', error);
+        this.pendingPlaylistIds = new Set<number>();
+        this.scheduleHighlightUpdate();
+      },
+    });
+  }
+
+  private fetchFavoritos(): void {
+    this.likeService.list().subscribe({
+      next: (favoritos: any[]) => {
+        this.pendingFavoritoIds = new Set(
+          (favoritos || []).map((fav: any) => fav?.id).filter((id: number) => !!id)
+        );
+        this.scheduleHighlightUpdate();
+      },
+      error: (error) => {
+        console.error('Erro ao carregar favoritos:', error);
+        this.pendingFavoritoIds = new Set<number>();
+        this.scheduleHighlightUpdate();
+      },
+    });
+  }
+
+  private scheduleDomUpdates(): void {
+    this.schedulePlayButtonBinding();
+    this.scheduleHighlightUpdate();
+  }
+
+  private schedulePlayButtonBinding(): void {
+    if (this.playButtonBindingTimeoutId) {
+      clearTimeout(this.playButtonBindingTimeoutId);
+    }
+
+    this.playButtonBindingTimeoutId = setTimeout(() => {
+      const buttons = document.querySelectorAll('button.svg.play');
+      buttons.forEach((element: Element, index: number) => {
+        const musicId = this.arrMusica[index]?.id;
+        if (musicId) {
+          (element as HTMLElement).setAttribute('data-key', String(musicId));
+        }
+      });
+    });
+  }
+
+  private scheduleHighlightUpdate(): void {
+    if (this.highlightTimeoutId) {
+      clearTimeout(this.highlightTimeoutId);
+    }
+
+    this.highlightTimeoutId = setTimeout(() => {
+      this.applyPlaylistClasses(this.pendingPlaylistIds);
+      this.applyFavoriteClasses(this.pendingFavoritoIds);
+    }, 100);
+  }
+
   loadMusicas(page: number = 1, filtros?: any): void {
     this.isLoading = true;
 
@@ -186,40 +243,35 @@ export class MusicasComponent
       ? this.musicService.filterMusicas({ ...filtros, page, limit: this.itemsPerPage })
       : this.musicService.listPaginated(page, this.itemsPerPage);
 
-    // Executa 3 requisições em paralelo
-    forkJoin({
-      musicas: musicasRequest,
-      playlists: this.playlistService.list(),
-      favoritos: this.likeService.list()
-    }).subscribe(({ musicas, playlists, favoritos }) => {
-      // Processa resposta de músicas (pode ser paginada ou não)
-      if (musicas.data && musicas.pagination) {
-        // Resposta paginada do backend
-        this.arrMusica = musicas.data;
-        this.totalItems = musicas.pagination.totalItems;
-        this.currentPage = musicas.pagination.currentPage;
-      } else {
-        // Resposta não paginada (compatibilidade com list() sem parâmetros)
-        this.arrMusica = musicas;
-        this.totalItems = musicas.length;
-      }
+    musicasRequest.subscribe({
+      next: (musicas: any) => {
+        if (musicas?.data && musicas?.pagination) {
+          this.arrMusica = musicas.data;
+          this.totalItems = musicas.pagination.totalItems;
+          this.currentPage = musicas.pagination.currentPage;
+        } else {
+          this.arrMusica = musicas || [];
+          this.totalItems = Array.isArray(musicas) ? musicas.length : 0;
+          this.currentPage = page;
+        }
 
-      // Salva no localStorage para compatibilidade
-      localStorage.setItem('arrMusica', JSON.stringify(this.arrMusica));
+        localStorage.setItem('arrMusica', JSON.stringify(this.arrMusica));
 
-      // Extrai IDs de músicas em playlists usando Set (O(n))
-      const playlistMusicIds = this.extractPlaylistMusicIds(playlists as any[]);
+        if (!this.filtersInitialized) {
+          this.filtersInitialized = true;
+        }
 
-      // Extrai IDs de favoritos usando Set (O(n))
-      const favoritoIds = new Set((favoritos as any[]).map((fav: any) => fav.id));
-
-      // Aguarda renderização do DOM antes de aplicar classes
-      setTimeout(() => {
-        this.applyPlaylistClasses(playlistMusicIds);
-        this.applyFavoriteClasses(favoritoIds);
-        this.filtersInitialized = true;
         this.isLoading = false;
-      }, 100);
+        this.scheduleDomUpdates();
+        this.fetchPlaylists();
+        this.fetchFavoritos();
+      },
+      error: (error) => {
+        console.error('Erro ao carregar músicas:', error);
+        this.arrMusica = [];
+        this.totalItems = 0;
+        this.isLoading = false;
+      },
     });
   }
 
@@ -286,19 +338,6 @@ export class MusicasComponent
     this.currentPage = page;
     this.loadMusicas(page, this.currentFilters);
     this.scrollService.scrollUp();
-  }
-
-  ngAfterViewChecked() {
-    if (!this.btnTrue) {
-      this.btnPlay = document.querySelectorAll('button.svg.play');
-      if (this.btnPlay.length > 0) {
-        this.btnPlay.forEach((e: any, i: number) => {
-          e.setAttribute('data-key', this.arrMusica[i].id);
-        });
-        this.btnTrue = true;
-      }
-    }
-    this.cdRef.detectChanges();
   }
 
   play_pause: any = 'play';
@@ -676,5 +715,14 @@ export class MusicasComponent
     this.currentFilters = null;
     this.currentPage = 1;
     this.loadMusicas(1);
+  }
+
+  ngOnDestroy(): void {
+    if (this.playButtonBindingTimeoutId) {
+      clearTimeout(this.playButtonBindingTimeoutId);
+    }
+    if (this.highlightTimeoutId) {
+      clearTimeout(this.highlightTimeoutId);
+    }
   }
 }

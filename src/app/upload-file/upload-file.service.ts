@@ -36,7 +36,7 @@ export class UploadFileService extends CrudService<UPLOADS>{
     super(http, `${environment.apiBaseUrl}/uploads`);
   }
 
-  override list(): Observable<UPLOADS> {
+  override list(): Observable<UPLOADS[]> {
     return super.list();
   }
 

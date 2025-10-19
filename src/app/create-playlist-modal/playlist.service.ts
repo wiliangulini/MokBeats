@@ -17,7 +17,7 @@ export class PlaylistService extends CrudService<playlists>{
     super(http, `${environment.apiBaseUrl}/playlists`);
   }
 
-  override list(): Observable<playlists> {
+  override list(): Observable<playlists[]> {
     return super.list();
   }
 
