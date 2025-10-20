@@ -218,20 +218,32 @@ else
   fi
 fi
 
+# Passo 7.5: Verificar se PM2 está instalado (e instalar se necessário)
+print_step "7.5. Verificando PM2 na VPS..."
+ssh ${VPS_USER}@${VPS_IP} "bash -lc 'if [ -f \$HOME/.nvm/nvm.sh ]; then . \$HOME/.nvm/nvm.sh; fi; if ! command -v pm2 >/dev/null 2>&1; then echo \"⚠️  PM2 não encontrado. Instalando globalmente...\"; npm install -g pm2; fi; echo \"✓ PM2 versão: \$(pm2 --version)\"'"
+
+if [ $? -eq 0 ]; then
+  print_success "PM2 disponível e pronto para uso"
+else
+  print_error "Erro ao verificar/instalar PM2"
+  exit 1
+fi
+
 # Passo 8: Reiniciar PM2
 print_step "8. Reiniciando backend com PM2..."
-ssh ${VPS_USER}@${VPS_IP} "pm2 restart mok-backend || pm2 start ${VPS_PATH}/server/src/index.js --name mok-backend"
+ssh ${VPS_USER}@${VPS_IP} "bash -lc 'if [ -f \$HOME/.nvm/nvm.sh ]; then . \$HOME/.nvm/nvm.sh; fi; pm2 restart mok-backend || pm2 start ${VPS_PATH}/server/src/index.js --name mok-backend'"
 if [ $? -eq 0 ]; then
   print_success "Backend reiniciado com sucesso"
 else
   print_error "Erro ao reiniciar PM2"
+  print_error "Verifique se PM2 está instalado: npm install -g pm2"
   exit 1
 fi
 
 # Passo 9: Verificar status
 print_step "9. Verificando status do deploy..."
 echo ""
-ssh ${VPS_USER}@${VPS_IP} "pm2 status && pm2 logs mok-backend --lines 10 --nostream"
+ssh ${VPS_USER}@${VPS_IP} "bash -lc 'if [ -f \$HOME/.nvm/nvm.sh ]; then . \$HOME/.nvm/nvm.sh; fi; pm2 status && pm2 logs mok-backend --lines 10 --nostream'"
 
 # Finalização
 echo ""
