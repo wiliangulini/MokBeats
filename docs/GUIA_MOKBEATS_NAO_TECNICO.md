@@ -57,6 +57,7 @@ O que o script faz por você
 - Instala o Angular CLI 14 e o PM2 (gerenciador de processos) quando necessário.
 - Instala as dependências do projeto (frontend e backend).
 - Sobe o backend (API) com PM2 e o frontend (site) com o Angular.
+- (Opcional) Se você tiver o `audiowaveform` instalado, rode `./start.sh --generate-peaks` para criar as formas de onda reais das músicas (`server/data/musicas.json`).
 
 Como acessar
 - Site (frontend): http://localhost:4200
@@ -75,12 +76,12 @@ Como parar
 - Passo 4 — Subir o backend (API):
   - `cd server && npm start` (deixa esse terminal aberto)
 - Passo 5 — Subir o frontend (site):
-  - Em outro terminal (na raiz do projeto): `npm run start`
+ - Em outro terminal (na raiz do projeto): `npm run start`
 - Acessar: http://localhost:4200
 
 6) Login de teste (apenas para desenvolvimento)
-- E-mail: `test@mokbeats.com`
-- Senha: `test12345`
+- O backend aceita qualquer e-mail válido e uma senha com pelo menos 8 caracteres; ele gera um token fictício para destravar o front-end.
+- Se preferir um exemplo pronto, você pode usar o e-mail `test@mokbeats.com` com a senha `test12345`.
 
 7) Dicas de uso (resumo)
 - Página Inicial (Home):
