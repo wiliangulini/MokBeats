@@ -75,12 +75,14 @@ import { PlayerComponent } from './player/player.component';
 import { PlaylistsComponent } from './playlists/playlists.component';
 import { PoliticaPrivacidadeComponent } from './politica-privacidade/politica-privacidade.component';
 import { ProdutoresComponent } from './produtores/produtores.component';
+import { ProdutorDashboardComponent } from './produtor-dashboard/produtor-dashboard.component';
 import { ConfigService } from './service/config.service';
 import { ScrollService } from './service/scroll.service';
 import { SubMenuComponent } from './sub-menu/sub-menu.component';
 import { TermosPrivacidadeComponent } from './termos-privacidade/termos-privacidade.component';
 import { UsuarioArtistaComponent } from './usuario-artista/usuario-artista.component';
 import { WaveSurferTestComponent } from './wave-surfer-test/wave-surfer-test.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -100,6 +102,7 @@ import { WaveSurferTestComponent } from './wave-surfer-test/wave-surfer-test.com
     LicencaValorComponent,
     FaqComponent,
     ProdutoresComponent,
+    ProdutorDashboardComponent,
     MenuProdutorComponent,
     ButtonWhatsComponent,
     FavoritosComponent,
@@ -149,6 +152,7 @@ import { WaveSurferTestComponent } from './wave-surfer-test/wave-surfer-test.com
     MatSnackBarModule,
     MatInputModule,
     MatFormFieldModule,
+    NgApexchartsModule,
   ],
   providers: [
     NgbTooltip,

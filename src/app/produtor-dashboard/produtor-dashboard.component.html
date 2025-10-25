@@ -1,0 +1,251 @@
+<div class="dashboard-wrapper">
+  <header class="dashboard-header">
+    <div class="identity">
+      <div class="logo-circle">
+        <span class="material-icons">graphic_eq</span>
+      </div>
+      <div>
+        <p class="subtitle">Dashboard do Produtor</p>
+        <h1>{{ greeting }}</h1>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="report-date">Atualizado em {{ reportDate | date: 'dd MMM yyyy' }}</div>
+      <button class="btn-export">
+        <span class="material-icons">download</span>
+        Exportar relatório
+      </button>
+    </div>
+  </header>
+
+  <section class="filter-bar">
+    <div class="filters">
+      <button
+        class="filter-chip"
+        [class.active]="activeRange === '7d'"
+        (click)="setRange('7d')"
+      >
+        Últimos 7 dias
+      </button>
+      <button
+        class="filter-chip"
+        [class.active]="activeRange === '30d'"
+        (click)="setRange('30d')"
+      >
+        Últimos 30 dias
+      </button>
+      <button
+        class="filter-chip"
+        [class.active]="activeRange === '12m'"
+        (click)="setRange('12m')"
+      >
+        Últimos 12 meses
+      </button>
+    </div>
+    <div class="switchers">
+      <button class="mode-toggle">
+        <span class="material-icons">dark_mode</span>
+        Modo escuro
+      </button>
+      <button class="mode-toggle">
+        <span class="material-icons">tune</span>
+        Filtros avançados
+      </button>
+    </div>
+  </section>
+
+  <section class="kpi-grid">
+    <article class="kpi-card" *ngFor="let card of cards">
+      <div class="kpi-icon">
+        <img [src]="card.icon" [alt]="card.label" />
+      </div>
+      <div class="kpi-content">
+        <p class="kpi-label">{{ card.label }}</p>
+        <h2 class="kpi-value">{{ card.value }}</h2>
+        <p class="kpi-helper">{{ card.helper }}</p>
+      </div>
+      <span class="trend" [class.positive]="card.trendPositive" [class.negative]="!card.trendPositive">
+        <span class="material-icons">{{ card.trendPositive ? 'north_east' : 'south_east' }}</span>
+        {{ card.trend }}
+      </span>
+    </article>
+  </section>
+
+  <section class="chart-grid">
+    <article class="chart-card heatmap">
+      <div class="chart-header">
+        <div>
+          <h3>Origem das compras</h3>
+          <p>Comparativo de plataformas por região</p>
+        </div>
+        <button class="soft-button">Ver detalhes</button>
+      </div>
+      <apx-chart
+        class="chart"
+        [series]="heatmapOptions.series"
+        [chart]="heatmapOptions.chart"
+        [dataLabels]="heatmapOptions.dataLabels"
+        [plotOptions]="heatmapOptions.plotOptions"
+        [colors]="heatmapOptions.colors"
+        [xaxis]="heatmapOptions.xaxis"
+        [yaxis]="heatmapOptions.yaxis"
+        [grid]="heatmapOptions.grid"
+        [tooltip]="heatmapOptions.tooltip"
+      ></apx-chart>
+      <ul class="origin-list">
+        <li *ngFor="let origin of originBreakdown">
+          <div class="origin-info">
+            <h4>{{ origin.region }}</h4>
+            <p>{{ origin.platform }}</p>
+          </div>
+          <div class="origin-values">
+            <span class="percentage">{{ origin.percentage }}%</span>
+            <span class="total">{{ origin.total }} compras</span>
+          </div>
+        </li>
+      </ul>
+    </article>
+
+    <article class="chart-card">
+      <div class="chart-header">
+        <div>
+          <h3>Vendas por faixa musical</h3>
+          <p>Comparativo semanal vs mensal</p>
+        </div>
+      </div>
+      <apx-chart
+        class="chart"
+        [series]="genreOptions.series"
+        [chart]="genreOptions.chart"
+        [plotOptions]="genreOptions.plotOptions"
+        [dataLabels]="genreOptions.dataLabels"
+        [stroke]="genreOptions.stroke"
+        [xaxis]="genreOptions.xaxis"
+        [yaxis]="genreOptions.yaxis"
+        [legend]="genreOptions.legend"
+        [fill]="genreOptions.fill"
+        [colors]="genreOptions.colors"
+        [tooltip]="genreOptions.tooltip"
+        [grid]="genreOptions.grid"
+        [responsive]="genreOptions.responsive"
+      ></apx-chart>
+    </article>
+
+    <article class="chart-card">
+      <div class="chart-header">
+        <div>
+          <h3>Receita por música</h3>
+          <p>Top músicas por faturamento</p>
+        </div>
+        <button class="soft-button">Filtrar</button>
+      </div>
+      <apx-chart
+        class="chart"
+        [series]="revenueOptions.series"
+        [chart]="revenueOptions.chart"
+        [plotOptions]="revenueOptions.plotOptions"
+        [dataLabels]="revenueOptions.dataLabels"
+        [xaxis]="revenueOptions.xaxis"
+        [yaxis]="revenueOptions.yaxis"
+        [fill]="revenueOptions.fill"
+        [colors]="revenueOptions.colors"
+        [grid]="revenueOptions.grid"
+        [tooltip]="revenueOptions.tooltip"
+      ></apx-chart>
+    </article>
+
+    <article class="chart-card">
+      <div class="chart-header">
+        <div>
+          <h3>Evolução de curtidas vs compras</h3>
+          <p>Acompanhe o crescimento de engajamento</p>
+        </div>
+        <div class="quick-filters">
+          <button class="soft-button">7d</button>
+          <button class="soft-button active">30d</button>
+          <button class="soft-button">12m</button>
+        </div>
+      </div>
+      <apx-chart
+        class="chart"
+        [series]="engagementOptions.series"
+        [chart]="engagementOptions.chart"
+        [dataLabels]="engagementOptions.dataLabels"
+        [stroke]="engagementOptions.stroke"
+        [xaxis]="engagementOptions.xaxis"
+        [yaxis]="engagementOptions.yaxis"
+        [legend]="engagementOptions.legend"
+        [fill]="engagementOptions.fill"
+        [markers]="engagementOptions.markers"
+        [grid]="engagementOptions.grid"
+        [colors]="engagementOptions.colors"
+        [tooltip]="engagementOptions.tooltip"
+        [theme]="engagementOptions.theme"
+      ></apx-chart>
+    </article>
+  </section>
+
+  <section class="table-card">
+    <div class="table-header">
+      <div>
+        <h3>Músicas em destaque</h3>
+        <p>Detalhe as métricas de performance de cada faixa</p>
+      </div>
+      <div class="table-actions">
+        <button class="soft-button">
+          <span class="material-icons">table_rows</span>
+          Exportar CSV
+        </button>
+        <button class="soft-button">
+          <span class="material-icons">star</span>
+          Promover
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="dashboard-table">
+        <thead>
+          <tr>
+            <th>Música</th>
+            <th>Compras</th>
+            <th>Receita total</th>
+            <th>Origem principal</th>
+            <th>Curtidas</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let track of tracks">
+            <td>
+              <span class="badge">#{{ track.title | slice:0:1 }}</span>
+              <div class="track-info">
+                <strong>{{ track.title }}</strong>
+                <small>{{ track.mainOrigin }} · Atualizado há 2h</small>
+              </div>
+            </td>
+            <td>{{ track.purchases | number }}</td>
+            <td>{{ track.revenue }}</td>
+            <td>{{ track.mainOrigin }}</td>
+            <td>{{ track.likes | number }}</td>
+            <td>
+              <button class="tag">Ver detalhes</button>
+              <button class="tag ghost">Promover</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="dashboard-footer">
+    <span>MokBeats © {{ reportDate | date: 'yyyy' }} · Suporte 24/7</span>
+    <button class="help-button">
+      <span class="material-icons">chat</span>
+      Precisa de ajuda?
+    </button>
+  </footer>
+</div>
+
+<button class="floating-help">
+  <span class="material-icons">headset_mic</span>
+</button>

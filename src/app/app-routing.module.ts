@@ -24,6 +24,7 @@ import {CarrinhoComponent} from "./carrinho/carrinho.component";
 import {UsuarioArtistaComponent} from "./usuario-artista/usuario-artista.component";
 import {PlayerComponent} from "./player/player.component";
 import { TermosPrivacidadeComponent } from "./termos-privacidade/termos-privacidade.component";
+import { ProdutorDashboardComponent } from "./produtor-dashboard/produtor-dashboard.component";
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -39,6 +40,7 @@ const routes: Routes = [
   { path: 'humor', component: HumorComponent },
   { path: 'faq', component: FaqComponent },
   { path: 'produtores', component: ProdutoresComponent },
+  { path: 'dashboard-produtor', component: ProdutorDashboardComponent },
   { path: 'favoritos', component: FavoritosComponent },
   { path: 'playlists', component: PlaylistsComponent },
   { path: 'assinatura', component: AssinaturaComponent },
