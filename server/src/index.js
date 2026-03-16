@@ -1,9 +1,16 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const multipart = require('connect-multiparty');
+const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { v4: uuidv4 } = require('uuid');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'mokbeats-dev-secret-change-in-prod';
 
 const app = express();
 app.use(bodyParser.json());
@@ -51,11 +58,68 @@ app.use('/assets/audios', express.static(audioPath, {
   }
 }));
 
-// Store em memória (mock) — substituir por banco de dados em produção
-const users = [];
+// ─── Persistência de usuários (JSON file) ─────────────────────────────────
+const USERS_FILE = path.join(__dirname, '../data/users.json');
+
+function loadUsers() {
+  try {
+    if (fs.existsSync(USERS_FILE)) {
+      return JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
+    }
+  } catch (e) { console.error('Erro ao carregar users.json:', e.message); }
+  return [];
+}
+
+function saveUsers(users) {
+  try {
+    const dir = path.dirname(USERS_FILE);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2), 'utf8');
+  } catch (e) { console.error('Erro ao salvar users.json:', e.message); }
+}
+
+let users = loadUsers();
+
+// ─── Middleware de autenticação JWT ────────────────────────────────────────
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  if (!token) return res.status(401).json({ message: 'Token ausente.' });
+  try {
+    req.user = jwt.verify(token, JWT_SECRET);
+    next();
+  } catch (_) {
+    return res.status(401).json({ message: 'Token inválido ou expirado.' });
+  }
+}
+
+// ─── Multer para upload de documentos ─────────────────────────────────────
+const documentStorage = multer.diskStorage({
+  destination: (req, _file, cb) => {
+    const userId = req.user?.userId || 'unknown';
+    const tipo = req.params.tipo || 'outros';
+    const dir = path.join(__dirname, 'uploads', 'documents', userId, tipo);
+    fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
+  },
+  filename: (_req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `${Date.now()}${ext}`);
+  }
+});
+
+const ALLOWED_MIMES = ['image/jpeg', 'image/png', 'application/pdf'];
+const documentUpload = multer({
+  storage: documentStorage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+  fileFilter: (_req, file, cb) => {
+    if (ALLOWED_MIMES.includes(file.mimetype)) cb(null, true);
+    else cb(new Error('Tipo de arquivo não permitido. Use JPG, PNG ou PDF.'));
+  }
+});
 
 // Cadastro de novo usuário
-app.post('/api/auth/register', (req, res) => {
+app.post('/api/auth/register', async (req, res) => {
   try {
     const { email, password, tipoPessoa, tipoPerfil } = req.body || {};
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -72,41 +136,68 @@ app.post('/api/auth/register', (req, res) => {
     if (!tipoPerfil || !['comprador', 'produtor'].includes(tipoPerfil)) {
       return res.status(400).json({ message: 'Tipo de perfil inválido. Use "comprador" ou "produtor".' });
     }
+
+    // Recarregar do disco para evitar race conditions
+    users = loadUsers();
     if (users.find(u => u.email === email)) {
       return res.status(409).json({ message: 'E-mail já cadastrado.' });
     }
 
-    const user = { email, tipoPessoa, tipoPerfil };
+    const passwordHash = await bcrypt.hash(String(password), 10);
+    const userId = uuidv4();
+    const user = {
+      id: userId,
+      email,
+      passwordHash,
+      tipoPessoa,
+      tipoPerfil,
+      profile: {},
+      documents: { fotoDocumento: null, comprovanteResidencia: null, documentoEmpresa: null },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
     users.push(user);
-    // Gera token mock — em produção, emitir JWT assinado
-    const token = Buffer.from(`${email}:${Date.now()}`).toString('base64');
-    return res.status(201).json({ token, user });
+    saveUsers(users);
+
+    const token = jwt.sign({ userId, email, tipoPerfil }, JWT_SECRET, { expiresIn: '7d' });
+    return res.status(201).json({ token, user: { email, tipoPessoa, tipoPerfil } });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ message: 'Erro ao cadastrar.' });
   }
 });
 
-// Auth básico (mock) para destravar login no front
-// Aceita qualquer e-mail válido e senha com 8+ caracteres, retorna um token
-app.post('/api/auth/login', (req, res) => {
+// Login com verificação de senha real
+app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body || {};
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRe.test(email)) {
       return res.status(400).json({ message: 'E-mail inválido.' });
     }
-    if (!password || String(password).length < 8) {
-      return res.status(400).json({ message: 'Senha deve ter no mínimo 8 caracteres.' });
+    if (!password) {
+      return res.status(400).json({ message: 'Senha é obrigatória.' });
     }
 
-    // Busca tipoPerfil do usuário cadastrado; default 'comprador' para usuários antigos
+    users = loadUsers();
     const found = users.find(u => u.email === email);
-    const tipoPerfil = found ? found.tipoPerfil : 'comprador';
 
-    // Gera um token simples (mock) — em produção real, emitir JWT
-    const token = Buffer.from(`${email}:${Date.now()}`).toString('base64');
-    return res.status(200).json({ token, user: { email, tipoPerfil } });
+    // Usuários antigos (sem passwordHash) — aceitar qualquer senha de 8+ chars durante migração
+    if (!found || !found.passwordHash) {
+      if (String(password).length < 8) {
+        return res.status(401).json({ message: 'Credenciais inválidas.' });
+      }
+      const tipoPerfil = found ? found.tipoPerfil : 'comprador';
+      const userId = found ? found.id : uuidv4();
+      const token = jwt.sign({ userId, email, tipoPerfil }, JWT_SECRET, { expiresIn: '7d' });
+      return res.status(200).json({ token, user: { email, tipoPerfil } });
+    }
+
+    const valid = await bcrypt.compare(String(password), found.passwordHash);
+    if (!valid) return res.status(401).json({ message: 'Credenciais inválidas.' });
+
+    const token = jwt.sign({ userId: found.id, email, tipoPerfil: found.tipoPerfil }, JWT_SECRET, { expiresIn: '7d' });
+    return res.status(200).json({ token, user: { email, tipoPerfil: found.tipoPerfil } });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ message: 'Erro ao autenticar.' });
@@ -127,6 +218,103 @@ app.post('/api/uploads/', multipartMiddleware, (req, res) => {
   console.log(files);
   res.json({ message: files });
 });
+
+// ─── Endpoints de perfil do usuário ───────────────────────────────────────
+
+// GET /api/user/profile — retorna dados pessoais do usuário autenticado
+app.get('/api/user/profile', authenticateToken, (req, res) => {
+  users = loadUsers();
+  const user = users.find(u => u.id === req.user.userId);
+  if (!user) return res.status(404).json({ message: 'Usuário não encontrado.' });
+  return res.json(user.profile || {});
+});
+
+// PUT /api/user/profile — atualiza dados pessoais (sem senha e sem documentos)
+app.put('/api/user/profile', authenticateToken, (req, res) => {
+  users = loadUsers();
+  const idx = users.findIndex(u => u.id === req.user.userId);
+  if (idx === -1) return res.status(404).json({ message: 'Usuário não encontrado.' });
+
+  const ALLOWED_FIELDS = [
+    'nomeCompleto', 'tipoDocumento', 'cpf', 'passaporte', 'dataNascimento',
+    'paisOrigem', 'telefone', 'email', 'endereco', 'cidade', 'estado', 'cep',
+    'tipoConta', 'nomeEmpresaBR', 'cnpj', 'nomeEmpresaExt', 'tipoEmpresaExt', 'tipoEmpresaOutros',
+  ];
+  const body = req.body || {};
+  const update = {};
+  ALLOWED_FIELDS.forEach(f => { if (body[f] !== undefined) update[f] = body[f]; });
+
+  users[idx].profile = { ...users[idx].profile, ...update };
+  users[idx].updatedAt = new Date().toISOString();
+  saveUsers(users);
+
+  return res.json({ message: 'Perfil atualizado.', profile: users[idx].profile });
+});
+
+// POST /api/user/password — troca de senha (requer senha atual)
+app.post('/api/user/password', authenticateToken, async (req, res) => {
+  try {
+    const { senhaAtual, novaSenha } = req.body || {};
+    if (!senhaAtual || !novaSenha) {
+      return res.status(400).json({ message: 'Senha atual e nova senha são obrigatórias.' });
+    }
+    if (String(novaSenha).length < 8) {
+      return res.status(400).json({ message: 'Nova senha deve ter no mínimo 8 caracteres.' });
+    }
+
+    users = loadUsers();
+    const idx = users.findIndex(u => u.id === req.user.userId);
+    if (idx === -1) return res.status(404).json({ message: 'Usuário não encontrado.' });
+
+    const valid = await bcrypt.compare(String(senhaAtual), users[idx].passwordHash || '');
+    if (!valid) return res.status(401).json({ message: 'Senha atual incorreta.' });
+
+    users[idx].passwordHash = await bcrypt.hash(String(novaSenha), 10);
+    users[idx].updatedAt = new Date().toISOString();
+    saveUsers(users);
+
+    return res.json({ message: 'Senha alterada com sucesso.' });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: 'Erro ao alterar senha.' });
+  }
+});
+
+// POST /api/user/documents/:tipo — upload de documento de perfil
+// tipo: foto-documento | comprovante-residencia | documento-empresa
+app.post('/api/user/documents/:tipo', authenticateToken, (req, res) => {
+  const { tipo } = req.params;
+  const tiposValidos = ['foto-documento', 'comprovante-residencia', 'documento-empresa'];
+  if (!tiposValidos.includes(tipo)) {
+    return res.status(400).json({ message: 'Tipo de documento inválido.' });
+  }
+
+  documentUpload.single('file')(req, res, (err) => {
+    if (err) return res.status(400).json({ message: err.message });
+    if (!req.file) return res.status(400).json({ message: 'Nenhum arquivo enviado.' });
+
+    const relativePath = `/uploads/documents/${req.user.userId}/${tipo}/${req.file.filename}`;
+
+    users = loadUsers();
+    const idx = users.findIndex(u => u.id === req.user.userId);
+    if (idx !== -1) {
+      const fieldMap = {
+        'foto-documento': 'fotoDocumento',
+        'comprovante-residencia': 'comprovanteResidencia',
+        'documento-empresa': 'documentoEmpresa',
+      };
+      users[idx].documents = users[idx].documents || {};
+      users[idx].documents[fieldMap[tipo]] = relativePath;
+      users[idx].updatedAt = new Date().toISOString();
+      saveUsers(users);
+    }
+
+    return res.json({ url: relativePath });
+  });
+});
+
+// Servir documentos de usuário
+app.use('/uploads/documents', express.static(path.join(__dirname, 'uploads', 'documents')));
 
 app.use((err, req, res, next) => res.json({ message: err.message }));
 
@@ -720,23 +908,6 @@ app.route('/api/tracks/:id/stems').get((req, res) => {
   const exists = MUSICAS.some(m => m.id === id);
   if (!exists) return res.status(404).send([]);
   return res.status(200).send(getStemsForId(id));
-});
-
-// Stub login para testes
-app.route('/api/auth/login').post((req, res) => {
-  const { email, password } = req.body;
-
-  // Credenciais de teste fixas
-  if (email === 'test@mokbeats.com' && password === 'test12345') {
-    return res.status(200).json({
-      token: 'mock-jwt-token-' + Date.now(),
-      user: { email, name: 'Test User' }
-    });
-  }
-
-  return res.status(401).json({
-    error: 'Credenciais inválidas'
-  });
 });
 
 app.route('/api/playlists').post((request, response) => {

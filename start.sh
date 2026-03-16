@@ -51,17 +51,32 @@ echo "Node: $(node -v)  |  npm: $(npm -v)"
 echo ""
 
 # ─── Dependências ─────────────────────────────────────────────────────────────
-if [ ! -f "server/node_modules/express/package.json" ]; then
+if [ ! -f "server/node_modules/bcrypt/package.json" ]; then
     echo "Instalando dependencias do backend..."
     rm -rf server/node_modules
     (cd server && npm install --prefer-offline 2>&1) || { echo "ERRO: falha ao instalar deps do backend."; exit 1; }
     echo ""
 fi
 
+mkdir -p server/data
+mkdir -p server/src/uploads/documents
+
 if [ ! -f "node_modules/@angular/cli/bin/bootstrap.js" ]; then
     echo "Dependencias do frontend incompletas. Instalando..."
     rm -rf node_modules
     npm install --prefer-offline 2>&1 || { echo "ERRO: falha ao instalar deps do frontend."; exit 1; }
+    echo ""
+fi
+
+# ─── Verificar JWT_SECRET ─────────────────────────────────────────────────────
+if [ -f "server/.env" ]; then
+    if ! grep -q "^JWT_SECRET=.\+" "server/.env" 2>/dev/null; then
+        echo "AVISO: JWT_SECRET nao configurado em server/.env"
+        echo "       Gere com: openssl rand -hex 32"
+        echo ""
+    fi
+else
+    echo "AVISO: server/.env nao encontrado. Crie-o com JWT_SECRET configurado."
     echo ""
 fi
 

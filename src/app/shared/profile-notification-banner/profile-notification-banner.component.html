@@ -1,0 +1,11 @@
+<div *ngIf="visible"
+     class="profile-notification-banner d-flex justify-content-between align-items-center px-3 py-2">
+  <span class="material-icons mr-2" style="font-size:20px;">warning_amber</span>
+  <span class="flex-grow-1">
+    Preencha suas <strong>informações de contato</strong> para comprar, vender ou receber pagamentos.
+  </span>
+  <a [routerLink]="['/atualizar-informacoes']"
+     class="btn btn-sm btn-warning font-weight-bold ml-3 text-nowrap">
+    Completar agora
+  </a>
+</div>
