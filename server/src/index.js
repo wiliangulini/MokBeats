@@ -316,6 +316,108 @@ app.post('/api/user/documents/:tipo', authenticateToken, (req, res) => {
 // Servir documentos de usuário
 app.use('/uploads/documents', express.static(path.join(__dirname, 'uploads', 'documents')));
 
+// ─── Dashboard do Produtor ─────────────────────────────────────────────────
+// MOCK — todos os dados abaixo são estáticos para validar o contrato de API.
+// Substituir por queries reais quando houver persistência de vendas/licenças.
+
+function dashboardMiddleware(req, res, next) {
+  authenticateToken(req, res, () => {
+    if (req.user?.tipoPerfil !== 'produtor') {
+      return res.status(403).json({ message: 'Acesso restrito a produtores.' });
+    }
+    next();
+  });
+}
+
+const DASHBOARD_MOCK = {
+  summary: {
+    vendasTotais: 8542,
+    valorTotalVendas: 126340.00,
+    totalCurtidas: 22481,
+    ticketMedio: 14.80,
+    licencas: {
+      basica:        { quantidade: 4200, receita: 50400.00 },
+      profissional:  { quantidade: 3100, receita: 62000.00 },
+      exclusiva:     { quantidade: 1242, receita: 13940.00 }
+    }
+  },
+  salesByTrack: [
+    { trackId: 1, nome: 'HighFrenetic',   compras: 312, receita: 4680.00, origemPrincipal: 'Brasil',         likes: 1240, destaque: true  },
+    { trackId: 2, nome: 'Maleficus Chaos',compras: 289, receita: 4335.00, origemPrincipal: 'Estados Unidos', likes:  980, destaque: false },
+    { trackId: 3, nome: 'Impertinent',    compras: 211, receita: 3165.00, origemPrincipal: 'Brasil',         likes:  745, destaque: false },
+    { trackId: 4, nome: 'The Funkster',   compras: 198, receita: 2970.00, origemPrincipal: 'Portugal',       likes:  630, destaque: true  },
+    { trackId: 5, nome: 'Code',           compras: 154, receita: 2310.00, origemPrincipal: 'Brasil',         likes:  510, destaque: false }
+  ],
+  salesByOrigin: [
+    { pais: 'Brasil',          cidade: 'São Paulo',     compras: 4100, lat: -23.55, lng: -46.63 },
+    { pais: 'Brasil',          cidade: 'Rio de Janeiro',compras: 1820, lat: -22.90, lng: -43.17 },
+    { pais: 'Estados Unidos',  cidade: 'Los Angeles',   compras:  980, lat:  34.05, lng:-118.24 },
+    { pais: 'Portugal',        cidade: 'Lisboa',         compras:  640, lat:  38.72, lng:  -9.14 },
+    { pais: 'Alemanha',        cidade: 'Berlim',         compras:  420, lat:  52.52, lng:  13.40 },
+    { pais: 'Argentina',       cidade: 'Buenos Aires',   compras:  310, lat: -34.61, lng: -58.38 },
+    { pais: 'Outros',          cidade: '',               compras:  272, lat:    0,   lng:    0   }
+  ],
+  revenueByTrack: [
+    { trackId: 1, nome: 'HighFrenetic',    receita: 4680.00, share: 3.7 },
+    { trackId: 2, nome: 'Maleficus Chaos', receita: 4335.00, share: 3.4 },
+    { trackId: 3, nome: 'Impertinent',     receita: 3165.00, share: 2.5 },
+    { trackId: 4, nome: 'The Funkster',    receita: 2970.00, share: 2.4 },
+    { trackId: 5, nome: 'Code',            receita: 2310.00, share: 1.8 },
+    { trackId: 6, nome: 'Outras faixas',   receita: 108880.00, share: 86.2 }
+  ],
+  likesVsSales: {
+    '7d': [
+      { data: '2026-03-10', curtidas: 312, compras: 45 },
+      { data: '2026-03-11', curtidas: 298, compras: 51 },
+      { data: '2026-03-12', curtidas: 341, compras: 39 },
+      { data: '2026-03-13', curtidas: 387, compras: 62 },
+      { data: '2026-03-14', curtidas: 412, compras: 58 },
+      { data: '2026-03-15', curtidas: 356, compras: 44 },
+      { data: '2026-03-16', curtidas: 329, compras: 37 }
+    ],
+    '30d': [
+      { data: '2026-02-15', curtidas: 8421, compras: 1230 },
+      { data: '2026-02-22', curtidas: 9102, compras: 1380 },
+      { data: '2026-03-01', curtidas: 9780, compras: 1510 },
+      { data: '2026-03-08', curtidas: 10234,compras: 1620 },
+      { data: '2026-03-16', curtidas: 11240,compras: 1830 }
+    ],
+    '12m': [
+      { data: '2025-04-01', curtidas: 14200, compras: 520 },
+      { data: '2025-06-01', curtidas: 16800, compras: 680 },
+      { data: '2025-08-01', curtidas: 19200, compras: 820 },
+      { data: '2025-10-01', curtidas: 20100, compras: 910 },
+      { data: '2025-12-01', curtidas: 21000, compras: 980 },
+      { data: '2026-02-01', curtidas: 22481, compras: 1100 }
+    ]
+  }
+};
+
+const VALID_PERIODS = ['7d', '30d', '12m'];
+
+app.get('/api/dashboard/summary', dashboardMiddleware, (_req, res) => {
+  res.json(DASHBOARD_MOCK.summary);
+});
+
+app.get('/api/dashboard/sales-by-track', dashboardMiddleware, (_req, res) => {
+  res.json(DASHBOARD_MOCK.salesByTrack);
+});
+
+app.get('/api/dashboard/sales-by-origin', dashboardMiddleware, (_req, res) => {
+  res.json(DASHBOARD_MOCK.salesByOrigin);
+});
+
+app.get('/api/dashboard/revenue-by-track', dashboardMiddleware, (_req, res) => {
+  res.json(DASHBOARD_MOCK.revenueByTrack);
+});
+
+app.get('/api/dashboard/likes-vs-sales', dashboardMiddleware, (req, res) => {
+  const period = VALID_PERIODS.includes(req.query.period) ? req.query.period : '30d';
+  res.json(DASHBOARD_MOCK.likesVsSales[period]);
+});
+
+// ─── Fim Dashboard ─────────────────────────────────────────────────────────
+
 app.use((err, req, res, next) => res.json({ message: err.message }));
 
 app.listen(3100, () => {

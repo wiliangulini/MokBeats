@@ -26,6 +26,8 @@ import {PlayerComponent} from "./player/player.component";
 import { TermosPrivacidadeComponent } from "./termos-privacidade/termos-privacidade.component";
 import { AuthGuard } from "./guards/auth.guard";
 import { ProfileCompleteGuard } from "./guards/profile-complete.guard";
+import { ProdutorGuard } from "./guards/produtor.guard";
+import { DashboardProdutorComponent } from "./dashboard-produtor/dashboard-produtor.component";
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -55,6 +57,7 @@ const routes: Routes = [
   { path: 'carrinho', component: CarrinhoComponent },
   { path: 'upload', loadChildren: () => import('./upload-file/upload-file.module').then(m => m.UploadFileModule), canActivate: [AuthGuard, ProfileCompleteGuard] },
   { path: 'dados-pessoais', redirectTo: 'atualizar-informacoes', pathMatch: 'full' },
+  { path: 'dashboard-produtor', component: DashboardProdutorComponent, canActivate: [AuthGuard, ProfileCompleteGuard, ProdutorGuard] },
 ];
 
 @NgModule({

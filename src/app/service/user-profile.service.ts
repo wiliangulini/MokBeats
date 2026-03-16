@@ -80,7 +80,6 @@ export class UserProfileService {
     return this.http.post<{ url: string }>(
       `${environment.apiBaseUrl}/user/documents/${tipo}`,
       formData,
-      { headers: new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem(this.TOKEN_KEY) ?? ''}` }) }
     ).pipe(
       tap(({ url }) => {
         const urlField = tipo === 'foto-documento' ? 'fotoDocumentoUrl'

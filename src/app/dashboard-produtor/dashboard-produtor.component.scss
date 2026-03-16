@@ -1,0 +1,34 @@
+.dashboard-produtor {
+  min-height: calc(100vh - 120px);
+}
+
+.kpi-card {
+  border-left: 4px solid #FFC107;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  h3 {
+    font-size: 1.8rem;
+    line-height: 1.2;
+  }
+}
+
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+
+.table th {
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6c757d;
+  border-top: none;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #FFF8E1;
+}
