@@ -51,6 +51,42 @@ app.use('/assets/audios', express.static(audioPath, {
   }
 }));
 
+// Store em memória (mock) — substituir por banco de dados em produção
+const users = [];
+
+// Cadastro de novo usuário
+app.post('/api/auth/register', (req, res) => {
+  try {
+    const { email, password, tipoPessoa, tipoPerfil } = req.body || {};
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email || !emailRe.test(email)) {
+      return res.status(400).json({ message: 'E-mail inválido.' });
+    }
+    if (!password || String(password).length < 8) {
+      return res.status(400).json({ message: 'Senha deve ter no mínimo 8 caracteres.' });
+    }
+    if (!tipoPessoa) {
+      return res.status(400).json({ message: 'Tipo de pessoa é obrigatório.' });
+    }
+    if (!tipoPerfil || !['comprador', 'produtor'].includes(tipoPerfil)) {
+      return res.status(400).json({ message: 'Tipo de perfil inválido. Use "comprador" ou "produtor".' });
+    }
+    if (users.find(u => u.email === email)) {
+      return res.status(409).json({ message: 'E-mail já cadastrado.' });
+    }
+
+    const user = { email, tipoPessoa, tipoPerfil };
+    users.push(user);
+    // Gera token mock — em produção, emitir JWT assinado
+    const token = Buffer.from(`${email}:${Date.now()}`).toString('base64');
+    return res.status(201).json({ token, user });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: 'Erro ao cadastrar.' });
+  }
+});
+
 // Auth básico (mock) para destravar login no front
 // Aceita qualquer e-mail válido e senha com 8+ caracteres, retorna um token
 app.post('/api/auth/login', (req, res) => {
@@ -64,13 +100,25 @@ app.post('/api/auth/login', (req, res) => {
       return res.status(400).json({ message: 'Senha deve ter no mínimo 8 caracteres.' });
     }
 
+    // Busca tipoPerfil do usuário cadastrado; default 'comprador' para usuários antigos
+    const found = users.find(u => u.email === email);
+    const tipoPerfil = found ? found.tipoPerfil : 'comprador';
+
     // Gera um token simples (mock) — em produção real, emitir JWT
     const token = Buffer.from(`${email}:${Date.now()}`).toString('base64');
-    return res.status(200).json({ token, user: { email } });
+    return res.status(200).json({ token, user: { email, tipoPerfil } });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ message: 'Erro ao autenticar.' });
   }
+});
+
+// Stub — autenticação social com Google (não implementada)
+// Para integrar: usar Firebase Authentication com AngularFire no front-end
+app.post('/api/auth/google', (req, res) => {
+  return res.status(501).json({
+    message: 'Autenticação com Google não está configurada. Integre com Firebase Auth para habilitar.'
+  });
 });
 
 const multipartMiddleware = multipart({ uploadDir: './uploads' });

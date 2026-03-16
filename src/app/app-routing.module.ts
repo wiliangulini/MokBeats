@@ -24,6 +24,7 @@ import {CarrinhoComponent} from "./carrinho/carrinho.component";
 import {UsuarioArtistaComponent} from "./usuario-artista/usuario-artista.component";
 import {PlayerComponent} from "./player/player.component";
 import { TermosPrivacidadeComponent } from "./termos-privacidade/termos-privacidade.component";
+import { AuthGuard } from "./guards/auth.guard";
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -39,19 +40,19 @@ const routes: Routes = [
   { path: 'humor', component: HumorComponent },
   { path: 'faq', component: FaqComponent },
   { path: 'produtores', component: ProdutoresComponent },
-  { path: 'favoritos', component: FavoritosComponent },
-  { path: 'playlists', component: PlaylistsComponent },
-  { path: 'assinatura', component: AssinaturaComponent },
-  { path: 'pedidos', component: PedidosComponent },
-  { path: 'formas-de-pagamento', component: FormasDePagamentoComponent },
+  { path: 'favoritos', component: FavoritosComponent, canActivate: [AuthGuard] },
+  { path: 'playlists', component: PlaylistsComponent, canActivate: [AuthGuard] },
+  { path: 'assinatura', component: AssinaturaComponent, canActivate: [AuthGuard] },
+  { path: 'pedidos', component: PedidosComponent, canActivate: [AuthGuard] },
+  { path: 'formas-de-pagamento', component: FormasDePagamentoComponent, canActivate: [AuthGuard] },
   { path: 'artista', component: ArtistComponent },
   { path: 'pagina-artista', component: UsuarioArtistaComponent },
-  { path: 'atualizar-informacoes', component: AtualizarInformacoesComponent },
-  { path: 'finalizar-compra', component: FinalizarCompraComponent },
+  { path: 'atualizar-informacoes', component: AtualizarInformacoesComponent, canActivate: [AuthGuard] },
+  { path: 'finalizar-compra', component: FinalizarCompraComponent, canActivate: [AuthGuard] },
   { path: 'contato', component: ContatoComponent },
   { path: 'pagina-playlist', component: PagPlaylistComponent },
   { path: 'carrinho', component: CarrinhoComponent },
-  { path: 'upload', loadChildren: () => import('./upload-file/upload-file.module').then(m => m.UploadFileModule) },
+  { path: 'upload', loadChildren: () => import('./upload-file/upload-file.module').then(m => m.UploadFileModule), canActivate: [AuthGuard] },
 ];
 
 @NgModule({

@@ -1,9 +1,17 @@
-import {AfterContentInit, Component, OnInit} from '@angular/core';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { AfterContentInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { AuthService } from "./auth.service";
 import { UsuarioLogin } from "./usuarioLogin";
+
+function senhasIguaisValidator(group: AbstractControl): ValidationErrors | null {
+  const senha = group.get('senha');
+  const confirmar = group.get('confirmarSenha');
+  if (!senha || !confirmar || !confirmar.value) return null;
+  return senha.value === confirmar.value ? null : { senhasNaoConferem: true };
+}
 
 @Component({
   selector: 'app-login',
@@ -13,9 +21,7 @@ import { UsuarioLogin } from "./usuarioLogin";
 export class LoginComponent implements OnInit, AfterContentInit {
 
   form: FormGroup;
-  public cadastro: any = {};
-  public usuario: UsuarioLogin = new UsuarioLogin();
-  public resetPass: any = {};
+  loginErro: boolean = false;
   log: any;
   register: any;
   resetP: any;
@@ -24,12 +30,6 @@ export class LoginComponent implements OnInit, AfterContentInit {
     {value: 'Pessoa Física', viewValue: 'Pessoa Física'},
     {value: 'Pessoa Jurídica', viewValue: 'Pessoa Jurídica'},
   ];
-  typeStems: any[] = [
-    { value: 'Druns', viewValue: 'Druns' },
-    { value:  'Melodia', viewValue:  'Melodia' },
-    { value: 'Harmonia', viewValue: 'Harmonia' },
-    { value: 'Efeitos/Vozes', viewValue: 'Efeitos/Vozes' },
-  ]
 
   constructor(
     private fb: FormBuilder,
@@ -40,11 +40,13 @@ export class LoginComponent implements OnInit, AfterContentInit {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required, Validators.minLength(8)]],
-      typePerson: [''],
+      confirmarSenha: ['', Validators.required],
+      typePerson: ['', Validators.required],
+      tipoPerfil: ['', Validators.required],
       emailLog: ['', [Validators.required, Validators.email]],
       senhaLog: ['', [Validators.required, Validators.minLength(8)]],
       emailReset: ['', [Validators.required, Validators.email]],
-    })
+    }, { validators: senhasIguaisValidator });
   }
 
   ngOnInit(): void {}
@@ -104,14 +106,12 @@ export class LoginComponent implements OnInit, AfterContentInit {
   }
 
   radiocontainer(e: any) {
-    console.log(e)
     let n = e.id;
     let txt = document.getElementById(n)!.innerText;
     document.getElementById("forma")!.innerHTML = txt;
+    this.form.get('typePerson')?.setValue(txt);
     this.downStatus2();
   }
-
-
 
   politica() {
     this.router.navigate(['/politica-de-privacidade']);
@@ -123,16 +123,10 @@ export class LoginComponent implements OnInit, AfterContentInit {
   }
 
   irProLogin(data: any) {
-    console.log(data);
     this.register = document.getElementById('register');
     this.log = document.getElementById('login');
     let logCad: any = document.getElementById('logCad');
     let aLog: any = document.getElementById('aLog');
-    console.log(logCad);
-    console.log(aLog);
-    console.log(data.target.innerText);
-    console.log(this.log);
-    console.log(this.register);
     if(data.target.innerText == 'Faça Login') {
       this.register!.style.display = 'none'
       this.log!.style.display = 'flex';
@@ -161,7 +155,7 @@ export class LoginComponent implements OnInit, AfterContentInit {
   }
 
   fazerLogin() {
-    // Validar apenas os campos de login
+    this.loginErro = false;
     const emailCtrl = this.form.get('emailLog');
     const passCtrl = this.form.get('senhaLog');
     emailCtrl?.markAsTouched();
@@ -170,22 +164,50 @@ export class LoginComponent implements OnInit, AfterContentInit {
       return;
     }
 
-    this.authService.fazerLogin(this.usuario).subscribe({
+    const usuario = new UsuarioLogin();
+    usuario.email = emailCtrl?.value;
+    usuario.senha = passCtrl?.value;
+
+    this.authService.fazerLogin(usuario).subscribe({
       next: () => {
-        // sucesso: fecha modal
         try { this.activeModal.close(); } catch (_) {}
       },
       error: (err) => {
-        // erro 401 ou outros: exibe mensagem simples no console e mantém modal aberto
         console.error('Falha no login', err);
-        alert('E-mail ou senha inválidos.');
+        this.loginErro = true;
       }
     });
   }
 
   onSubmit() {
-    try { this.form.markAllAsTouched(); } catch (_) {}
-    console.log('enviou');
-    // manter modal aberto; fluxo de cadastro/reset será integrado ao backend futuramente
+    const camposRegister = ['email', 'senha', 'confirmarSenha', 'typePerson', 'tipoPerfil'];
+    camposRegister.forEach(f => this.form.get(f)?.markAsTouched());
+
+    const campoInvalido = camposRegister.some(f => this.form.get(f)?.invalid);
+    const senhasDiferentes = this.form.hasError('senhasNaoConferem');
+    if (campoInvalido || senhasDiferentes) return;
+
+    const usuario = new UsuarioLogin();
+    usuario.email = this.form.get('email')?.value;
+    usuario.senha = this.form.get('senha')?.value;
+    usuario.tipoPessoa = this.form.get('typePerson')?.value;
+    usuario.tipoPerfil = this.form.get('tipoPerfil')?.value;
+
+    this.authService.registrar(usuario).subscribe({
+      next: () => {
+        try { this.activeModal.close(); } catch (_) {}
+      },
+      error: (err) => {
+        console.error('Falha no cadastro', err);
+      }
+    });
+  }
+
+  loginComGoogle() {
+    this.authService.loginComGoogle();
+  }
+
+  registrarComGoogle() {
+    this.authService.loginComGoogle();
   }
 }
