@@ -56,6 +56,10 @@ export class MenuProdutorComponent implements AfterContentInit {
     })
   }
 
+  get isProdutor(): boolean {
+    return this.authService.isProdutor();
+  }
+
   closeModal() {
     return this.activeModal.close();
   }

@@ -112,6 +112,10 @@ export class AuthService {
     this.authStatusSubject.next(false);
   }
 
+  public getToken(): string | null {
+    try { return localStorage.getItem(this.TOKEN_KEY); } catch (_) { return null; }
+  }
+
   public getUserPerfil(): string | null {
     try { return localStorage.getItem(this.PERFIL_KEY); } catch (_) { return null; }
   }
