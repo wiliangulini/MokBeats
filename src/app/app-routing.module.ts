@@ -25,6 +25,7 @@ import {UsuarioArtistaComponent} from "./usuario-artista/usuario-artista.compone
 import {PlayerComponent} from "./player/player.component";
 import { TermosPrivacidadeComponent } from "./termos-privacidade/termos-privacidade.component";
 import { AuthGuard } from "./guards/auth.guard";
+import { ProfileCompleteGuard } from "./guards/profile-complete.guard";
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -48,11 +49,12 @@ const routes: Routes = [
   { path: 'artista', component: ArtistComponent },
   { path: 'pagina-artista', component: UsuarioArtistaComponent },
   { path: 'atualizar-informacoes', component: AtualizarInformacoesComponent, canActivate: [AuthGuard] },
-  { path: 'finalizar-compra', component: FinalizarCompraComponent, canActivate: [AuthGuard] },
+  { path: 'finalizar-compra', component: FinalizarCompraComponent, canActivate: [AuthGuard, ProfileCompleteGuard] },
   { path: 'contato', component: ContatoComponent },
   { path: 'pagina-playlist', component: PagPlaylistComponent },
   { path: 'carrinho', component: CarrinhoComponent },
-  { path: 'upload', loadChildren: () => import('./upload-file/upload-file.module').then(m => m.UploadFileModule), canActivate: [AuthGuard] },
+  { path: 'upload', loadChildren: () => import('./upload-file/upload-file.module').then(m => m.UploadFileModule), canActivate: [AuthGuard, ProfileCompleteGuard] },
+  { path: 'dados-pessoais', redirectTo: 'atualizar-informacoes', pathMatch: 'full' },
 ];
 
 @NgModule({
