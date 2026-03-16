@@ -122,6 +122,49 @@ input, input:focus {
   outline: none !important;
 }
 
+.perfil-selector {
+  width: 60%;
+}
+
+.perfil-opcoes {
+  gap: 1.5rem;
+}
+
+.perfil-option {
+  gap: 0.4rem;
+  cursor: pointer;
+
+  input[type="radio"] {
+    accent-color: #4B3A8F;
+    cursor: pointer;
+  }
+
+  span {
+    cursor: pointer;
+    font-size: 15px;
+    text-decoration: underline dotted #4B3A8F;
+    text-underline-offset: 3px;
+  }
+}
+
+.btn-google {
+  background: #ffffff;
+  border: 1px solid #dadce0;
+  color: #3c4043;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+
+  &:hover, &:focus {
+    background: #f8f9fa;
+    border-color: #4B3A8F;
+    color: #4B3A8F;
+  }
+}
+
 @media only screen and (min-width: 320px) and (max-width: 768px) {
   #register, #login, #resetPass {
     padding: 0;
@@ -137,6 +180,9 @@ input, input:focus {
   input, select {
     width: 70%;
   }
+  .perfil-selector {
+    width: 70%;
+  }
   a.btn.btnReset {
     font-size: 14px !important;
   }
@@ -144,6 +190,9 @@ input, input:focus {
 
 @media only screen and (max-width: 370px) {
   input, select {
+    width: 80%;
+  }
+  .perfil-selector {
     width: 80%;
   }
 }

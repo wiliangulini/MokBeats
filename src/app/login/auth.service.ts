@@ -13,6 +13,7 @@ export class AuthService {
 
   private usuarioAutenticado: boolean = false;
   private readonly TOKEN_KEY = 'authToken';
+  private readonly PERFIL_KEY = 'userPerfil';
 
   // Subject para notificar mudanças no estado de autenticação
   private authStatusSubject = new BehaviorSubject<boolean>(this.checkInitialAuthStatus());
@@ -48,14 +49,47 @@ export class AuthService {
         const token = resp?.token;
         if (token) {
           try { localStorage.setItem(this.TOKEN_KEY, token); } catch (_) {}
+          const perfil = resp?.user?.tipoPerfil ?? 'comprador';
+          try { localStorage.setItem(this.PERFIL_KEY, perfil); } catch (_) {}
           this.usuarioAutenticado = true;
-          this.authStatusSubject.next(true); // Notificar mudança de estado
+          this.authStatusSubject.next(true);
         } else {
           this.usuarioAutenticado = false;
-          this.authStatusSubject.next(false); // Notificar mudança de estado
+          this.authStatusSubject.next(false);
         }
       })
     );
+  }
+
+  public registrar(usuario: UsuarioLogin): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}/auth/register`, {
+      email: usuario?.email,
+      password: usuario?.senha,
+      tipoPessoa: usuario?.tipoPessoa,
+      tipoPerfil: usuario?.tipoPerfil,
+    }).pipe(
+      tap((resp: any) => {
+        const token = resp?.token;
+        if (token) {
+          try { localStorage.setItem(this.TOKEN_KEY, token); } catch (_) {}
+          const perfil = resp?.user?.tipoPerfil ?? usuario?.tipoPerfil ?? 'comprador';
+          try { localStorage.setItem(this.PERFIL_KEY, perfil); } catch (_) {}
+          this.usuarioAutenticado = true;
+          this.authStatusSubject.next(true);
+        } else {
+          this.usuarioAutenticado = false;
+          this.authStatusSubject.next(false);
+        }
+      })
+    );
+  }
+
+  /**
+   * Stub — integração com Google ainda não configurada.
+   * Para integrar, utilize AngularFire (firebase@10.3.0 já está instalado).
+   */
+  public loginComGoogle(): void {
+    alert('Login com Google ainda não está disponível. Em breve!');
   }
 
   public verificaLogin() {
@@ -73,7 +107,20 @@ export class AuthService {
 
   public logout() {
     try { localStorage.removeItem(this.TOKEN_KEY); } catch (_) {}
+    try { localStorage.removeItem(this.PERFIL_KEY); } catch (_) {}
     this.usuarioAutenticado = false;
-    this.authStatusSubject.next(false); // Notificar mudança de estado
+    this.authStatusSubject.next(false);
+  }
+
+  public getUserPerfil(): string | null {
+    try { return localStorage.getItem(this.PERFIL_KEY); } catch (_) { return null; }
+  }
+
+  public isProdutor(): boolean {
+    return this.getUserPerfil() === 'produtor';
+  }
+
+  public isComprador(): boolean {
+    return this.getUserPerfil() === 'comprador';
   }
 }
