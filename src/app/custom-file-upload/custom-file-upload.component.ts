@@ -29,6 +29,7 @@ export class CustomFileUploadComponent implements ControlValueAccessor {
   @Input() maxFiles: number = 5;
   @Input() showDuration: boolean = false;
   @Input() expectedDuration?: number; // Para validação de duração (em segundos)
+  @Input() variant: 'default' | 'compact' | 'image' = 'default';
   @Input() disabled: boolean = false;
 
   @Output() filesSelected = new EventEmitter<FileList>();

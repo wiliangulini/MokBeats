@@ -1076,12 +1076,195 @@ app.route('/api/favoritos/:id').delete((request, response) => {
 // Regras de upload de produtores
 app.post('/api/producers/track', multipartMiddleware, (req, res) => {
   try {
-    const mode = req.body.mode; // 'trackNoStems' | 'trackWithStems'
+    const schemaVersion = req.body.schemaVersion;
+    const mode = req.body.mode; // 'trackNoStems' | 'trackWithStems' | 'effectsFx'
     const metaRaw = req.body.meta;
     let meta = {};
     try { meta = metaRaw ? JSON.parse(metaRaw) : {}; } catch (e) { meta = {}; }
 
     const files = req.files || {};
+
+    // V2: contrato do novo formulário de produtores
+    if (schemaVersion === 'producer_form_v2') {
+      const allowedModes = ['trackNoStems', 'trackWithStems', 'effectsFx'];
+      if (!allowedModes.includes(mode)) {
+        return res.status(422).json({ message: 'Modo inválido. Use trackNoStems, trackWithStems ou effectsFx.' });
+      }
+
+      const track = files.track;
+      const image = files.image;
+      const stemMelody = files.stem_melody;
+      const stemHarmony = files.stem_harmony;
+      const stemDrums = files.stem_drums;
+      const stemFx = files.stem_fx;
+      const effects = [files.effect1, files.effect2, files.effect3, files.effect4, files.effect5, files.effect6];
+
+      if (!track) {
+        return res.status(422).json({ message: 'É obrigatório enviar o arquivo Single Track.' });
+      }
+
+      if (mode === 'trackNoStems') {
+        if (stemMelody || stemHarmony || stemDrums || stemFx || effects.some(Boolean)) {
+          return res.status(422).json({ message: 'Modo Single track não permite stems ou efeitos extras.' });
+        }
+      }
+
+      if (mode === 'trackWithStems') {
+        if (!(stemMelody && stemHarmony && stemDrums && stemFx)) {
+          return res.status(422).json({ message: 'No modo Single track + Stems, envie Melodias, Harmonias, Ritmos e Efeitos.' });
+        }
+        if (effects.some(Boolean)) {
+          return res.status(422).json({ message: 'No modo Single track + Stems, não envie os campos effect1..effect6.' });
+        }
+      }
+
+      if (mode === 'effectsFx') {
+        if (stemMelody || stemHarmony || stemDrums || stemFx) {
+          return res.status(422).json({ message: 'No modo Efeitos (FX), não envie stem_melody/stem_harmony/stem_drums/stem_fx.' });
+        }
+        if (effects.some((file) => !file)) {
+          return res.status(422).json({ message: 'No modo Efeitos (FX), envie todos os arquivos effect1..effect6.' });
+        }
+      }
+
+      const requiredMeta = ['artistName', 'email', 'countryCode', 'phone', 'identification', 'trackName', 'category', 'genre', 'bpm', 'key', 'saleValue'];
+      for (const field of requiredMeta) {
+        if (meta?.[field] === undefined || meta?.[field] === null || String(meta?.[field]).trim() === '') {
+          return res.status(422).json({ message: `Campo obrigatório ausente no meta: ${field}.` });
+        }
+      }
+
+      if (!meta?.termsAccepted) {
+        return res.status(422).json({ message: 'É obrigatório aceitar os termos e condições.' });
+      }
+
+      const email = String(meta?.email || '').trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return res.status(422).json({ message: 'Email inválido.' });
+      }
+
+      const bpm = parseInt(meta?.bpm, 10);
+      if (!Number.isFinite(bpm) || bpm < 1 || bpm > 300) {
+        return res.status(422).json({ message: 'BPM inválido. Deve estar entre 1 e 300.' });
+      }
+
+      const saleValue = Number(String(meta?.saleValue).replace(',', '.'));
+      if (!Number.isFinite(saleValue) || saleValue <= 0) {
+        return res.status(422).json({ message: 'Valor de venda inválido. Deve ser maior que zero.' });
+      }
+
+      const externalLink = String(meta?.externalLink || '').trim();
+      if (externalLink && !/^https?:\/\/[^\s/$.?#].[^\s]*$/i.test(externalLink)) {
+        return res.status(422).json({ message: 'Link externo inválido. Use http:// ou https://.' });
+      }
+
+      // Registro flexível (ao menos um identificador válido)
+      const registryRaw = String(meta?.registryRaw || meta?.registryValue || '').trim();
+      const isrc = String(meta?.isrc || '').trim();
+      const upc = String(meta?.upc || '').trim();
+      const hashType = String(meta?.hashType || '').trim().toUpperCase();
+      const registryTypeRaw = String(meta?.registryType || '').trim().toUpperCase();
+      const registryValue = String(meta?.registryValue || registryRaw).trim();
+
+      const inferRegistryType = () => {
+        if (registryTypeRaw) return registryTypeRaw;
+        if (/^[A-Za-z0-9]{12}$/.test(isrc || registryRaw)) return 'ISRC';
+        if (/^(?:\d{12}|\d{6})$/.test(upc || registryRaw)) return 'UPC';
+        if (/^[A-Fa-f0-9]{32}$/.test(registryRaw)) return 'HASH';
+        if (/^[A-Fa-f0-9]{40}$/.test(registryRaw)) return 'HASH';
+        if (/^[A-Fa-f0-9]{64}$/.test(registryRaw)) return 'HASH';
+        if (/^[A-Fa-f0-9]{128}$/.test(registryRaw)) return 'HASH';
+        return registryRaw ? 'OUTROS' : '';
+      };
+
+      const registryType = inferRegistryType();
+      if (!registryType) {
+        return res.status(422).json({ message: 'Informe um registro válido (ISRC, UPC, HASH ou OUTROS).' });
+      }
+
+      if (registryType === 'ISRC') {
+        const value = isrc || registryRaw;
+        if (!/^[A-Za-z0-9]{12}$/.test(value)) {
+          return res.status(422).json({ message: 'ISRC inválido. Deve conter 12 caracteres alfanuméricos.' });
+        }
+      } else if (registryType === 'UPC') {
+        const value = upc || registryRaw;
+        if (!/^(?:\d{12}|\d{6})$/.test(value)) {
+          return res.status(422).json({ message: 'UPC inválido. Deve conter 12 dígitos (UPC-A) ou 6 dígitos (UPC-E).' });
+        }
+      } else if (registryType === 'HASH') {
+        const value = registryValue || registryRaw;
+        const map = { MD5: 32, 'SHA-1': 40, 'SHA-256': 64, 'SHA-512': 128 };
+        let resolvedType = hashType;
+        if (!resolvedType) {
+          if (/^[A-Fa-f0-9]{32}$/.test(value)) resolvedType = 'MD5';
+          else if (/^[A-Fa-f0-9]{40}$/.test(value)) resolvedType = 'SHA-1';
+          else if (/^[A-Fa-f0-9]{64}$/.test(value)) resolvedType = 'SHA-256';
+          else if (/^[A-Fa-f0-9]{128}$/.test(value)) resolvedType = 'SHA-512';
+        }
+        const len = map[resolvedType] || 0;
+        const re = new RegExp(`^[A-Fa-f0-9]{${len}}$`);
+        if (!len || !re.test(value)) {
+          return res.status(422).json({ message: 'HASH inválido para o tipo selecionado.' });
+        }
+      } else if (registryType === 'OUTROS') {
+        if (!registryRaw || registryRaw.length < 3) {
+          return res.status(422).json({ message: 'Registro inválido. Informe ao menos 3 caracteres para OUTROS.' });
+        }
+      } else {
+        return res.status(422).json({ message: 'Tipo de registro inválido.' });
+      }
+
+      // Durações (mesma duração do track para stems/efeitos)
+      const TOL = 200; // ms
+      const eq = (a, b, tol) => Math.abs(a - b) <= tol;
+      const toInt = (v) => typeof v === 'string' ? parseInt(v, 10) : v;
+      const d = meta?.durations || {};
+      const trackMs = toInt(d?.track_ms);
+      if (!trackMs || !Number.isFinite(trackMs)) {
+        return res.status(422).json({ message: 'Informe duration_ms da faixa principal (meta.durations.track_ms).' });
+      }
+
+      if (mode === 'trackWithStems') {
+        let stemDurations = [toInt(d?.stem_melody_ms), toInt(d?.stem_harmony_ms), toInt(d?.stem_drums_ms), toInt(d?.stem_fx_ms)];
+        if (stemDurations.some((value) => !value) && Array.isArray(d?.stems_ms)) {
+          stemDurations = d.stems_ms.map(toInt);
+        }
+        if (stemDurations.length !== 4 || stemDurations.some((value) => !value)) {
+          return res.status(422).json({ message: 'Informe as durações de todos os stems (melody/harmony/drums/fx).' });
+        }
+        for (let i = 0; i < stemDurations.length; i++) {
+          if (!eq(stemDurations[i], trackMs, TOL)) {
+            return res.status(422).json({ message: `Stem #${i + 1} não possui a mesma duração do Single Track.` });
+          }
+        }
+      }
+
+      if (mode === 'effectsFx') {
+        let effectDurations = [toInt(d?.effect1_ms), toInt(d?.effect2_ms), toInt(d?.effect3_ms), toInt(d?.effect4_ms), toInt(d?.effect5_ms), toInt(d?.effect6_ms)];
+        if (effectDurations.some((value) => !value) && Array.isArray(d?.effects_ms)) {
+          effectDurations = d.effects_ms.map(toInt);
+        }
+        if (effectDurations.length !== 6 || effectDurations.some((value) => !value)) {
+          return res.status(422).json({ message: 'Informe as durações de todos os efeitos (effect1_ms..effect6_ms).' });
+        }
+        for (let i = 0; i < effectDurations.length; i++) {
+          if (!eq(effectDurations[i], trackMs, TOL)) {
+            return res.status(422).json({ message: `Efeito #${i + 1} não possui a mesma duração do Single Track.` });
+          }
+        }
+      }
+
+      return res.status(200).json({
+        message: 'Upload v2 validado e recebido com sucesso.',
+        schemaVersion,
+        mode,
+        files: Object.keys(files),
+        hasImage: !!image,
+      });
+    }
+
+    // Legacy: mantém compatibilidade com formulário antigo
     const track = files.track; // único
     const stems = toArray(files.stem); // 0..4
     const loop15 = files.loop15;
