@@ -9,7 +9,7 @@ section.submit {
 
 section.one {
   margin-top: 8vh;
-  background-image: url('../../assets/images/news_img/produtores_mulher-tocando-teclado-e-sentindo-a-musica.jpg');
+  background-image: url("../../assets/images/news_img/produtores_mulher-tocando-teclado-e-sentindo-a-musica.jpg");
   background-position: center;
   background-size: contain;
   background-repeat: repeat;
@@ -33,7 +33,12 @@ section.submit .container .row .beforeSubmit .txt .h6 {
   font-size: 18px;
 }
 
-section.submit .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .video video {
+section.submit
+  .container
+  .row
+  .col-sm-12.col-md-12.col-lg-12.col-xl-12
+  .video
+  video {
   width: 90%;
 }
 
@@ -84,7 +89,6 @@ section.submit .container .row form p.h5 {
 
 .producer-form mat-form-field {
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.04) !important;
 }
 
 .producer-form .mat-form-field-appearance-fill .mat-form-field-flex {
@@ -194,13 +198,20 @@ section.submit .container .row form .submit-row button:disabled {
     line-height: 1.25;
   }
 
-  section.submit .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.justify-content-center.align-items-center.p-0.m-0 {
+  section.submit
+    .container
+    .row
+    .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.justify-content-center.align-items-center.p-0.m-0 {
     flex-direction: column;
     padding-top: 8% !important;
   }
 
   section.submit .container .row .beforeSubmit,
-  section.submit .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.justify-content-center.align-items-center.p-0.m-0 .title {
+  section.submit
+    .container
+    .row
+    .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.justify-content-center.align-items-center.p-0.m-0
+    .title {
     text-align: center;
   }
 

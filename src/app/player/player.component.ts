@@ -45,7 +45,7 @@ export class PlayerComponent
     private musicService: MusicasService,
     private playerService: PlayerService,
     private cdRef: ChangeDetectorRef,
-    private musicPlayerService: MusicPlayerService
+    private musicPlayerService: MusicPlayerService,
   ) {}
 
   ngOnInit(): void {
@@ -61,7 +61,7 @@ export class PlayerComponent
             this.pauseMusic(musicId);
           }
         }
-      }
+      },
     );
     this.musicPlayerService.currentMusicUrl$.subscribe((url) => {
       console.log(url);
@@ -181,7 +181,7 @@ export class PlayerComponent
 
     const mutedTrack1: any = document.getElementById('mutedTrack1');
     const volumeOnTrackCustom1: any = document.getElementById(
-      'volumeOnTrackCustom1'
+      'volumeOnTrackCustom1',
     );
     const muteOn1: any = document.querySelector('.muteOn1');
     const muteOff1: any = document.querySelector('.muteOff1');
@@ -190,7 +190,7 @@ export class PlayerComponent
       .getAttribute('value');
     const mutedTrack2: any = document.getElementById('mutedTrack2');
     const volumeOnTrackCustom2: any = document.getElementById(
-      'volumeOnTrackCustom2'
+      'volumeOnTrackCustom2',
     );
     const muteOn2: any = document.querySelector('.muteOn2');
     const muteOff2: any = document.querySelector('.muteOff2');
@@ -199,7 +199,7 @@ export class PlayerComponent
       .getAttribute('value');
     const mutedTrack3: any = document.getElementById('mutedTrack3');
     const volumeOnTrackCustom3: any = document.getElementById(
-      'volumeOnTrackCustom3'
+      'volumeOnTrackCustom3',
     );
     const muteOn3: any = document.querySelector('.muteOn3');
     const muteOff3: any = document.querySelector('.muteOff3');
@@ -208,7 +208,7 @@ export class PlayerComponent
       .getAttribute('value');
     const mutedTrack4: any = document.getElementById('mutedTrack4');
     const volumeOnTrackCustom4: any = document.getElementById(
-      'volumeOnTrackCustom4'
+      'volumeOnTrackCustom4',
     );
     const muteOn4: any = document.querySelector('.muteOn4');
     const muteOff4: any = document.querySelector('.muteOff4');
@@ -530,7 +530,7 @@ export class PlayerComponent
     if (!stem) return;
     const volInput: any = document.getElementById(`mutedTrack${index + 1}`);
     const volumeBtn: any = document.getElementById(
-      `volumeOnTrackCustom${index + 1}`
+      `volumeOnTrackCustom${index + 1}`,
     );
     const muteOn: any = document.querySelector(`.muteOn${index + 1}`);
     const muteOff: any = document.querySelector(`.muteOff${index + 1}`);
