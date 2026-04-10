@@ -1,416 +1,330 @@
-import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ScrollService} from "../service/scroll.service";
-import {EMPTY} from "rxjs";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {MusicasService} from "../musicas/musicas.service";
-import {UploadFileService} from "../upload-file/upload-file.service";
-import { environment } from 'src/environments/environment';
-import { SharedValidators } from '../shared/validators';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ScrollService } from '../service/scroll.service';
+import { MusicasService } from '../musicas/musicas.service';
+import { UploadFileService } from '../upload-file/upload-file.service';
+import { RegistryClassification, SharedValidators } from '../shared/validators';
+
+
+type TrackMode = 'trackNoStems' | 'trackWithStems' | 'effectsFx';
+
+type Option = { value: string; label: string };
 
 @Component({
   selector: 'app-produtores',
   templateUrl: './produtores.component.html',
   styleUrls: ['./produtores.component.scss']
 })
-export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChecked {
-
-  @ViewChild('CWE') CWE: any;
-  @ViewChild('card') cardElement?: ElementRef;
-  @ViewChild('btnSubmit') submitButton?: ElementRef;
+export class ProdutoresComponent implements OnInit {
+  @ViewChild('errorSummaryRef') errorSummaryRef?: ElementRef;
 
   form: FormGroup;
-  rules: string = '';
-  producer: string = '';
-  // selectOption removido conforme novas regras
-  checkBoxProducer: boolean = false;
-  checked: boolean = false;
-  numero: number = 0;
-  // rulesVal removido
-  card: any;
-  $$: any;
-  generoMusic: any[] = [];
-  generos: string[] = [];
-  subgeneros: string[] = [];
-  humores: string[] = [];
-  submitted: boolean = false;
+  submitted = false;
   errorSummary: string[] = [];
-  @ViewChild('errorSummaryRef') errorSummaryRef?: ElementRef;
-  artistas: string[] = [];
-  // Pré-visualização do WhatsApp normalizado
-  whatsappPreview: string = '';
-  typeStems: any[] = [
-    { value: 'Druns', viewValue: 'Druns' },
-    { value:  'Melodia', viewValue:  'Melodia' },
-    { value: 'Harmonia', viewValue: 'Harmonia' },
-    { value: 'Efeitos/Vozes', viewValue: 'Efeitos/Vozes' },
-  ]
-  valueTrack: Array<any> = [
-    { value: 'trackNoStems', viewValue: 'Música sem Stems' },
-    { value: 'trackWithStems', viewValue: 'Música com Stems' },
+
+  readonly trackModes: Option[] = [
+    { value: 'trackNoStems', label: 'Single track' },
+    { value: 'trackWithStems', label: 'Single track + Stems' },
+    { value: 'effectsFx', label: 'Efeitos (FX)' },
   ];
-  // Registro
-  registryTypes: Array<any> = [
-    { value: 'ISRC', viewValue: 'ISRC' },
-    { value: 'UPC', viewValue: 'UPC' },
-    { value: 'HASH', viewValue: 'HASH' },
-    { value: 'OUTROS', viewValue: 'OUTROS' },
+
+  readonly countryCodeOptions: string[] = [
+    'BR +55',
+    'US +1',
+    'PT +351',
+    'AR +54',
+    'MX +52',
   ];
-  hashTypes: Array<any> = [
-    { value: 'MD5', viewValue: 'MD5 (32 hex)' },
-    { value: 'SHA-1', viewValue: 'SHA-1 (40 hex)' },
-    { value: 'SHA-256', viewValue: 'SHA-256 (64 hex)' },
-    { value: 'SHA-512', viewValue: 'SHA-512 (128 hex)' },
+
+  readonly categoryOptions: string[] = [
+    'Social Media',
+    'World Music',
+    'Beats',
+    'Instrumentos Épicos',
+    'Sound Effects',
+    'Games',
   ];
-  registryPlaceholder: string = 'Digite o valor...';
+
+  readonly keyOptions: Option[] = [
+    { value: 'A_MAJOR', label: 'A (Lá Maior)' },
+    { value: 'A_SHARP_MAJOR', label: 'A# (Lá Sustenido Maior)' },
+    { value: 'A_FLAT_MAJOR', label: 'Ab (Lá Bemol Maior)' },
+    { value: 'B_MAJOR', label: 'B (Si Maior)' },
+    { value: 'B_FLAT_MAJOR', label: 'Bb (Si Bemol Maior)' },
+    { value: 'C_MAJOR', label: 'C (Dó Maior)' },
+    { value: 'C_SHARP_MAJOR', label: 'C# (Dó Sustenido Maior)' },
+    { value: 'D_MAJOR', label: 'D (Ré Maior)' },
+    { value: 'D_SHARP_MAJOR', label: 'D# (Ré Sustenido Maior)' },
+    { value: 'E_MAJOR', label: 'E (Mi Maior)' },
+    { value: 'F_MAJOR', label: 'F (Fá Maior)' },
+    { value: 'F_SHARP_MAJOR', label: 'F# (Fá Sustenido Maior)' },
+    { value: 'G_MAJOR', label: 'G (Sol Maior)' },
+    { value: 'G_SHARP_MAJOR', label: 'G# (Sol Sustenido Maior)' },
+    { value: 'A_MINOR', label: 'Am (Lá Menor)' },
+    { value: 'A_SHARP_MINOR', label: 'A#m (Lá Sustenido Menor)' },
+    { value: 'A_FLAT_MINOR', label: 'Abm (Lá Bemol Menor)' },
+    { value: 'B_MINOR', label: 'Bm (Si Menor)' },
+    { value: 'B_FLAT_MINOR', label: 'Bbm (Si Bemol Menor)' },
+    { value: 'C_MINOR', label: 'Cm (Dó Menor)' },
+    { value: 'C_SHARP_MINOR', label: 'C#m (Dó Sustenido Menor)' },
+    { value: 'D_MINOR', label: 'Dm (Ré Menor)' },
+    { value: 'D_SHARP_MINOR', label: 'D#m (Ré Sustenido Menor)' },
+    { value: 'E_MINOR', label: 'Em (Mi Menor)' },
+    { value: 'F_MINOR', label: 'Fm (Fá Menor)' },
+    { value: 'F_SHARP_MINOR', label: 'F#m (Fá Sustenido Menor)' },
+    { value: 'G_MINOR', label: 'Gm (Sol Menor)' },
+    { value: 'G_SHARP_MINOR', label: 'G#m (Sol Sustenido Menor)' },
+  ];
+
+  generos: string[] = [];
+
+  private readonly stemsControls = ['stemMelodyFile', 'stemHarmonyFile', 'stemDrumsFile', 'stemFxFile'];
+  private readonly effectsControls = ['fx1', 'fx2', 'fx3', 'fx4', 'fx5', 'fx6'];
 
   constructor(
     private snackBar: MatSnackBar,
     private scrollService: ScrollService,
     private fb: FormBuilder,
-    private cdRef: ChangeDetectorRef,
     private musicService: MusicasService,
     private uploadFileService: UploadFileService,
     private host: ElementRef,
   ) {
     this.form = this.fb.group({
-      track_stems: [this.producer, Validators.required],
-      // selectOption removido
+      track_stems: ['trackNoStems', Validators.required],
       nome: ['', Validators.required],
-      sobrenome: ['', Validators.required],
-      artista_banda: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      confirmEmail: ['', [Validators.required, Validators.email]],
-      fonteAcesso: ['', Validators.required],
-      upload: ['', Validators.required],
-      politicaDePrivacidade: ['', Validators.required],
+      countryCode: ['BR +55', Validators.required],
+      phone: ['', [Validators.required, SharedValidators.phoneWithDDD()]],
+      identification: ['', [Validators.required, SharedValidators.identification()]],
+      trackName: ['', Validators.required],
+      category: ['', Validators.required],
       genrePrimary: ['', Validators.required],
-      genreSecondary: [''],
-      mood: ['', Validators.required],
-      stemsType: ['', Validators.required],
-      isRemix: [false],
-      remixProducer: [''],
-      remixProducerOther: [''],
-      textarea: ['', Validators.required],
-      textarea1: ['', Validators.required],
-      matCheckbox: ['', Validators.required],
-      pepperoni: [false, Validators.required],
-      extracheese: [false, Validators.required],
-      mushroom: [false, Validators.required],
-      checkBoxProducer: [this.checkBoxProducer, Validators.required],
-      // Registro (ISRC/UPC obrigatórios)
-      isrc: ['', [Validators.required, SharedValidators.isrc()]],
-      upc: ['', [Validators.required, SharedValidators.upc()]],
-      registryType: [''],
+      bpm: ['', [Validators.required, SharedValidators.bpm(1, 300)]],
+      key: ['', Validators.required],
       registryValue: [''],
-      hashType: [''],
-      // Upload loops (um arquivo para cada)
-      loop15: [null, Validators.required],
-      loop30: [null, Validators.required],
-      loop60: [null, Validators.required],
-      // Redes Sociais
-      facebookUrl: [''],
-      instagramUrl: [''],
-      whatsapp: [''],
-      googleUrl: [''],
-      linkedinUrl: [''],
-      spotifyUrl: [''],
-      otherUrl: [''],
-    }, { validators: [SharedValidators.emailsMatch()] });
+      externalLink: ['', SharedValidators.optionalHttpUrl()],
+      saleValue: ['', [Validators.required, SharedValidators.saleValue()]],
+      imageFile: [null],
+      singleTrackFile: [null, Validators.required],
+      stemMelodyFile: [null],
+      stemHarmonyFile: [null],
+      stemDrumsFile: [null],
+      stemFxFile: [null],
+      fx1: [null],
+      fx2: [null],
+      fx3: [null],
+      fx4: [null],
+      fx5: [null],
+      fx6: [null],
+      politicaDePrivacidade: [false, Validators.requiredTrue],
+    });
   }
 
   ngOnInit(): void {
     this.scrollService.scrollUp();
-    this.$$ = document.querySelector.bind(document);
-    // Carregar dados dinâmicos do backend
-    this.musicService.getGeneros().subscribe((data: any) => {
-      this.generos = data || [];
-    });
-    this.musicService.getHumores().subscribe((data: any) => {
-      this.humores = data || [];
-    });
-    // Artistas para referenciar em caso de remix (opcional)
-    this.musicService.getArtistas().subscribe((data: any) => {
-      this.artistas = data || [];
-    });
-    // Atualizar subgêneros quando gênero primário mudar
-    this.form.get('genrePrimary')?.valueChanges.subscribe((genero: string) => {
-      this.onGenreChange(genero);
-    });
-    // Registro dinâmico
-    this.form.get('registryType')?.valueChanges.subscribe((type: string) => {
-      this.updateRegistryValidators(type, this.form.get('hashType')?.value);
-    });
-    this.form.get('hashType')?.valueChanges.subscribe((ht: string) => {
-      if (this.form.get('registryType')?.value === 'HASH') {
-        this.updateRegistryValidators('HASH', ht);
-      }
-    });
-    // remix: quando selecionar "Outro", exigir texto
-    this.form.get('remixProducer')?.valueChanges.subscribe((v: string) => {
-      const otherCtrl = this.form.get('remixProducerOther');
-      if (!otherCtrl) return;
-      if (v === '__OUTRO__') {
-        otherCtrl.setValidators([Validators.required, Validators.minLength(3), Validators.maxLength(80)]);
-      } else {
-        otherCtrl.clearValidators();
-        otherCtrl.reset('');
-      }
-      otherCtrl.updateValueAndValidity();
+    this.loadGenres();
+
+    this.form.get('track_stems')?.valueChanges.subscribe((mode: TrackMode) => {
+      this.applyModeValidators(mode);
     });
 
-    // Atualiza prévia de WhatsApp normalizado
-    this.form.get('whatsapp')?.valueChanges.subscribe((v: string) => {
-      const digits = (v || '').replace(/\D+/g, '');
-      this.whatsappPreview = digits ? `https://wa.me/${digits}` : '';
-    });
+    this.applyModeValidators(this.currentMode());
   }
 
-  ngAfterViewChecked(): void {
-    this.cdRef.detectChanges();
+  isMode(mode: TrackMode): boolean {
+    return this.currentMode() === mode;
   }
 
-  ngAfterViewInit(): void {
-    // this.uploadFileService.list().subscribe(data => console.log(data));
-
-    this.uploadFileService.list2().subscribe(data => console.log(data));
-
-    this.uploadFileService.loadById(4).subscribe(data => console.log(data));
-    /*
-    esta listando no console, verificar se outros metodos alem da listagem estao funcionando, se sim, mudar_todo o nosso crud atual para esse novo back end.
-
-    remover enviroment e criar as urls.
-    */
-
-    // Ajustes de estilo do Material
-    let matForm: any = document.querySelectorAll('.mat-form-field-wrapper');
-    let matFormInt: any = document.querySelectorAll('.mat-form-field-infix');
-    let matFormInt1: any = document.querySelectorAll('.mat-form-field-flex');
-    matForm.forEach((e: any) => {
-      e!.style.width = '100%';
-      e!.style.height = '100%';
-    });
-    matFormInt.forEach((e: any) => {
-      e!.style.width = '100%';
-      e!.style.height = '100%';
-    });
-    matFormInt1.forEach((e: any) => {
-      e!.style.width = '100%';
-      e!.style.height = '100%';
-    });
+  hasError(controlName: string, errorName: string = 'required'): boolean {
+    const ctrl = this.form.get(controlName);
+    if (!ctrl) return false;
+    return ctrl.hasError(errorName) && (ctrl.touched || ctrl.dirty || this.submitted);
   }
 
-  onGenreChange(genero: string): void {
-    if (!genero) {
-      this.subgeneros = [];
-      this.form.get('genreSecondary')?.reset('');
-      return;
-    }
-    this.musicService.getSubgeneros(genero).subscribe((subs: any) => {
-      this.subgeneros = subs || [];
-      const current = this.form.get('genreSecondary')?.value;
-      if (current && !this.subgeneros.includes(current)) {
-        this.form.get('genreSecondary')?.reset('');
-      }
-    });
-  }
-
-  // Método removeTracks() removido - não mais necessário com o novo componente de upload
-
-  markCheckbox(e: any) {
-    console.log(this.checkBoxProducer);
-    if(e.target.checked == undefined) {
-      this.checkBoxProducer ? this.checkBoxProducer = false : this.checkBoxProducer = true;
-    }
-    if (e.target.checked == true) {
-      this.checkBoxProducer = true;
-      // Usar ViewChild seria ideal, mas mantendo funcionalidade por enquanto
-      const btn = document.getElementById('btn');
-      const link = document.querySelector('a.m-0.p-0') as HTMLElement;
-      const collapse = document.getElementById('collapseWidthExample');
-      
-      btn?.classList.add('top');
-      link?.classList.add('top');
-      collapse?.classList.add('comboFlex');
-    } else if (e.target.checked == false) {
-      this.checkBoxProducer = false;
-    }
-    console.log(this.checkBoxProducer);
-    console.log(e.target.checked);
-  }
-
-  changeTrack(elm: any): void {
-    (elm.value == 'trackWithStems' || elm == 'trackWithStems' || this.producer == 'trackWithStems' || elm.value == 'trackNoStems' || elm == 'trackNoStems' || this.producer == 'trackNoStems') ? this.CWE.nativeElement.style.display = 'inline-grid' : EMPTY;
-
-    const val = elm?.value || elm || this.producer;
-    if (val === 'trackWithStems') {
-      this.rules = 'Nesta opção você poderá enviar 1 música completa + 1 a 4 stems. Todos os stems precisam ter a mesma duração da música completa.';
-    } else if (val === 'trackNoStems') {
-      this.rules = 'Nesta opção você poderá enviar somente 1 música completa (sem stems).';
-      // removeTracks() não mais necessário - o componente de upload gerencia isso automaticamente
-    }
-    this.cardAnimate();
-  }
-
-  onCommentChange(e: any) {
-    console.log(e)
-  }
-
-  cardRepeat() {
-    return this.card!.style.width = '0vw';
-  }
-
-  cardAnimate(): void {
-    // Usar ViewChild se disponível, senão fallback para getElementById
-    const cardEl = this.cardElement?.nativeElement || document.getElementById('card');
-    this.card = cardEl;
-    
-    if (this.producer == 'trackNoStems') {
-      this.cardRepeat();
-      setTimeout((): void => {
-        if (cardEl) {
-          cardEl.style.height = '62px';
-          cardEl.style.width = 'auto';
-          cardEl.style.maxWidth = '65vw';
-          cardEl.style.opacity = '1';
-          cardEl.style.marginBottom = '2rem';
-        }
-      }, 150);
-    } else if (this.producer == 'trackWithStems') {
-      this.cardRepeat();
-      if (cardEl) {
-        cardEl.style.width = 'auto';
-        cardEl.style.height = 'auto';
-        cardEl.style.maxWidth = '65vw';
-        cardEl.style.opacity = '1';
-        cardEl.style.marginBottom = '2rem';
-      }
-    }
-  }
-
-  // Métodos loop(), uploadFile() e onLoopFileChange() removidos - substituídos pelo componente custom-file-upload
-
-
-  files!: Set<File>;
-
-  onMainFilesSelected(fileList: FileList): void {
-    console.log('Arquivos selecionados:', fileList);
-    // Usar ViewChild se disponível, senão fallback para querySelector
-    const submitBtn = this.submitButton?.nativeElement || document.querySelector('.btnSubmit');
-    submitBtn?.classList.add('hover');
-
-    const fileNames: any[] = [];
-    this.files = new Set();
-    for(let i = 0; i < fileList.length; i++) {
-      fileNames.push(fileList[i].name);
-      this.files.add(fileList[i]);
-    }
-    console.log('Nomes dos arquivos:', fileNames);
-    this.form.get('upload')?.markAsTouched();
-  }
-  onUpload() {
+  onUpload(): void {
     this.submitted = true;
     this.errorSummary = [];
     this.form.markAllAsTouched();
-    // Verificações de form e quantidades de arquivos
+
     if (this.form.invalid) {
       this.buildErrorSummary();
       this.snackBar.open('Corrija os erros destacados antes de enviar.', '', { duration: 5000 });
-      setTimeout(() => this.scrollToErrorSummary(), 0);
-      setTimeout(() => this.focusFirstInvalidControl(), 0);
+      this.scrollToErrorSummary();
+      this.focusFirstInvalidControl();
       return;
     }
 
-    // Monta FormData para a rota de produtores com regras
-    const fd = new FormData();
-    // Modo (sem stems ou com stems)
-    const mode = this.producer === 'trackWithStems' ? 'trackWithStems' : 'trackNoStems';
-    fd.append('mode', mode);
-    // Arquivos principais: assumimos primeiro arquivo como track e demais como stems quando applicable
-    if (this.files && this.files.size > 0) {
-      const arr = Array.from(this.files);
-      // Regras de contagem
-      if (mode === 'trackNoStems' && arr.length !== 1) {
-        this.errorSummary.push('Modo sem stems: selecione exatamente 1 arquivo de música.');
-      }
-      if (mode === 'trackWithStems' && (arr.length < 2 || arr.length > 5)) {
-        this.errorSummary.push('Modo com stems: selecione 1 música + 1 a 4 stems (total até 5 arquivos).');
-      }
-      if (this.errorSummary.length) {
-        this.snackBar.open(this.errorSummary[0], '', { duration: 5000 });
-        setTimeout(() => this.scrollToErrorSummary(), 0);
-        setTimeout(() => this.focusFirstInvalidControl(), 0);
-        return;
-      }
-      if (arr.length > 0) {
-        fd.append('track', arr[0]);
-        for (let i = 1; i < arr.length; i++) {
-          fd.append('stem', arr[i]);
+    const mode = this.currentMode();
+    this.buildDurations(mode)
+      .then((durations) => {
+        const durationErrors = this.validateDurations(mode, durations);
+        if (durationErrors.length > 0) {
+          this.errorSummary = durationErrors;
+          this.snackBar.open(durationErrors[0], '', { duration: 6000 });
+          this.scrollToErrorSummary();
+          return;
         }
-      }
-    }
-    // Loops
-    const l15 = this.form.get('loop15')?.value; if (l15) fd.append('loop15', l15);
-    const l30 = this.form.get('loop30')?.value; if (l30) fd.append('loop30', l30);
-    const l60 = this.form.get('loop60')?.value; if (l60) fd.append('loop60', l60);
-    this.buildDurations().then((durations) => {
-      const selectedRemix = this.form.get('remixProducer')?.value;
-      const remixOther = this.form.get('remixProducerOther')?.value;
-      const remixFinal = selectedRemix === '__OUTRO__' ? (remixOther || null) : (selectedRemix || null);
-      const social = this.buildSocial();
-      const meta: any = {
-        genre: this.form.get('genrePrimary')?.value,
-        subgenre: this.form.get('genreSecondary')?.value,
-        mood: this.form.get('mood')?.value,
-        isRemix: !!this.form.get('isRemix')?.value,
-        remixProducer: remixFinal,
-        isrc: this.form.get('isrc')?.value,
-        upc: this.form.get('upc')?.value,
-        registryType: this.form.get('registryType')?.value,
-        registryValue: this.form.get('registryValue')?.value,
-        hashType: this.form.get('hashType')?.value,
-        durations,
-        social,
-      };
-      fd.append('meta', JSON.stringify(meta));
-      this.uploadFileService.uploadProducerTrack(fd).subscribe((resp) => {
-        console.log('Upload Produtor:', resp);
-        this.snackBar.open('Upload enviado!', '', { duration: 4000 });
-      }, (err) => {
-        console.error(err);
-        this.snackBar.open(`Erro no upload: ${err?.error?.message || 'verifique os arquivos.'}`, '', { duration: 6000 });
+
+        const fd = this.buildFormData(mode, durations);
+
+        this.uploadFileService.uploadProducerTrack(fd).subscribe({
+          next: () => {
+            this.snackBar.open('Upload enviado com sucesso!', '', { duration: 4000 });
+          },
+          error: (err) => {
+            const message = err?.error?.message || 'Erro ao enviar upload.';
+            this.snackBar.open(message, '', { duration: 6000 });
+          },
+        });
+      })
+      .catch(() => {
+        this.errorSummary = ['Não foi possível calcular as durações dos áudios enviados.'];
+        this.snackBar.open(this.errorSummary[0], '', { duration: 6000 });
       });
-    }).catch((e) => {
-      console.error(e);
-      this.snackBar.open('Não foi possível calcular as durações dos áudios.', '', { duration: 6000 });
+  }
+
+  private loadGenres(): void {
+    this.musicService.getGeneros().subscribe({
+      next: (data: any) => {
+        const fromApi = this.normalizeOptions(data);
+        this.generos = fromApi.length ? fromApi : this.getFallbackGenres();
+      },
+      error: () => {
+        this.generos = this.getFallbackGenres();
+      }
     });
   }
 
-  // Atualiza validações e placeholder do campo de registro dinâmico
-  private updateRegistryValidators(type: string, hashType?: string) {
-    const ctrl = this.form.get('registryValue');
-    if (!ctrl) return;
-    ctrl.clearValidators();
-    
-    this.registryPlaceholder = SharedValidators.getRegistryPlaceholder(type, hashType);
-    
-    const validators: any[] = [];
-    const pattern = SharedValidators.getRegistryPattern(type, hashType);
-    if (pattern) {
-      if (type === 'HASH' && hashType) {
-        validators.push(SharedValidators.hash(hashType));
-      } else {
-        validators.push(Validators.pattern(pattern));
-      }
-    }
-    
-    ctrl.setValidators(validators);
-    ctrl.updateValueAndValidity();
+  private normalizeOptions(data: any): string[] {
+    if (!Array.isArray(data)) return [];
+    const normalized = data
+      .map((item) => String(item ?? '').trim())
+      .filter(Boolean);
+    return Array.from(new Set(normalized));
   }
 
-  // onLoopFileChange() removido - agora é gerenciado pelo componente custom-file-upload via ControlValueAccessor
+  private getFallbackGenres(): string[] {
+    const serviceAny: any = this.musicService as any;
+    const rawGenero = serviceAny?.genero;
+    if (Array.isArray(rawGenero) && rawGenero.length > 0) {
+      const first = rawGenero[0];
+      if (first && typeof first === 'object') {
+        const keys = Object.keys(first)
+          .map((item) => String(item ?? '').trim())
+          .filter(Boolean);
+        if (keys.length > 0) {
+          return keys;
+        }
+      }
+    }
 
-  private getFileDurationMs(file: File): Promise<number> {
+    const convertida2 = serviceAny?.convertida2;
+    if (Array.isArray(convertida2) && convertida2.length > 0) {
+      return this.normalizeOptions(convertida2);
+    }
+
+    return ['Rock', 'Pop', 'Eletrônica (EDM)'];
+  }
+
+  private currentMode(): TrackMode {
+    const mode = this.form.get('track_stems')?.value;
+    if (mode === 'trackWithStems' || mode === 'effectsFx') {
+      return mode;
+    }
+    return 'trackNoStems';
+  }
+
+  private applyModeValidators(mode: TrackMode): void {
+    this.stemsControls.forEach((name) => {
+      const ctrl = this.form.get(name);
+      if (!ctrl) return;
+      ctrl.clearValidators();
+      if (mode === 'trackWithStems') {
+        ctrl.setValidators([Validators.required]);
+      } else {
+        ctrl.reset(null, { emitEvent: false });
+      }
+      ctrl.updateValueAndValidity({ emitEvent: false });
+    });
+
+    this.effectsControls.forEach((name) => {
+      const ctrl = this.form.get(name);
+      if (!ctrl) return;
+      ctrl.clearValidators();
+      if (mode === 'effectsFx') {
+        ctrl.setValidators([Validators.required]);
+      } else {
+        ctrl.reset(null, { emitEvent: false });
+      }
+      ctrl.updateValueAndValidity({ emitEvent: false });
+    });
+  }
+
+  private parseSaleValue(value: string): number {
+    return parseFloat(String(value ?? '').replace(',', '.'));
+  }
+
+  private buildFormData(mode: TrackMode, durations: any): FormData {
+    const fd = new FormData();
+    const registry: RegistryClassification = SharedValidators.classifyRegistryRaw(this.form.get('registryValue')?.value);
+
+    const track = this.form.get('singleTrackFile')?.value as File;
+    fd.append('schemaVersion', 'producer_form_v2');
+    fd.append('mode', mode);
+    fd.append('track', track);
+
+    const image = this.form.get('imageFile')?.value as File | null;
+    if (image) {
+      fd.append('image', image);
+    }
+
+    if (mode === 'trackWithStems') {
+      fd.append('stem_melody', this.form.get('stemMelodyFile')?.value as File);
+      fd.append('stem_harmony', this.form.get('stemHarmonyFile')?.value as File);
+      fd.append('stem_drums', this.form.get('stemDrumsFile')?.value as File);
+      fd.append('stem_fx', this.form.get('stemFxFile')?.value as File);
+    }
+
+    if (mode === 'effectsFx') {
+      this.effectsControls.forEach((controlName, index) => {
+        fd.append(`effect${index + 1}`, this.form.get(controlName)?.value as File);
+      });
+    }
+
+    const phoneRaw = String(this.form.get('phone')?.value ?? '');
+    const phoneDigits = phoneRaw.replace(/\D+/g, '');
+
+    const meta: any = {
+      artistName: this.form.get('nome')?.value,
+      email: this.form.get('email')?.value,
+      countryCode: this.form.get('countryCode')?.value,
+      phone: phoneRaw,
+      phoneDigits,
+      identification: this.form.get('identification')?.value,
+      trackName: this.form.get('trackName')?.value,
+      category: this.form.get('category')?.value,
+      genre: this.form.get('genrePrimary')?.value,
+      bpm: Number(this.form.get('bpm')?.value),
+      key: this.form.get('key')?.value,
+      saleValue: this.parseSaleValue(this.form.get('saleValue')?.value),
+      externalLink: this.form.get('externalLink')?.value || null,
+      registryRaw: registry.registryRaw,
+      registryType: registry.registryType,
+      registryValue: registry.registryValue,
+      isrc: registry.isrc,
+      upc: registry.upc,
+      hashType: registry.hashType,
+      termsAccepted: !!this.form.get('politicaDePrivacidade')?.value,
+      durations,
+    };
+
+    fd.append('meta', JSON.stringify(meta));
+
+    return fd;
+  }
+
+  private async getFileDurationMs(file: File): Promise<number> {
     return new Promise((resolve, reject) => {
       try {
         const audio = document.createElement('audio');
@@ -431,121 +345,167 @@ export class ProdutoresComponent implements OnInit, AfterViewInit, AfterViewChec
     });
   }
 
-  private async buildDurations(): Promise<any> {
+  private async buildDurations(mode: TrackMode): Promise<any> {
     const result: any = {};
-    const arr = this.files ? Array.from(this.files) : [];
-    if (arr.length > 0) {
-      result.track_ms = await this.getFileDurationMs(arr[0]);
-      const stems: number[] = [];
-      for (let i = 1; i < arr.length; i++) {
-        stems.push(await this.getFileDurationMs(arr[i]));
-      }
-      if (stems.length) result.stems_ms = stems;
+
+    const track = this.form.get('singleTrackFile')?.value as File | null;
+    if (track) {
+      result.track_ms = await this.getFileDurationMs(track);
     }
-    const l15 = this.form.get('loop15')?.value; if (l15) result.loop15_ms = await this.getFileDurationMs(l15);
-    const l30 = this.form.get('loop30')?.value; if (l30) result.loop30_ms = await this.getFileDurationMs(l30);
-    const l60 = this.form.get('loop60')?.value; if (l60) result.loop60_ms = await this.getFileDurationMs(l60);
+
+    if (mode === 'trackWithStems') {
+      const melody = this.form.get('stemMelodyFile')?.value as File | null;
+      const harmony = this.form.get('stemHarmonyFile')?.value as File | null;
+      const drums = this.form.get('stemDrumsFile')?.value as File | null;
+      const fx = this.form.get('stemFxFile')?.value as File | null;
+
+      if (melody) result.stem_melody_ms = await this.getFileDurationMs(melody);
+      if (harmony) result.stem_harmony_ms = await this.getFileDurationMs(harmony);
+      if (drums) result.stem_drums_ms = await this.getFileDurationMs(drums);
+      if (fx) result.stem_fx_ms = await this.getFileDurationMs(fx);
+
+      result.stems_ms = [
+        result.stem_melody_ms,
+        result.stem_harmony_ms,
+        result.stem_drums_ms,
+        result.stem_fx_ms,
+      ].filter((value) => Number.isFinite(value));
+    }
+
+    if (mode === 'effectsFx') {
+      const effectsDurations: number[] = [];
+      this.effectsControls.forEach((name, index) => {
+        const file = this.form.get(name)?.value as File | null;
+        if (!file) return;
+        effectsDurations.push(0);
+        result[`effect${index + 1}_ms`] = 0;
+      });
+
+      for (let i = 0; i < this.effectsControls.length; i++) {
+        const file = this.form.get(this.effectsControls[i])?.value as File | null;
+        if (!file) continue;
+        const duration = await this.getFileDurationMs(file);
+        effectsDurations[i] = duration;
+        result[`effect${i + 1}_ms`] = duration;
+      }
+
+      result.effects_ms = effectsDurations.filter((value) => Number.isFinite(value) && value > 0);
+    }
+
     return result;
   }
 
-  // Normaliza redes sociais e WhatsApp (E.164 simples: dígitos somente)
-  private buildSocial() {
-    const get = (k: string) => (this.form.get(k)?.value || '').trim();
-    const rawWa = get('whatsapp');
-    const digits = (rawWa || '').replace(/\D+/g, '');
-    const whatsapp_e164 = digits || null;
-    const whatsapp_wa = digits ? `https://wa.me/${digits}` : null;
-    return {
-      facebook: get('facebookUrl') || null,
-      instagram: get('instagramUrl') || null,
-      google: get('googleUrl') || null,
-      linkedin: get('linkedinUrl') || null,
-      spotify: get('spotifyUrl') || null,
-      other: get('otherUrl') || null,
-      whatsapp_e164,
-      whatsapp_wa,
-    };
-  }
+  private validateDurations(mode: TrackMode, durations: any): string[] {
+    const errors: string[] = [];
+    const tolerance = 200;
+    const trackMs = Number(durations?.track_ms || 0);
 
-  private buildErrorSummary() {
-    const msgs: string[] = [];
-    const f = this.form;
-
-    if (f.get('nome')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Nome'));
-    if (f.get('sobrenome')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Sobrenome'));
-    if (f.get('artista_banda')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Artista/Banda'));
-
-    if (f.get('email')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('E-mail'));
-    else if (f.get('email')?.hasError('email')) msgs.push(SharedValidators.getInvalidEmailMessage('E-mail'));
-
-    if (f.get('confirmEmail')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Confirmação de e-mail'));
-    else if (f.get('confirmEmail')?.hasError('email')) msgs.push(SharedValidators.getInvalidEmailMessage('Confirmação de e-mail'));
-    if (f.hasError('emailsMismatch')) msgs.push('Os e-mails não coincidem.');
-
-    if (f.get('fonteAcesso')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Como você ficou sabendo sobre nós?'));
-
-    if (f.get('genrePrimary')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Gênero primário'));
-    if (f.get('stemsType')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Tipo de stem'));
-    if (f.get('mood')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Humor'));
-
-    if (f.get('isrc')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('ISRC'));
-    else if (f.get('isrc')?.hasError('isrc')) msgs.push(SharedValidators.getErrorMessage(f.get('isrc'), 'isrc') || 'ISRC inválido.');
-
-    if (f.get('upc')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('UPC'));
-    else if (f.get('upc')?.hasError('upc')) msgs.push(SharedValidators.getErrorMessage(f.get('upc'), 'upc') || 'UPC inválido.');
-
-    // Registry value errors - usar mensagem customizada dos validators compartilhados
-    const registryCtrl = f.get('registryValue');
-    if (registryCtrl?.hasError('hash')) msgs.push(SharedValidators.getErrorMessage(registryCtrl, 'hash') || 'Valor do registro adicional inválido.');
-    else if (registryCtrl?.hasError('pattern')) msgs.push('Valor do registro adicional inválido.');
-    
-    if (f.get('remixProducer')?.value === '__OUTRO__') {
-      if (f.get('remixProducerOther')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Nome do Produtor (Outro)'));
-      else if (f.get('remixProducerOther')?.hasError('minlength')) msgs.push('Nome do Produtor (Outro): mínimo de 3 caracteres.');
-      else if (f.get('remixProducerOther')?.hasError('maxlength')) msgs.push('Nome do Produtor (Outro): máximo de 80 caracteres.');
+    if (!trackMs) {
+      errors.push('Não foi possível obter a duração do arquivo Single Track.');
+      return errors;
     }
 
-    if (f.get('textarea')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Tags'));
-    if (f.get('textarea1')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Descrição da música'));
+    const isSameDuration = (candidate: number) => Math.abs(candidate - trackMs) <= tolerance;
 
-    if (f.get('loop15')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Loop 15s'));
-    if (f.get('loop30')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Loop 30s'));
-    if (f.get('loop60')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Loop 60s'));
+    if (mode === 'trackWithStems') {
+      const entries = [
+        { label: 'Melodias', value: Number(durations?.stem_melody_ms || 0) },
+        { label: 'Harmonias', value: Number(durations?.stem_harmony_ms || 0) },
+        { label: 'Ritmos', value: Number(durations?.stem_drums_ms || 0) },
+        { label: 'Efeitos', value: Number(durations?.stem_fx_ms || 0) },
+      ];
 
-    if (f.get('politicaDePrivacidade')?.hasError('required')) msgs.push('É obrigatório aceitar a Política de Privacidade.');
+      entries.forEach((item) => {
+        if (!item.value || !isSameDuration(item.value)) {
+          errors.push(`${item.label} deve ter a mesma duração do Single Track (±200ms).`);
+        }
+      });
+    }
+
+    if (mode === 'effectsFx') {
+      for (let i = 1; i <= 6; i++) {
+        const value = Number(durations?.[`effect${i}_ms`] || 0);
+        if (!value || !isSameDuration(value)) {
+          errors.push(`Efeito ${i} deve ter a mesma duração do Single Track (±200ms).`);
+        }
+      }
+    }
+
+    return Array.from(new Set(errors));
+  }
+
+  private buildErrorSummary(): void {
+    const f = this.form;
+    const msgs: string[] = [];
+
+    if (f.get('nome')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Nome / Nome Artístico'));
+
+    if (f.get('email')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Email'));
+    else if (f.get('email')?.hasError('email')) msgs.push(SharedValidators.getInvalidEmailMessage('Email'));
+
+    if (f.get('countryCode')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Código'));
+
+    if (f.get('phone')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Telefone + DDD'));
+    else if (f.get('phone')?.hasError('phone')) msgs.push(SharedValidators.getErrorMessage(f.get('phone'), 'phone') || 'Telefone inválido.');
+
+    if (f.get('identification')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Nº de Identificação'));
+    else if (f.get('identification')?.hasError('identification')) msgs.push(SharedValidators.getErrorMessage(f.get('identification'), 'identification') || 'Identificação inválida.');
+
+    if (f.get('trackName')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Nome da Música'));
+    if (f.get('category')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Categoria'));
+    if (f.get('genrePrimary')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Gênero'));
+
+    if (f.get('bpm')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('BPM'));
+    else if (f.get('bpm')?.hasError('bpm')) msgs.push(SharedValidators.getErrorMessage(f.get('bpm'), 'bpm') || 'BPM inválido.');
+
+    if (f.get('key')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Tom'));
+
+    if (f.get('externalLink')?.hasError('url')) msgs.push(SharedValidators.getErrorMessage(f.get('externalLink'), 'url') || 'Link inválido.');
+
+    if (f.get('saleValue')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Valor de venda'));
+    else if (f.get('saleValue')?.hasError('saleValue')) msgs.push(SharedValidators.getErrorMessage(f.get('saleValue'), 'saleValue') || 'Valor de venda inválido.');
+
+    if (f.get('singleTrackFile')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Single Track'));
+
+    if (this.currentMode() === 'trackWithStems') {
+      if (f.get('stemMelodyFile')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Melodias (strings)'));
+      if (f.get('stemHarmonyFile')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Harmonias (chords)'));
+      if (f.get('stemDrumsFile')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Ritmos (drums)'));
+      if (f.get('stemFxFile')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Efeitos (FX)'));
+    }
+
+    if (this.currentMode() === 'effectsFx') {
+      this.effectsControls.forEach((name, index) => {
+        if (f.get(name)?.hasError('required')) {
+          msgs.push(SharedValidators.getRequiredMessage(`Efeito ${index + 1}`));
+        }
+      });
+    }
+
+    if (f.get('politicaDePrivacidade')?.hasError('required')) msgs.push('É obrigatório aceitar os Termos e condições.');
 
     this.errorSummary = Array.from(new Set(msgs));
   }
 
-  private scrollToErrorSummary() {
-    try {
-      if (this.errorSummaryRef?.nativeElement) {
-        this.errorSummaryRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        window.scroll({ top: 0, behavior: 'smooth' as ScrollBehavior });
-      }
-    } catch (e) {
-      window.scrollTo(0, 0);
+  private scrollToErrorSummary(): void {
+    if (this.errorSummaryRef?.nativeElement) {
+      this.errorSummaryRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
     }
+    window.scroll({ top: 0, behavior: 'smooth' });
   }
 
-  private focusFirstInvalidControl() {
+  private focusFirstInvalidControl(): void {
     try {
       const root: HTMLElement = this.host?.nativeElement as HTMLElement;
       if (!root) return;
-      const selector = 'form .ng-invalid[formcontrolname], form .ng-invalid input, form .ng-invalid textarea';
-      const invalid = root.querySelector(selector) as HTMLElement | null;
-      if (invalid) {
-        if (typeof (invalid as any).focus === 'function') {
-          (invalid as any).focus();
-        } else {
-          const inner = invalid.querySelector('input,textarea') as HTMLElement | null;
-          if (inner && typeof (inner as any).focus === 'function') {
-            (inner as any).focus();
-          }
-        }
+      const invalid = root.querySelector('form .ng-invalid[formcontrolname], form .ng-invalid input, form .ng-invalid textarea') as HTMLElement | null;
+      if (!invalid) return;
+      if (typeof (invalid as any).focus === 'function') {
+        (invalid as any).focus();
       }
-    } catch (e) {}
+    } catch (_e) {
+      // noop
+    }
   }
-  // uploadFile() removido - não mais necessário com o componente custom-file-upload
 }

@@ -1,5 +1,5 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
-import { AfterContentInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
@@ -13,12 +13,20 @@ function senhasIguaisValidator(group: AbstractControl): ValidationErrors | null 
   return senha.value === confirmar.value ? null : { senhasNaoConferem: true };
 }
 
+type CustomSelectKey = 'typePerson' | 'tipoPerfil';
+
+interface CustomSelectOption {
+  value: string;
+  label: string;
+  tooltip?: string;
+}
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, AfterContentInit {
+export class LoginComponent implements OnInit {
 
   form: FormGroup;
   loginErro: boolean = false;
@@ -26,10 +34,32 @@ export class LoginComponent implements OnInit, AfterContentInit {
   register: any;
   resetP: any;
   mf: any;
-  person: any[] = [
-    {value: 'Pessoa Física', viewValue: 'Pessoa Física'},
-    {value: 'Pessoa Jurídica', viewValue: 'Pessoa Jurídica'},
-  ];
+  readonly customSelectPlaceholders: Record<CustomSelectKey, string> = {
+    typePerson: 'Tipo de Pessoa',
+    tipoPerfil: 'Tipo de Perfil',
+  };
+  readonly customSelectOptions: Record<CustomSelectKey, CustomSelectOption[]> = {
+    typePerson: [
+      { value: 'Pessoa Física', label: 'Pessoa Física' },
+      { value: 'Pessoa Jurídica', label: 'Pessoa Jurídica' },
+    ],
+    tipoPerfil: [
+      {
+        value: 'comprador',
+        label: 'Mok Starters',
+        tooltip: 'Conta para usuários que desejam navegar, comprar e assinar planos na plataforma.',
+      },
+      {
+        value: 'produtor',
+        label: 'Mok Makers',
+        tooltip: 'Conta para produtores e compositores que desejam publicar, vender e gerenciar suas criações.',
+      },
+    ],
+  };
+  customSelectState: Record<CustomSelectKey, boolean> = {
+    typePerson: false,
+    tipoPerfil: false,
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -51,66 +81,46 @@ export class LoginComponent implements OnInit, AfterContentInit {
 
   ngOnInit(): void {}
 
-  ngAfterContentInit() {
-    document.querySelector(".ls-select.status.forma")!.addEventListener("click", () => {
-      this.downStatus2();
+  isCustomSelectOpen(selectKey: CustomSelectKey): boolean {
+    return this.customSelectState[selectKey];
+  }
+
+  toggleCustomSelect(selectKey: CustomSelectKey): void {
+    const isOpening = !this.customSelectState[selectKey];
+    (Object.keys(this.customSelectState) as CustomSelectKey[]).forEach((key) => {
+      this.customSelectState[key] = key === selectKey ? isOpening : false;
     });
   }
 
-  downStatus2() {
-    let arrow2: any = document.getElementById('arrow2');
-    let down2: any = document.querySelector('.down.two');
-    if(down2.style.display == "none") {
+  selectCustomOption(event: Event, selectKey: CustomSelectKey, option: CustomSelectOption): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.form.get(selectKey)?.setValue(option.value);
+    this.form.get(selectKey)?.markAsTouched();
+    this.customSelectState[selectKey] = false;
+  }
 
-      down2.style.opacity = 0;
-      down2.style.display = "block";
-      setTimeout(() =>{
-        down2.style.opacity = 0.25;
-        arrow2.style.transform = "rotate(45deg)";
-      }, 100);
-      setTimeout(() =>{
-        down2.style.opacity = 0.5;
-        arrow2.style.transform = "rotate(90deg)";
-      }, 150);
-      setTimeout(() =>{
-        down2.style.opacity = 0.75;
-        arrow2.style.transform = "rotate(135deg)";
-      }, 200);
-      setTimeout(() => {
-        down2.style.opacity = 1;
-        arrow2.style.transform = "rotate(180deg)";
-      }, 250);
-
-    } else if(down2.style.display == "block") {
-
-      down2.style.opacity = 1;
-      setTimeout(() =>{
-        down2.style.opacity = 0.75;
-        arrow2.style.transform = "rotate(135deg)";
-      }, 100);
-      setTimeout(() =>{
-        down2.style.opacity = 0.5;
-        arrow2.style.transform = "rotate(90deg)";
-      }, 150);
-      setTimeout(() =>{
-        down2.style.opacity = 0.25;
-        arrow2.style.transform = "rotate(45deg)";
-      }, 200);
-      setTimeout(() => {
-        down2.style.opacity = 0;
-        arrow2.style.transform = "rotate(0deg)";
-        down2.style.display = "none";
-      }, 250);
-
+  onCustomSelectKeydown(event: KeyboardEvent, selectKey: CustomSelectKey): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.toggleCustomSelect(selectKey);
+      return;
+    }
+    if (event.key === 'Escape') {
+      this.customSelectState[selectKey] = false;
+      return;
+    }
+    if (event.key === 'ArrowDown' && !this.customSelectState[selectKey]) {
+      event.preventDefault();
+      this.toggleCustomSelect(selectKey);
     }
   }
 
-  radiocontainer(e: any) {
-    let n = e.id;
-    let txt = document.getElementById(n)!.innerText;
-    document.getElementById("forma")!.innerHTML = txt;
-    this.form.get('typePerson')?.setValue(txt);
-    this.downStatus2();
+  getSelectedLabel(selectKey: CustomSelectKey): string {
+    const selectedValue = this.form.get(selectKey)?.value;
+    const selectedOption = this.customSelectOptions[selectKey]
+      .find((option) => option.value === selectedValue);
+    return selectedOption?.label ?? this.customSelectPlaceholders[selectKey];
   }
 
   politica() {

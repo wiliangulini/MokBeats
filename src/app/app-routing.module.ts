@@ -57,7 +57,7 @@ const routes: Routes = [
   { path: 'carrinho', component: CarrinhoComponent },
   { path: 'upload', loadChildren: () => import('./upload-file/upload-file.module').then(m => m.UploadFileModule), canActivate: [AuthGuard, ProfileCompleteGuard] },
   { path: 'dados-pessoais', redirectTo: 'atualizar-informacoes', pathMatch: 'full' },
-  { path: 'dashboard-produtor', component: DashboardProdutorComponent, canActivate: [AuthGuard, ProfileCompleteGuard, ProdutorGuard] },
+  { path: 'dashboard-produtor', component: DashboardProdutorComponent, canActivate: [AuthGuard, ProdutorGuard] },
 ];
 
 @NgModule({

@@ -1,265 +1,238 @@
 #!/bin/bash
 
 ################################################################################
-# Script de Deploy Automatizado - MokBeats VPS
-#
-# Este script automatiza todo o processo de deploy do projeto MokBeats
-# para a VPS da Hostinger.
+# Deploy MokBeats → VPS Hostinger
 #
 # Uso: ./deploy-to-vps.sh
 #
-# Requisitos:
+# Requisitos locais:
 # - rsync instalado
-# - ssh configurado
-# - Build do Angular já executado (npm run build)
+# - ssh configurado com chave para root@VPS_IP
+# - Executar do diretório raiz do projeto (onde está angular.json)
 ################################################################################
 
-set -e  # Sair se qualquer comando falhar
+set -e
 
-# Cores para output
+# ── Configurações centralizadas ────────────────────────────────────────────────
+VPS_IP="31.97.160.61"
+VPS_USER="root"
+VPS_PATH="/var/www/html/gulini.com.br/mokbeats"
+PM2_NAME="mok-backend"
+BACKEND_PORT=3100
+SSH="${VPS_USER}@${VPS_IP}"
+
+# ── Cores ──────────────────────────────────────────────────────────────────────
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-MAGENTA='\033[0;35m'
 CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-# Configurações da VPS
-VPS_IP="147.79.87.156"
-VPS_USER="root"
-VPS_PATH="/var/www/mokbeats"
-PROJECT_DIR="/home/hustler/Documentos/projetos/MokBeats"
+step()    { echo -e "\n${BLUE}[STEP]${NC} $1"; }
+ok()      { echo -e "${GREEN}[✓]${NC} $1"; }
+warn()    { echo -e "${YELLOW}[!]${NC} $1"; }
+err()     { echo -e "${RED}[✗]${NC} $1"; }
+info()    { echo -e "    $1"; }
 
-# Banner
+# ── Verificar pré-requisitos locais ───────────────────────────────────────────
+if [ ! -f "angular.json" ]; then
+  err "Execute este script do diretório raiz do projeto (onde está angular.json)"
+  exit 1
+fi
+
+command -v rsync >/dev/null 2>&1 || { err "rsync não encontrado. Instale com: sudo apt install rsync"; exit 1; }
+
 echo -e "${CYAN}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  🚀 Deploy Automatizado - MokBeats VPS"
+echo "  Deploy MokBeats → ${VPS_IP}"
+echo "  Destino: ${VPS_PATH}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo -e "${NC}"
 
-# Função para printar mensagens
-print_step() {
-  echo -e "${BLUE}[STEP]${NC} $1"
-}
+# ── PASSO 1: Build do Angular ──────────────────────────────────────────────────
+step "1. Build do Angular (--base-href /mokbeats/)"
+npm run build -- --base-href /mokbeats/
+ok "Build concluído → dist/"
 
-print_success() {
-  echo -e "${GREEN}[✓]${NC} $1"
-}
+# ── PASSO 2: Upload do frontend ───────────────────────────────────────────────
+step "2. Upload do frontend (dist/ → VPS)"
+info "Destino: ${SSH}:${VPS_PATH}/"
+rsync -avz --delete \
+  --exclude=server/ \
+  --exclude=.htaccess \
+  dist/ ${SSH}:${VPS_PATH}/
+ok "Frontend enviado"
 
-print_warning() {
-  echo -e "${YELLOW}[!]${NC} $1"
-}
+# ── PASSO 3: .htaccess para SPA routing ──────────────────────────────────────
+step "3. Configurando .htaccess na VPS (SPA routing Angular)"
+ssh ${SSH} "cat > ${VPS_PATH}/.htaccess << 'HTACCESS'
+RewriteEngine On
+RewriteBase /mokbeats/
 
-print_error() {
-  echo -e "${RED}[✗]${NC} $1"
-}
+# Não reescrever arquivos/diretórios existentes
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 
-print_info() {
-  echo -e "${MAGENTA}[INFO]${NC} $1"
-}
+# Redirecionar tudo para index.html (Angular router)
+RewriteRule . /mokbeats/index.html [L]
+HTACCESS
+"
+ok ".htaccess criado"
 
-# Verificar se estamos no diretório correto
-if [ ! -f "angular.json" ]; then
-  print_error "Este script deve ser executado do diretório raiz do projeto MokBeats"
-  exit 1
-fi
+# ── PASSO 4: Upload do backend ────────────────────────────────────────────────
+step "4. Upload do backend (server/ → VPS)"
+info "Excluindo: node_modules/, .env"
+rsync -avz --delete \
+  --exclude=node_modules \
+  --exclude=.env \
+  --exclude=uploads/ \
+  server/ ${SSH}:${VPS_PATH}/server/
+ok "Backend enviado"
 
-# Passo 1: Build do Angular
-print_step "1. Verificando build do Angular..."
-if [ ! -d "dist" ]; then
-  print_warning "Pasta dist/ não encontrada. Executando build..."
-  npm run build
-  if [ $? -eq 0 ]; then
-    print_success "Build concluído com sucesso"
-  else
-    print_error "Erro no build do Angular"
-    exit 1
-  fi
-else
-  print_info "Build já existe em dist/"
-  read -p "Deseja fazer um novo build? (s/N): " rebuild
-  if [[ $rebuild =~ ^[Ss]$ ]]; then
-    npm run build
-    print_success "Build concluído"
-  fi
-fi
-
-# Passo 2: Upload do Frontend
-print_step "2. Fazendo upload do frontend (dist/)..."
-rsync -avz --delete dist/* ${VPS_USER}@${VPS_IP}:${VPS_PATH}/
-if [ $? -eq 0 ]; then
-  print_success "Frontend enviado com sucesso"
-else
-  print_error "Erro ao enviar frontend"
-  exit 1
-fi
-
-# Passo 3: Upload do Backend
-print_step "3. Fazendo upload do backend (server/)..."
-rsync -avz --delete --exclude=node_modules --exclude=.env server/ ${VPS_USER}@${VPS_IP}:${VPS_PATH}/server/
-if [ $? -eq 0 ]; then
-  print_success "Backend enviado com sucesso"
-else
-  print_error "Erro ao enviar backend"
-  exit 1
-fi
-
-# Passo 3.5: Upload do arquivo musicas.json (peaks pré-gerados)
-print_step "3.5. Enviando arquivo musicas.json com peaks pré-gerados..."
-if [ -f "server/data/musicas.json" ]; then
-  # Criar diretório data/ na VPS se não existir
-  ssh ${VPS_USER}@${VPS_IP} "mkdir -p ${VPS_PATH}/server/data"
-
-  # Obter informações do arquivo
-  FILE_SIZE=$(du -h server/data/musicas.json | cut -f1)
-  MUSICAS_COUNT=$(grep -o '"id":' server/data/musicas.json 2>/dev/null | wc -l)
-
-  print_info "Arquivo local encontrado:"
-  print_info "  - Tamanho: ${FILE_SIZE}"
-  print_info "  - Músicas: ${MUSICAS_COUNT}"
-
-  # Enviar musicas.json
-  rsync -avz server/data/musicas.json ${VPS_USER}@${VPS_IP}:${VPS_PATH}/server/data/
-
-  if [ $? -eq 0 ]; then
-    print_success "musicas.json enviado com sucesso (peaks pré-gerados)"
-    print_info "Geração de peaks na VPS será PULADA (economiza tempo)"
-    SKIP_PEAKS=true
-  else
-    print_error "Erro ao enviar musicas.json"
-    exit 1
-  fi
-else
-  print_warning "Arquivo server/data/musicas.json não encontrado localmente"
-  print_info "Peaks serão gerados na VPS (processo mais lento)"
-  SKIP_PEAKS=false
-fi
-
-# Passo 4: Upload dos Arquivos de Áudio
-print_step "4. Verificando arquivos de áudio..."
+# ── PASSO 5: Upload dos áudios ────────────────────────────────────────────────
+step "5. Verificando arquivos de áudio locais"
 if [ -d "src/assets/audios" ]; then
-  audio_count=$(find src/assets/audios -name "*.mp3" | wc -l)
-  print_info "Encontrados $audio_count arquivos MP3"
+  audio_count=$(find src/assets/audios -name "*.mp3" 2>/dev/null | wc -l)
+  info "Encontrados ${audio_count} arquivo(s) MP3 em src/assets/audios/"
 
-  read -p "Deseja fazer upload dos arquivos de áudio? (s/N): " upload_audio
-  if [[ $upload_audio =~ ^[Ss]$ ]]; then
-    print_step "Enviando arquivos de áudio..."
-    rsync -avz src/assets/audios/ ${VPS_USER}@${VPS_IP}:${VPS_PATH}/assets/audios/
-    if [ $? -eq 0 ]; then
-      print_success "Arquivos de áudio enviados com sucesso"
-    else
-      print_error "Erro ao enviar arquivos de áudio"
-      exit 1
-    fi
+  if [ "$1" = "--no-audio" ]; then
+    warn "Upload de áudio pulado (--no-audio)"
   else
-    print_warning "Upload de áudio pulado. Certifique-se de que os arquivos já estão na VPS."
+    info "Enviando para: ${SSH}:${VPS_PATH}/assets/audios/"
+    ssh ${SSH} "mkdir -p ${VPS_PATH}/assets/audios"
+    rsync -avz src/assets/audios/ ${SSH}:${VPS_PATH}/assets/audios/
+    ok "Áudios enviados (${audio_count} arquivo(s))"
   fi
 else
-  print_warning "Pasta src/assets/audios não encontrada localmente"
+  warn "src/assets/audios/ não encontrado localmente — verifique se os áudios já estão na VPS"
 fi
 
-# Passo 5: Criar arquivo .env na VPS
-print_step "5. Configurando arquivo .env na VPS..."
-ssh ${VPS_USER}@${VPS_IP} << 'EOF'
-cd /var/www/mokbeats/server
+# ── PASSO 6: Configuração remota da VPS ──────────────────────────────────────
+step "6. Configurando ambiente na VPS"
 
-# Criar arquivo .env com configurações de produção
-cat > .env << 'ENVFILE'
-# Configuração de Ambiente - Produção (VPS)
+ssh ${SSH} bash << REMOTE
+set -e
+
+# ── 6a. Instalar Node.js (se não instalado) ──────────────────────────────────
+if ! command -v node >/dev/null 2>&1; then
+  echo "[STEP] Instalando Node.js LTS via NodeSource..."
+  curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+  apt-get install -y nodejs
+  echo "[✓] Node.js \$(node --version) instalado"
+else
+  echo "[✓] Node.js \$(node --version) já instalado"
+fi
+
+# ── 6b. Instalar PM2 (se não instalado) ─────────────────────────────────────
+if ! command -v pm2 >/dev/null 2>&1; then
+  echo "[STEP] Instalando PM2..."
+  npm install -g pm2
+  echo "[✓] PM2 \$(pm2 --version) instalado"
+else
+  echo "[✓] PM2 \$(pm2 --version) já instalado"
+fi
+
+# ── 6c. Criar .env apenas se não existir ────────────────────────────────────
+if [ ! -f "${VPS_PATH}/server/.env" ]; then
+  echo "[STEP] Criando .env de produção..."
+  cat > "${VPS_PATH}/server/.env" << 'ENVFILE'
 NODE_ENV=production
-
-# Caminho base para arquivos de áudio
-# Na VPS: os áudios estão em ../../assets/audios/
-AUDIO_BASE_PATH=../../
+JWT_SECRET=ALTERE_ESTE_SEGREDO_ANTES_DE_USAR
 ENVFILE
-
-echo "✓ Arquivo .env criado com sucesso"
-cat .env
-EOF
-
-if [ $? -eq 0 ]; then
-  print_success "Arquivo .env configurado na VPS"
+  echo "[!] ATENÇÃO: .env criado com JWT_SECRET padrão."
+  echo "    Edite ${VPS_PATH}/server/.env e defina um segredo seguro!"
 else
-  print_error "Erro ao configurar .env"
-  exit 1
+  echo "[✓] .env já existe — mantido sem alteração"
 fi
 
-# Passo 6: Instalar dependências do backend na VPS
-print_step "6. Instalando dependências do backend na VPS..."
-ssh ${VPS_USER}@${VPS_IP} "bash -lc 'if [ -f \$HOME/.nvm/nvm.sh ]; then . \$HOME/.nvm/nvm.sh; fi; if ! command -v npm >/dev/null 2>&1; then echo \"✗ npm não encontrado na VPS. Instale Node.js (ex.: via NodeSource) antes de continuar.\"; exit 1; fi; cd ${VPS_PATH}/server && npm install'"
-if [ $? -eq 0 ]; then
-  print_success "Dependências instaladas"
+# ── 6d. Instalar dependências do backend ────────────────────────────────────
+echo "[STEP] Instalando dependências do backend..."
+cd "${VPS_PATH}/server"
+npm install --omit=dev
+echo "[✓] Dependências instaladas"
+
+# ── 6e. Configurar Apache ProxyPass (idempotente) ────────────────────────────
+VHOST_FILE="/etc/apache2/sites-available/gulini.com.br-le-ssl.conf"
+
+if ! grep -q "ProxyPass /api" "\${VHOST_FILE}" 2>/dev/null; then
+  echo "[STEP] Adicionando ProxyPass /api ao vhost Apache..."
+  sed -i "s|</VirtualHost>|    # Proxy para backend MokBeats\n    ProxyPass /api http://localhost:${BACKEND_PORT}/api\n    ProxyPassReverse /api http://localhost:${BACKEND_PORT}/api\n</VirtualHost>|" "\${VHOST_FILE}"
+  echo "[✓] ProxyPass adicionado ao vhost SSL"
 else
-  print_error "Erro ao instalar dependências"
-  exit 1
+  echo "[✓] ProxyPass /api já configurado no vhost"
 fi
 
-# Passo 7: Gerar peaks dos áudios (APENAS se não foi enviado no Passo 3.5)
-if [ "$SKIP_PEAKS" = true ]; then
-  print_step "7. Geração de peaks..."
-  print_success "PULADO - Arquivo musicas.json já foi enviado com peaks pré-gerados"
-  print_info "Economizou tempo ao não precisar gerar peaks na VPS"
+# Habilitar mod_proxy se necessário
+a2enmod proxy proxy_http >/dev/null 2>&1 || true
+
+# Testar e recarregar Apache
+apache2ctl configtest
+systemctl reload apache2
+echo "[✓] Apache recarregado"
+
+# ── 6f. Iniciar/reiniciar backend com PM2 ───────────────────────────────────
+echo "[STEP] Iniciando backend com PM2..."
+if pm2 describe "${PM2_NAME}" >/dev/null 2>&1; then
+  pm2 restart "${PM2_NAME}"
+  echo "[✓] Backend reiniciado"
 else
-  print_step "7. Gerando peaks dos áudios na VPS..."
-  print_info "Este processo pode demorar alguns minutos..."
-  print_warning "Certifique-se de que audiowaveform está instalado na VPS"
-
-  ssh ${VPS_USER}@${VPS_IP} "cd ${VPS_PATH}/server && node scripts/generate-peaks.js"
-
-  if [ $? -eq 0 ]; then
-    print_success "Peaks gerados com sucesso"
-  else
-    print_error "Erro ao gerar peaks"
-    print_error "Possíveis causas:"
-    print_error "  - audiowaveform não está instalado (instale: sudo snap install audiowaveform)"
-    print_error "  - Arquivos de áudio não foram enviados para a VPS"
-    exit 1
-  fi
+  pm2 start "${VPS_PATH}/server/src/index.js" --name "${PM2_NAME}"
+  echo "[✓] Backend iniciado"
 fi
 
-# Passo 7.5: Verificar se PM2 está instalado (e instalar se necessário)
-print_step "7.5. Verificando PM2 na VPS..."
-ssh ${VPS_USER}@${VPS_IP} "bash -lc 'if [ -f \$HOME/.nvm/nvm.sh ]; then . \$HOME/.nvm/nvm.sh; fi; if ! command -v pm2 >/dev/null 2>&1; then echo \"⚠️  PM2 não encontrado. Instalando globalmente...\"; npm install -g pm2; fi; echo \"✓ PM2 versão: \$(pm2 --version)\"'"
+pm2 save
+echo "[✓] Configuração PM2 salva"
 
-if [ $? -eq 0 ]; then
-  print_success "PM2 disponível e pronto para uso"
-else
-  print_error "Erro ao verificar/instalar PM2"
-  exit 1
-fi
+# Configurar startup (ignora erro se já configurado)
+pm2 startup 2>/dev/null || true
 
-# Passo 8: Reiniciar PM2
-print_step "8. Reiniciando backend com PM2..."
-ssh ${VPS_USER}@${VPS_IP} "bash -lc 'if [ -f \$HOME/.nvm/nvm.sh ]; then . \$HOME/.nvm/nvm.sh; fi; pm2 restart mok-backend || pm2 start ${VPS_PATH}/server/src/index.js --name mok-backend'"
-if [ $? -eq 0 ]; then
-  print_success "Backend reiniciado com sucesso"
-else
-  print_error "Erro ao reiniciar PM2"
-  print_error "Verifique se PM2 está instalado: npm install -g pm2"
-  exit 1
-fi
+REMOTE
 
-# Passo 9: Verificar status
-print_step "9. Verificando status do deploy..."
+ok "VPS configurada"
+
+# ── PASSO 7: Validação final ──────────────────────────────────────────────────
+step "7. Validação do deploy"
 echo ""
-ssh ${VPS_USER}@${VPS_IP} "bash -lc 'if [ -f \$HOME/.nvm/nvm.sh ]; then . \$HOME/.nvm/nvm.sh; fi; pm2 status && pm2 logs mok-backend --lines 10 --nostream'"
 
-# Finalização
+ssh ${SSH} bash << 'VALIDATE'
+echo "=== PM2 Status ==="
+pm2 list
+
 echo ""
-echo -e "${GREEN}"
+echo "=== Backend (porta direto) ==="
+sleep 2
+if curl -s "http://localhost:3100/api/generos" | grep -q "id"; then
+  echo "[✓] Backend respondendo em :3100 — /api/generos OK"
+else
+  echo "[!] Backend pode ainda estar iniciando ou com erro"
+  pm2 logs mok-backend --lines 15 --nostream 2>/dev/null || true
+fi
+VALIDATE
+
+echo ""
+echo "=== Frontend via Apache ==="
+if curl -sk "https://gulini.com.br/mokbeats/" | grep -q "index\|app-root\|MokBeats\|<!DOCTYPE"; then
+  ok "Frontend acessível em https://gulini.com.br/mokbeats/"
+else
+  warn "Frontend pode estar com problema — verifique manualmente"
+fi
+
+# ── Resumo final ──────────────────────────────────────────────────────────────
+echo ""
+echo -e "${CYAN}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  ✨ Deploy concluído com sucesso!"
+echo "  Deploy concluído"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo -e "${NC}"
-
-print_info "VPS: http://${VPS_IP}"
-print_info "Logs: ssh ${VPS_USER}@${VPS_IP} \"pm2 logs mok-backend\""
-print_info "Status: ssh ${VPS_USER}@${VPS_IP} \"pm2 status\""
-
-echo ""
-print_warning "Próximos passos:"
-echo "  1. Teste o frontend acessando http://${VPS_IP}"
-echo "  2. Verifique se os waveforms carregam rapidamente"
-echo "  3. Monitore os logs com: pm2 logs mok-backend"
+info "Frontend: https://gulini.com.br/mokbeats/"
+info "Backend:  http://localhost:${BACKEND_PORT}/api (via proxy: https://gulini.com.br/api)"
+info ""
+info "Monitoramento:"
+info "  ssh ${SSH} 'pm2 logs ${PM2_NAME}'"
+info "  ssh ${SSH} 'pm2 status'"
+info ""
+warn "Se o JWT_SECRET ainda for padrão, edite antes de usar em produção:"
+info "  ssh ${SSH} 'nano ${VPS_PATH}/server/.env'"
 echo ""

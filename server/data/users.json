@@ -30,6 +30,21 @@
     "updatedAt": "2026-03-16T20:40:59.024Z"
   },
   {
+    "id": "00000000-0000-0000-0000-000000000001",
+    "email": "produtor@test.com",
+    "passwordHash": "$2b$10$QZfKa/mOlLiWcBnCJkRxoeUuN12PhqS.ajqrKiJugpzAPjt4AO1ra",
+    "tipoPessoa": "fisica",
+    "tipoPerfil": "produtor",
+    "profile": {},
+    "documents": {
+      "fotoDocumento": null,
+      "comprovanteResidencia": null,
+      "documentoEmpresa": null
+    },
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
     "id": "cf553e02-e94e-41a7-964e-1c7e00eef89f",
     "email": "comp_test_1773693658@test.com",
     "passwordHash": "$2b$10$4RJ01ocC2po7l6LJ.we.M.8wgeg20qtLCSNQsik5LlCjmPvZwRTg6",

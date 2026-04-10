@@ -1,7 +1,8 @@
 <div class="custom-file-upload">
-  <p class="h5 font-weight-bold mb-2">{{ title }}</p>
+  <p class="h5 font-weight-bold mb-2" *ngIf="title">{{ title }}</p>
 
   <label class="upload-area d-flex justify-content-center align-items-center" [class.dragging]="isDragging"
+    [class.compact]="variant === 'compact'" [class.image]="variant === 'image'"
     [class.disabled]="disabled" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
     (drop)="onDrop($event)">
     <svg class="mr-3" width="24" height="24" viewBox="0 0 32 32">

@@ -35,12 +35,20 @@ describe('PlayerComponent behavior', () => {
   let ps: StubPlayerService;
 
   beforeAll(() => {
-    // @ts-ignore
-    const ws = require('wavesurfer.js');
+    const dynamicRequire = (id: string): any => {
+      try {
+        // Evita resolução estática de path do plugin no build de testes.
+        return Function('moduleId', 'return require(moduleId);')(id);
+      } catch (_e) {
+        return null;
+      }
+    };
+
+    const ws = dynamicRequire('wavesurfer.js') || {};
     (ws as any).default = ws.default || ws;
     (ws as any).create = () => new FakeWaveSurfer() as any;
-    // @ts-ignore
-    const mm = require('wavesurfer.js/dist/plugins/minimap');
+
+    const mm = dynamicRequire('wavesurfer.js/dist/plugins/minimap') || dynamicRequire('wavesurfer.js/dist/plugins/minimap.cjs') || {};
     (mm as any).default = mm.default || mm;
     (mm as any).create = () => ({ plugin: 'minimap' });
   });
@@ -77,4 +85,3 @@ describe('PlayerComponent behavior', () => {
     expect(fake.time).toBe(55);
   });
 });
-

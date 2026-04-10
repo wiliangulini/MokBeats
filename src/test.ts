@@ -91,21 +91,19 @@ getTestBed().initTestEnvironment(
 // Then we find tests, with optional focus via FOCUS_SPECS env (passed through karma client args)
 const args = ((window as any).__karma__ && (window as any).__karma__.config && (window as any).__karma__.config.args) || [''];
 const focusArg: string = args[0] || '';
+const context = require.context('./', true, /\.spec\.ts$/);
+
 if (focusArg && typeof focusArg === 'string' && focusArg.trim().length > 0) {
-  const patterns = focusArg.split(',').map((s: string) => s.trim()).filter(Boolean);
-  const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  patterns.forEach((fullPath: string) => {
-    // Expect fullPath like 'src/app/..../file.spec.ts'
-    if (!fullPath.startsWith('src/')) { return; }
-    const rel = './' + fullPath.substring('src/'.length);
-    const lastSlash = rel.lastIndexOf('/');
-    const dir = rel.substring(0, lastSlash + 1) || './';
-    const base = rel.substring(lastSlash + 1);
-    const re = new RegExp('^' + escapeRegExp(base) + '$');
-    const ctx = require.context(dir, false, re);
-    ctx.keys().forEach(ctx);
-  });
+  const focusedPaths = focusArg
+    .split(',')
+    .map((s: string) => s.trim())
+    .filter(Boolean)
+    .filter((fullPath: string) => fullPath.startsWith('src/'))
+    .map((fullPath: string) => './' + fullPath.substring('src/'.length));
+
+  const focusedSet = new Set(focusedPaths);
+  const selected = context.keys().filter((key: string) => focusedSet.has(key));
+  selected.forEach(context);
 } else {
-  const context = require.context('./', true, /\.spec\.ts$/);
   context.keys().forEach(context);
 }

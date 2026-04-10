@@ -1,5 +1,16 @@
 import { AbstractControl, ValidationErrors, ValidatorFn, FormGroup } from '@angular/forms';
 
+export type RegistryType = 'ISRC' | 'UPC' | 'HASH' | 'OUTROS' | null;
+
+export interface RegistryClassification {
+  registryRaw: string | null;
+  registryType: RegistryType;
+  registryValue: string | null;
+  isrc: string | null;
+  upc: string | null;
+  hashType: 'MD5' | 'SHA-1' | 'SHA-256' | 'SHA-512' | null;
+}
+
 /**
  * Validadores compartilhados para o projeto MokBeats
  */
@@ -143,7 +154,140 @@ export class SharedValidators {
     SHA1: /^[A-Fa-f0-9]{40}$/, // SHA-1: 40 hex chars
     SHA256: /^[A-Fa-f0-9]{64}$/, // SHA-256: 64 hex chars
     SHA512: /^[A-Fa-f0-9]{128}$/, // SHA-512: 128 hex chars
+    IDENTIFICATION: /^[A-Za-z0-9.\-_/ ]{3,80}$/,
   };
+
+  /**
+   * Validador para identificação (CPF/RG/Passaporte) com formato flexível.
+   */
+  static identification(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = (control.value || '').trim();
+      if (!value) return null;
+      const valid = SharedValidators.PATTERNS.IDENTIFICATION.test(value);
+      return valid ? null : {
+        identification: {
+          message: 'Identificação inválida. Use entre 3 e 80 caracteres alfanuméricos.'
+        }
+      };
+    };
+  }
+
+  /**
+   * Validador de BPM em faixa configurável.
+   */
+  static bpm(min: number = 1, max: number = 300): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = String(control.value ?? '').trim();
+      if (!value) return null;
+      if (!/^\d+$/.test(value)) {
+        return { bpm: { message: 'BPM deve ser um número inteiro.' } };
+      }
+      const parsed = parseInt(value, 10);
+      if (parsed < min || parsed > max) {
+        return { bpm: { message: `BPM deve estar entre ${min} e ${max}.` } };
+      }
+      return null;
+    };
+  }
+
+  /**
+   * Validador para valor monetário positivo.
+   */
+  static saleValue(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = String(control.value ?? '').trim();
+      if (!value) return null;
+      const normalized = value.replace(',', '.');
+      if (!/^\d+(?:\.\d{1,2})?$/.test(normalized)) {
+        return { saleValue: { message: 'Valor de venda inválido.' } };
+      }
+      const parsed = parseFloat(normalized);
+      if (!(parsed > 0)) {
+        return { saleValue: { message: 'Valor de venda deve ser maior que zero.' } };
+      }
+      return null;
+    };
+  }
+
+  /**
+   * URL opcional (somente http/https).
+   */
+  static optionalHttpUrl(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = String(control.value ?? '').trim();
+      if (!value) return null;
+      const valid = /^https?:\/\/[^\s/$.?#].[^\s]*$/i.test(value);
+      return valid ? null : { url: { message: 'URL inválida. Use http:// ou https://.' } };
+    };
+  }
+
+  /**
+   * Classifica um registro livre em ISRC/UPC/HASH/OUTROS.
+   */
+  static classifyRegistryRaw(raw: string): RegistryClassification {
+    const value = String(raw ?? '').trim();
+    if (!value) {
+      return {
+        registryRaw: null,
+        registryType: null,
+        registryValue: null,
+        isrc: null,
+        upc: null,
+        hashType: null
+      };
+    }
+
+    if (SharedValidators.PATTERNS.ISRC.test(value)) {
+      return {
+        registryRaw: value,
+        registryType: 'ISRC',
+        registryValue: value,
+        isrc: value,
+        upc: null,
+        hashType: null
+      };
+    }
+
+    if (SharedValidators.PATTERNS.UPC.test(value)) {
+      return {
+        registryRaw: value,
+        registryType: 'UPC',
+        registryValue: value,
+        isrc: null,
+        upc: value,
+        hashType: null
+      };
+    }
+
+    const hashMap: Array<{ type: 'MD5' | 'SHA-1' | 'SHA-256' | 'SHA-512'; pattern: RegExp }> = [
+      { type: 'MD5', pattern: SharedValidators.PATTERNS.MD5 },
+      { type: 'SHA-1', pattern: SharedValidators.PATTERNS.SHA1 },
+      { type: 'SHA-256', pattern: SharedValidators.PATTERNS.SHA256 },
+      { type: 'SHA-512', pattern: SharedValidators.PATTERNS.SHA512 },
+    ];
+
+    const hashMatch = hashMap.find((item) => item.pattern.test(value));
+    if (hashMatch) {
+      return {
+        registryRaw: value,
+        registryType: 'HASH',
+        registryValue: value,
+        isrc: null,
+        upc: null,
+        hashType: hashMatch.type
+      };
+    }
+
+    return {
+      registryRaw: value,
+      registryType: 'OUTROS',
+      registryValue: value,
+      isrc: null,
+      upc: null,
+      hashType: null
+    };
+  }
 
   /**
    * Validador para ISRC

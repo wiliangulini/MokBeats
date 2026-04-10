@@ -1,279 +1,239 @@
-mat-form-field input {
-  margin-bottom: 0 !important;
-  border-bottom: 0 !important;
-}
-mat-form-field mat-select {
-  padding-bottom: 0.5rem;
-  padding-top: 0.35rem;
-}
-.mat-form-field-appearance-fill .mat-form-field-infix {
-  padding-bottom: 0 !important;
-}
-#collapseWidthExample .card.card-body {
-  width: 30vw !important;
-}
-.row.w-100 .collapseControl {
-  min-height: 120px !important;
-}
 p {
   margin-bottom: 0;
 }
+
 section.one,
 section.submit {
-  color: #FFF;
+  color: #fff;
 }
+
 section.one {
   margin-top: 8vh;
-  background-image: url("../../assets/images/news_img/produtores_mulher-tocando-teclado-e-sentindo-a-musica.jpg");
+  background-image: url('../../assets/images/news_img/produtores_mulher-tocando-teclado-e-sentindo-a-musica.jpg');
   background-position: center;
   background-size: contain;
   background-repeat: repeat;
   height: 50vh;
 }
+
 section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 h1 {
   font-size: 60px;
   line-height: 1.5;
   font-weight: bold;
   width: 100%;
 }
+
 section.submit {
   padding: 4% 0;
-  background: #FFF;
+  background: #fff;
   color: #000;
 }
+
 section.submit .container .row .beforeSubmit .txt .h6 {
   font-size: 18px;
 }
+
+section.submit .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .video video {
+  width: 90%;
+}
+
 section.submit .container .row form {
-  padding: 5% 10%;
+  padding: 5% 8%;
   border: 1px solid #828282;
   border-radius: 8px;
 }
 
-section.submit .container .row form input {
-  margin-bottom: 4%;
-  font-size: 18px;
-  padding: 1% 0 1% 1%;
-  border: 0;
-  border-bottom: 1px solid #DDD;
-  outline: none;
-  text-decoration: none;
-}
-
-section.submit .container .row form .submitForm button {
-  background-color: #4B3A8F;
-  border: 0;
-  padding: 1.5% 0;
-  border-radius: 30px;
-  margin: 4% 0;
-  transition: all .35s linear;
-  color: #FFF;
-  width: 25%;
-  font-weight: bold;
-}
-
-section.submit .container .row form .submitForm button.hover:hover {
-  padding: 18.5px 0 !important;
-  box-shadow: 0 0 10px 0 #4B3A8F !important;
-  border: 1px solid #4B3A8F !important;
-  background-color: #FFF !important;
-  color: #4B3A8F !important;
-}
 section.submit .container .row form p.h5 {
   color: #000;
 }
-section.submit .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .video video {
-  width: 90%;
-}
-#upload {
-  width: 100%;
-  border: 1px dashed #b4b4b5;
-  padding: 20px;
-  border-radius: 10px;
-  color: #b4b4b5;
-  fill: #b4b4b5;
-  cursor: pointer;
-}
-#file {
-  display: none;
-}
-.w-33 {
-  width: 33% !important;
-}
-.CWE {
-  min-height: 140px;
-  display: none;
-}
-.CWE .card.card-body {
-  width: 47vw;
-  max-width: 65vw;
-}
-#card {
-  max-height: 150px !important;
-}
-.CWE,
-#card {
-  transition: all 0.5s ease-in;
-}
-#card .tracks10,
-#card .tracks40 {
-  width: auto;
-}
-#card .tracks10 {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-#card .tracks40 {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-}
-mat-radio-button.matRadioBtn {
-  font-size: 16px !important;
-  color: #787878 !important;
-  margin-right: 8%;
-}
-span.span.rules,
-span.span.rules1 {
-  font-size: 15px;
-  font-weight: 500;
-  color: #787878;
-}.control.col-sm-4.col-md-4.col-lg-4.col-xl-4.m-0.d-flex.justify-content-center.align-items-center {
-   max-width: 36%;
-   flex: 0 0 36%;
- }
-.controlInt.col-sm-4.col-md-4.col-lg-4.col-xl-4.m-0.d-flex {
-  max-width: 30%;
-}
-.textarea {
-  padding: 5px 10px !important;
-  height: 180px !important;
-  border-radius: 10px !important;
-  border: .5px solid #DDD;
-}
-button.btn.btn-success {
-  background: rgba(0,0,0,.04);
-  color: #28a745;
-  border: 1px solid #28a745;
-  transition: all 500s ease-in !important;
-}
-button.btn.btn-success:focus,
-button.btn.btn-success:hover {
-  background-color: #28a745 !important;
-  color: #FFF !important;
-  font-weight: bold !important;
-  zoom: 105% !important;
 
+.producer-form .form-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 16px;
+  row-gap: 16px;
 }
-mat-label.ml-2 {
-  font-size: 16px;
-  color: #787878 !important;
+
+.producer-form .grid-item {
+  min-width: 0;
 }
-div#collapseWidthExample .card.card-body,
-div#collapseWidthExample {
-  min-height: 120px !important;
-  height: 130px !important;
-  justify-content: center;
-  align-items: center;
+
+.producer-form .span-12 {
+  grid-column: span 12;
 }
-div#collapseWidthExample .card.card-body {
+
+.producer-form .span-7 {
+  grid-column: span 7;
+}
+
+.producer-form .span-6 {
+  grid-column: span 6;
+}
+
+.producer-form .span-4 {
+  grid-column: span 4;
+}
+
+.producer-form .span-3 {
+  grid-column: span 3;
+}
+
+.producer-form .span-2 {
+  grid-column: span 2;
+}
+
+.producer-form mat-form-field {
   width: 100%;
-  text-align: center;
-}
-form .row.w-100.justify-content-between.align-items-center {
-  flex-direction: row;
-  height: 130px;
-  margin-bottom: 4%;
-}
-mat-form-field {
   background-color: rgba(0, 0, 0, 0.04) !important;
 }
 
-@media only screen and (min-width: 320px) and (max-width: 768px) {
-.d-flex.w-100.gap-3 {
-  flex-direction: column;
-}
-.comboFlex {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
+.producer-form .mat-form-field-appearance-fill .mat-form-field-flex {
+  min-height: 56px;
+  align-items: center;
 }
 
-  a.top,
-  #btn.top {
-    top: 10px;
-  }
+.producer-form .mat-form-field-appearance-fill .mat-form-field-infix {
+  padding: 0.7rem 0 0.5rem;
+}
+
+.producer-form .field-label {
+  color: #000;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.producer-form .field-label span {
+  color: #000;
+}
+
+.producer-form .radio-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.producer-form .radio-group-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.producer-form .radio-group-vertical mat-radio-button {
+  color: #4b4b4b;
+  font-size: 18px;
+}
+
+.producer-form .stems-title {
+  color: #1b1b1b;
+  font-size: 30px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.producer-form .stems-helper {
+  color: #5a5a5a;
+  font-size: 14px;
+  max-width: 300px;
+}
+
+.producer-form .upload-hint {
+  display: block;
+  margin-top: 6px;
+  color: #7a7a7a !important;
+}
+
+.producer-form .terms-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.producer-form .terms-title {
+  text-decoration: underline;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.producer-form .submit-row {
+  display: flex;
+  justify-content: center;
+}
+
+section.submit .container .row form .submit-row button {
+  background-color: #4b3a8f;
+  border: 0;
+  border-radius: 30px;
+  color: #fff;
+  font-weight: bold;
+  min-height: 46px;
+  width: 240px;
+  transition: all 0.35s linear;
+}
+
+section.submit .container .row form .submit-row button:hover:not(:disabled) {
+  box-shadow: 0 0 10px 0 #4b3a8f;
+  border: 1px solid #4b3a8f;
+  background-color: #fff;
+  color: #4b3a8f;
+}
+
+section.submit .container .row form .submit-row button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media only screen and (max-width: 768px) {
   section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 h1 {
     font-size: 45px;
     text-align: center;
     line-height: 1.25;
   }
+
   section.submit .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.justify-content-center.align-items-center.p-0.m-0 {
     flex-direction: column;
     padding-top: 8% !important;
   }
+
   section.submit .container .row .beforeSubmit,
   section.submit .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.justify-content-center.align-items-center.p-0.m-0 .title {
     text-align: center;
   }
-  section.submit .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12.d-flex.justify-content-center.align-items-center.p-0.m-0 .title .h4 {
-    font-size: 18px;
-  }
+
   section.submit .container .row .beforeSubmit {
     padding: 8% !important;
   }
-  section.submit .container .row .beforeSubmit .txt .h6 {
-    font-size: 17px;
+
+  .producer-form .form-grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 12px;
   }
-  section.submit .container .row.form {
-    margin: 0 !important;
+
+  .producer-form .span-12,
+  .producer-form .span-7,
+  .producer-form .span-6,
+  .producer-form .span-4,
+  .producer-form .span-3,
+  .producer-form .span-2 {
+    grid-column: 1 / -1;
   }
-  section.submit .container .row.form form .controlPai {
-    flex-direction: column;
-    margin-top: 15%;
+
+  .producer-form .stems-title {
+    font-size: 26px;
   }
-  section.submit .container .row.form form .controlPai .controlInt {
-    max-width: 100%;
-    padding: 0 15px !important;
-  }
-  section.submit .container .row.form form .controlPai .control .d-flex mat-radio-group {
-    align-items: flex-start !important;
-    flex-direction: column !important;
-    padding-left: 8%;
-  }
-  #collapseWidthExample .card.card-body .h6.m-0 {
-    font-size: 14px;
-  }
-  #collapseWidthExample .card.card-body {
-    width: 100% !important;
-    height: 100% !important;
-  }
-  form .row.w-100.justify-content-between.align-items-center {
-    height: auto !important;
-  }
-  form .row.w-100.justify-content-between.align-items-center .collapseControl,
-  form .row.w-100.justify-content-between.align-items-center .collapseControl #collapseWidthExample {
-    height: 100% !important;
-    min-height: 100% !important;
-  }
-  a.m-0.p-0,
-  button.btn.btn-success {
-    width: 100% !important;
-  }
-  section.submit .container .row form .submitForm button  {
-    font-size: 14px;
-    width: 65%;
-  }
-  section.submit .container .row form .submitForm button.btnSubmit {
-    width: 30%;
+
+  section.submit .container .row form .submit-row button {
+    width: 100%;
   }
 }
+
 @media only screen and (max-width: 350px) {
-  section.one, section.submit {
+  section.one,
+  section.submit {
     zoom: 80%;
-  }
-  section.submit .container .row form .submitForm button  {
-    font-size: 13px;
   }
 }
