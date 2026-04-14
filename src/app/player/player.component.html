@@ -30,7 +30,9 @@
         <h6 class="artist mb-0">por <a href="#">Taizo Audio</a></h6>
       </div>
       <div class="div controls col-1">
-        <p class="h6 mb-0">Faixa Inteira</p>
+        <p class="h6 mb-0" [class.mode-inactive]="isStemsPlaying">
+          Faixa Inteira
+        </p>
       </div>
       <div
         class="div controls loop d-flex justify-content-between align-itens-center col-1"
@@ -243,6 +245,21 @@
           <span class="material-icons iconTrackCustom"
             >keyboard_arrow_down</span
           >
+        </button>
+        <button
+          type="button"
+          id="stemsPlayPause"
+          class="btn stems-play-btn"
+          [disabled]="!stemsReady"
+          (click)="toggleStemsPlayback()"
+          [title]="isStemsPlaying ? 'Pausar stems' : 'Tocar stems'"
+          style="display: none"
+        >
+          <span class="material-icons" *ngIf="!isStemsPlaying">play_circle</span>
+          <span class="material-icons" *ngIf="isStemsPlaying">pause_circle</span>
+          <span class="stems-play-label">
+            {{ isStemsPlaying ? "Pausar Stems" : "Tocar Stems" }}
+          </span>
         </button>
         <button
           type="button"

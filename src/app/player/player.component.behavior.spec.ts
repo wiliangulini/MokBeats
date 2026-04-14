@@ -10,16 +10,29 @@ class StubPlayerService {
   tooglePlayPause() {}
 }
 
-class StubMusicasService {}
+class StubMusicasService {
+  getStemsByMusicId = jasmine.createSpy('getStemsByMusicId').and.returnValue({
+    subscribe: (cb: Function) => cb([])
+  });
+}
 
-// Fake minimal para WaveSurfer
+// Fake minimal para WaveSurfer — suporta emit() para simular eventos
 class FakeWaveSurfer {
   time = 0;
-  on() {}
+  playing = false;
+  private handlers: Record<string, Function[]> = {};
+
+  on(event: string, handler: Function) {
+    if (!this.handlers[event]) this.handlers[event] = [];
+    this.handlers[event].push(handler);
+  }
+  emit(event: string, ...args: any[]) {
+    (this.handlers[event] || []).forEach(fn => fn(...args));
+  }
   destroy() {}
   load() {}
-  play() {}
-  pause() {}
+  play()  { this.playing = true;  this.emit('play'); }
+  pause() { this.playing = false; this.emit('pause'); }
   setTime(t: number) { this.time = t; }
   skip() {}
   getDuration() { return 100; }
@@ -83,5 +96,153 @@ describe('PlayerComponent behavior', () => {
     component.ngOnInit();
     mps.requestSeek(7, 55);
     expect(fake.time).toBe(55);
+  });
+
+  // ─── Helper: injeta stems fake no componente ───────────────────────────────
+  function injectFakeStems(comp: PlayerComponent, count = 4): FakeWaveSurfer[] {
+    const fakes = Array.from({ length: count }, () => new FakeWaveSurfer());
+    (comp as any).stems = fakes;
+    (comp as any).stemsReady = true;
+    (comp as any).stemsReadyCount = count;
+    return fakes;
+  }
+
+  describe('Playback mode', () => {
+
+    // T1: causa raiz — on('play') em modo 'full' não deve tocar stems
+    it('T1: on("play") em modo "full" NÃO cascateia para stems', () => {
+      component.ngOnInit();
+      const stemFakes = injectFakeStems(component);
+      const mainFake = component.wavesurfer as any as FakeWaveSurfer;
+      // Registra handlers para testar o guard ativamente
+      component.initWavesurferHandlers();
+      // Simula play da full track enquanto em modo 'full' (padrão)
+      mainFake.emit('play');
+      stemFakes.forEach(s => expect(s.playing).toBe(false, 'stem não deve tocar'));
+    });
+
+    // T2: playStemsMode() deve pausar wavesurfer e iniciar todos os stems no tempo atual
+    it('T2: playStemsMode() pausa wavesurfer e inicia todos os stems sincronizados', () => {
+      component.ngOnInit();
+      const mainFake = component.wavesurfer as any as FakeWaveSurfer;
+      mainFake.time = 42;
+      const stemFakes = injectFakeStems(component);
+      (component as any).playStemsMode();
+      expect(mainFake.playing).toBe(false, 'wavesurfer deve pausar');
+      stemFakes.forEach(s => {
+        expect(s.time).toBe(42, 'stem deve ser sincronizado ao tempo atual');
+        expect(s.playing).toBe(true, 'stem deve estar tocando');
+      });
+      expect(component.isStemsPlaying).toBe(true);
+      expect((component as any).playbackMode).toBe('stems');
+    });
+
+    // T3: pauseStemsMode() deve pausar stems e sincronizar tempo no wavesurfer
+    it('T3: pauseStemsMode() pausa stems e faz handoff de tempo para wavesurfer', () => {
+      component.ngOnInit();
+      const mainFake = component.wavesurfer as any as FakeWaveSurfer;
+      const stemFakes = injectFakeStems(component);
+      stemFakes.forEach(s => { s.playing = true; s.time = 77; });
+      (component as any).playbackMode = 'stems';
+      component.isStemsPlaying = true;
+      (component as any).pauseStemsMode();
+      stemFakes.forEach(s => expect(s.playing).toBe(false, 'stem deve pausar'));
+      expect(mainFake.time).toBe(77, 'wavesurfer deve receber o tempo dos stems');
+      expect(component.isStemsPlaying).toBe(false);
+      expect((component as any).playbackMode).toBe('full');
+    });
+
+    // T4: toggleStemsPlayback() deve ativar stems mode quando isStemsPlaying=false
+    it('T4: toggleStemsPlayback() ativa modo stems', () => {
+      component.ngOnInit();
+      const mainFake = component.wavesurfer as any as FakeWaveSurfer;
+      mainFake.time = 30;
+      injectFakeStems(component);
+      component.isStemsPlaying = false;
+      (component as any).toggleStemsPlayback();
+      expect((component as any).playbackMode).toBe('stems');
+      expect(component.isStemsPlaying).toBe(true);
+    });
+
+    // T5: toggleStemsPlayback() deve desativar stems mode quando isStemsPlaying=true
+    it('T5: toggleStemsPlayback() desativa modo stems e pausa stems', () => {
+      component.ngOnInit();
+      const stemFakes = injectFakeStems(component);
+      stemFakes.forEach(s => { s.playing = true; s.time = 55; });
+      (component as any).playbackMode = 'stems';
+      component.isStemsPlaying = true;
+      (component as any).toggleStemsPlayback();
+      expect((component as any).playbackMode).toBe('full');
+      expect(component.isStemsPlaying).toBe(false);
+      stemFakes.forEach(s => expect(s.playing).toBe(false));
+    });
+
+    // T6: playStemsMode() deve ser bloqueado quando stemsReady=false
+    it('T6: playStemsMode() é bloqueado quando stemsReady=false', () => {
+      component.ngOnInit();
+      const stemFakes = injectFakeStems(component);
+      (component as any).stemsReady = false;
+      (component as any).playStemsMode();
+      stemFakes.forEach(s => expect(s.playing).toBe(false, 'stems não devem tocar'));
+      expect((component as any).playbackMode).toBe('full', 'modo não deve mudar');
+    });
+
+    // T7: loadStems() deve resetar para modo 'full' na troca de música
+    it('T7: loadStems() reseta para modo "full" na troca de música', () => {
+      (component as any).playbackMode = 'stems';
+      component.isStemsPlaying = true;
+      (component as any).stemsReady = true;
+      (component as any).loadStems(99);
+      expect((component as any).playbackMode).toBe('full');
+      expect(component.isStemsPlaying).toBe(false);
+      expect((component as any).stemsReady).toBe(false);
+      expect((component as any).stemsReadyCount).toBe(0);
+    });
+
+    // T8: seek no wavesurfer sincroniza tempo nos stems sem recursão
+    it('T8: seek no wavesurfer sincroniza tempo em todos os stems', () => {
+      component.ngOnInit();
+      const stemFakes = injectFakeStems(component);
+      const mainFake = component.wavesurfer as any as FakeWaveSurfer;
+      // Registra handlers (normalmente feito em ngAfterViewInit)
+      component.initWavesurferHandlers();
+      // Emite seek a 50% de uma faixa de 100s = 50s
+      mainFake.emit('seek', 0.5);
+      stemFakes.forEach(s => expect(s.time).toBe(50, 'stem deve estar em 50s'));
+    });
+
+    // T9: fechar painel #trackCustom pausa stems automaticamente
+    it('T9: fechar trackCustom pausa stems automaticamente', () => {
+      component.ngOnInit();
+      const stemFakes = injectFakeStems(component);
+      stemFakes.forEach(s => { s.playing = true; s.time = 20; });
+      (component as any).playbackMode = 'stems';
+      component.isStemsPlaying = true;
+      // Usa o elemento #trackCustom já presente no template do componente
+      const tc = document.getElementById('trackCustom')!;
+      tc.setAttribute('style', 'display: flex;');
+      component.trackCustomOpen();
+      stemFakes.forEach(s => expect(s.playing).toBe(false));
+      expect(component.isStemsPlaying).toBe(false);
+      // Restaura estilo original
+      tc.setAttribute('style', 'display: none;');
+    });
+
+    // T10: on('play') em modo 'stems' deve cascatear para stems corretamente
+    it('T10: on("play") em modo "stems" cascateia play para todos os stems', () => {
+      component.ngOnInit();
+      const mainFake = component.wavesurfer as any as FakeWaveSurfer;
+      mainFake.time = 10;
+      const stemFakes = injectFakeStems(component);
+      // Registra handlers (normalmente feito em ngAfterViewInit)
+      component.initWavesurferHandlers();
+      (component as any).playbackMode = 'stems';
+      mainFake.emit('play');
+      stemFakes.forEach(s => {
+        expect(s.time).toBe(10, 'stem deve ser sincronizado ao tempo atual');
+        expect(s.playing).toBe(true, 'stem deve estar tocando');
+      });
+    });
+
   });
 });
