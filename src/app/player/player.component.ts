@@ -40,6 +40,11 @@ export class PlayerComponent
   stems: WaveSurfer[] = [];
   stemLabels: string[] = [];
   private lastLoadedStemsMusicId: number = -1;
+  private playbackMode: 'full' | 'stems' = 'full';
+  isStemsPlaying: boolean = false;
+  stemsReady: boolean = false;
+  private stemsReadyCount: number = 0;
+  private isSyncing: boolean = false;
 
   constructor(
     private musicService: MusicasService,
@@ -142,42 +147,7 @@ export class PlayerComponent
       ],
     });
 
-    // Sincronizar stems com a faixa principal
-    this.wavesurfer.on('play', () => {
-      const currentTime = (this.wavesurfer as any)?.getCurrentTime?.() || 0;
-      this.stems.forEach((s) => {
-        try {
-          // Sincroniza o tempo antes de tocar
-          s.setTime(currentTime);
-          s.play();
-        } catch (e) {}
-      });
-    });
-    this.wavesurfer.on('pause', () => {
-      this.stems.forEach((s) => {
-        try {
-          s.pause();
-        } catch (e) {}
-      });
-    });
-    (this.wavesurfer as any).on('seek', (progress: number) => {
-      try {
-        const time = progress * (this.wavesurfer.getDuration() || 0);
-        this.stems.forEach((s) => {
-          try {
-            s.setTime(time);
-          } catch (e) {}
-        });
-        // Atualiza o progresso global para sincronizar com a lista
-        this.musicPlayerService.setCurrentTime(time);
-      } catch (e) {}
-    });
-    (this.wavesurfer as any).on('audioprocess', () => {
-      try {
-        const time = (this.wavesurfer as any)?.getCurrentTime?.() || 0;
-        this.musicPlayerService.setCurrentTime(time);
-      } catch (e) {}
-    });
+    this.initWavesurferHandlers();
 
     const mutedTrack1: any = document.getElementById('mutedTrack1');
     const volumeOnTrackCustom1: any = document.getElementById(
@@ -496,6 +466,7 @@ export class PlayerComponent
     let waveform: any = document.querySelector('#waveform');
     let rowPlayer: any = document.querySelector('.row.player');
     let trackCustom: any = document.getElementById('trackCustom');
+    let stemsPlayBtn: any = document.getElementById('stemsPlayPause');
     let trackCustom1: any = document.getElementById('trackCustom1');
     let trackCustom2: any = document.getElementById('trackCustom2');
     let trackCustom3: any = document.getElementById('trackCustom3');
@@ -504,7 +475,12 @@ export class PlayerComponent
       trackCustom.setAttribute('style', 'display: flex;');
       waveform.setAttribute('style', 'bottom: 301px;');
       rowPlayer.setAttribute('style', 'bottom: 220px;');
+      if (stemsPlayBtn) stemsPlayBtn.setAttribute('style', 'display: flex;');
     } else if (trackCustom.getAttribute('style') == 'display: flex;') {
+      if (this.isStemsPlaying) {
+        this.pauseStemsMode();
+      }
+      if (stemsPlayBtn) stemsPlayBtn.setAttribute('style', 'display: none;');
       trackCustom.setAttribute('style', 'display: none;');
       waveform.removeAttribute('style');
       rowPlayer.removeAttribute('style');
@@ -618,7 +594,48 @@ export class PlayerComponent
     });
   }
 
+  initWavesurferHandlers(): void {
+    // Guard: só cascateia play para stems quando em modo 'stems'
+    this.wavesurfer.on('play', () => {
+      if (this.playbackMode !== 'stems') return;
+      const currentTime = (this.wavesurfer as any)?.getCurrentTime?.() || 0;
+      this.stems.forEach((s) => {
+        try { s.setTime(currentTime); s.play(); } catch (e) {}
+      });
+    });
+    // Guard: em modo 'stems', não cascatear pause para evitar race condition
+    this.wavesurfer.on('pause', () => {
+      if (this.playbackMode === 'stems') return;
+      this.stems.forEach((s) => {
+        try { s.pause(); } catch (e) {}
+      });
+    });
+    (this.wavesurfer as any).on('seek', (progress: number) => {
+      if (this.isSyncing) return;
+      try {
+        const time = progress * (this.wavesurfer.getDuration() || 0);
+        this.isSyncing = true;
+        this.stems.forEach((s) => {
+          try { s.setTime(time); } catch (e) {}
+        });
+        Promise.resolve().then(() => { this.isSyncing = false; });
+        this.musicPlayerService.setCurrentTime(time);
+      } catch (e) {}
+    });
+    (this.wavesurfer as any).on('audioprocess', () => {
+      try {
+        const time = (this.wavesurfer as any)?.getCurrentTime?.() || 0;
+        this.musicPlayerService.setCurrentTime(time);
+      } catch (e) {}
+    });
+  }
+
   private loadStems(id: number) {
+    // Reset de modo na troca de música
+    this.playbackMode = 'full';
+    this.isStemsPlaying = false;
+    this.stemsReady = false;
+    this.stemsReadyCount = 0;
     // Limpa instâncias anteriores
     this.destroyStems();
     const containers = [
@@ -656,6 +673,32 @@ export class PlayerComponent
           ],
         });
         this.stems.push(s);
+
+        // Seek cross-sync: seek em qualquer stem sincroniza os demais + wavesurfer
+        (s as any).on('seek', (progress: number) => {
+          if (this.isSyncing) return;
+          try {
+            const time = progress * (s.getDuration() || 0);
+            this.isSyncing = true;
+            this.stems.forEach((other) => {
+              if (other !== s) { try { other.setTime(time); } catch (e) {} }
+            });
+            if (this.playbackMode === 'stems') {
+              try { this.wavesurfer.setTime(time); } catch (e) {}
+            }
+            Promise.resolve().then(() => { this.isSyncing = false; });
+            this.musicPlayerService.setCurrentTime(time);
+          } catch (e) {}
+        });
+
+        // Rastreia stems prontos para habilitar o botão
+        s.on('ready', () => {
+          this.stemsReadyCount++;
+          if (this.stemsReadyCount >= this.stems.length) {
+            this.stemsReady = true;
+          }
+        });
+
         this.bindStemControls(i);
       }
     });
@@ -697,6 +740,40 @@ export class PlayerComponent
   }
   baixarAmostra(i: any) {
     console.log(i);
+  }
+
+  playStemsMode(): void {
+    if (!this.stemsReady || this.stems.length === 0) return;
+    const currentTime = (this.wavesurfer as any)?.getCurrentTime?.() || 0;
+    // Define modo ANTES de pausar wavesurfer: on('pause') verá 'stems' e não cascateará
+    this.playbackMode = 'stems';
+    try { this.wavesurfer.pause(); } catch (e) {}
+    this.isSyncing = true;
+    this.stems.forEach((s) => {
+      try { s.setTime(currentTime); s.play(); } catch (e) {}
+    });
+    Promise.resolve().then(() => { this.isSyncing = false; });
+    this.isStemsPlaying = true;
+    // Atualiza UI do botão principal se estava tocando
+    const pauseEl = document.querySelector('#pause');
+    if (pauseEl?.classList.contains('d-flex')) {
+      this.playerService.tooglePlayPause();
+      this.isPlaying2 = false;
+    }
+  }
+
+  pauseStemsMode(): void {
+    if (this.stems.length === 0) return;
+    const currentTime = (this.stems[0] as any)?.getCurrentTime?.() || 0;
+    this.playbackMode = 'full';
+    this.stems.forEach((s) => { try { s.pause(); } catch (e) {} });
+    this.isStemsPlaying = false;
+    // Sincroniza wavesurfer para handoff de tempo
+    try { this.wavesurfer.setTime(currentTime); } catch (e) {}
+  }
+
+  toggleStemsPlayback(): void {
+    this.isStemsPlaying ? this.pauseStemsMode() : this.playStemsMode();
   }
 
   resetStems() {

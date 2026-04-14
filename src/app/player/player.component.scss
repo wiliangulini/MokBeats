@@ -306,3 +306,46 @@ button.btn.btn-icons.mobile {
     display: flex !important;
   }
 }
+
+.stems-play-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 33px;
+  color: #fff;
+  padding: 4px 16px;
+  height: 30px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+
+  &:hover:not(:disabled) {
+    border-color: #dcad54;
+    background: rgba(220, 173, 84, 0.1);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .material-icons {
+    font-size: 20px;
+    color: #dcad54;
+    line-height: 1;
+  }
+
+  .stems-play-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+// Label "Faixa Inteira" fica opaca quando stems estão ativos
+.mode-inactive {
+  opacity: 0.4;
+  transition: opacity 0.2s;
+}
