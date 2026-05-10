@@ -245,4 +245,16 @@ describe('PlayerComponent behavior', () => {
     });
 
   });
+
+  // T11: estrutura DOM — botão deve estar dentro do painel
+  it('T11: #stemsPlayPause está dentro de #trackCustom no DOM', () => {
+    const trackCustom = document.getElementById('trackCustom');
+    const stemsBtn = document.getElementById('stemsPlayPause');
+    expect(trackCustom).not.toBeNull();
+    expect(stemsBtn).not.toBeNull();
+    expect(trackCustom!.contains(stemsBtn!)).toBe(
+      true,
+      '#stemsPlayPause deve ser descendente de #trackCustom',
+    );
+  });
 });
