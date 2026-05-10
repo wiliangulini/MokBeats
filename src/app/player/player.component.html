@@ -248,21 +248,6 @@
         </button>
         <button
           type="button"
-          id="stemsPlayPause"
-          class="btn stems-play-btn"
-          [disabled]="!stemsReady"
-          (click)="toggleStemsPlayback()"
-          [title]="isStemsPlaying ? 'Pausar stems' : 'Tocar stems'"
-          style="display: none"
-        >
-          <span class="material-icons" *ngIf="!isStemsPlaying">play_circle</span>
-          <span class="material-icons" *ngIf="isStemsPlaying">pause_circle</span>
-          <span class="stems-play-label">
-            {{ isStemsPlaying ? "Pausar Stems" : "Tocar Stems" }}
-          </span>
-        </button>
-        <button
-          type="button"
           (click)="resetStems()"
           class="font-weight-bold text-uppercase text-center"
         >
@@ -275,100 +260,118 @@
       style="display: none"
       id="trackCustom"
     >
-      <div class="row col-12 justify-content-between align-items-center p-0">
-        <div class="row icon">
-          <div class="volbox1">
-            <input
-              id="mutedTrack1"
-              (change)="valueInitial($event)"
-              type="range"
-              name="volume-slider"
-              min="0"
-              max="100"
-              value="75"
-            />
-          </div>
-          <button id="volumeOnTrackCustom1" type="button">
-            <span class="material-icons muteOn1 d-flex volume_up"
-              >volume_up</span
-            >
-            <span class="material-icons muteOff1 d-none">volume_off</span>
-          </button>
-        </div>
-        <div class="row track col-11" id="trackCustom1">
-          <span class="stem-badge">{{ stemLabels[0] || "STEM 1" }}</span>
-        </div>
+      <div id="stems-play-col">
+        <button
+          type="button"
+          id="stemsPlayPause"
+          class="btn stems-play-btn"
+          [disabled]="!stemsReady"
+          (click)="toggleStemsPlayback()"
+          [title]="isStemsPlaying ? 'Pausar stems' : 'Tocar stems'"
+        >
+          <span class="material-icons" *ngIf="!isStemsPlaying">play_circle</span>
+          <span class="material-icons" *ngIf="isStemsPlaying">pause_circle</span>
+          <span class="stems-play-label">
+            {{ isStemsPlaying ? "Pausar Stems" : "Tocar Stems" }}
+          </span>
+        </button>
       </div>
-      <div class="row col-12 justify-content-between align-items-center p-0">
-        <div class="row icon">
-          <div class="volbox2">
-            <input
-              id="mutedTrack2"
-              (change)="valueInitial($event)"
-              type="range"
-              name="volume-slider"
-              min="0"
-              max="100"
-              value="75"
-            />
+      <div id="stems-tracks-col">
+        <div class="row col-12 justify-content-between align-items-center p-0">
+          <div class="row icon">
+            <div class="volbox1">
+              <input
+                id="mutedTrack1"
+                (change)="valueInitial($event)"
+                type="range"
+                name="volume-slider"
+                min="0"
+                max="100"
+                value="75"
+              />
+            </div>
+            <button id="volumeOnTrackCustom1" type="button">
+              <span class="material-icons muteOn1 d-flex volume_up"
+                >volume_up</span
+              >
+              <span class="material-icons muteOff1 d-none">volume_off</span>
+            </button>
           </div>
-          <button id="volumeOnTrackCustom2" type="button">
-            <span class="material-icons muteOn2 d-flex volume_up"
-              >volume_up</span
-            >
-            <span class="material-icons muteOff2 d-none">volume_off</span>
-          </button>
-        </div>
-        <div class="row track col-11" id="trackCustom2">
-          <span class="stem-badge">{{ stemLabels[1] || "STEM 2" }}</span>
-        </div>
-      </div>
-      <div class="row col-12 justify-content-between align-items-center p-0">
-        <div class="row icon">
-          <div class="volbox3">
-            <input
-              id="mutedTrack3"
-              (change)="valueInitial($event)"
-              type="range"
-              name="volume-slider"
-              min="0"
-              max="100"
-              value="75"
-            />
+          <div class="row track col-11" id="trackCustom1">
+            <span class="stem-badge">{{ stemLabels[0] || "STEM 1" }}</span>
           </div>
-          <button id="volumeOnTrackCustom3" type="button">
-            <span class="material-icons muteOn3 d-flex volume_up"
-              >volume_up</span
-            >
-            <span class="material-icons muteOff3 d-none">volume_off</span>
-          </button>
         </div>
-        <div class="row track col-11" id="trackCustom3">
-          <span class="stem-badge">{{ stemLabels[2] || "STEM 3" }}</span>
-        </div>
-      </div>
-      <div class="row col-12 justify-content-between align-items-center p-0">
-        <div class="row icon">
-          <div class="volbox4">
-            <input
-              id="mutedTrack4"
-              (change)="valueInitial($event)"
-              type="range"
-              name="volume-slider"
-              min="0"
-              max="100"
-              value="75"
-            />
+        <div class="row col-12 justify-content-between align-items-center p-0">
+          <div class="row icon">
+            <div class="volbox2">
+              <input
+                id="mutedTrack2"
+                (change)="valueInitial($event)"
+                type="range"
+                name="volume-slider"
+                min="0"
+                max="100"
+                value="75"
+              />
+            </div>
+            <button id="volumeOnTrackCustom2" type="button">
+              <span class="material-icons muteOn2 d-flex volume_up"
+                >volume_up</span
+              >
+              <span class="material-icons muteOff2 d-none">volume_off</span>
+            </button>
           </div>
-          <button id="volumeOnTrackCustom4" type="button">
-            <span class="material-icons muteOn4 d-flex volume_up"
-              >volume_up</span
-            >
-            <span class="material-icons muteOff4 d-none">volume_off</span>
-          </button>
+          <div class="row track col-11" id="trackCustom2">
+            <span class="stem-badge">{{ stemLabels[1] || "STEM 2" }}</span>
+          </div>
         </div>
-        <div class="row track col-11" id="trackCustom4">
-          <span class="stem-badge">{{ stemLabels[3] || "STEM 4" }}</span>
+        <div class="row col-12 justify-content-between align-items-center p-0">
+          <div class="row icon">
+            <div class="volbox3">
+              <input
+                id="mutedTrack3"
+                (change)="valueInitial($event)"
+                type="range"
+                name="volume-slider"
+                min="0"
+                max="100"
+                value="75"
+              />
+            </div>
+            <button id="volumeOnTrackCustom3" type="button">
+              <span class="material-icons muteOn3 d-flex volume_up"
+                >volume_up</span
+              >
+              <span class="material-icons muteOff3 d-none">volume_off</span>
+            </button>
+          </div>
+          <div class="row track col-11" id="trackCustom3">
+            <span class="stem-badge">{{ stemLabels[2] || "STEM 3" }}</span>
+          </div>
+        </div>
+        <div class="row col-12 justify-content-between align-items-center p-0">
+          <div class="row icon">
+            <div class="volbox4">
+              <input
+                id="mutedTrack4"
+                (change)="valueInitial($event)"
+                type="range"
+                name="volume-slider"
+                min="0"
+                max="100"
+                value="75"
+              />
+            </div>
+            <button id="volumeOnTrackCustom4" type="button">
+              <span class="material-icons muteOn4 d-flex volume_up"
+                >volume_up</span
+              >
+              <span class="material-icons muteOff4 d-none">volume_off</span>
+            </button>
+          </div>
+          <div class="row track col-11" id="trackCustom4">
+            <span class="stem-badge">{{ stemLabels[3] || "STEM 4" }}</span>
+          </div>
         </div>
       </div>
     </div>

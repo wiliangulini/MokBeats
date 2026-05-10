@@ -466,7 +466,6 @@ export class PlayerComponent
     let waveform: any = document.querySelector('#waveform');
     let rowPlayer: any = document.querySelector('.row.player');
     let trackCustom: any = document.getElementById('trackCustom');
-    let stemsPlayBtn: any = document.getElementById('stemsPlayPause');
     let trackCustom1: any = document.getElementById('trackCustom1');
     let trackCustom2: any = document.getElementById('trackCustom2');
     let trackCustom3: any = document.getElementById('trackCustom3');
@@ -475,12 +474,10 @@ export class PlayerComponent
       trackCustom.setAttribute('style', 'display: flex;');
       waveform.setAttribute('style', 'bottom: 301px;');
       rowPlayer.setAttribute('style', 'bottom: 220px;');
-      if (stemsPlayBtn) stemsPlayBtn.setAttribute('style', 'display: flex;');
     } else if (trackCustom.getAttribute('style') == 'display: flex;') {
       if (this.isStemsPlaying) {
         this.pauseStemsMode();
       }
-      if (stemsPlayBtn) stemsPlayBtn.setAttribute('style', 'display: none;');
       trackCustom.setAttribute('style', 'display: none;');
       waveform.removeAttribute('style');
       rowPlayer.removeAttribute('style');
