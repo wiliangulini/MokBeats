@@ -913,6 +913,12 @@ app.route('/api/musicas/filtro').post((request, response) => {
     );
   }
 
+  if (filtros.key && filtros.key.length > 0) {
+    musicasFiltradas = musicasFiltradas.filter(musica =>
+      filtros.key.includes(musica.key)
+    );
+  }
+
   // Paginação após filtros
   const page = parseInt(filtros.page) || 1;
   const limit = parseInt(filtros.limit) || musicasFiltradas.length;
@@ -1127,7 +1133,7 @@ app.post('/api/producers/track', multipartMiddleware, (req, res) => {
         }
       }
 
-      const requiredMeta = ['artistName', 'email', 'countryCode', 'phone', 'identification', 'trackName', 'category', 'genre', 'bpm', 'key', 'saleValue'];
+      const requiredMeta = ['artistName', 'email', 'countryCode', 'phone', 'identification', 'trackName', 'category', 'genre', 'bpm', 'key'];
       for (const field of requiredMeta) {
         if (meta?.[field] === undefined || meta?.[field] === null || String(meta?.[field]).trim() === '') {
           return res.status(422).json({ message: `Campo obrigatório ausente no meta: ${field}.` });
@@ -1146,11 +1152,6 @@ app.post('/api/producers/track', multipartMiddleware, (req, res) => {
       const bpm = parseInt(meta?.bpm, 10);
       if (!Number.isFinite(bpm) || bpm < 1 || bpm > 300) {
         return res.status(422).json({ message: 'BPM inválido. Deve estar entre 1 e 300.' });
-      }
-
-      const saleValue = Number(String(meta?.saleValue).replace(',', '.'));
-      if (!Number.isFinite(saleValue) || saleValue <= 0) {
-        return res.status(422).json({ message: 'Valor de venda inválido. Deve ser maior que zero.' });
       }
 
       const externalLink = String(meta?.externalLink || '').trim();
@@ -1178,10 +1179,8 @@ app.post('/api/producers/track', multipartMiddleware, (req, res) => {
       };
 
       const registryType = inferRegistryType();
-      if (!registryType) {
-        return res.status(422).json({ message: 'Informe um registro válido (ISRC, UPC, HASH ou OUTROS).' });
-      }
 
+      if (registryType) {
       if (registryType === 'ISRC') {
         const value = isrc || registryRaw;
         if (!/^[A-Za-z0-9]{12}$/.test(value)) {
@@ -1214,6 +1213,7 @@ app.post('/api/producers/track', multipartMiddleware, (req, res) => {
       } else {
         return res.status(422).json({ message: 'Tipo de registro inválido.' });
       }
+      } // fim if (registryType)
 
       // Durações (mesma duração do track para stems/efeitos)
       const TOL = 200; // ms
@@ -1252,6 +1252,24 @@ app.post('/api/producers/track', multipartMiddleware, (req, res) => {
           if (!eq(effectDurations[i], trackMs, TOL)) {
             return res.status(422).json({ message: `Efeito #${i + 1} não possui a mesma duração do Single Track.` });
           }
+        }
+      }
+
+      // Loops obrigatórios (15s, 30s, 60s)
+      const loop15v2 = files.loop15;
+      const loop30v2 = files.loop30;
+      const loop60v2 = files.loop60;
+      if (!loop15v2 || !loop30v2 || !loop60v2) {
+        return res.status(422).json({ message: 'Envie os três loops obrigatórios: loop15, loop30 e loop60.' });
+      }
+      const loopTargets = { loop15_ms: 15000, loop30_ms: 30000, loop60_ms: 60000 };
+      for (const [field, expected] of Object.entries(loopTargets)) {
+        const actual = toInt(d?.[field]);
+        if (!actual || !Number.isFinite(actual)) {
+          return res.status(422).json({ message: `Informe a duração do ${field} em meta.durations.` });
+        }
+        if (!eq(actual, expected, TOL)) {
+          return res.status(422).json({ message: `${field} fora da duração esperada (esperado: ${expected / 1000}s ±200ms).` });
         }
       }
 

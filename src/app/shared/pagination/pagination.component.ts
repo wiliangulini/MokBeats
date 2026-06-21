@@ -45,21 +45,21 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   `,
   styles: [`
     .page-link {
-      color: #dcad54;
+      color: #4b3a8f;
       background-color: transparent;
-      border: 1px solid rgba(220, 173, 84, 0.3);
+      border: 1px solid rgba(75, 58, 143, 0.3);
     }
 
     .page-link:hover {
       color: #fff;
-      background-color: rgba(220, 173, 84, 0.2);
-      border-color: #dcad54;
+      background-color: rgba(75, 58, 143, 0.2);
+      border-color: #4b3a8f;
     }
 
     .page-item.active .page-link {
-      background-color: #dcad54;
-      border-color: #dcad54;
-      color: #000;
+      background-color: #4b3a8f;
+      border-color: #4b3a8f;
+      color: #fff;
       font-weight: bold;
     }
 

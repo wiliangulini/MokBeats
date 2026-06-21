@@ -79,6 +79,10 @@ section.submit .container .row form p.h5 {
   grid-column: span 4;
 }
 
+.producer-form .loop-row-start {
+  grid-column: 1 / span 4;
+}
+
 .producer-form .span-3 {
   grid-column: span 3;
 }

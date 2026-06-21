@@ -87,17 +87,33 @@
           <div class="grid-item span-12">
             <mat-form-field appearance="fill" class="w-100 mb-0">
               <mat-label>Nome / Nome Artístico</mat-label>
-              <input matInput type="text" formControlName="nome" placeholder="Digite o nome aqui..." />
-              <mat-error *ngIf="hasError('nome')">Nome / Nome Artístico é obrigatório.</mat-error>
+              <input
+                matInput
+                type="text"
+                formControlName="nome"
+                placeholder="Digite o nome aqui..."
+              />
+              <mat-error *ngIf="hasError('nome')"
+                >Nome / Nome Artístico é obrigatório.</mat-error
+              >
             </mat-form-field>
           </div>
 
           <div class="grid-item span-12">
             <mat-form-field appearance="fill" class="w-100 mb-0">
               <mat-label>Email</mat-label>
-              <input matInput type="email" formControlName="email" placeholder="Por exemplo: exemplo@mail.com" />
-              <mat-error *ngIf="hasError('email', 'required')">Email é obrigatório.</mat-error>
-              <mat-error *ngIf="hasError('email', 'email')">Email inválido.</mat-error>
+              <input
+                matInput
+                type="email"
+                formControlName="email"
+                placeholder="Por exemplo: exemplo@mail.com"
+              />
+              <mat-error *ngIf="hasError('email', 'required')"
+                >Email é obrigatório.</mat-error
+              >
+              <mat-error *ngIf="hasError('email', 'email')"
+                >Email inválido.</mat-error
+              >
             </mat-form-field>
           </div>
 
@@ -105,64 +121,114 @@
             <mat-form-field appearance="fill" class="w-100 mb-0">
               <mat-label>Código</mat-label>
               <mat-select formControlName="countryCode">
-                <mat-option *ngFor="let code of countryCodeOptions" [value]="code">{{ code }}</mat-option>
+                <mat-option
+                  *ngFor="let code of countryCodeOptions"
+                  [value]="code"
+                  >{{ code }}</mat-option
+                >
               </mat-select>
-              <mat-error *ngIf="hasError('countryCode')">Código é obrigatório.</mat-error>
+              <mat-error *ngIf="hasError('countryCode')"
+                >Código é obrigatório.</mat-error
+              >
             </mat-form-field>
           </div>
 
           <div class="grid-item span-3">
             <mat-form-field appearance="fill" class="w-100 mb-0">
               <mat-label>Telefone + DDD</mat-label>
-              <input matInput type="text" formControlName="phone" placeholder="Digite aqui..." />
-              <mat-error *ngIf="hasError('phone', 'required')">Telefone + DDD é obrigatório.</mat-error>
-              <mat-error *ngIf="hasError('phone', 'phone')">Telefone inválido.</mat-error>
+              <input
+                matInput
+                type="text"
+                formControlName="phone"
+                placeholder="Digite aqui..."
+              />
+              <mat-error *ngIf="hasError('phone', 'required')"
+                >Telefone + DDD é obrigatório.</mat-error
+              >
+              <mat-error *ngIf="hasError('phone', 'phone')"
+                >Telefone inválido.</mat-error
+              >
             </mat-form-field>
           </div>
 
           <div class="grid-item span-7">
             <mat-form-field appearance="fill" class="w-100 mb-0">
               <mat-label>Nº de Identificação (CPF, RG, Passaporte)</mat-label>
-              <input matInput type="text" formControlName="identification" placeholder="Digite aqui..." />
-              <mat-error *ngIf="hasError('identification', 'required')">Nº de Identificação é obrigatório.</mat-error>
-              <mat-error *ngIf="hasError('identification', 'identification')">Identificação inválida.</mat-error>
+              <input
+                matInput
+                type="text"
+                formControlName="identification"
+                placeholder="Digite aqui..."
+              />
+              <mat-error *ngIf="hasError('identification', 'required')"
+                >Nº de Identificação é obrigatório.</mat-error
+              >
+              <mat-error *ngIf="hasError('identification', 'identification')"
+                >Identificação inválida.</mat-error
+              >
             </mat-form-field>
           </div>
 
           <div class="grid-item span-12">
             <mat-form-field appearance="fill" class="w-100 mb-0">
               <mat-label>Nome da Música</mat-label>
-              <input matInput type="text" formControlName="trackName" placeholder="Digite o nome aqui..." />
-              <mat-error *ngIf="hasError('trackName')">Nome da Música é obrigatório.</mat-error>
-            </mat-form-field>
-          </div>
-
-          <div class="grid-item span-6">
-            <mat-form-field appearance="fill" class="w-100 mb-0">
-              <mat-label>Categoria</mat-label>
-              <mat-select formControlName="category">
-                <mat-option *ngFor="let category of categoryOptions" [value]="category">{{ category }}</mat-option>
-              </mat-select>
-              <mat-error *ngIf="hasError('category')">Categoria é obrigatória.</mat-error>
+              <input
+                matInput
+                type="text"
+                formControlName="trackName"
+                placeholder="Digite o nome aqui..."
+              />
+              <mat-error *ngIf="hasError('trackName')"
+                >Nome da Música é obrigatório.</mat-error
+              >
             </mat-form-field>
           </div>
 
           <div class="grid-item span-6">
             <mat-form-field appearance="fill" class="w-100 mb-0">
               <mat-label>Gênero</mat-label>
-              <mat-select formControlName="genrePrimary">
-                <mat-option *ngFor="let genre of generos" [value]="genre">{{ genre }}</mat-option>
+              <mat-select formControlName="category">
+                <mat-option
+                  *ngFor="let category of categoryOptions"
+                  [value]="category"
+                  >{{ category }}</mat-option
+                >
               </mat-select>
-              <mat-error *ngIf="hasError('genrePrimary')">Gênero é obrigatório.</mat-error>
+              <mat-error *ngIf="hasError('category')"
+                >Gênero é obrigatório.</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="grid-item span-6">
+            <mat-form-field appearance="fill" class="w-100 mb-0">
+              <mat-label>Humor</mat-label>
+              <mat-select formControlName="genrePrimary">
+                <mat-option *ngFor="let genre of generos" [value]="genre">{{
+                  genre
+                }}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="hasError('genrePrimary')"
+                >Humor é obrigatório.</mat-error
+              >
             </mat-form-field>
           </div>
 
           <div class="grid-item span-6">
             <mat-form-field appearance="fill" class="w-100 mb-0">
               <mat-label>BPM</mat-label>
-              <input matInput type="text" formControlName="bpm" placeholder="Digite seu bpm aqui..." />
-              <mat-error *ngIf="hasError('bpm', 'required')">BPM é obrigatório.</mat-error>
-              <mat-error *ngIf="hasError('bpm', 'bpm')">BPM deve estar entre 1 e 300.</mat-error>
+              <input
+                matInput
+                type="text"
+                formControlName="bpm"
+                placeholder="Digite seu bpm aqui..."
+              />
+              <mat-error *ngIf="hasError('bpm', 'required')"
+                >BPM é obrigatório.</mat-error
+              >
+              <mat-error *ngIf="hasError('bpm', 'bpm')"
+                >BPM deve estar entre 1 e 300.</mat-error
+              >
             </mat-form-field>
           </div>
 
@@ -170,7 +236,11 @@
             <mat-form-field appearance="fill" class="w-100 mb-0">
               <mat-label>Tom</mat-label>
               <mat-select formControlName="key">
-                <mat-option *ngFor="let key of keyOptions" [value]="key.value">{{ key.label }}</mat-option>
+                <mat-option
+                  *ngFor="let key of keyOptions"
+                  [value]="key.value"
+                  >{{ key.label }}</mat-option
+                >
               </mat-select>
               <mat-error *ngIf="hasError('key')">Tom é obrigatório.</mat-error>
             </mat-form-field>
@@ -179,49 +249,107 @@
           <div class="grid-item span-6">
             <mat-form-field appearance="fill" class="w-100 mb-0">
               <mat-label>Registro (ISRC, Hash...)</mat-label>
-              <input matInput type="text" formControlName="registryValue" placeholder="Digite seu registro aqui..." />
+              <input
+                matInput
+                type="text"
+                formControlName="registryValue"
+                placeholder="Digite seu registro aqui..."
+              />
             </mat-form-field>
           </div>
 
           <div class="grid-item span-6">
             <mat-form-field appearance="fill" class="w-100 mb-0">
               <mat-label>Link (Spotify, Youtube...)</mat-label>
-              <input matInput type="url" formControlName="externalLink" placeholder="Divulgue sua página aqui..." />
-              <mat-error *ngIf="hasError('externalLink', 'url')">URL inválida. Use http:// ou https://.</mat-error>
+              <input
+                matInput
+                type="url"
+                formControlName="externalLink"
+                placeholder="Divulgue sua página aqui..."
+              />
+              <mat-error *ngIf="hasError('externalLink', 'url')"
+                >URL inválida. Use http:// ou https://.</mat-error
+              >
             </mat-form-field>
           </div>
 
           <div class="grid-item span-6 radio-column">
             <p class="field-label">Formato da música <span>*</span></p>
-            <mat-radio-group formControlName="track_stems" class="radio-group-vertical">
-              <mat-radio-button *ngFor="let mode of trackModes" [value]="mode.value">
+            <mat-radio-group
+              formControlName="track_stems"
+              class="radio-group-vertical"
+            >
+              <mat-radio-button
+                *ngFor="let mode of trackModes"
+                [value]="mode.value"
+              >
                 {{ mode.label }}
               </mat-radio-button>
             </mat-radio-group>
             <p class="stems-title">Stems</p>
-            <p class="stems-helper">( Todos os áudios deverão ter exatamente a mesma duração )</p>
+            <p class="stems-helper">
+              ( Todos os áudios deverão ter exatamente a mesma duração )
+            </p>
           </div>
 
-          <div class="grid-item span-6">
-            <p class="field-label">Imagem (jpeg, png, gif...)</p>
+          <div class="grid-item span-4 loop-row-start">
+            <p class="field-label">Loop 15s <span>*</span></p>
             <app-custom-file-upload
               title=""
               subtitle="+ UPLOAD"
               [multiple]="false"
-              accept="image/jpeg,image/png,image/gif"
-              variant="image"
-              formControlName="imageFile"
+              accept="audio/*"
+              variant="compact"
+              [showDuration]="true"
+              [expectedDuration]="15"
+              formControlName="loop15File"
             ></app-custom-file-upload>
-            <small class="text-muted upload-hint">Faça upload de sua imagem aqui.</small>
+            <small class="text-muted upload-hint">Trecho de 15 segundos.</small>
+            <small
+              class="text-danger"
+              *ngIf="hasError('loop15File', 'required')"
+              >Loop 15s é obrigatório.</small
+            >
           </div>
 
-          <div class="grid-item span-6">
-            <mat-form-field appearance="fill" class="w-100 mb-0">
-              <mat-label>Valor de venda</mat-label>
-              <input matInput type="text" formControlName="saleValue" placeholder="Digite o valor aqui..." />
-              <mat-error *ngIf="hasError('saleValue', 'required')">Valor de venda é obrigatório.</mat-error>
-              <mat-error *ngIf="hasError('saleValue', 'saleValue')">Valor de venda inválido.</mat-error>
-            </mat-form-field>
+          <div class="grid-item span-4">
+            <p class="field-label">Loop 30s <span>*</span></p>
+            <app-custom-file-upload
+              title=""
+              subtitle="+ UPLOAD"
+              [multiple]="false"
+              accept="audio/*"
+              variant="compact"
+              [showDuration]="true"
+              [expectedDuration]="30"
+              formControlName="loop30File"
+            ></app-custom-file-upload>
+            <small class="text-muted upload-hint">Trecho de 30 segundos.</small>
+            <small
+              class="text-danger"
+              *ngIf="hasError('loop30File', 'required')"
+              >Loop 30s é obrigatório.</small
+            >
+          </div>
+
+          <div class="grid-item span-4">
+            <p class="field-label">Loop 60s <span>*</span></p>
+            <app-custom-file-upload
+              title=""
+              subtitle="+ UPLOAD"
+              [multiple]="false"
+              accept="audio/*"
+              variant="compact"
+              [showDuration]="true"
+              [expectedDuration]="60"
+              formControlName="loop60File"
+            ></app-custom-file-upload>
+            <small class="text-muted upload-hint">Trecho de 60 segundos.</small>
+            <small
+              class="text-danger"
+              *ngIf="hasError('loop60File', 'required')"
+              >Loop 60s é obrigatório.</small
+            >
           </div>
 
           <div class="grid-item span-6">
@@ -234,8 +362,14 @@
               variant="compact"
               formControlName="singleTrackFile"
             ></app-custom-file-upload>
-            <small class="text-muted upload-hint">Faça upload de um arquivo de áudio.</small>
-            <small class="text-danger" *ngIf="hasError('singleTrackFile', 'required')">Single Track é obrigatório.</small>
+            <small class="text-muted upload-hint"
+              >Faça upload de um arquivo de áudio.</small
+            >
+            <small
+              class="text-danger"
+              *ngIf="hasError('singleTrackFile', 'required')"
+              >Single Track é obrigatório.</small
+            >
           </div>
 
           <ng-container *ngIf="isMode('trackWithStems')">
@@ -249,8 +383,14 @@
                 variant="compact"
                 formControlName="stemMelodyFile"
               ></app-custom-file-upload>
-              <small class="text-muted upload-hint">Faça upload de um arquivo de áudio.</small>
-              <small class="text-danger" *ngIf="hasError('stemMelodyFile', 'required')">Melodias é obrigatório.</small>
+              <small class="text-muted upload-hint"
+                >Faça upload de um arquivo de áudio.</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="hasError('stemMelodyFile', 'required')"
+                >Melodias é obrigatório.</small
+              >
             </div>
 
             <div class="grid-item span-6">
@@ -263,8 +403,14 @@
                 variant="compact"
                 formControlName="stemHarmonyFile"
               ></app-custom-file-upload>
-              <small class="text-muted upload-hint">Faça upload de um arquivo de áudio.</small>
-              <small class="text-danger" *ngIf="hasError('stemHarmonyFile', 'required')">Harmonias é obrigatório.</small>
+              <small class="text-muted upload-hint"
+                >Faça upload de um arquivo de áudio.</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="hasError('stemHarmonyFile', 'required')"
+                >Harmonias é obrigatório.</small
+              >
             </div>
 
             <div class="grid-item span-6">
@@ -277,8 +423,14 @@
                 variant="compact"
                 formControlName="stemDrumsFile"
               ></app-custom-file-upload>
-              <small class="text-muted upload-hint">Faça upload de um arquivo de áudio.</small>
-              <small class="text-danger" *ngIf="hasError('stemDrumsFile', 'required')">Ritmos é obrigatório.</small>
+              <small class="text-muted upload-hint"
+                >Faça upload de um arquivo de áudio.</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="hasError('stemDrumsFile', 'required')"
+                >Ritmos é obrigatório.</small
+              >
             </div>
 
             <div class="grid-item span-6">
@@ -291,8 +443,14 @@
                 variant="compact"
                 formControlName="stemFxFile"
               ></app-custom-file-upload>
-              <small class="text-muted upload-hint">Faça upload de um arquivo de áudio.</small>
-              <small class="text-danger" *ngIf="hasError('stemFxFile', 'required')">Efeitos é obrigatório.</small>
+              <small class="text-muted upload-hint"
+                >Faça upload de um arquivo de áudio.</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="hasError('stemFxFile', 'required')"
+                >Efeitos é obrigatório.</small
+              >
             </div>
           </ng-container>
 
@@ -307,20 +465,32 @@
                 variant="compact"
                 [formControlName]="'fx' + n"
               ></app-custom-file-upload>
-              <small class="text-muted upload-hint">Faça upload de um arquivo de áudio.</small>
-              <small class="text-danger" *ngIf="hasError('fx' + n, 'required')">Efeito {{ n }} é obrigatório.</small>
+              <small class="text-muted upload-hint"
+                >Faça upload de um arquivo de áudio.</small
+              >
+              <small class="text-danger" *ngIf="hasError('fx' + n, 'required')"
+                >Efeito {{ n }} é obrigatório.</small
+              >
             </div>
           </ng-container>
 
           <div class="grid-item span-12 terms-row">
             <p class="terms-title">Termos e condições.</p>
-            <mat-checkbox formControlName="politicaDePrivacidade" class="mr-2 mb-0 p-0">
+            <mat-checkbox
+              formControlName="politicaDePrivacidade"
+              class="mr-2 mb-0 p-0"
+            >
               <p class="h6 mb-0">
                 Concordo com os
-                <a [routerLink]="['/politica-de-privacidade']" class="color">termos e condições</a>
+                <a [routerLink]="['/politica-de-privacidade']" class="color"
+                  >termos e condições</a
+                >
               </p>
             </mat-checkbox>
-            <small class="text-danger" *ngIf="hasError('politicaDePrivacidade', 'required')">
+            <small
+              class="text-danger"
+              *ngIf="hasError('politicaDePrivacidade', 'required')"
+            >
               Obrigatório aceitar os termos.
             </small>
           </div>

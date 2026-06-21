@@ -104,8 +104,9 @@ export class ProdutoresComponent implements OnInit {
       key: ['', Validators.required],
       registryValue: [''],
       externalLink: ['', SharedValidators.optionalHttpUrl()],
-      saleValue: ['', [Validators.required, SharedValidators.saleValue()]],
-      imageFile: [null],
+      loop15File: [null, Validators.required],
+      loop30File: [null, Validators.required],
+      loop60File: [null, Validators.required],
       singleTrackFile: [null, Validators.required],
       stemMelodyFile: [null],
       stemHarmonyFile: [null],
@@ -261,10 +262,6 @@ export class ProdutoresComponent implements OnInit {
     });
   }
 
-  private parseSaleValue(value: string): number {
-    return parseFloat(String(value ?? '').replace(',', '.'));
-  }
-
   private buildFormData(mode: TrackMode, durations: any): FormData {
     const fd = new FormData();
     const registry: RegistryClassification = SharedValidators.classifyRegistryRaw(this.form.get('registryValue')?.value);
@@ -274,10 +271,9 @@ export class ProdutoresComponent implements OnInit {
     fd.append('mode', mode);
     fd.append('track', track);
 
-    const image = this.form.get('imageFile')?.value as File | null;
-    if (image) {
-      fd.append('image', image);
-    }
+    fd.append('loop15', this.form.get('loop15File')?.value as File);
+    fd.append('loop30', this.form.get('loop30File')?.value as File);
+    fd.append('loop60', this.form.get('loop60File')?.value as File);
 
     if (mode === 'trackWithStems') {
       fd.append('stem_melody', this.form.get('stemMelodyFile')?.value as File);
@@ -307,7 +303,6 @@ export class ProdutoresComponent implements OnInit {
       genre: this.form.get('genrePrimary')?.value,
       bpm: Number(this.form.get('bpm')?.value),
       key: this.form.get('key')?.value,
-      saleValue: this.parseSaleValue(this.form.get('saleValue')?.value),
       externalLink: this.form.get('externalLink')?.value || null,
       registryRaw: registry.registryRaw,
       registryType: registry.registryType,
@@ -352,6 +347,13 @@ export class ProdutoresComponent implements OnInit {
     if (track) {
       result.track_ms = await this.getFileDurationMs(track);
     }
+
+    const loop15 = this.form.get('loop15File')?.value as File | null;
+    const loop30 = this.form.get('loop30File')?.value as File | null;
+    const loop60 = this.form.get('loop60File')?.value as File | null;
+    if (loop15) result.loop15_ms = await this.getFileDurationMs(loop15);
+    if (loop30) result.loop30_ms = await this.getFileDurationMs(loop30);
+    if (loop60) result.loop60_ms = await this.getFileDurationMs(loop60);
 
     if (mode === 'trackWithStems') {
       const melody = this.form.get('stemMelodyFile')?.value as File | null;
@@ -407,6 +409,18 @@ export class ProdutoresComponent implements OnInit {
 
     const isSameDuration = (candidate: number) => Math.abs(candidate - trackMs) <= tolerance;
 
+    const loopChecks = [
+      { label: 'Loop 15s', key: 'loop15_ms', expected: 15000 },
+      { label: 'Loop 30s', key: 'loop30_ms', expected: 30000 },
+      { label: 'Loop 60s', key: 'loop60_ms', expected: 60000 },
+    ];
+    loopChecks.forEach(({ label, key, expected }) => {
+      const value = Number(durations?.[key] || 0);
+      if (!value || Math.abs(value - expected) > tolerance) {
+        errors.push(`${label} deve ter exatamente ${expected / 1000}s (±200ms).`);
+      }
+    });
+
     if (mode === 'trackWithStems') {
       const entries = [
         { label: 'Melodias', value: Number(durations?.stem_melody_ms || 0) },
@@ -452,8 +466,8 @@ export class ProdutoresComponent implements OnInit {
     else if (f.get('identification')?.hasError('identification')) msgs.push(SharedValidators.getErrorMessage(f.get('identification'), 'identification') || 'Identificação inválida.');
 
     if (f.get('trackName')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Nome da Música'));
-    if (f.get('category')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Categoria'));
-    if (f.get('genrePrimary')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Gênero'));
+    if (f.get('category')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Gênero'));
+    if (f.get('genrePrimary')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Humor'));
 
     if (f.get('bpm')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('BPM'));
     else if (f.get('bpm')?.hasError('bpm')) msgs.push(SharedValidators.getErrorMessage(f.get('bpm'), 'bpm') || 'BPM inválido.');
@@ -462,8 +476,9 @@ export class ProdutoresComponent implements OnInit {
 
     if (f.get('externalLink')?.hasError('url')) msgs.push(SharedValidators.getErrorMessage(f.get('externalLink'), 'url') || 'Link inválido.');
 
-    if (f.get('saleValue')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Valor de venda'));
-    else if (f.get('saleValue')?.hasError('saleValue')) msgs.push(SharedValidators.getErrorMessage(f.get('saleValue'), 'saleValue') || 'Valor de venda inválido.');
+    if (f.get('loop15File')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Loop 15s'));
+    if (f.get('loop30File')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Loop 30s'));
+    if (f.get('loop60File')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Loop 60s'));
 
     if (f.get('singleTrackFile')?.hasError('required')) msgs.push(SharedValidators.getRequiredMessage('Single Track'));
 
