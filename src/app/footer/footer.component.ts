@@ -1,6 +1,4 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Router} from "@angular/router";
-import {ScrollService} from "../service/scroll.service";
 import { ConfigService } from "../service/config.service";
 
 @Component({
@@ -26,24 +24,20 @@ export class FooterComponent implements OnInit {
 ];
 
   info: Array<any> = [
-    {value: 'Sobre Nós', viewValue: 'Sobre Nós'},
-    {value: 'Testemunhos', viewValue: 'Testemunhos'},
-    {value: 'Política de Privacidade', viewValue: 'Política de Privacidade'},
-    {value: 'Informações de Licença', viewValue: 'Informações de Licença'},
+    {value: 'Sobre Nós', viewValue: 'Sobre Nós', route: '/sobre-nos'},
+    {value: 'Termos e Condições', viewValue: 'Termos e Condições', route: '/termos-do-site'},
+    {value: 'Política de Privacidade', viewValue: 'Política de Privacidade', route: '/politica-de-privacidade'},
+    {value: 'Informações de Licença', viewValue: 'Informações de Licença', route: '/precos'},
   ];
   support: Array<any> = [
-    {value: 'Entre em Contato', viewValue: 'Entre em Contato'},
-    {value: 'Fale Conosco via WhatsApp', viewValue: 'Fale Conosco via WhatsApp'},
-    {value: 'FAQ', viewValue: 'FAQ'},
-    {value: 'HUB', viewValue: 'HUB'},
+    {value: 'Entre em Contato', viewValue: 'Entre em Contato', route: '/contato'},
+    {value: 'FAQ', viewValue: 'FAQ', route: '/faq'},
   ];
 
   url: string = 'https://wa.me/5546991161666';
-  // ao clicar no botao do rodape deve redirecionar o link, fazer evento de click com addEventListener
+  hubUrl: string = 'https://www.mokbeats-hub.com/';
 
   constructor(
-    private router: Router,
-    private scrollService: ScrollService,
     private configService: ConfigService,
   ) { }
 
@@ -55,21 +49,6 @@ export class FooterComponent implements OnInit {
         if (digits) this.url = `https://wa.me/${digits}`;
       } catch (_) {}
     });
-  }
-
-  infoFunction(data: string) {
-    console.log(data);
-    if(data === 'Política de Privacidade') {
-      this.router.navigate(['/politica-de-privacidade']).then();
-    } else if(data === 'FAQ') {
-      this.router.navigate(['/faq']).then();
-    } else if(data === 'Entre em Contato') {
-      this.router.navigate(['/contato']).then();
-    } else if(data === 'Informações de Licença') {
-      this.router.navigate(['/precos']).then();
-    } else if(data === 'Fale Conosco via WhatsApp') {
-      window.open(this.url, '_blank');
-    }
   }
 
 }
