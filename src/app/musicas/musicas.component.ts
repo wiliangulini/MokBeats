@@ -39,7 +39,7 @@ export class MusicasComponent
   waveSurfers!: QueryList<WaveSurferTestComponent>;
   public favorite: Musica = {};
   trecho: any[] = [15, 30, 60];
-  loop: any[] = [1, 2, 3, 4, 5, 6, 7];
+  selectedKeys: string[] = [];
   duration: any;
   durationAut: any;
   musicDownload: any[] = [];
@@ -50,6 +50,23 @@ export class MusicasComponent
   instrumentos: any[] = [];
   musicas: any = {};
   number: number | undefined;
+
+  readonly keyOptions = [
+    { value: 'A_MAJOR', label: 'A (Lá M)' }, { value: 'A_SHARP_MAJOR', label: 'A# (M)' },
+    { value: 'A_FLAT_MAJOR', label: 'Ab (M)' }, { value: 'B_MAJOR', label: 'B (Si M)' },
+    { value: 'B_FLAT_MAJOR', label: 'Bb (M)' }, { value: 'C_MAJOR', label: 'C (Dó M)' },
+    { value: 'C_SHARP_MAJOR', label: 'C# (M)' }, { value: 'D_MAJOR', label: 'D (Ré M)' },
+    { value: 'D_SHARP_MAJOR', label: 'D# (M)' }, { value: 'E_MAJOR', label: 'E (Mi M)' },
+    { value: 'F_MAJOR', label: 'F (Fá M)' }, { value: 'F_SHARP_MAJOR', label: 'F# (M)' },
+    { value: 'G_MAJOR', label: 'G (Sol M)' }, { value: 'G_SHARP_MAJOR', label: 'G# (M)' },
+    { value: 'A_MINOR', label: 'Am (m)' }, { value: 'A_SHARP_MINOR', label: 'A#m (m)' },
+    { value: 'A_FLAT_MINOR', label: 'Abm (m)' }, { value: 'B_MINOR', label: 'Bm (m)' },
+    { value: 'B_FLAT_MINOR', label: 'Bbm (m)' }, { value: 'C_MINOR', label: 'Cm (m)' },
+    { value: 'C_SHARP_MINOR', label: 'C#m (m)' }, { value: 'D_MINOR', label: 'Dm (m)' },
+    { value: 'D_SHARP_MINOR', label: 'D#m (m)' }, { value: 'E_MINOR', label: 'Em (m)' },
+    { value: 'F_MINOR', label: 'Fm (m)' }, { value: 'F_SHARP_MINOR', label: 'F#m (m)' },
+    { value: 'G_MINOR', label: 'Gm (m)' }, { value: 'G_SHARP_MINOR', label: 'G#m (m)' },
+  ];
 
   // Filtros selecionados
   selectedGeneros: string[] = [];
@@ -665,6 +682,21 @@ export class MusicasComponent
     }
   }
 
+  onKeyChange(event: any): void {
+    const value = event.source.value;
+    if (event.checked) {
+      this.selectedKeys.push(value);
+    } else {
+      const index = this.selectedKeys.indexOf(value);
+      if (index > -1) {
+        this.selectedKeys.splice(index, 1);
+      }
+    }
+    if (this.filtersInitialized) {
+      this.applyFilters();
+    }
+  }
+
   // Método para aplicar todos os filtros
   applyFilters(): void {
     // Verifica se há algum filtro selecionado
@@ -675,6 +707,7 @@ export class MusicasComponent
       this.selectedHumores.length > 0 ||
       this.selectedArtistas.length > 0 ||
       this.selectedInstrumentos.length > 0 ||
+      this.selectedKeys.length > 0 ||
       (this.number && this.number > 0) ||
       (this.duration && this.duration > 0);
 
@@ -697,6 +730,7 @@ export class MusicasComponent
       filtros.artistas = this.selectedArtistas;
     if (this.selectedInstrumentos.length > 0)
       filtros.instrumentos = this.selectedInstrumentos;
+    if (this.selectedKeys.length > 0) filtros.key = this.selectedKeys;
     if (this.number && this.number > 0) filtros.bpmMax = this.number;
     if (this.duration && this.duration > 0) filtros.duracaoMax = this.duration;
 
@@ -714,6 +748,7 @@ export class MusicasComponent
     this.selectedHumores = [];
     this.selectedArtistas = [];
     this.selectedInstrumentos = [];
+    this.selectedKeys = [];
     this.number = undefined;
     this.duration = undefined;
 

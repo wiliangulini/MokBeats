@@ -18,7 +18,7 @@ export class ArtistComponent implements OnInit, AfterViewInit {
 
   public favorite: Musica = {};
   trecho: any[] = [15, 30, 60];
-  loop: any[] = [1, 2, 3, 4, 5, 6, 7];
+  selectedKeys: string[] = [];
   duration: any;
   durationAut: any;
   musicDownload: any[] = [];
@@ -104,13 +104,9 @@ export class ArtistComponent implements OnInit, AfterViewInit {
     this.$$ = document.querySelector.bind(document);
     if (screen.width < 769) document.getElementById('navLeft')!.style.width = '0';
 
-    // this.route.queryParams.subscribe((data: any) => {
-    //   console.log(data);
-      // this.nameArtist = data.nome_produtor;
-      this.musicService.list().subscribe((data: any) => {
-        this.arrMusica = data;
-      });
-    // });
+    this.musicService.filterMusicas({ artistas: [this.nameArtist] }).subscribe((res: any) => {
+      this.arrMusica = res.data ?? res;
+    });
   }
 
   ngAfterViewInit() {

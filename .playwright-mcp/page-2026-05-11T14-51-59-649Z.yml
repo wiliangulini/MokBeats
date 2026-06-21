@@ -1,0 +1,161 @@
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e4]:
+      - link "Mokbeats - Produção Musical" [ref=e5] [cursor=pointer]:
+        - /url: "#/"
+        - img "Mokbeats - Produção Musical" [ref=e6]
+      - generic [ref=e7]:
+        - list [ref=e8]:
+          - listitem [ref=e9]:
+            - link "Home" [ref=e10] [cursor=pointer]:
+              - /url: "#/home"
+          - listitem [ref=e11]:
+            - link "Músicas" [ref=e12] [cursor=pointer]:
+              - /url: "#/musicas"
+          - listitem [ref=e13]:
+            - link "Efeitos Sonoros" [ref=e14] [cursor=pointer]:
+              - /url: "#/efeitos-sonoros"
+          - listitem [ref=e15]:
+            - link "Produtores" [ref=e16] [cursor=pointer]:
+              - /url: "#/produtores"
+          - listitem [ref=e17]:
+            - generic [ref=e18] [cursor=pointer]: HUB
+          - listitem [ref=e19]:
+            - link "Preços" [ref=e20] [cursor=pointer]:
+              - /url: "#/precos"
+          - listitem [ref=e21]:
+            - button "Idioma" [ref=e22] [cursor=pointer]
+        - list [ref=e23]:
+          - listitem [ref=e24]:
+            - link "shopping_cart" [ref=e25] [cursor=pointer]:
+              - /url: "#/carrinho"
+              - generic [ref=e26]: shopping_cart
+          - listitem [ref=e27]:
+            - generic [ref=e29] [cursor=pointer]: person
+  - generic [ref=e31]:
+    - article [ref=e32]:
+      - generic [ref=e33]:
+        - generic [ref=e35]:
+          - heading "Aqui na MokBeats você encontra músicas e SFX que causam impacto" [level=1] [ref=e36]
+          - heading "Acesse músicas e efeitos sonoros de alta qualidade e com curadoria especializada que você não encontrará em nenhum outro lugar." [level=3] [ref=e37]
+        - generic [ref=e41]:
+          - combobox [ref=e43]:
+            - option "Músicas" [selected]
+            - option "Efeitos"
+          - searchbox "Search" [ref=e44]
+          - button "Pesquisar" [ref=e45] [cursor=pointer]
+    - generic [ref=e47]:
+      - generic [ref=e49]:
+        - heading "Ouça nossos especialistas em músicas" [level=2] [ref=e50]
+        - heading "Todas as nossas faixas isentas de royalties são escolhidas a dedo por especialistas da indústria musical. Ouça algumas de suas faixas favoritas" [level=3] [ref=e51]
+      - paragraph [ref=e53]: Nenhuma músicas encontrada ou carregando...
+      - generic [ref=e56] [cursor=pointer]: Mostrar todas as tracks
+    - generic [ref=e62]:
+      - paragraph [ref=e63]: Faça a diferença conosco!
+      - paragraph [ref=e64]: MokBeats captura o coração e a alma do som cubano em uma sessão de bastidores com Jess o brabo, um de nossos produtores musicais indicados ao Grammy.
+      - paragraph [ref=e65]: Monetize seu potencial com a gente!
+      - link "SABER MAIS" [ref=e66] [cursor=pointer]:
+        - /url: "#"
+    - generic [ref=e68]:
+      - generic [ref=e69]:
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - generic [ref=e72]:
+              - generic [ref=e73]: music_note
+              - paragraph [ref=e74]: Música Exclusiva
+            - generic [ref=e75]:
+              - generic [ref=e76]: all_inclusive
+              - paragraph [ref=e77]: Pague uma vez, use para sempre!
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - generic [ref=e80]: workspace_premium
+              - paragraph [ref=e81]: 100% Livre de Direitos
+            - generic [ref=e82]:
+              - generic [ref=e83]: slideshow
+              - paragraph [ref=e84]: Seguro para YouTube e Vimeo
+        - generic [ref=e85]:
+          - paragraph [ref=e86]: Música Incrível, Licenças Simples
+          - paragraph [ref=e87]: Livre para usar e criar.
+          - generic [ref=e88] [cursor=pointer]: DESCUBRA NOSSAS LICENÇAS
+      - paragraph [ref=e90]:
+        - generic [ref=e91]: task_alt
+        - text: Com a confiança das melhores empresas do mundo e profissionais criativos.
+    - generic [ref=e94]:
+      - paragraph [ref=e95]: Nunca perca uma batida
+      - paragraph [ref=e96]: Receba notícias, insights e dicas diretamente na sua caixa de entrada.
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - generic [ref=e100]: mail
+          - textbox "Seu Email*..." [ref=e101]
+        - button "SE INSCREVA" [ref=e103] [cursor=pointer]
+    - contentinfo [ref=e105]:
+      - generic [ref=e106]:
+        - generic [ref=e107]:
+          - generic [ref=e108]:
+            - paragraph [ref=e109]: coleções
+            - list [ref=e110]:
+              - listitem [ref=e111] [cursor=pointer]:
+                - link "Músicas Mais Populares" [ref=e112]:
+                  - /url: "#"
+              - listitem [ref=e113] [cursor=pointer]:
+                - link "Músicas Mais Recentes" [ref=e114]:
+                  - /url: "#"
+              - listitem [ref=e115] [cursor=pointer]:
+                - link "Corporativo / Empresarial" [ref=e116]:
+                  - /url: "#"
+              - listitem [ref=e117] [cursor=pointer]:
+                - link "Música Jazz" [ref=e118]:
+                  - /url: "#"
+              - listitem [ref=e119] [cursor=pointer]:
+                - link "Música Clássica" [ref=e120]:
+                  - /url: "#"
+              - listitem [ref=e121] [cursor=pointer]:
+                - link "Música Livre de Direitos para Projetos" [ref=e122]:
+                  - /url: "#"
+              - listitem [ref=e123] [cursor=pointer]:
+                - link "Coleções de Música" [ref=e124]:
+                  - /url: "#"
+              - listitem [ref=e125] [cursor=pointer]:
+                - link "Música Gratuita" [ref=e126]:
+                  - /url: "#"
+          - generic [ref=e127]:
+            - paragraph [ref=e128]: INFORMAÇÕES
+            - list [ref=e129]:
+              - listitem [ref=e130] [cursor=pointer]: Sobre Nós
+              - listitem [ref=e131] [cursor=pointer]: Testemunhos
+              - listitem [ref=e132] [cursor=pointer]: Política de Privacidade
+              - listitem [ref=e133] [cursor=pointer]: Informações de Licença
+          - generic [ref=e134]:
+            - paragraph [ref=e135]: COMPOSITORES
+            - list [ref=e136]:
+              - listitem [ref=e137] [cursor=pointer]:
+                - link "Enviar Música" [ref=e138]:
+                  - /url: "#/produtores"
+          - generic [ref=e139]:
+            - paragraph [ref=e140]: SUPORTE
+            - list [ref=e141]:
+              - listitem [ref=e142] [cursor=pointer]: Entre em Contato
+              - listitem [ref=e143] [cursor=pointer]: Fale Conosco via WhatsApp
+              - listitem [ref=e144] [cursor=pointer]: FAQ
+              - listitem [ref=e145] [cursor=pointer]: HUB
+        - generic [ref=e146]:
+          - link "Facebook" [ref=e148] [cursor=pointer]:
+            - /url: https://www.facebook.com/premiumbeat
+            - img [ref=e149]
+          - link "Youtube" [ref=e152] [cursor=pointer]:
+            - /url: https://www.youtube.com/user/premiumbeat
+            - img [ref=e153]
+          - link "Instagram" [ref=e156] [cursor=pointer]:
+            - /url: https://www.instagram.com/premiumbeat
+            - img [ref=e157]
+        - generic [ref=e159]:
+          - generic [ref=e160]:
+            - generic [ref=e161]: task_alt
+            - text: COMPRAS 100% SEGURAS
+          - img [ref=e163]
+          - img [ref=e166]
+          - img [ref=e169]
+          - img [ref=e172]
+        - paragraph [ref=e175]:
+          - strong [ref=e176]: Mok Beats.com
+          - text: ©2025. Todos direitos reservados.

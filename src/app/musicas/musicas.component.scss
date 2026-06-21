@@ -645,8 +645,9 @@ article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-
 // section.atalhos
 
 section.atalhos {
-  padding: 50px 20px;
+  padding: 50px 20px 50px calc(13vw + 20px);
   background-color: #151515;
+  transition: padding-left 0.5s ease-in-out;
 }
 section.atalhos .container-fluid {
   max-width: 1400px;
