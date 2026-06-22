@@ -2,7 +2,7 @@
 
 Este arquivo define como agentes de IA devem atuar no repositório **MokBeats**.
 
-Use estas regras para Codex, Claude Code, ChatGPT, extensões de IA no VS Code e qualquer outro agente que leia, edite ou revise o código deste projeto.
+Use estas regras para Codex, Claude Code, ChatGPT, extensões de IA no VS Code e qualquer outro agente que leia, edite, revise ou documente código neste projeto.
 
 ---
 
@@ -14,49 +14,144 @@ Use estas regras para Codex, Claude Code, ChatGPT, extensões de IA no VS Code e
 **Branch principal de trabalho:** `dev`  
 **Branch de referência visual para dashboard:** `codex/create-musical-producer-dashboard-design`
 
-O projeto possui uma base funcional na branch `dev` e uma branch separada com uma proposta visual de dashboard do produtor. A branch de dashboard **não deve ser mesclada diretamente** na `dev`. Ela deve ser usada apenas como referência visual e conceitual.
+O projeto possui uma base funcional na branch `dev` e uma branch separada com proposta visual de dashboard do produtor.
+
+A branch de dashboard **não deve ser mesclada diretamente** na `dev`. Ela deve ser usada apenas como referência visual e conceitual.
 
 ---
 
 ## 2. Prioridade das instruções
 
-Ao trabalhar neste repositório, siga a seguinte ordem de prioridade:
+Ao trabalhar neste repositório, siga a ordem:
 
 1. Solicitação explícita do usuário/desenvolvedor.
 2. `PROJECT_RULES.md`.
 3. Este arquivo `AGENTS.md`.
 4. `CLAUDE.md`, quando estiver usando Claude Code.
 5. Código existente da branch atual.
-6. Boas práticas gerais de Angular, TypeScript, SCSS, Node.js e UX.
+6. Boas práticas de Angular 14, TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API, WaveSurfer.js e UX.
 
 Quando houver conflito entre instruções, preserve a estabilidade da branch `dev` e comunique o conflito antes de aplicar alterações grandes.
 
 ---
 
-## 3. Regra principal de segurança
+## 3. Modos de atuação
 
-Nunca faça refatorações amplas, migrações de framework, alteração de arquitetura global ou troca de bibliotecas sem solicitação explícita.
+### 3.1 Modo implementação
 
-O MokBeats é um projeto legado/ativo. O objetivo é evoluir com segurança, corrigindo problemas e implementando feedbacks do cliente sem quebrar o fluxo existente.
+O agente pode editar arquivos quando solicitado.
+
+Obrigatório:
+
+- entender o código antes de editar;
+- verificar branch e alterações pendentes;
+- propor plano curto;
+- implementar incrementalmente;
+- preservar padrões existentes;
+- validar com comandos disponíveis;
+- gerar relatório final.
+
+### 3.2 Modo revisão/auditoria
+
+O agente não deve editar arquivos, salvo se o usuário pedir correção.
+
+Obrigatório:
+
+- ler diff;
+- ler arquivos alterados;
+- comparar com escopo;
+- identificar regressões;
+- classificar achados por severidade;
+- recomendar status final.
+
+### 3.3 Modo planejamento
+
+O agente não deve editar arquivos.
+
+Obrigatório:
+
+- mapear arquitetura;
+- identificar riscos;
+- propor etapas;
+- definir critérios de aceite;
+- sugerir validações;
+- registrar decisões pendentes.
+
+### 3.4 Modo documentação
+
+O agente pode criar ou atualizar documentação quando solicitado.
+
+Obrigatório:
+
+- não inventar estrutura;
+- não documentar recurso inexistente como implementado;
+- separar regra atual, recomendação e pendência;
+- manter documentação compatível com `PROJECT_RULES.md`.
 
 ---
 
-## 4. Branches e estratégia de trabalho
+## 4. Regra principal de segurança
+
+Nunca faça refatorações amplas, migrações de framework, alteração de arquitetura global ou troca de bibliotecas sem solicitação explícita.
+
+O MokBeats é um projeto legado/ativo. O objetivo é evoluir com segurança, corrigindo problemas e implementando feedbacks sem quebrar o fluxo existente.
+
+O agente deve parar e pedir autorização quando a tarefa envolver:
+
+- dados de produção;
+- deploy;
+- credenciais;
+- alteração destrutiva;
+- mudança ampla de arquitetura;
+- alteração sensível em autenticação/autorização;
+- alteração irreversível de banco;
+- escopo ambíguo com alto risco;
+- dependência nova;
+- mudança de contrato com backend.
+
+---
+
+## 5. Evidência obrigatória
+
+Toda conclusão técnica deve se apoiar em evidência:
+
+- arquivo lido;
+- trecho de código;
+- script encontrado;
+- erro reproduzido;
+- teste executado;
+- build executado;
+- padrão já existente no projeto;
+- documentação oficial quando necessário.
+
+Quando não houver evidência suficiente, o agente deve declarar incerteza.
+
+É proibido inventar:
+
+- estrutura de projeto;
+- APIs;
+- rotas;
+- tabelas;
+- scripts;
+- dependências;
+- services;
+- componentes;
+- payloads;
+- variáveis de ambiente.
+
+---
+
+## 6. Branches e estratégia de trabalho
 
 ### Branch base
 
 Use sempre a branch `dev` como base de implementação, salvo instrução contrária.
 
-Antes de alterar código, confirme:
-
-```bash
-git branch
-git status
-```
+Antes de alterar código, confirme branch e estado do Git.
 
 Se for criar uma branch de feature, use nomes claros:
 
-```bash
+```txt
 feature/frontend-client-feedback
 feature/dashboard-produtor-mvp
 fix/player-navigation-and-license-modal
@@ -71,49 +166,87 @@ A branch abaixo contém um design de dashboard do produtor:
 codex/create-musical-producer-dashboard-design
 ```
 
-Ela pode conter código útil de UI, layout, cards, gráficos e tabela, mas também pode estar desatualizada em relação à `dev`.
-
 Regras:
 
 - Não fazer merge direto dessa branch na `dev`.
 - Não copiar cegamente `app.module.ts`, `app-routing.module.ts`, guards, interceptors ou configurações globais dessa branch.
 - Aproveitar apenas ideias visuais, componentes pontuais e padrões de layout.
 - Manter a proteção de rota do dashboard existente na `dev`.
-- Manter a integração real com `DashboardService` existente na `dev`.
+- Manter integração real com `DashboardService` existente na `dev`.
 - Se for necessário instalar biblioteca de gráficos, justificar antes e verificar compatibilidade com Angular 14.
 
 ---
 
-## 5. Stack e restrições técnicas
+## 7. Critérios de decisão técnica
+
+Priorizar:
+
+1. correção funcional;
+2. segurança;
+3. preservação de comportamento existente;
+4. compatibilidade com Angular 14 e arquitetura atual;
+5. simplicidade;
+6. manutenibilidade;
+7. testabilidade;
+8. baixo risco;
+9. performance;
+10. reversibilidade.
+
+Não priorizar novidade técnica sem necessidade.
+
+Toda decisão relevante deve registrar justificativa e risco residual.
+
+---
+
+## 8. Refatoração segura
+
+Refatoração só deve ocorrer quando:
+
+- fizer parte do escopo;
+- reduzir risco;
+- remover duplicação relevante;
+- melhorar clareza sem alterar comportamento;
+- for necessária para implementar a tarefa.
+
+Toda refatoração deve:
+
+- preservar comportamento existente;
+- ser localizada;
+- evitar reformatar arquivos inteiros;
+- evitar misturar mudança visual, funcional e arquitetural sem necessidade;
+- ser validada com build/teste ou validação manual objetiva.
+
+---
+
+## 9. Stack e restrições técnicas
 
 ### Angular
 
-O projeto usa Angular 14. Portanto:
-
+- O projeto usa Angular 14.
 - Não migrar para Angular 15+ sem autorização.
-- Não converter o projeto para arquitetura standalone sem autorização.
-- Não substituir a estrutura de módulos existente por arquitetura nova.
+- Não converter para standalone sem autorização.
+- Não substituir estrutura de módulos existente.
 - Evitar APIs modernas não suportadas pela versão atual.
 - Manter compatibilidade com TypeScript usado pelo projeto.
 
 ### Estilização
 
-O projeto utiliza SCSS, Bootstrap e Angular Material.
+O projeto usa SCSS, Bootstrap e Angular Material.
 
 Regras:
 
 - Preferir alterações localizadas no SCSS do componente.
-- Evitar CSS global em `styles.scss`, salvo para tokens, resets ou correções compartilhadas.
+- Evitar CSS global salvo para tokens, resets ou correções compartilhadas.
 - Não quebrar responsividade existente.
-- Validar visualmente desktop, tablet e mobile.
+- Validar desktop, tablet e mobile quando a tela for afetada.
 - Preservar identidade visual escura/musical do MokBeats.
 
-### JavaScript/TypeScript
+### TypeScript
 
 - Usar tipagem explícita quando possível.
 - Evitar `any`, exceto em integrações legadas onde a tipagem exata não esteja clara.
 - Não adicionar lógica complexa diretamente no template.
-- Evitar manipulação direta de DOM com `document.querySelector`, `getElementById`, jQuery ou acesso manual ao DOM.
+- Evitar manipulação direta de DOM.
 - Quando houver manipulação legada de DOM, reduzir gradualmente e substituir por estado Angular.
 
 ### Dependências
@@ -122,38 +255,44 @@ Não adicionar dependências sem necessidade real.
 
 Antes de adicionar biblioteca:
 
-1. Verificar se já existe solução no projeto.
-2. Verificar compatibilidade com Angular 14.
-3. Justificar o motivo.
-4. Preferir implementação simples com Angular/SCSS nativo quando possível.
+1. verificar se já existe solução no projeto;
+2. verificar compatibilidade com Angular 14;
+3. justificar o motivo;
+4. preferir implementação simples com Angular/SCSS nativo quando possível;
+5. pedir aprovação quando houver impacto de manutenção.
 
 ---
 
-## 6. Comandos de validação
+## 10. Testes e validação
 
-Sempre que possível, após alterações relevantes, executar:
+O agente deve procurar scripts reais no projeto antes de executar comandos.
+
+Comandos possíveis, apenas se existirem:
 
 ```bash
-npm install
-npm start
 npm run build
 npm test
+npm run lint
+npm run typecheck
 ```
 
-Quando o projeto tiver problemas prévios que impeçam algum comando, registre claramente:
+Quando o projeto tiver problemas prévios que impeçam algum comando, registrar:
 
 - comando executado;
 - erro encontrado;
 - se o erro parece anterior à alteração;
-- arquivos alterados relacionados.
+- arquivos alterados relacionados;
+- validação manual alternativa.
 
 Não afirmar que validou build/testes se não executou.
 
 ---
 
-## 7. Áreas principais do projeto
+## 11. Áreas principais do projeto
 
-### 7.1 Header/Menu
+As regras completas por módulo estão em `PROJECT_RULES.md`. Este resumo ajuda agentes a localizar risco e escopo.
+
+### 11.1 Header/Menu
 
 Arquivos prováveis:
 
@@ -163,15 +302,15 @@ src/app/menu/menu.component.ts
 src/app/menu/menu.component.scss
 ```
 
-Objetivos conhecidos:
+Prioridades:
 
-- Manter logo no topo.
-- Corrigir link do MokBeats Hub.
-- Evitar links quebrados.
-- Preservar menu responsivo.
-- Revisar contagem de carrinho sem depender de manipulação direta do DOM.
+- manter logo;
+- corrigir link do MokBeats Hub;
+- evitar links quebrados;
+- preservar menu responsivo;
+- revisar carrinho sem manipulação frágil do DOM.
 
-### 7.2 Home
+### 11.2 Home
 
 Arquivos prováveis:
 
@@ -181,14 +320,14 @@ src/app/home/home.component.ts
 src/app/home/home.component.scss
 ```
 
-Objetivos conhecidos:
+Prioridades:
 
-- Corrigir botões “Saber mais”.
-- Botão da seção de produtores deve direcionar para área de produtores/cadastro/upload conforme fluxo definido.
-- Evitar `href="#"` que causa navegação incorreta ou scroll indesejado.
-- Manter últimas músicas carregadas dinamicamente.
+- corrigir botões “Saber mais”;
+- direcionar seção de produtores para fluxo correto;
+- evitar links vazios;
+- manter últimas músicas carregadas dinamicamente.
 
-### 7.3 Login/Cadastro
+### 11.3 Login/Cadastro
 
 Arquivos prováveis:
 
@@ -198,16 +337,14 @@ src/app/login/login.component.ts
 src/app/login/login.component.scss
 ```
 
-Objetivos conhecidos:
+Prioridades:
 
-- Corrigir bug visual dos “pontinhos”/fonte no campo “Tipo Perfil”.
-- Manter opções de perfil:
-  - comprador;
-  - produtor.
-- Preservar integração com `AuthService`.
-- Não quebrar armazenamento de token e perfil.
+- corrigir bug visual dos “pontinhos”/fonte no campo “Tipo Perfil”;
+- preservar perfis `comprador` e `produtor`;
+- preservar integração com `AuthService`;
+- não quebrar token e perfil.
 
-### 7.4 Músicas
+### 11.4 Músicas
 
 Arquivos prováveis:
 
@@ -221,16 +358,15 @@ src/app/components/pagination/*
 src/app/components/wavesurfer-test/*
 ```
 
-Objetivos conhecidos:
+Prioridades:
 
-- Corrigir clique no nome da música que redireciona incorretamente.
-- Corrigir ação de licença para abrir modal de licença antes do carrinho.
-- Melhorar alinhamento das colunas.
-- Corrigir filtro lateral/minimizado.
-- Evitar desaparecimento indevido do filtro ao rolar a página.
-- Preservar player, waveform e paginação dinâmica.
+- corrigir clique no nome da música;
+- abrir modal de licença antes do carrinho quando aplicável;
+- melhorar alinhamento;
+- corrigir filtro lateral/minimizado;
+- preservar player, waveform e paginação dinâmica.
 
-### 7.5 Player
+### 11.5 Player
 
 Arquivos prováveis:
 
@@ -241,16 +377,15 @@ src/app/player/player.component.scss
 src/app/services/music-player.service.ts
 ```
 
-Objetivos conhecidos:
+Prioridades:
 
-- Remover metadados hard-coded.
-- Exibir dados reais da música atual.
-- Preservar integração com WaveSurfer.
-- Preservar modo full track e stems.
-- Implementar ou ocultar botões que atualmente não possuem ação real.
-- Garantir que o player não quebre ao trocar de música.
+- remover metadados hard-coded quando houver dados reais;
+- preservar integração com WaveSurfer;
+- preservar full track e stems;
+- implementar ou ocultar botões sem ação real;
+- evitar quebra ao trocar de música.
 
-### 7.6 Efeitos Sonoros
+### 11.6 Efeitos Sonoros
 
 Arquivos prováveis:
 
@@ -261,15 +396,15 @@ src/app/efeitosSonoros/efeitosSonoros.component.scss
 src/app/efeitosSonoros/efeitosSonoros.service.ts
 ```
 
-Objetivos conhecidos:
+Prioridades:
 
-- Padronizar visual e lógica com a página de músicas.
-- Usar paginação padronizada.
-- Remover dados estáticos quando houver endpoint real disponível.
-- Aplicar player/waveform se o fluxo de produto exigir.
-- Corrigir botões, filtro e responsividade.
+- padronizar visual e lógica com Músicas;
+- usar paginação padronizada;
+- remover dados estáticos quando houver endpoint real;
+- aplicar player/waveform quando o fluxo exigir;
+- corrigir botões, filtro e responsividade.
 
-### 7.7 Upload do Produtor
+### 11.7 Upload do Produtor
 
 Arquivos prováveis:
 
@@ -280,28 +415,17 @@ src/app/upload-file/produtores/produtores.component.scss
 src/app/upload-file/upload-file.service.ts
 ```
 
-Objetivos conhecidos:
+Prioridades:
 
-- Corrigir formulário de envio do produtor.
-- Modo “Single Track” não deve exibir Stems como obrigatórios.
-- Single Track deve ocupar largura adequada/100% conforme layout solicitado.
-- Ordem visual esperada:
-  1. Dados da faixa/produtor;
-  2. Single Track;
-  3. Loops;
-  4. Stems, apenas quando aplicável;
-  5. Efeitos, apenas no modo FX;
-  6. Termos e envio.
-- Campos de Stems devem seguir nomes claros:
-  - Melodia;
-  - Harmonia;
-  - Ritmo;
-  - Efeitos FX.
-- Preservar validação de duração dos áudios.
-- Preservar payload esperado pela API.
-- Não alterar nomes de campos enviados ao backend sem verificar o backend.
+- corrigir formulário do produtor;
+- Single Track não deve exigir Stems;
+- Single Track + Stems deve exibir Stems;
+- FX deve mostrar apenas campos de efeitos;
+- preservar validação de duração;
+- preservar payload esperado pela API;
+- não alterar nomes de campos sem verificar backend.
 
-### 7.8 Página do Artista / Área do Produtor
+### 11.8 Página do Artista / Área do Produtor
 
 Arquivos prováveis:
 
@@ -311,15 +435,15 @@ src/app/sub-menu/*
 src/app/menu-produtor/*
 ```
 
-Objetivos conhecidos:
+Prioridades:
 
-- Corrigir HTML inválido.
-- Remover dados hard-coded quando houver dados reais disponíveis.
-- Separar corretamente página pública do artista e área privada do produtor.
-- Menu lateral do produtor deve priorizar Dashboard.
-- Dashboard deve aparecer apenas para produtor autenticado.
+- corrigir HTML inválido;
+- remover dados hard-coded quando houver dados reais;
+- separar página pública do artista e área privada do produtor;
+- priorizar Dashboard no menu de produtor;
+- exibir dashboard apenas para produtor autenticado.
 
-### 7.9 Dashboard do Produtor
+### 11.9 Dashboard do Produtor
 
 Arquivos prováveis na branch `dev`:
 
@@ -331,22 +455,22 @@ src/app/dashboard-produtor/dashboard.service.ts
 src/app/dashboard-produtor/dashboard.models.ts
 ```
 
-Branch de referência visual:
+Referência visual:
 
 ```txt
 codex/create-musical-producer-dashboard-design
 ```
 
-Regras:
+Prioridades:
 
-- Manter `DashboardService` existente na `dev`.
-- Manter `AuthGuard` e `ProdutorGuard`.
-- Não substituir dados reais por mocks estáticos.
-- Se precisar usar mocks temporários, deixar explicitamente isolado e fácil de remover.
-- O dashboard mínimo deve mostrar receita, vendas, curtidas, conversão, período, músicas/faixas, origem das vendas e tabela de desempenho.
-- Exportação pode ficar como fase futura se não houver backend pronto.
+- manter `DashboardService` existente na `dev`;
+- manter `AuthGuard` e `ProdutorGuard`;
+- não substituir dados reais por mocks permanentes;
+- tratar loading e erro;
+- mostrar KPIs, período, origem das vendas e tabela de desempenho;
+- deixar exportação como fase futura se não houver backend.
 
-### 7.10 Preços/Licenças
+### 11.10 Preços/Licenças
 
 Arquivos prováveis:
 
@@ -356,15 +480,15 @@ src/app/licenca-valor/licenca-valor.component.ts
 src/app/licenca-valor/licenca-valor.component.scss
 ```
 
-Objetivos conhecidos:
+Prioridades:
 
-- Corrigir toggle de 6 meses e 12 meses.
-- Evitar dependência de `href=""`/Bootstrap tab quebrado.
-- Usar estado Angular para alternar preço e conteúdo.
-- Preços fictícios são aceitáveis quando o cliente não definiu valores reais.
-- Garantir responsividade cross-browser.
+- corrigir toggle de 6 meses e 12 meses;
+- evitar links vazios ou tab quebrado;
+- usar estado Angular;
+- aceitar preços fictícios apenas enquanto valores reais não forem definidos;
+- validar regras comerciais com humano.
 
-### 7.11 Carrinho/Checkout
+### 11.11 Carrinho/Checkout
 
 Arquivos prováveis:
 
@@ -375,114 +499,56 @@ src/app/services/carrinho.service.ts
 src/app/cart-modal/*
 ```
 
-Objetivos conhecidos:
+Prioridades:
 
-- Licença não deve ir direto para o carrinho sem escolha/validação de licença.
-- Revisar fluxo completo:
-  1. usuário escolhe faixa;
-  2. usuário escolhe tipo de licença;
-  3. item vai para carrinho;
-  4. usuário preenche dados do projeto/observações;
-  5. usuário finaliza.
-- Campos relevantes: nome do projeto, observações, dados de faturamento, forma de pagamento e aceite dos termos.
-- Evitar duplicidade/confusão entre `CarrinhoComponent` e `FinalizarCompraComponent`.
+- escolher tipo de licença antes de adicionar ao carrinho;
+- revisar fluxo até finalização;
+- preservar nome do projeto, observações, dados de faturamento, pagamento e aceite;
+- evitar duplicidade/confusão entre carrinho e finalizar compra.
 
-### 7.12 Footer
+### 11.12 Footer e FAQ
 
 Arquivos prováveis:
 
 ```txt
-src/app/footer/footer.component.html
-src/app/footer/footer.component.ts
-src/app/footer/footer.component.scss
+src/app/footer/*
+src/app/faq/*
 ```
 
-Objetivos conhecidos:
+Prioridades:
 
-- Substituir “Testemunhos” por “Termos e Condições”.
-- Revisar links institucionais.
-- Adicionar LinkedIn.
-- Remover links genéricos/externos incorretos.
-- Garantir que links internos usem Router Angular quando aplicável.
-
----
-
-## 8. Regras de implementação
-
-### Antes de alterar
-
-1. Ler o componente/serviço relacionado.
-2. Identificar se a lógica já existe.
-3. Verificar impacto em rotas, guards e serviços.
-4. Planejar alteração mínima.
-5. Evitar mexer em arquivos não relacionados.
-
-### Durante a alteração
-
-- Preferir mudanças pequenas e rastreáveis.
-- Manter nomes de classes e seletores consistentes.
-- Não remover código funcional sem entender dependência.
-- Evitar regressões em autenticação, player, upload e carrinho.
-- Preservar compatibilidade com API atual.
-
-### Depois de alterar
-
-Responder sempre com:
-
-```txt
-Arquivos alterados:
-- caminho/do/arquivo
-
-O que foi feito:
-- item 1
-- item 2
-
-Como validar:
-- comando 1
-- fluxo manual 1
-
-Riscos/observações:
-- item relevante, se houver
-```
+- corrigir links institucionais;
+- substituir “Testemunhos” por “Termos e Condições”;
+- adicionar LinkedIn;
+- manter FAQ coerente com identidade visual.
 
 ---
 
-## 9. Regras para prompts de implementação
-
-Quando receber uma tarefa grande, divida em etapas:
-
-1. Diagnóstico.
-2. Correção isolada.
-3. Validação.
-4. Ajuste visual.
-5. Revisão final.
-
-Não implementar tudo de uma vez se o escopo envolver várias áreas críticas como player, upload, checkout e dashboard.
-
----
-
-## 10. Proibições
+## 12. Proibições
 
 Não fazer sem autorização explícita:
 
-- Migrar Angular.
-- Trocar Bootstrap/Material por outra biblioteca.
-- Remover WaveSurfer.js.
-- Alterar endpoints da API sem verificar backend.
-- Remover guards de autenticação.
-- Expor dashboard para usuários não produtores.
-- Substituir dados reais por mocks permanentes.
-- Dar merge direto na branch `codex/create-musical-producer-dashboard-design`.
-- Reformatar o projeto inteiro.
-- Alterar `package.json` sem justificar.
-- Alterar configuração de build/deploy sem necessidade.
-- Quebrar rotas existentes.
-- Usar `href="#"` ou `href=""` para ações internas.
-- Inserir código morto ou botões sem função real.
+- migrar Angular;
+- trocar Bootstrap/Material por outra biblioteca;
+- remover WaveSurfer.js;
+- alterar endpoints da API sem verificar backend;
+- remover guards de autenticação;
+- expor dashboard para usuários não produtores;
+- substituir dados reais por mocks permanentes;
+- dar merge direto na branch de dashboard;
+- reformatar o projeto inteiro;
+- alterar `package.json` sem justificar;
+- alterar configuração de build/deploy sem necessidade;
+- quebrar rotas existentes;
+- usar links vazios para ações internas;
+- inserir código morto ou botões sem função real;
+- alterar secrets ou credenciais;
+- executar deploy;
+- executar ações destrutivas de Git, arquivos ou banco.
 
 ---
 
-## 11. Padrões de UX
+## 13. Padrões de UX
 
 A interface do MokBeats deve ser:
 
@@ -497,50 +563,70 @@ A interface do MokBeats deve ser:
 
 Prioridades de UX:
 
-1. Usuário deve conseguir ouvir músicas facilmente.
-2. Usuário deve entender tipo de licença antes de comprar.
-3. Produtor deve entender como enviar faixas, stems, loops e efeitos.
-4. Produtor deve acessar dashboard com clareza.
-5. Filtros não devem atrapalhar navegação.
-6. Player não deve quebrar fluxo de compra.
+1. usuário deve conseguir ouvir músicas facilmente;
+2. usuário deve entender tipo de licença antes de comprar;
+3. produtor deve entender como enviar faixas, stems, loops e efeitos;
+4. produtor deve acessar dashboard com clareza;
+5. filtros não devem atrapalhar navegação;
+6. player não deve quebrar fluxo de compra.
 
 ---
 
-## 12. Padrões de resposta do agente
+## 14. Padrão de resposta do agente
 
 Ao finalizar qualquer tarefa, o agente deve responder com:
 
 ```md
-## Resumo
+## Relatório final
 
+### Resumo
 ...
 
-## Arquivos alterados
-
+### Arquivos lidos
 - ...
 
-## Validação realizada
+### Arquivos alterados
+- ...
 
-- [x] npm run build
-- [ ] npm test — não executado porque ...
+### O que foi implementado ou revisado
+...
 
-## Como testar manualmente
+### Decisões técnicas
+...
 
+### Validação realizada
+- [ ] npm run build
+- [ ] npm test
+- [ ] validação manual
+
+### Resultado das validações
+...
+
+### Como testar manualmente
 1. ...
 2. ...
 
-## Observações
-
+### Riscos
 ...
+
+### Pendências
+...
+
+### Recomendações
+...
+
+### Status final
+Aprovado | Aprovado com observações | Requer ajustes | Bloqueado
 ```
 
-Nunca omitir falhas de validação.
+Nunca omitir falhas de validação.  
+Nunca declarar sucesso sem evidência.
 
 ---
 
-## 13. Objetivo final
+## 15. Objetivo final
 
-O objetivo dos agentes neste projeto é transformar o MokBeats em uma plataforma mais estável, profissional e coerente com o feedback do cliente, sem comprometer a base funcional já existente.
+O objetivo dos agentes neste projeto é transformar o MokBeats em uma plataforma mais estável, profissional e coerente com feedbacks do cliente, sem comprometer a base funcional já existente.
 
 A prioridade é corrigir:
 
