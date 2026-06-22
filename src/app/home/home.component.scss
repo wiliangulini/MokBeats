@@ -129,8 +129,8 @@ section.four .container .row {
 section.one .container .row h2,
 section.one .container .row h3,
 section.one .material-icons,
-section.one .text p.h4 a,
-section.one .text p.h6 a,
+section.one .text p.h4 .track-title-text,
+section.one .text p.h6 .producer-name-text,
 section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2 p,
 section.one .container .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-3.col-md-3.col-lg-3.col-xl-3 button.btn.btn-primary {
   color: #000 !important;
@@ -155,7 +155,7 @@ section.one .container .row.button button {
 section.one .text {
   margin-left: 3%;
 }
-section.one .text p.h6 a {
+section.one .text p.h6 .producer-name-text {
   font-size: 14px;
 }
 section.one .material-icons {
@@ -533,7 +533,7 @@ section.four .container .row form:focus-within .control .inputInt {
     align-items: center !important;
     padding: 0;
   }
-  p.h4 a {
+  p.h4 .track-title-text {
     font-size: 18px;
   }
   section.one .material-icons {

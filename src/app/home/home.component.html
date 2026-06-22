@@ -42,8 +42,8 @@
         <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start">
           <span id="playPauseHome" class="material-icons" (click)="onPlayPause(play_pause, musica.id, i)" style="cursor: pointer;">{{icon[i]}}</span>
           <div class="text d-flex flex-column align-items-start justify-content-start">
-            <p class="h4"><a href="#">{{musica.nome_musica}}</a></p>
-            <p class="h6"><a href="#">{{musica.nome_produtor}}</a></p>
+            <p class="h4"><span class="track-title-text">{{musica.nome_musica}}</span></p>
+            <p class="h6"><span class="producer-name-text">{{musica.nome_produtor}}</span></p>
           </div>
         </div>
         <div
@@ -90,7 +90,7 @@
     </div>
     <div class="row mt-3 justify-content-center align-items-center button">
       <div class="col-12 col-md-6 col-lg-3 d-flex justify-content-center">
-        <a (click)="routeNav('musicas')" class="btn btn-warning w-100 mb-3 mt-5">Mostrar todas as tracks</a>
+        <a routerLink="/musicas" class="btn btn-warning w-100 mb-3 mt-5">Mostrar todas as tracks</a>
       </div>
     </div>
   </div>
@@ -108,7 +108,7 @@
         <p class="h5">MokBeats captura o coração e a alma do som cubano em uma sessão de bastidores com Jess o brabo, um
           de nossos produtores musicais indicados ao Grammy.</p>
         <p class="h6 mt-3">Monetize seu potencial com a gente!</p>
-        <a type="button" href="#" class="btn btn-warning mt-5">SABER MAIS</a>
+        <a routerLink="/produtores" class="btn btn-warning mt-5">SABER MAIS</a>
       </div>
     </div>
   </div>
@@ -141,7 +141,7 @@
       <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex flex-column align-items-center justify-content-center">
         <p class="h1 text-center">Música Incrível, Licenças Simples</p>
         <p class="h5 text-center">Livre para usar e criar.</p>
-        <a type="button" (click)="routeNav('precos')" class="btn btn-warning">DESCUBRA NOSSAS LICENÇAS</a>
+        <a routerLink="/precos" class="btn btn-warning">DESCUBRA NOSSAS LICENÇAS</a>
       </div>
     </div>
     <div class="row m-0 pt-4 pb-4 trusted justify-content-center align-items-center">
