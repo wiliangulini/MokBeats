@@ -3,7 +3,6 @@ import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit }
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { AuthService } from "../login/auth.service";
 import { Musica, MusicasService } from "../musicas/musicas.service";
-import { Router } from "@angular/router";
 import { ScrollService } from "../service/scroll.service";
 import { MusicPlayerService } from "../service/music-player.service";
 
@@ -50,7 +49,6 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     private authService: AuthService,
     private musicService: MusicasService,
     private scrollService: ScrollService,
-    private router: Router,
     private musicPlayerService: MusicPlayerService
   ) {
     this.form = this.fb.group({
@@ -93,14 +91,6 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     const seconds = totalSeconds % 60;
     const pad = seconds.toString().padStart(2, '0');
     return `${minutes} min ${pad} seg`;
-  }
-
-  routeNav(txt: string): void {
-    if (txt === 'musicas') {
-      this.router.navigate(['/musicas']).then();
-    } else if (txt === 'precos') {
-      this.router.navigate(['/precos']).then();
-    }
   }
 
   curtir(i: number) {
