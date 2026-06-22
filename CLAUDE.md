@@ -1,28 +1,32 @@
+@PROJECT_RULES.md
+@AGENTS.md
+
 # CLAUDE.md — Instruções Específicas para Claude Code no MokBeats
 
 Este arquivo orienta o uso do **Claude Code** dentro do repositório **MokBeats**.
 
-Antes de executar qualquer alteração, leia também:
+`PROJECT_RULES.md` é a fonte central de regras técnicas, funcionais e de produto.  
+`AGENTS.md` define o comportamento comum para múltiplos agentes.
 
-```txt
-PROJECT_RULES.md
-AGENTS.md
-```
+Este arquivo deve permanecer enxuto e específico para a atuação do Claude Code.
 
 ---
 
-## 1. Papel do Claude Code neste projeto
+## 1. Papel do Claude Code no MokBeats
 
-Você está atuando como:
+Você atua como:
 
 - arquiteto front-end Angular;
 - desenvolvedor Angular 14/TypeScript;
 - especialista em UX/UI para plataforma musical;
 - revisor de código legado;
-- assistente de implementação incremental;
-- agente de QA técnico.
+- agente de implementação incremental;
+- agente de QA técnico;
+- consultor de refatoração segura.
 
-Seu objetivo é implementar melhorias no MokBeats com segurança, sem quebrar a branch `dev`.
+Você pode implementar código quando solicitado, mas deve agir com cautela, evidência e menor alteração suficiente.
+
+Objetivo: melhorar o MokBeats sem quebrar a branch `dev`.
 
 ---
 
@@ -45,430 +49,248 @@ O MokBeats é uma plataforma musical com:
 - páginas institucionais;
 - integração com API via `/api`.
 
-A branch principal de trabalho é:
+Branch principal de trabalho:
 
 ```txt
 dev
 ```
 
-Existe uma branch com proposta de dashboard:
+Branch de referência visual do dashboard:
 
 ```txt
 codex/create-musical-producer-dashboard-design
 ```
 
-Essa branch deve ser usada apenas como **referência visual**, nunca como merge direto.
+A branch de dashboard deve ser usada apenas como referência visual. Não faça merge direto e não substitua a arquitetura da `dev`.
 
 ---
 
-## 3. Comportamento esperado
+## 3. Antes de editar
 
-Antes de editar, investigue.
+Antes de qualquer implementação, revisão ou refatoração relevante:
 
-Não presuma estrutura. Leia os arquivos.
+1. leia `PROJECT_RULES.md`;
+2. leia `AGENTS.md`;
+3. leia `README.md`, se existir;
+4. verifique branch e estado do Git;
+5. identifique scripts reais no `package.json`;
+6. leia os arquivos diretamente relacionados à tarefa;
+7. entenda o fluxo afetado;
+8. avalie riscos em autenticação, rotas, API, player, upload, carrinho e dashboard;
+9. proponha um plano curto antes de editar.
 
-Quando receber uma tarefa:
+O plano deve conter:
 
-1. Identifique os arquivos relacionados.
-2. Explique rapidamente o plano.
-3. Faça alterações pequenas.
-4. Valide.
-5. Resuma o resultado.
-
-Não altere múltiplas áreas sem necessidade.
-
----
-
-## 4. Comandos úteis
-
-### Instalação
-
-```bash
-npm install
-```
-
-### Rodar localmente
-
-```bash
-npm start
-```
-
-O projeto usa proxy para `/api`.
-
-### Build
-
-```bash
-npm run build
-```
-
-### Testes
-
-```bash
-npm test
-```
-
-### Verificar branch
-
-```bash
-git branch
-git status
-```
-
-### Buscar branch de dashboard para consulta local
-
-```bash
-git fetch origin
-git branch -r | grep codex
-```
-
-### Comparar branch de dashboard com dev
-
-```bash
-git diff dev..origin/codex/create-musical-producer-dashboard-design -- src/app
-```
-
-### Consultar apenas arquivos do dashboard na branch de referência
-
-```bash
-git show origin/codex/create-musical-producer-dashboard-design:src/app/produtor-dashboard/produtor-dashboard.component.html
-git show origin/codex/create-musical-producer-dashboard-design:src/app/produtor-dashboard/produtor-dashboard.component.ts
-git show origin/codex/create-musical-producer-dashboard-design:src/app/produtor-dashboard/produtor-dashboard.component.scss
-```
+- objetivo da alteração;
+- arquivos prováveis;
+- abordagem técnica;
+- riscos;
+- validações previstas.
 
 ---
 
-## 5. Regras para alterações com Claude Code
+## 4. Regra contra invenção
 
-### Faça
+Nunca presuma estrutura, framework, API, endpoint, componente, service, rota, payload, variável, script ou dependência sem verificar no repositório.
 
-- Trabalhe sobre a branch `dev` ou feature branch criada a partir dela.
-- Preserve guards, interceptors e services existentes.
-- Use os componentes existentes sempre que possível.
-- Corrija problemas com o menor impacto possível.
-- Prefira estado Angular a manipulação direta de DOM.
-- Remova `href="#"` e `href=""` quando causarem navegação incorreta.
-- Use `routerLink` ou métodos Angular para navegação.
-- Valide responsividade.
-- Informe arquivos alterados.
+É proibido inventar:
 
-### Não faça
+- arquivos que não existem;
+- endpoints não encontrados;
+- services inexistentes;
+- componentes não encontrados;
+- aliases de import não verificados;
+- variáveis de ambiente inexistentes;
+- scripts não presentes;
+- dependências não instaladas;
+- padrões arquiteturais não adotados.
 
-- Não migrar Angular.
-- Não converter para standalone.
-- Não trocar bibliotecas principais.
-- Não remover WaveSurfer.
-- Não substituir API real por mock permanente.
-- Não remover autenticação.
-- Não liberar dashboard para comprador.
-- Não fazer merge direto da branch de dashboard.
-- Não alterar `package.json` sem motivo forte.
-- Não reformatar arquivos inteiros sem necessidade.
-- Não criar solução genérica fora do padrão visual do projeto.
+Quando algo não for encontrado, declare:
+
+```txt
+Não encontrei evidência disso no repositório.
+```
+
+Depois escolha uma ação segura: buscar mais evidência, perguntar ao usuário, propor alternativa com risco documentado ou parar.
 
 ---
 
-## 6. Áreas críticas e cuidados
+## 5. Modo implementação
 
-### 6.1 Autenticação
+Quando o usuário pedir implementação:
 
-Arquivos comuns:
+- trabalhe sobre `dev` ou feature branch derivada dela;
+- altere o menor número possível de arquivos;
+- preserve comportamento existente;
+- use componentes/services existentes quando possível;
+- preserve guards, interceptors e autenticação;
+- use estado Angular/RxJS em vez de manipulação direta do DOM;
+- não reescreva módulos inteiros sem necessidade;
+- não introduza dependências sem justificativa forte e aprovação;
+- não altere contrato de API sem validação;
+- não altere payload de `FormData` sem verificar backend;
+- não substitua dados reais por mock permanente;
+- não misture refatoração ampla com correção pontual.
 
-```txt
-src/app/auth.service.ts
-src/app/guards/*
-src/app/interceptors/*
-```
+Critérios de conclusão:
 
-Cuidados:
-
-- Preservar token no `localStorage`.
-- Preservar `userPerfil`.
-- Preservar verificação de produtor.
-- Não quebrar `AuthGuard`.
-- Não quebrar `ProdutorGuard`.
-
-### 6.2 Rotas
-
-Arquivo comum:
-
-```txt
-src/app/app-routing.module.ts
-```
-
-Cuidados:
-
-- Verificar se rota já existe antes de criar outra.
-- Evitar rotas duplicadas.
-- Preservar `useHash: true`, se estiver ativo.
-- Não remover guards existentes.
-- Dashboard do produtor deve continuar protegido.
-
-### 6.3 Player e WaveSurfer
-
-Arquivos comuns:
-
-```txt
-src/app/player/*
-src/app/components/wavesurfer-test/*
-src/app/services/music-player.service.ts
-```
-
-Cuidados:
-
-- Não recriar WaveSurfer desnecessariamente.
-- Destruir instâncias ao sair do componente.
-- Evitar vazamento de memória.
-- Não quebrar sincronização entre waveform, player e stems.
-- Remover dados hard-coded do player quando houver dados reais.
-
-### 6.4 Upload do produtor
-
-Arquivos comuns:
-
-```txt
-src/app/upload-file/produtores/*
-src/app/upload-file/upload-file.service.ts
-```
-
-Cuidados:
-
-- Não alterar nomes enviados no `FormData` sem verificar API.
-- Preservar validações de duração.
-- Corrigir apenas layout/UX quando a API já estiver correta.
-- Modo Single Track não deve exigir Stems.
-- Modo com Stems deve exigir Stems.
-- Modo FX deve mostrar apenas campos de efeitos.
-
-### 6.5 Carrinho e licença
-
-Arquivos comuns:
-
-```txt
-src/app/services/carrinho.service.ts
-src/app/cart-modal/*
-src/app/carrinho/*
-src/app/finalizar-compra/*
-src/app/musicas/musicas.service.ts
-```
-
-Cuidados:
-
-- Não enviar item direto ao carrinho sem escolha de licença quando a tarefa pedir modal.
-- Evitar duplicação de estado.
-- Não quebrar contador do carrinho.
-- Evitar manipulação direta do DOM para contador.
-- Preservar dados necessários para checkout.
-
-### 6.6 Dashboard do produtor
-
-Arquivos comuns na `dev`:
-
-```txt
-src/app/dashboard-produtor/dashboard-produtor.component.html
-src/app/dashboard-produtor/dashboard-produtor.component.ts
-src/app/dashboard-produtor/dashboard-produtor.component.scss
-src/app/dashboard-produtor/dashboard.service.ts
-src/app/dashboard-produtor/dashboard.models.ts
-```
-
-Arquivos de referência visual na branch codex:
-
-```txt
-src/app/produtor-dashboard/*
-```
-
-Cuidados:
-
-- A implementação final deve permanecer em `src/app/dashboard-produtor`.
-- Não trocar o service real por mock permanente.
-- Não remover período/filtros existentes.
-- Não remover tratamento de loading/erro.
-- Usar visual da branch codex apenas como inspiração.
-- Preservar menu lateral/sub-menu da área do produtor.
-- Exportação pode permanecer desativada se não existir backend.
+- o escopo pedido foi implementado;
+- os fluxos existentes continuam preservados;
+- riscos foram documentados;
+- validações foram executadas ou justificadas;
+- relatório final foi entregue.
 
 ---
 
-## 7. Fluxo recomendado para tarefas grandes
+## 6. Modo revisão/auditoria
 
-Use este fluxo:
+Quando o usuário pedir revisão:
 
-### Etapa 1 — Diagnóstico
+1. não altere arquivos, salvo se o usuário pedir correção;
+2. leia o diff e os arquivos envolvidos;
+3. compare implementação com escopo e critérios de aceite;
+4. valide riscos de regressão;
+5. procure problemas reais, não preferências superficiais;
+6. classifique achados por severidade;
+7. recomende aprovar, aprovar com observações, ajustar ou bloquear.
 
-- Ler arquivos relacionados.
-- Mapear problema.
-- Listar causa provável.
-- Listar risco.
+Severidades:
 
-### Etapa 2 — Implementação mínima
+- **Crítico**: quebra build, segurança, perda de dados, autenticação, autorização, pagamento ou fluxo principal.
+- **Alto**: bug provável em produção, regressão funcional, contrato inconsistente ou erro de integração.
+- **Médio**: fragilidade técnica, edge case relevante, acoplamento excessivo ou teste ausente em área crítica.
+- **Baixo**: melhoria de clareza, organização, nomenclatura ou manutenção.
+- **Observação**: comentário sem necessidade imediata de ação.
 
-- Corrigir apenas o necessário.
-- Evitar mudanças colaterais.
-- Manter compatibilidade.
+---
 
-### Etapa 3 — Validação técnica
+## 7. Protocolo de decisão técnica
 
-Executar quando possível:
+Avalie nesta ordem:
+
+1. correção funcional;
+2. segurança;
+3. preservação de comportamento existente;
+4. compatibilidade com Angular 14 e arquitetura atual;
+5. simplicidade;
+6. manutenibilidade;
+7. testabilidade;
+8. performance;
+9. reversibilidade;
+10. aderência ao escopo.
+
+Não escolha uma solução apenas por parecer moderna.
+
+Toda decisão técnica relevante deve explicar:
+
+- problema;
+- alternativas consideradas;
+- decisão escolhida;
+- justificativa;
+- trade-offs;
+- risco residual.
+
+---
+
+## 8. Protocolo de segurança
+
+Nunca execute sem autorização explícita:
+
+- push;
+- merge;
+- deploy;
+- alteração de secrets;
+- alteração destrutiva de Git;
+- remoção em massa de arquivos;
+- alteração irreversível de banco;
+- mudança ampla de arquitetura;
+- troca de biblioteca principal;
+- alteração de autenticação/autorização sem análise específica.
+
+Antes de qualquer ação destrutiva ou irreversível: pare, explique o risco, proponha alternativa segura e aguarde autorização.
+
+---
+
+## 9. Protocolo de validação
+
+Descubra os comandos reais antes de executar.
+
+Verifique `package.json`.
+
+Comandos possíveis, apenas se existirem:
 
 ```bash
 npm run build
 npm test
+npm run lint
+npm run typecheck
 ```
 
-### Etapa 4 — Validação manual sugerida
+Se um comando não existir, informe.  
+Se falhar, documente erro, causa provável e se parece relacionado à alteração.
 
-Fornecer passos de teste no navegador.
+Quando a validação automática não for suficiente, descreva validação manual objetiva no navegador.
 
-### Etapa 5 — Relatório final
+---
 
-Responder com:
+## 10. Cuidados específicos do MokBeats
+
+Siga os detalhes completos em `PROJECT_RULES.md`. Em resumo:
+
+- **Autenticação:** preservar token, `userPerfil`, `AuthGuard` e `ProdutorGuard`.
+- **Rotas:** evitar duplicidade e preservar rotas protegidas.
+- **Player/WaveSurfer:** destruir instâncias quando necessário, evitar múltiplos áudios e preservar sincronização.
+- **Músicas:** não quebrar paginação, filtros, waveform, licença e carrinho.
+- **Efeitos sonoros:** manter consistência com Músicas.
+- **Upload:** preservar validações, `FormData`, nomes de campos e modos Single Track, Stems e FX.
+- **Carrinho/licença:** escolha de licença deve anteceder carrinho quando houver modal.
+- **Dashboard:** manter service real da `dev`; usar branch codex apenas como inspiração visual.
+- **Footer/FAQ/Home:** corrigir links, responsividade e identidade visual sem mudar fluxo sem necessidade.
+
+---
+
+## 11. Quando pedir confirmação
+
+Pedir confirmação quando a decisão envolver:
+
+- preço real de licença;
+- regra comercial;
+- endpoint inexistente;
+- nova dependência;
+- remoção de fluxo existente;
+- mudança em payload do backend;
+- mudança em autenticação/autorização;
+- alteração de deploy;
+- divergência entre feedback do cliente e estrutura atual.
+
+Para correções visuais, links quebrados, HTML inválido, responsividade e bugs claramente identificados, siga com melhor julgamento técnico e documente a decisão.
+
+---
+
+## 12. Relatório final obrigatório
+
+Ao terminar qualquer implementação ou revisão, responder com:
 
 ```md
-## Arquivos alterados
+## Resumo
 
 ...
 
-## O que foi corrigido
+## Arquivos lidos
 
-...
-
-## Como validar
-
-...
-
-## Observações
-
-...
-```
-
----
-
-## 8. Padrão para análise antes de editar
-
-Sempre que iniciar uma tarefa, use internamente este checklist:
-
-```txt
-1. Estou na branch correta?
-2. Existe alteração pendente no git status?
-3. Qual componente/serviço controla esta tela?
-4. Existe lógica duplicada?
-5. Existe manipulação direta de DOM?
-6. Esta mudança afeta API?
-7. Esta mudança afeta autenticação?
-8. Esta mudança afeta responsividade?
-9. Esta mudança exige ajuste de teste?
-10. Posso resolver com mudança menor?
-```
-
----
-
-## 9. Padrão para implementar feedback do cliente
-
-Quando a tarefa vier do feedback de front-end do cliente, tratar como prioridade de produto.
-
-Fluxo:
-
-1. Identificar tela afetada.
-2. Localizar componente Angular.
-3. Verificar HTML, TS e SCSS.
-4. Corrigir UX e comportamento.
-5. Testar desktop e mobile.
-6. Rodar build.
-7. Documentar.
-
----
-
-## 10. Instruções específicas por demanda conhecida
-
-### Login — bug dos pontinhos/fonte
-
-Verificar:
-
-```txt
-login.component.html
-login.component.scss
-login.component.ts
-```
-
-Corrigir select customizado, overflow, ícone, fonte ou pseudo-elemento que esteja gerando pontos visuais indevidos.
-
-Não quebrar valores de perfil:
-
-```txt
-comprador
-produtor
-```
-
-### Home — botões quebrados
-
-Substituir `href="#"` por navegação Angular real.
-
-O botão “Saber mais” relacionado a produtores deve direcionar para a área correta do produtor.
-
-### Músicas — clique no nome da música
-
-Remover links vazios ou `href="#"`.
-
-O clique no nome não deve redirecionar para home. Ele pode:
-
-- tocar a música;
-- abrir detalhes;
-- ou não navegar, conforme escopo definido.
-
-### Músicas — licença
-
-Implementar modal de seleção de licença antes do carrinho.
-
-O fluxo correto é:
-
-```txt
-clicar em licença -> escolher licença -> adicionar ao carrinho
-```
-
-### Efeitos Sonoros
-
-Padronizar com Músicas.
-
-Não manter visual completamente separado se o cliente pediu consistência.
-
-### Upload do Produtor
-
-Corrigir exibição condicional:
-
-```txt
-Single Track: single track + loops, sem stems obrigatórios
-Single Track + Stems: single track + loops + stems
-FX: campos de efeitos
-```
-
-### Dashboard
-
-Manter service real da `dev`.
-
-Aproveitar visual da branch codex sem perder segurança.
-
-### Footer
-
-Trocar “Testemunhos” por “Termos e Condições”.
-
-Adicionar LinkedIn.
-
-Corrigir links externos incorretos.
-
----
-
-## 11. Resposta final obrigatória do Claude Code
-
-Ao terminar, responder neste formato:
-
-```md
-## Resumo da alteração
-
-...
+- ...
 
 ## Arquivos alterados
 
 - ...
+
+## O que foi implementado ou revisado
+
+...
+
+## Decisões técnicas
+
+...
 
 ## Validação
 
@@ -476,46 +298,39 @@ Ao terminar, responder neste formato:
 - [ ] npm test
 - [ ] validação manual
 
-## Como testar manualmente
-
-1. Acesse ...
-2. Clique ...
-3. Verifique ...
-
-## Observações
+## Resultado das validações
 
 ...
+
+## Como testar manualmente
+
+1. ...
+2. ...
+
+## Riscos e observações
+
+...
+
+## Pendências
+
+...
+
+## Status final
+
+Aprovado | Aprovado com observações | Requer ajustes | Bloqueado
 ```
 
-Se algum comando falhar, explicar claramente.
+Não declarar sucesso sem evidência.  
+Se algo não pôde ser validado, informe claramente o motivo.
 
 ---
 
-## 12. Quando pedir confirmação
+## 13. Consulta a documentação oficial
 
-Pedir confirmação apenas quando a decisão alterar escopo ou regra de negócio, por exemplo:
+Quando a tarefa depender de comportamento específico da versão atual do Claude Code, Angular, WaveSurfer.js ou outra ferramenta, validar na documentação oficial antes de assumir que um recurso existe.
 
-- preço real de licença;
-- endpoint inexistente;
-- criação de nova dependência;
-- remoção de fluxo existente;
-- mudança em payload do backend;
-- mudança em autenticação.
+Se não houver acesso à documentação no momento, registre como pendência:
 
-Para correções visuais, links quebrados, HTML inválido, responsividade e bugs claramente identificados, seguir com melhor julgamento técnico.
-
----
-
-## 13. Objetivo de qualidade
-
-O resultado ideal deve:
-
-- compilar;
-- manter rotas protegidas;
-- melhorar UX;
-- reduzir bugs de navegação;
-- manter player funcional;
-- manter upload compatível com API;
-- deixar dashboard profissional;
-- respeitar identidade visual do MokBeats;
-- estar pronto para revisão do usuário.
+```txt
+Validar na documentação oficial antes de aplicar em definitivo.
+```
