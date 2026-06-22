@@ -45,9 +45,12 @@ input, select {
   box-shadow: 0 0 5px rgb(0 0 0 / 25%);
   border-radius: 2px;
   border: 0;
+  box-sizing: border-box;
   height: 38px;
   color: #888686;
+  font-family: Walsheim, Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
+  line-height: 1.25;
   width: 60%;
   padding: 1% 2% 1% 2%;
   -webkit-border-radius: 2px;
@@ -64,7 +67,10 @@ input, select {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
   width: 100%;
+  height: 100%;
   cursor: pointer;
 }
 .ls-select.status .control:focus {
@@ -72,9 +78,20 @@ input, select {
   outline-offset: 2px;
 }
 .ls-select.status .control p.txt {
+  flex: 1 1 auto;
+  min-width: 0;
   margin-bottom: 0;
+  overflow: visible;
+  font-family: Walsheim, Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.25;
 }
 .ls-select.status .arrow {
+  flex: 0 0 24px;
+  width: 24px;
+  font-family: "Material Icons";
+  font-size: 24px;
+  line-height: 1;
+  text-align: center;
   transition: transform 0.25s ease-in-out;
 }
 .ls-select.status.open {
@@ -110,6 +127,7 @@ input, select {
 }
 .ls-select.status .down.val .option-item {
   width: 100%;
+  min-width: 0;
   border: 0;
   background: transparent;
   padding: 0;
@@ -120,6 +138,8 @@ input, select {
   cursor: pointer;
   transition: all 0.25s ease-in-out;
   color: inherit;
+  font-family: Walsheim, Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.25;
 }
 .ls-select.status .down.val .option-item:last-child {
   border-bottom: 0;
@@ -136,14 +156,17 @@ input, select {
 }
 .ls-select.status .down.val .option-item .option-label {
   width: 100%;
-  height: 100%;
+  min-width: 0;
   display: block;
-  padding: 4%;
+  padding: 0.65rem 0.75rem;
+  font-family: Walsheim, Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.25;
+  white-space: normal;
 }
 .ls-select.status .down.val .option-item .option-help {
   font-size: 15px;
-  text-decoration: underline dotted #4B3A8F;
-  text-underline-offset: 3px;
+  text-decoration: none;
+  cursor: help;
 }
 
 input, input:focus {
