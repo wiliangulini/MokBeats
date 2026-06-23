@@ -48,16 +48,25 @@ Antes de alterar qualquer coisa:
 2. leia `AGENTS.md`;
 3. leia `CLAUDE.md`, quando estiver usando Claude Code;
 4. leia `CODEX.md`, quando estiver usando Codex ou houver continuidade entre Codex e Claude Code;
-5. leia `.claude/instructions.md`, quando estiver usando Claude Code;
-6. leia `README.md`, se existir;
-7. identifique a branch atual;
-8. verifique o estado do Git;
-9. identifique a stack real e os scripts disponíveis;
-10. leia os arquivos diretamente relacionados ao escopo;
-11. entenda o fluxo afetado;
-12. planeje a menor alteração suficiente.
+5. leia `.codex/instructions.md` explicitamente, quando estiver usando Codex;
+6. leia `.claude/instructions.md`, quando estiver usando Claude Code;
+7. leia `README.md`, se existir;
+8. identifique a branch atual;
+9. verifique o estado do Git;
+10. identifique a stack real e os scripts disponíveis;
+11. leia os arquivos diretamente relacionados ao escopo;
+12. entenda o fluxo afetado;
+13. planeje a menor alteração suficiente.
 
 Toda tarefa deve respeitar o escopo solicitado.
+
+Antes de editar, formalize conforme a complexidade da tarefa:
+
+- objetivo;
+- comportamento atual e comportamento esperado;
+- arquivos prováveis e arquivos proibidos, quando aplicável;
+- critérios de aceite;
+- validações necessárias.
 
 É proibido:
 
@@ -66,6 +75,7 @@ Toda tarefa deve respeitar o escopo solicitado.
 - modificar arquitetura global sem justificativa e validação humana;
 - instalar dependências sem aprovação;
 - remover código sem entender impacto;
+- ampliar escopo sem informar justificativa, risco e alternativa de menor impacto;
 - alterar contrato da API sem validar backend;
 - alterar autenticação/autorização sem análise específica;
 - executar deploy sem autorização explícita;
@@ -215,6 +225,8 @@ Evite:
 - Não alterar endpoints sem validar backend.
 - Não alterar payloads sem validar API.
 - Preservar contrato atual sempre que possível.
+- Preservar método HTTP, URL, query params, path params, formato da resposta,
+  status HTTP, paginação, filtros e ordenação.
 - Validar entradas e tratar erros.
 - Não logar tokens, senhas ou dados sensíveis.
 - Quando endpoint não existir, registrar pendência ou criar camada temporária claramente isolada, nunca mock permanente disfarçado de integração real.
@@ -615,6 +627,7 @@ FAQ deve:
 - Preferir interfaces e tipos claros.
 - Evitar `any` sem justificativa.
 - Evitar silenciar erros sem explicação.
+- Não usar `@ts-ignore` nem suprimir lint sem justificativa técnica registrada.
 - Evitar `catch` vazio.
 - Tratar `null` e `undefined`.
 - Não acessar propriedades sem verificar existência quando dados vêm da API.
@@ -647,6 +660,34 @@ FAQ deve:
 - Retornar `Observable` quando usar HttpClient.
 - Preservar contratos já consumidos por componentes.
 
+### Dependências
+
+Antes de adicionar ou atualizar uma dependência:
+
+- verificar se o projeto já possui solução equivalente;
+- justificar necessidade e alternativa sem dependência;
+- validar compatibilidade com Angular 14 e TypeScript configurado;
+- avaliar impacto no bundle, build, manutenção e segurança;
+- obter aprovação antes de alterar `package.json` ou arquivos de lock.
+
+### Performance
+
+- Medir ou apresentar evidência do gargalo antes de otimizar.
+- Evitar busca de dados em excesso, renderização cara, loops desnecessários e imports pesados.
+- Avaliar impacto no bundle inicial quando a mudança afetar dependências ou carregamento.
+- Não trocar clareza e segurança por micro-otimização sem benefício demonstrável.
+
+### Documentação
+
+Atualizar documentação quando a mudança afetar:
+
+- comportamento público;
+- comando de execução ou validação;
+- variável de ambiente;
+- decisão arquitetural relevante;
+- contrato de API;
+- fluxo operacional ou procedimento de deploy.
+
 ---
 
 ## 11. Secrets, variáveis e deploy
@@ -664,6 +705,24 @@ FAQ deve:
 - expor token, senha ou dado sensível no client.
 
 Quando uma variável for necessária, documentar apenas nome e finalidade.
+
+### Segurança da aplicação
+
+- Validar dados externos e regras críticas também no backend; validação do frontend não substitui autorização server-side.
+- Preservar validações de upload, tipo, tamanho e permissões existentes.
+- Não liberar CORS de forma ampla sem justificativa e análise de risco.
+- Não expor stack trace, token, senha, segredo ou dado sensível em resposta ou mensagem de erro.
+- Não reduzir autenticação ou autorização para contornar falhas de integração.
+
+### Banco e migrations
+
+Quando banco ou migration entrarem explicitamente no escopo:
+
+- avaliar compatibilidade com dados existentes;
+- descrever impacto em leitura, escrita e performance;
+- definir rollback antes de alteração irreversível;
+- não remover tabela, coluna ou dados sem autorização explícita;
+- validar contrato com backend e consumidores.
 
 ### Deploy/VPS/Linux
 
@@ -709,6 +768,10 @@ Se um comando falhar, documentar:
 - erro;
 - provável causa;
 - se o erro foi introduzido pela alteração ou já existia.
+
+É proibido remover, desativar ou silenciar testes e validações existentes apenas
+para obter resultado positivo. Qualquer exceção exige justificativa técnica,
+risco registrado e autorização quando reduzir cobertura ou segurança.
 
 ### Fluxos públicos a validar quando afetados
 
