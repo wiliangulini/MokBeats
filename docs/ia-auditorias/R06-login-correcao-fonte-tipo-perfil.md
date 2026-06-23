@@ -117,7 +117,20 @@ Nenhuma. A R06 está aprovada para registro. A única pendência é a validaçã
 
 ## Complemento pós-revisão
 
-[cole aqui o complemento, se houver]
+A revisão do Claude Code classificou a R06 como "Aprovado com observações".
+
+Não há correções objetivas exigidas para o Codex nesta etapa. As falhas em `npm test` foram consideradas pré-existentes e não relacionadas à alteração SCSS. A única pendência operacional antes de considerar a etapa 100% encerrada é a validação visual manual do seletor de tipo de perfil no navegador.
+
+## Status final da etapa
+
+Aprovado com observações
+
+## Pendências para etapas futuras
+
+- Corrigir as falhas pré-existentes dos testes automatizados em etapa dedicada de specs/QA.
+- Avaliar futuramente o uso de `overflow: hidden`, `white-space: nowrap` e `text-overflow: ellipsis` em `.control p.txt` caso os labels do seletor cresçam.
+- Refatorar futuramente os métodos `irProLogin`, `back` e `resetPassword`, que usam `document.getElementById` e manipulação direta de estilo.
+- Executar validação visual manual em Chrome/Firefox antes de encerrar a etapa como 100% validada.
 
 ---
 
