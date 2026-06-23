@@ -1,12 +1,14 @@
 @PROJECT_RULES.md
 @AGENTS.md
+@CODEX.md
 
 # CLAUDE.md — Instruções Específicas para Claude Code no MokBeats
 
 Este arquivo orienta o uso do **Claude Code** dentro do repositório **MokBeats**.
 
-`PROJECT_RULES.md` é a fonte central de regras técnicas, funcionais e de produto.  
+`PROJECT_RULES.md` é a fonte central de regras técnicas, funcionais e de produto.
 `AGENTS.md` define o comportamento comum para múltiplos agentes.
+`CODEX.md` orienta continuidade quando uma tarefa alternar entre Codex e Claude Code.
 
 Este arquivo deve permanecer enxuto e específico para a atuação do Claude Code.
 
@@ -71,13 +73,15 @@ Antes de qualquer implementação, revisão ou refatoração relevante:
 
 1. leia `PROJECT_RULES.md`;
 2. leia `AGENTS.md`;
-3. leia `README.md`, se existir;
-4. verifique branch e estado do Git;
-5. identifique scripts reais no `package.json`;
-6. leia os arquivos diretamente relacionados à tarefa;
-7. entenda o fluxo afetado;
-8. avalie riscos em autenticação, rotas, API, player, upload, carrinho e dashboard;
-9. proponha um plano curto antes de editar.
+3. leia `CODEX.md`, se existir ou se houver continuidade com Codex;
+4. leia `.claude/instructions.md`, se existir;
+5. leia `README.md`, se existir;
+6. verifique branch e estado do Git;
+7. identifique scripts reais no `package.json`;
+8. leia os arquivos diretamente relacionados à tarefa;
+9. entenda o fluxo afetado;
+10. avalie riscos em autenticação, rotas, API, player, upload, carrinho e dashboard;
+11. proponha um plano curto antes de editar.
 
 O plano deve conter:
 
@@ -162,6 +166,26 @@ Severidades:
 - **Baixo**: melhoria de clareza, organização, nomenclatura ou manutenção.
 - **Observação**: comentário sem necessidade imediata de ação.
 
+### 6.1 Modo planejamento
+
+Quando o Claude Code estiver em Modo Planejamento ou quando o usuário pedir análise antes de implementação:
+
+- não editar arquivos;
+- não criar arquivos;
+- não mover arquivos;
+- não excluir arquivos;
+- não sobrescrever arquivos;
+- não executar ações destrutivas;
+- usar apenas leitura, busca, análise e inspeção;
+- identificar arquivos prováveis com evidência real do repositório;
+- separar fatos, hipóteses, riscos e decisões pendentes;
+- apresentar plano claro antes de qualquer implementação;
+- aguardar aprovação explícita antes de editar.
+
+Exceção: o Claude Code só pode criar ou salvar um arquivo de plano quando o usuário pedir explicitamente para criar ou salvar esse arquivo.
+
+Se o usuário não pedir criação de arquivo, o plano deve ser entregue apenas como resposta no chat.
+
 ---
 
 ## 7. Protocolo de decisão técnica
@@ -226,7 +250,7 @@ npm run lint
 npm run typecheck
 ```
 
-Se um comando não existir, informe.  
+Se um comando não existir, informe.
 Se falhar, documente erro, causa provável e se parece relacionado à alteração.
 
 Quando a validação automática não for suficiente, descreva validação manual objetiva no navegador.
@@ -267,7 +291,36 @@ Para correções visuais, links quebrados, HTML inválido, responsividade e bugs
 
 ---
 
-## 12. Relatório final obrigatório
+## 12. Comandos e skills do Claude Code
+
+Use comandos em `.claude/commands/` como atalhos operacionais quando fizer sentido:
+
+- `/create-code` — implementação incremental;
+- `/review-code` — revisão técnica;
+- `/refactor-code` — refatoração segura;
+- `/architecture-decision` — decisão arquitetural;
+- `/debug-app` — investigação de bug;
+- `/continue-from-codex` — continuidade de tarefa iniciada pelo Codex;
+- `/final-audit` — auditoria final;
+- `/revisar-seguranca` — revisão de segurança;
+- `/revisar-performance` — revisão de performance;
+- `/melhorar-ui-ux` — melhoria visual controlada;
+- `/checklist-merge` — checklist antes de merge.
+
+Use skills em `.claude/skills/` quando a tarefa exigir workflow reutilizável:
+
+- `senior-code-agent`;
+- `senior-code-review`;
+- `safe-refactor`;
+- `legacy-code-audit`;
+- `architecture-review`;
+- `implementation-planning`.
+
+Esses comandos e skills são complementares. Eles não substituem `PROJECT_RULES.md`.
+
+---
+
+## 13. Relatório final obrigatório
 
 Ao terminar qualquer implementação ou revisão, responder com:
 
@@ -320,12 +373,18 @@ Ao terminar qualquer implementação ou revisão, responder com:
 Aprovado | Aprovado com observações | Requer ajustes | Bloqueado
 ```
 
-Não declarar sucesso sem evidência.  
+Não declarar sucesso sem evidência.
 Se algo não pôde ser validado, informe claramente o motivo.
+
+Quando for necessário registrar relatório em arquivo para continuidade, use:
+
+```txt
+docs/ia-auditorias/TEMPLATE-agent-report.md
+```
 
 ---
 
-## 13. Consulta a documentação oficial
+## 14. Consulta a documentação oficial
 
 Quando a tarefa depender de comportamento específico da versão atual do Claude Code, Angular, WaveSurfer.js ou outra ferramenta, validar na documentação oficial antes de assumir que um recurso existe.
 

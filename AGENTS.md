@@ -8,10 +8,10 @@ Use estas regras para Codex, Claude Code, ChatGPT, extensões de IA no VS Code e
 
 ## 1. Identidade do projeto
 
-**Projeto:** MokBeats  
-**Tipo:** Plataforma web musical / marketplace de beats, músicas, efeitos sonoros, licenças e área de produtores  
-**Stack principal:** Angular 14, TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API, WaveSurfer.js  
-**Branch principal de trabalho:** `dev`  
+**Projeto:** MokBeats
+**Tipo:** Plataforma web musical / marketplace de beats, músicas, efeitos sonoros, licenças e área de produtores
+**Stack principal:** Angular 14, TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API, WaveSurfer.js
+**Branch principal de trabalho:** `dev`
 **Branch de referência visual para dashboard:** `codex/create-musical-producer-dashboard-design`
 
 O projeto possui uma base funcional na branch `dev` e uma branch separada com proposta visual de dashboard do produtor.
@@ -28,8 +28,10 @@ Ao trabalhar neste repositório, siga a ordem:
 2. `PROJECT_RULES.md`.
 3. Este arquivo `AGENTS.md`.
 4. `CLAUDE.md`, quando estiver usando Claude Code.
-5. Código existente da branch atual.
-6. Boas práticas de Angular 14, TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API, WaveSurfer.js e UX.
+5. `CODEX.md`, quando estiver usando Codex ou houver continuidade entre Codex e Claude Code.
+6. `.claude/instructions.md`, `.claude/commands/` e `.claude/skills/`, quando estiver usando Claude Code.
+7. Código existente da branch atual.
+8. Boas práticas de Angular 14, TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API, WaveSurfer.js e UX.
 
 Quando houver conflito entre instruções, preserve a estabilidade da branch `dev` e comunique o conflito antes de aplicar alterações grandes.
 
@@ -76,6 +78,10 @@ Obrigatório:
 - definir critérios de aceite;
 - sugerir validações;
 - registrar decisões pendentes.
+
+Durante o Modo Planejamento, o agente deve apenas analisar e responder com um plano.
+Não deve criar, alterar, mover, excluir ou sobrescrever arquivos, salvo se o usuário pedir explicitamente para criar ou salvar um arquivo de plano.
+Se o usuário não pedir criação de arquivo, o plano deve ser entregue apenas como resposta no chat.
 
 ### 3.4 Modo documentação
 
@@ -619,7 +625,7 @@ Ao finalizar qualquer tarefa, o agente deve responder com:
 Aprovado | Aprovado com observações | Requer ajustes | Bloqueado
 ```
 
-Nunca omitir falhas de validação.  
+Nunca omitir falhas de validação.
 Nunca declarar sucesso sem evidência.
 
 ---
@@ -641,3 +647,21 @@ A prioridade é corrigir:
 9. responsividade geral.
 
 Sempre evoluir com segurança.
+
+---
+
+## 16. Continuidade entre agentes
+
+Quando uma tarefa alternar entre Codex, Claude Code ou outro agente:
+
+- leia `CODEX.md`, se existir;
+- verifique relatórios relacionados em `docs/ia-auditorias/`;
+- confirme o estado real do Git antes de assumir que uma etapa foi concluída;
+- não desfaça alterações de outro agente sem evidência técnica;
+- registre decisões, riscos e validações no relatório final.
+
+Quando for necessário salvar relatório em arquivo, use:
+
+```txt
+docs/ia-auditorias/TEMPLATE-agent-report.md
+```
