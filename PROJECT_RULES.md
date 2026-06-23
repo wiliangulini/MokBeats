@@ -47,13 +47,15 @@ Antes de alterar qualquer coisa:
 1. leia este arquivo;
 2. leia `AGENTS.md`;
 3. leia `CLAUDE.md`, quando estiver usando Claude Code;
-4. leia `README.md`, se existir;
-5. identifique a branch atual;
-6. verifique o estado do Git;
-7. identifique a stack real e os scripts disponíveis;
-8. leia os arquivos diretamente relacionados ao escopo;
-9. entenda o fluxo afetado;
-10. planeje a menor alteração suficiente.
+4. leia `CODEX.md`, quando estiver usando Codex ou houver continuidade entre Codex e Claude Code;
+5. leia `.claude/instructions.md`, quando estiver usando Claude Code;
+6. leia `README.md`, se existir;
+7. identifique a branch atual;
+8. verifique o estado do Git;
+9. identifique a stack real e os scripts disponíveis;
+10. leia os arquivos diretamente relacionados ao escopo;
+11. entenda o fluxo afetado;
+12. planeje a menor alteração suficiente.
 
 Toda tarefa deve respeitar o escopo solicitado.
 
@@ -914,6 +916,14 @@ Status final permitido:
 - `Aprovado com observações`;
 - `Requer ajustes`;
 - `Bloqueado`.
+
+Quando for necessário registrar relatório em arquivo para continuidade entre agentes, use o padrão em:
+
+```txt
+docs/ia-auditorias/TEMPLATE-agent-report.md
+```
+
+Não crie pasta paralela de relatórios sem justificativa.
 
 ---
 
