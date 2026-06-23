@@ -29,9 +29,10 @@ Ao trabalhar neste repositório, siga a ordem:
 3. Este arquivo `AGENTS.md`.
 4. `CLAUDE.md`, quando estiver usando Claude Code.
 5. `CODEX.md`, quando estiver usando Codex ou houver continuidade entre Codex e Claude Code.
-6. `.claude/instructions.md`, `.claude/commands/` e `.claude/skills/`, quando estiver usando Claude Code.
-7. Código existente da branch atual.
-8. Boas práticas de Angular 14, TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API, WaveSurfer.js e UX.
+6. `.codex/instructions.md`, que deve ser lido explicitamente quando estiver usando Codex.
+7. `.claude/instructions.md`, `.claude/commands/` e `.claude/skills/`, quando estiver usando Claude Code.
+8. Código existente da branch atual.
+9. Boas práticas de Angular 14, TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API, WaveSurfer.js e UX.
 
 Quando houver conflito entre instruções, preserve a estabilidade da branch `dev` e comunique o conflito antes de aplicar alterações grandes.
 
@@ -114,6 +115,14 @@ O agente deve parar e pedir autorização quando a tarefa envolver:
 - escopo ambíguo com alto risco;
 - dependência nova;
 - mudança de contrato com backend.
+
+Se surgir necessidade de ampliar o escopo autorizado, o agente deve parar antes
+de editar e informar:
+
+- arquivo ou área adicional;
+- justificativa técnica baseada em evidência;
+- risco da ampliação;
+- alternativa de menor impacto.
 
 ---
 
@@ -201,6 +210,16 @@ Priorizar:
 Não priorizar novidade técnica sem necessidade.
 
 Toda decisão relevante deve registrar justificativa e risco residual.
+
+### Preservação de comportamento e contratos
+
+Em qualquer alteração:
+
+- mapear consumidores e contratos públicos antes de alterar código compartilhado;
+- preservar rotas, payloads, tipos exportados, assinaturas públicas e permissões;
+- preservar seletores, classes, IDs e atributos usados por lógica, estilos ou testes;
+- preservar loading, erro, vazio, acessibilidade básica e compatibilidade com dados legados;
+- não remover silenciosamente testes, validações ou tratamento de erro.
 
 ---
 

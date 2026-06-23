@@ -50,10 +50,10 @@ Verifique:
 
 Use uma das opções:
 
-- Pronto para commit;
-- Pronto para commit com observações;
-- Não pronto para commit;
-- Necessita correção antes de revisão.
+- Aprovado;
+- Aprovado com observações;
+- Requer ajustes;
+- Bloqueado.
 
 ## Saída obrigatória
 
