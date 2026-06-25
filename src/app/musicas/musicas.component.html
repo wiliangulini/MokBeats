@@ -11,10 +11,12 @@
       <div class="position-fixed" id="navLeft">
         <ul class="w-100">
           <div class="control">
-            <li class="nav-item p-0 close border-0" (click)="filtrar()">
-              <a
+            <li class="nav-item p-0 close border-0">
+              <button
                 class="nav-link d-flex justify-content-center align-items-center p-0 border-0"
                 type="button"
+                aria-label="Fechar filtros"
+                (click)="filtrar()"
               >
                 <svg
                   clip-rule="evenodd"
@@ -31,10 +33,14 @@
                     d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"
                   />
                 </svg>
-              </a>
+              </button>
             </li>
-            <li class="nav-item p-2 border-0" (click)="resetFilters()">
-              <button class="btn btn-outline-light btn-sm w-100">
+            <li class="nav-item p-2 border-0">
+              <button
+                class="btn btn-outline-light btn-sm w-100"
+                type="button"
+                (click)="resetFilters()"
+              >
                 Limpar Filtros
               </button>
             </li>
@@ -350,11 +356,12 @@
                       {{ select }}
                     </button>
                     <div class="dropdown-menu">
-                      <a
+                      <button
+                        type="button"
                         class="dropdown-item custom-dropdown-item"
                         *ngFor="let p of arrFilter; let last = last"
                         (click)="filtroP(p)"
-                        >{{ p }}</a
+                        >{{ p }}</button
                       >
                     </div>
                   </div>
@@ -394,14 +401,14 @@
             class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex titlesMDiv mb-3"
           >
             <div
-              class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start"
+              class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start music-grid-col music-info-col"
             >
               <div class="titlesMusic position-relative pl-5">
                 <p>Nome</p>
               </div>
             </div>
             <div
-              class="col-sm-4 col-md-4 col-lg-4 col-xl-4 d-flex align-items-center justify-content-start"
+              class="col-sm-4 col-md-4 col-lg-4 col-xl-4 d-flex align-items-center justify-content-start music-grid-col music-waveform-col"
               *ngIf="isDesktop"
             >
               <div class="titlesMusic position-relative">
@@ -409,7 +416,7 @@
               </div>
             </div>
             <div
-              class="col-sm-1 col-md-1 col-lg-1 col-xl-1 d-flex align-items-center justify-content-between"
+              class="col-sm-1 col-md-1 col-lg-1 col-xl-1 d-flex align-items-center justify-content-between music-grid-col music-metrics-col"
               [ngClass]="{'col-sm-1': isDesktop, 'col-sm-5': !isDesktop}"
             >
               <div class="titlesMusic one position-relative">
@@ -420,7 +427,7 @@
               </div>
             </div>
             <div
-              class="col-sm-2 col-md-2 col-lg-2 col-xl-2 p-0 loops d-flex align-items-center justify-content-between"
+              class="col-sm-2 col-md-2 col-lg-2 col-xl-2 p-0 loops d-flex align-items-center justify-content-between music-grid-col music-loops-col"
               [ngClass]="{'col-sm-2': isDesktop, 'col-sm-3': !isDesktop}"
             >
               <div class="titlesMusic three position-relative">
@@ -439,10 +446,11 @@
             <div class="controlDivs d-flex flex-column w-100">
               <div class="controlDivsInt row">
                 <div
-                  class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start pr-5 info-col"
+                  class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start pr-5 info-col music-grid-col music-info-col"
                 >
                   <button
                     class="svg play"
+                    type="button"
                     (click)="onPlayPause(play_pause, itens.id)"
                   >
                     <span class="material-icons spanPlay d-flex"
@@ -454,21 +462,20 @@
                     class="text d-flex flex-column align-items-start justify-content-start"
                   >
                     <p class="h4">
-                      <a href="#">{{ itens.nome_musica }}</a>
+                      <span class="music-name">{{ itens.nome_musica }}</span>
                     </p>
                     <p class="h6 mt-1">
                       por
                       <a
-                        (click)="pagArtist(itens)"
-                        href=""
                         [routerLink]="['/pagina-artista']"
+                        [queryParams]="{ nome_produtor: itens.nome_produtor }"
                         >{{ itens.nome_produtor }}</a
                       >
                     </p>
                   </div>
                 </div>
                 <div
-                  class="col-sm-4 col-md-4 col-lg-4 col-xl-4 wavesurfer d-flex align-items-center"
+                  class="col-sm-4 col-md-4 col-lg-4 col-xl-4 wavesurfer d-flex align-items-center music-grid-col music-waveform-col"
                   *ngIf="isDesktop"
                 >
                   <app-wave-surfer-test
@@ -479,7 +486,7 @@
                   ></app-wave-surfer-test>
                 </div>
                 <div
-                  class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around pl-2 pr-2 pt-0 pb-0"
+                  class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around pl-2 pr-2 pt-0 pb-0 music-grid-col music-metrics-col"
                   [ngClass]="{'col-sm-1': isDesktop, 'col-sm-5': !isDesktop}"
                 >
                   <p class="h6 mb-0" id="duracao">
@@ -492,7 +499,7 @@
                   <p class="h6 mb-0" id="bpm">{{ itens.bpm }}</p>
                 </div>
                 <div
-                  class="col-sm-2 col-md-2 col-lg-2 col-xl-2 p-0 loops d-flex align-items-center justify-content-around"
+                  class="col-sm-2 col-md-2 col-lg-2 col-xl-2 p-0 loops d-flex align-items-center justify-content-around music-grid-col music-loops-col"
                   [ngClass]="{'col-sm-2': isDesktop, 'col-sm-3': !isDesktop}"
                 >
                   <span class="svgInstrumental span">
@@ -511,7 +518,7 @@
                   </div>
                 </div>
                 <div
-                  class="col-sm-2 col-md-2 col-lg-2 col-xl-2 d-flex align-items-center justify-content-around actions-col"
+                  class="col-sm-2 col-md-2 col-lg-2 col-xl-2 d-flex align-items-center justify-content-around actions-col music-grid-col music-actions-col"
                 >
                   <button
                     type="button"
@@ -656,30 +663,26 @@
                   </button>
                 </div>
                 <div
-                  class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-center justify-content-end licenca"
+                  class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-center justify-content-end licenca music-grid-col music-license-col"
                 >
-                  <a
-                    href="javascript:void(0)"
-                    class="w-100 d-flex justify-content-end align-items-center"
+                  <button
+                    type="button"
+                    class="btn btn-primary w-100"
+                    (click)="comprarLicensa(itens)"
                   >
-                    <button
-                      class="btn btn-primary"
-                      (click)="comprarLicensa(itens)"
+                    LICENÇA
+                    <svg
+                      width="24"
+                      height="24"
+                      fill="#fff"
+                      class="xdBUc"
+                      viewBox="0 0 24 24"
                     >
-                      LICENÇA
-                      <svg
-                        width="24"
-                        height="24"
-                        fill="#fff"
-                        class="xdBUc"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 15.6a1 1 0 01-.6-.3l-5.5-5.1a1 1 0 011.3-1.5l4.9 4.5 4.8-4.5a1 1 0 111.4 1.5l-5.5 5a1 1 0 01-.7.4z"
-                        ></path>
-                      </svg>
-                    </button>
-                  </a>
+                      <path
+                        d="M12 15.6a1 1 0 01-.6-.3l-5.5-5.1a1 1 0 011.3-1.5l4.9 4.5 4.8-4.5a1 1 0 111.4 1.5l-5.5 5a1 1 0 01-.7.4z"
+                      ></path>
+                    </svg>
+                  </button>
                 </div>
                 <div class="div w-100 accordion" id="accordionT1">
                   <div
@@ -699,9 +702,9 @@
                         class="div2 float-left mt-4 mr-2"
                         *ngFor="let vx of arrVExtendida; let i = index"
                       >
-                        <a id="arrve" class="p-2 text-center">
+                        <span id="arrve" class="p-2 text-center">
                           {{ vx.viewValue }}
-                        </a>
+                        </span>
                       </div>
                     </div>
                   </div>
