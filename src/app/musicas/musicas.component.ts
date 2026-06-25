@@ -10,7 +10,6 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 
 import WaveSurfer from 'wavesurfer.js';
@@ -153,7 +152,6 @@ export class MusicasComponent
     private fb: FormBuilder,
     private playlistService: PlaylistService,
     private likeService: FavoritosService,
-    private router: Router,
     private musicPlayerService: MusicPlayerService,
     private audioPreloader: AudioPreloaderService
   ) {
@@ -469,13 +467,6 @@ export class MusicasComponent
     let controlPlayer: any = document.querySelector('#controlPlayer');
     controlPlayer.classList.remove('hidePlayer');
     controlPlayer.classList.add('showPlayer');
-  }
-
-  pagArtist(data: any) {
-    console.log(data);
-    this.router.navigate(['/pagina-artista'], {
-      queryParams: { nome_produtor: data.nome_produtor },
-    });
   }
 
   // Formata segundos para o formato mm:ss (igual ao player)

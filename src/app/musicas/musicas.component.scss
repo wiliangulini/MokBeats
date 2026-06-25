@@ -25,6 +25,12 @@ article.one {
 button.btn.btn-icons.mobile {
   display: none;
 }
+#navLeft .nav-item.close .nav-link {
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  background: transparent;
+}
 #navLeft ul li span.text-uppercase {
   color: rgba(255, 255, 255, 0.5);
   font-weight: bold;
@@ -104,6 +110,7 @@ article.one .container-fluid {
   padding: 10px 15px; /* Espaçamento interno dos itens */
   transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */
   cursor: pointer;
+  text-align: left;
 }
 
 .dropdown-item:hover {
@@ -323,6 +330,9 @@ article.one .text p.h6 a {
 article.one .text p.h6 a {
   color: #b4b4b5;
   font-weight: 600 !important;
+}
+.music-name {
+  color: #fff;
 }
 article.one .text p.h6 {
   color: #828282;
@@ -873,6 +883,59 @@ nav ul.pagination li.page-item.next a span {
   article.one .controlDivsInt .col-sm-1.col-md-1.col-lg-1.col-xl-1.one,
   article.one .controlDivsInt .col-sm-3.col-md-3.col-lg-3.col-xl-3.p-0.loops {
     display: none !important;
+  }
+}
+
+/* Mantém cabeçalho e linhas na mesma grade em desktop amplo. */
+@media only screen and (min-width: 1366px) {
+  #cf .titlesMDiv,
+  #cf .controlDivsInt {
+    display: grid !important;
+    grid-template-columns: 24% 31% 10% 16% 9% 10%;
+    align-items: center;
+    width: 100%;
+  }
+
+  #cf .titlesMDiv {
+    padding: 0 0 0 15px !important;
+  }
+
+  #cf .controlDivsInt {
+    margin: 0;
+  }
+
+  #cf .titlesMDiv > .music-grid-col,
+  #cf .controlDivsInt > .music-grid-col {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0;
+  }
+
+  #cf .music-metrics-col,
+  #cf .music-loops-col {
+    display: grid !important;
+    align-items: center;
+    padding: 0 !important;
+  }
+
+  #cf .music-metrics-col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-items: center;
+  }
+
+  #cf .music-loops-col {
+    grid-template-columns: 40% 60%;
+    justify-items: center;
+  }
+
+  #cf .titlesMDiv .titlesMusic {
+    right: auto;
+    left: auto;
+  }
+
+  #cf .controlDivsInt > .accordion {
+    grid-column: 1 / -1;
   }
 }
 
