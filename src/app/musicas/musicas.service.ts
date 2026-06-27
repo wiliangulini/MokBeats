@@ -438,11 +438,10 @@ export class MusicasService extends CrudService<Musica> {
     });
   }
 
-  public comprarLicensa(i: any) {
+  public comprarLicensa(i: any): void {
     this.authService.verificaLogin();
     if (this.authService.userAutetic()) {
-      this.cartService.openModalCart();
-      this.cartService.receivingCart(i);
+      this.cartService.openModalCart(i);
     }
   }
 
