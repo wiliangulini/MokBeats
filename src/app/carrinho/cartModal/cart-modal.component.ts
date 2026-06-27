@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Musica } from '../../musicas/musicas.service';
 import {
+  CartSelection,
+  CommercialPlanId,
+  CommercialPlanOption,
   LicenseId,
   LicenseOption,
 } from './cart-modal.models';
@@ -14,6 +17,11 @@ import {
 export class CartModalComponent {
   music: Musica = {};
   selectedLicenseId: LicenseId | null = null;
+  selectedPlanId: CommercialPlanId | null = null;
+  private readonly currencyFormatter = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  });
 
   readonly licenseOptions: LicenseOption[] = [
     {
@@ -26,8 +34,6 @@ export class CartModalComponent {
         'Vídeos online para uso pessoal',
         'Um projeto, com cobertura mundial e perpétua',
       ],
-      preco: null,
-      precoTemporario: true,
     },
     {
       id: 'premium',
@@ -39,8 +45,27 @@ export class CartModalComponent {
         'TV, rádio e publicidade em território único',
         'Apps, jogos e DVDs com tiragem limitada',
       ],
-      preco: null,
-      precoTemporario: true,
+    },
+  ];
+
+  readonly commercialPlanOptions: CommercialPlanOption[] = [
+    {
+      id: 'mensal',
+      nome: 'Mensal',
+      duracaoMeses: 1,
+      preco: 49.99,
+    },
+    {
+      id: '6-meses',
+      nome: '6 meses',
+      duracaoMeses: 6,
+      preco: 199.99,
+    },
+    {
+      id: '12-meses',
+      nome: '12 meses',
+      duracaoMeses: 12,
+      preco: 249.99,
     },
   ];
 
@@ -52,13 +77,29 @@ export class CartModalComponent {
     this.selectedLicenseId = licenseId;
   }
 
+  selectPlan(planId: CommercialPlanId): void {
+    this.selectedPlanId = planId;
+  }
+
+  formatPrice(price: number): string {
+    return this.currencyFormatter.format(price);
+  }
+
   confirmSelection(): void {
     const selectedLicense = this.licenseOptions.find(
       (license) => license.id === this.selectedLicenseId
     );
+    const selectedPlan = this.commercialPlanOptions.find(
+      (plan) => plan.id === this.selectedPlanId
+    );
 
-    if (selectedLicense) {
-      this.activeModal.close(selectedLicense);
+    if (selectedLicense && selectedPlan) {
+      const selection: CartSelection = {
+        licencaSelecionada: selectedLicense,
+        planoSelecionado: selectedPlan,
+      };
+
+      this.activeModal.close(selection);
     }
   }
 

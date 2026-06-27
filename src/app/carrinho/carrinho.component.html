@@ -74,7 +74,7 @@
             <input type="checkbox" class="form-control" formControlName="termosLicensa" required/>
             <label>Eu li e aceito os termos do <span class="underline">Contrato de licença de Mokbeats</span></label>
           </div>
-          <button class="btn btn-primary font-weight-bold text-uppercase mt-4" type="submit" (click)="onSubmit($event)">Pagamento de R${{price}}</button>
+          <button class="btn btn-primary font-weight-bold text-uppercase mt-4" type="submit" (click)="onSubmit($event)">Pagamento de {{ formatPrice(price) }}</button>
         </div>
         <div class="resumoCompra col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex justify-content-center align-items-center flex-column">
           <p class="h2 font-weight-bold mb-5">Resumo da Compra</p>
@@ -92,13 +92,21 @@
                 <p class="mb-0">{{ music.nome_musica }}</p>
               </div>
               <div class="controlCarrinhoInt d-flex align-items-center justify-content-start">
-                <button type="button" class="btn btn-primary">Creator R${{priceMusic}} <svg width="16" height="16" class="ZpAUX" viewBox="0 0 16 16"><path d="M8,10.26189a.74616.74616,0,0,1-.52539-.21484L4.37012,7.00018A.75.75,0,1,1,5.4209,5.92986L8,8.46111l2.5791-2.53125a.75.75,0,1,1,1.05078,1.07031L8.52539,10.04705A.74616.74616,0,0,1,8,10.26189Z"></path></svg></button>
+                <div class="cart-item-commercial">
+                  <span class="cart-item-license">
+                    {{ music.licencaSelecionada.nome }}
+                  </span>
+                  <span class="cart-item-plan">
+                    {{ music.planoSelecionado.nome }}
+                  </span>
+                  <strong>{{ formatPrice(music.planoSelecionado.preco) }}</strong>
+                </div>
                 <svg class="ml-3" width="16" height="16" viewBox="0 0 16 16"><path d="M9.41406,8l3.293-3.293A.99989.99989,0,0,0,11.293,3.293L8,6.58594,4.707,3.293A.99989.99989,0,0,0,3.293,4.707L6.58594,8,3.293,11.293A.99989.99989,0,1,0,4.707,12.707L8,9.41406l3.293,3.293A.99989.99989,0,0,0,12.707,11.293Z"></path></svg>
               </div>
             </div>
           </div>
           <div class="total">
-            <p class="h5 font-weight-bold text-uppercase mb-5">total de R${{price}}</p>
+            <p class="h5 font-weight-bold text-uppercase mb-5">total de {{ formatPrice(price) }}</p>
             <div class="economize d-flex">
               <div class="w-75">
                 <p class="h3 font-weight-bold">Economize 80% com uma assinatura anual</p>
