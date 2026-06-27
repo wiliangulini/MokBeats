@@ -41,20 +41,60 @@ describe('CartModalComponent', () => {
     expect(content).toContain('Produtor de teste');
   });
 
-  it('should not confirm without a selected license', () => {
+  it('should display the three commercial plans and their prices', () => {
+    const content = fixture.nativeElement.textContent;
+
+    expect(content).toContain('Mensal');
+    expect(content).toContain('49,99');
+    expect(content).toContain('6 meses');
+    expect(content).toContain('199,99');
+    expect(content).toContain('12 meses');
+    expect(content).toContain('249,99');
+  });
+
+  it('should not confirm without both a selected license and plan', () => {
+    component.selectLicense('padrao');
+    component.confirmSelection();
+
+    expect(closeSpy).not.toHaveBeenCalled();
+
+    component.selectedLicenseId = null;
+    component.selectPlan('mensal');
     component.confirmSelection();
 
     expect(closeSpy).not.toHaveBeenCalled();
   });
 
-  it('should close with the selected license on confirmation', () => {
+  it('should enable the confirmation button only after both selections', () => {
+    const getConfirmButton = (): HTMLButtonElement =>
+      fixture.nativeElement.querySelector('.confirm-button');
+
+    expect(getConfirmButton().disabled).toBeTrue();
+
+    component.selectLicense('padrao');
+    fixture.detectChanges();
+    expect(getConfirmButton().disabled).toBeTrue();
+
+    component.selectPlan('mensal');
+    fixture.detectChanges();
+    expect(getConfirmButton().disabled).toBeFalse();
+  });
+
+  it('should close with the selected license and plan on confirmation', () => {
     component.selectLicense('premium');
+    component.selectPlan('12-meses');
     component.confirmSelection();
 
     expect(closeSpy).toHaveBeenCalledOnceWith(
       jasmine.objectContaining({
-        id: 'premium',
-        nome: 'Licença Premium',
+        licencaSelecionada: jasmine.objectContaining({
+          id: 'premium',
+          nome: 'Licença Premium',
+        }),
+        planoSelecionado: jasmine.objectContaining({
+          id: '12-meses',
+          preco: 249.99,
+        }),
       })
     );
   });

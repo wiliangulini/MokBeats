@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CartModalComponent } from '../carrinho/cartModal/cart-modal.component';
 import {
   CartItem,
-  LicenseOption,
+  CartSelection,
 } from '../carrinho/cartModal/cart-modal.models';
 import { Musica } from '../musicas/musicas.service';
 
@@ -19,7 +19,14 @@ export class CarrinhoService {
     ) { }
   
   public receivingCart(elm: CartItem): CartItem[] {
-    this.music.push(elm);
+    const isDuplicate = this.music.some((item) =>
+      this.isSameCartItem(item, elm)
+    );
+
+    if (!isDuplicate) {
+      this.music.push(elm);
+    }
+
     const cartCounter = document.querySelector<HTMLElement>('#ms_number');
 
     if (cartCounter) {
@@ -46,20 +53,52 @@ export class CarrinhoService {
     activeModal.componentInstance.music = music;
 
     return activeModal.result
-      .then((selectedLicense: LicenseOption | undefined) => {
-        if (!selectedLicense) {
+      .then((selection: CartSelection | undefined) => {
+        if (!selection) {
           return null;
         }
 
         const cartItem: CartItem = {
           ...music,
-          licencaSelecionada: selectedLicense,
+          ...selection,
         };
 
         this.receivingCart(cartItem);
         return cartItem;
       })
       .catch(() => null);
+  }
+
+  private isSameCartItem(current: CartItem, candidate: CartItem): boolean {
+    return (
+      this.isSameMusic(current, candidate) &&
+      current.licencaSelecionada.id === candidate.licencaSelecionada.id &&
+      current.planoSelecionado.id === candidate.planoSelecionado.id
+    );
+  }
+
+  private isSameMusic(current: Musica, candidate: Musica): boolean {
+    if (current.id != null && candidate.id != null) {
+      return current.id === candidate.id;
+    }
+
+    if (current.url && candidate.url) {
+      return current.url === candidate.url;
+    }
+
+    const currentName = current.nome_musica?.trim();
+    const candidateName = candidate.nome_musica?.trim();
+    const currentProducer = current.nome_produtor?.trim();
+    const candidateProducer = candidate.nome_produtor?.trim();
+
+    return Boolean(
+      currentName &&
+      candidateName &&
+      currentProducer &&
+      candidateProducer &&
+      currentName === candidateName &&
+      currentProducer === candidateProducer
+    );
   }
   
 }

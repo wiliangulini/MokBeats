@@ -2,7 +2,7 @@ import {AfterContentInit, Component, ElementRef, OnInit, ViewChild} from '@angul
 import {FormBuilder, FormGroup, Validators,} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {CarrinhoService} from "../service/carrinho.service";
-import {Musica} from "../musicas/musicas.service";
+import {CartItem} from "./cartModal/cart-modal.models";
 
 @Component({
   selector: 'app-carrinho',
@@ -14,17 +14,20 @@ export class CarrinhoComponent implements OnInit, AfterContentInit {
   nav: any;
 
   numberMusic!: number;
-  musics: Musica[] = [];
+  musics: CartItem[] = [];
   form!: FormGroup;
   cidadeJson: any = '../../assets/json/Cidades.json';
   estadoJson: any = '../../assets/json/Estados.json';
   paisJson: any = '../../assets/json/locale_MUN.json';
-  priceMusic: number = 29;
-  price!: number;
+  price: number = 0;
   cidades: any[] = [];
   estados: any[] = [];
   pais: any[] = [];
   insert: boolean = false;
+  private readonly currencyFormatter = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  });
 
   constructor(
     private fb: FormBuilder,
@@ -61,16 +64,31 @@ export class CarrinhoComponent implements OnInit, AfterContentInit {
     this.musics = this.cartService.receivingCart2();
     this.numberMusic = this.musics.length;
     this.numberMusic > 0 ? this.insert = true : this.insert = false;
+    this.price = this.calculateTotal(this.musics);
     console.log('carrinho: ', this.musics);
   }
 
   ngAfterContentInit() {
-    this.price = this.numberMusic * this.priceMusic;
     console.log(this.price);
     this.nav = document.querySelector('nav');
     let url: string = location.href;
     let newUrl = url.slice(-8);
-    (window.scrollY === 0 && newUrl === 'carrinho') ? this.nav.style.marginTop = '10px' : this.nav.style.marginTop = '0px';
+    if (this.nav) {
+      (window.scrollY === 0 && newUrl === 'carrinho') ? this.nav.style.marginTop = '10px' : this.nav.style.marginTop = '0px';
+    }
+  }
+
+  calculateTotal(items: CartItem[]): number {
+    const totalInCents = items.reduce(
+      (total, item) => total + Math.round(item.planoSelecionado.preco * 100),
+      0
+    );
+
+    return totalInCents / 100;
+  }
+
+  formatPrice(price: number): string {
+    return this.currencyFormatter.format(price);
   }
 
   onSubmit(data: any) {

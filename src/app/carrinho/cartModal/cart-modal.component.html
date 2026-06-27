@@ -20,8 +20,8 @@
 
   <div class="modal-body">
     <p class="selection-help">
-      Selecione uma opção para continuar. O item só será adicionado ao carrinho
-      após a confirmação.
+      Selecione a licença e o plano para continuar. O item só será adicionado
+      ao carrinho após a confirmação.
     </p>
 
     <div class="license-grid" role="radiogroup" aria-label="Tipos de licença">
@@ -55,16 +55,45 @@
             </span>
           </span>
 
-          <span class="license-price" *ngIf="license.precoTemporario">
-            Valor a confirmar
-          </span>
         </span>
       </label>
     </div>
 
+    <div class="plan-section">
+      <h3 class="plan-title">Escolha o plano</h3>
+      <div
+        class="plan-grid"
+        role="radiogroup"
+        aria-label="Planos comerciais"
+      >
+        <label
+          class="plan-card"
+          *ngFor="let plan of commercialPlanOptions"
+          [class.selected]="selectedPlanId === plan.id"
+          [attr.for]="'plan-' + plan.id"
+        >
+          <input
+            type="radio"
+            name="commercial-plan-option"
+            [id]="'plan-' + plan.id"
+            [value]="plan.id"
+            [checked]="selectedPlanId === plan.id"
+            (change)="selectPlan(plan.id)"
+          />
+
+          <span class="plan-card-content">
+            <span class="plan-name">{{ plan.nome }}</span>
+            <span class="plan-price">
+              {{ formatPrice(plan.preco) }}
+            </span>
+            <span class="selection-indicator" aria-hidden="true"></span>
+          </span>
+        </label>
+      </div>
+    </div>
+
     <p class="commercial-note">
-      Os valores e as regras comerciais definitivas serão confirmados antes da
-      finalização da compra.
+      O plano escolhido define o preço desta licença no carrinho.
     </p>
   </div>
 
@@ -75,7 +104,7 @@
     <button
       type="button"
       class="btn btn-primary confirm-button"
-      [disabled]="!selectedLicenseId"
+      [disabled]="!selectedLicenseId || !selectedPlanId"
       (click)="confirmSelection()"
     >
       Adicionar ao carrinho
