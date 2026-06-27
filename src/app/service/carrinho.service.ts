@@ -1,37 +1,65 @@
-import {Injectable} from '@angular/core';
-import {Musica} from "../musicas/musicas.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {CartModalComponent} from "../carrinho/cartModal/cart-modal.component";
+import { Injectable } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CartModalComponent } from '../carrinho/cartModal/cart-modal.component';
+import {
+  CartItem,
+  LicenseOption,
+} from '../carrinho/cartModal/cart-modal.models';
+import { Musica } from '../musicas/musicas.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarrinhoService {
 
-  music: Musica[] = [];
+  music: CartItem[] = [];
   
   constructor(
     private modalService: NgbModal,
     ) { }
   
-  public receivingCart(elm: Musica) {
+  public receivingCart(elm: CartItem): CartItem[] {
     this.music.push(elm);
-    let ms_number: any = document.querySelector('#ms_number');
-    console.log(this.music.length);
-    if (this.music.length > 0) {
-      ms_number.innerHTML = this.music.length;
-      ms_number.style.display = 'flex';
-    } else {
-      ms_number.style.display = 'none';
+    const cartCounter = document.querySelector<HTMLElement>('#ms_number');
+
+    if (cartCounter) {
+      cartCounter.textContent = String(this.music.length);
+      cartCounter.style.display = this.music.length > 0 ? 'flex' : 'none';
     }
+
     return this.music;
   }
-  public receivingCart2() {
+
+  public receivingCart2(): CartItem[] {
     return this.music;
   }
   
-  public openModalCart() {
-    this.modalService.open(CartModalComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
+  public openModalCart(music: Musica): Promise<CartItem | null> {
+    const activeModal = this.modalService.open(CartModalComponent, {
+      size: 'lg',
+      modalDialogClass: 'modal-dialog-centered',
+      container: 'body',
+      backdrop: 'static',
+      keyboard: false,
+    });
+
+    activeModal.componentInstance.music = music;
+
+    return activeModal.result
+      .then((selectedLicense: LicenseOption | undefined) => {
+        if (!selectedLicense) {
+          return null;
+        }
+
+        const cartItem: CartItem = {
+          ...music,
+          licencaSelecionada: selectedLicense,
+        };
+
+        this.receivingCart(cartItem);
+        return cartItem;
+      })
+      .catch(() => null);
   }
   
 }
