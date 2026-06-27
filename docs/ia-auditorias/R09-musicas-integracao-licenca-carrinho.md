@@ -73,7 +73,54 @@ Foram alterados somente arquivos de `carrinho`, `cartModal` e `CarrinhoService`,
 
 ## Revisão do Claude Code
 
-[cole aqui o relatório do Claude Code]
+Revisão Claude Code — Etapa 7C — R09
+Classificação final: Aprovado com observações
+Resumo da revisão
+A implementação do Codex cumpre o objetivo da etapa. O fluxo exige licença + plano antes de adicionar ao carrinho, o escopo foi respeitado, e nenhum bloqueador foi encontrado.
+
+Cadeia de integração — confirmada
+
+musicas.component → musicService.comprarLicensa()
+  → authService.userAutetic()         ← guarda de autenticação preservada
+  → cartService.openModalCart()
+  → CartModalComponent                ← modal exige licença + plano
+  → CartItem { ...music, licencaSelecionada, planoSelecionado }
+  → receivingCart() com deduplicação  ← contador DOM atualizado
+O Codex não precisou alterar musicas.component.ts nem musicas.service.ts — a integração já estava em vigor desde R08. Correto.
+
+Pontos aprovados
+Critério Resultado
+Fluxo exige licença + plano ✅ Dupla guarda: [disabled] na UX + guarda em confirmSelection()
+Model CartItem tipado ✅ CartItem = Musica & CartSelection; campos obsoletos preco/precoTemporario de LicenseOption removidos sem quebrar outros módulos (grep confirmado)
+Deduplicação ✅ 3 níveis: id → url → (nome + produtor), com licença + plano na chave
+Cálculo monetário ✅ Acumulação em centavos (Math.round *100), Intl.NumberFormat pt-BR
+Carrinho renderiza dados ✅ Nome, licença, plano, preço por item e total
+Checkout não implementado ✅ onSubmit() permanece stub
+Autenticação ✅ Não alterada
+Guards/routes ✅ Nenhum toque no diff
+href vazio / jQuery ✅ Nenhum introduzido
+Cobertura de testes ✅ 20 novos testes (7 service, 6 modal, 4 component)
+Build + testes R09 ✅ Build aprovado; 20 testes passam; 9 falhas pré-existentes documentadas
+Escopo do diff ✅ Confinado a carrinho/* e service/carrinho.service.*
+Problemas encontrados
+Bloqueadores
+Nenhum.
+
+Importantes
+document.querySelector('#ms_number') em carrinho.service.ts:30: acoplamento direto ao HTML do menu. Padrão pré-existente ao R09, não é regressão. Spec do service cobre o caminho. Recomendação futura: migrar para BehaviorSubject.
+Menores
+Preços hardcoded: CartModalComponent define R$49,99/R$199,99/R$249,99 de forma estática, potencialmente dessincronizados da página /precos. Risco documentado e aceitável para esta fase.
+confirmSelection() sem feedback visual se chamada sem seleção (botão [disabled] mitiga).
+console.log em ngOnInit (carrinho.component.ts): pré-existente.
+Carrinho em memória (sem persistência entre reloads): pré-existente, fora do escopo.
+Regressões potenciais
+Nenhuma. Grep confirmou que CartItem e LicenseOption são consumidos exclusivamente pelos arquivos alterados. Player, upload, dashboard e rotas privadas não foram tocados.
+
+Correções exigidas para o Codex
+Nenhuma. A etapa pode ser considerada concluída.
+
+Próxima etapa recomendada
+Persistência do carrinho (localStorage ou sessão) + integração real do onSubmit() ao checkout, conforme roadmap. Os preços hardcoded devem ser sincronizados com o backend antes de produção — pendência de validação humana.
 
 ---
 
