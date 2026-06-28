@@ -172,5 +172,4 @@ Confirmar seek no waveform refletido no player global quando a faixa estiver toc
 
 ## Pendências para etapas futuras
 
-- Clicar na wave da lista de musicas nao joga a musica pra frente, tanto a wave do player quanto a wave da lista de musicas deve ser interativa se o usuario clicar a musica deve ir para o ponto clicado.
 - Quando clicar em 'Tocar Stems' se a 'Faixa principal' estiver tocando ela deve ser pausada automaticamente, e o icone de pause deve ser exibido e so ai então os 'Stems' poderão iniciar. Atualmente quando a 'Faixa principal' esta tocando ao clicar em tocar 'Stems' a 'Faixa principal' até é pausada porem gera um bug no icone de pause, e quando os 'Stems' são pausados novamente a 'Faixa principal' não esta tocando atualmente e esse comportamento esta errado.
