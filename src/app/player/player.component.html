@@ -26,8 +26,8 @@
         >
       </div>
       <div class="div controls artistName col-2">
-        <h3 class="music mb-0">With the Gratest Will</h3>
-        <h6 class="artist mb-0">por <a href="#">Taizo Audio</a></h6>
+        <h3 class="music mb-0">{{ currentMusic?.nome_musica || '—' }}</h3>
+        <h6 class="artist mb-0">por <span>{{ currentMusic?.nome_produtor || '—' }}</span></h6>
       </div>
       <div class="div controls col-1">
         <p class="h6 mb-0" [class.mode-inactive]="isStemsPlaying">
@@ -54,7 +54,7 @@
           <span class="pr-1" id="time">0:00</span>/
           <span class="pl-1" id="duration">0:00</span>
         </div>
-        <small>128 bpm</small>
+        <small>{{ currentMusicBpm }}</small>
       </div>
       <div
         class="div controls icons d-flex flex-row justify-content-center align-items-center col-2"

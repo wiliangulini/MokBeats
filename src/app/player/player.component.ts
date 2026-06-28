@@ -22,6 +22,7 @@ export class PlayerComponent
   implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy
 {
   arrMusica: Musica[] = [];
+  currentMusic: Musica | null = null;
   volumeInitial: any;
   volumeInitial1: any;
   volumeInitial2: any;
@@ -87,6 +88,10 @@ export class PlayerComponent
           this.lastLoadedStemsMusicId = id;
         }
       }
+    });
+
+    this.musicPlayerService.currentMusic$.subscribe((music) => {
+      this.currentMusic = music;
     });
 
     // Responde às solicitações de seek vindas da lista
@@ -723,6 +728,10 @@ export class PlayerComponent
     muteOn.classList.remove('d-flex');
     muteOn.classList.add('d-none');
   }
+  get currentMusicBpm(): string {
+    return this.currentMusic?.bpm ? `${this.currentMusic.bpm} bpm` : '—';
+  }
+
   valueInitial(event: any) {
     this.volumeInitial = event.target.value;
   }
