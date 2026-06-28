@@ -376,7 +376,8 @@ export class MusicasComponent
       }
     });
 
-    this.currentTrackIndex = this.playMusic.id - 1;
+    const foundIndex = this.arrMusica.findIndex((m: any) => m.id === this.id);
+    this.currentTrackIndex = foundIndex >= 0 ? foundIndex : 0;
     if (this.isDesktop) {
       if (this.isPlaying) {
         const currentWaveSurfer =
@@ -398,6 +399,7 @@ export class MusicasComponent
       } else {
         this.musicPlayerService.setCurrentMusicID(this.playMusic.id);
         this.musicPlayerService.setCurrentMusicUrl(this.playMusic.url);
+        this.musicPlayerService.setCurrentMusic(this.playMusic);
         this.musicPlayerService.onPlayPause('play', this.id);
         this.toogleButton();
         this.isPlaying = true;
@@ -432,6 +434,7 @@ export class MusicasComponent
         this.playMusic = currentWaveSurfer.music;
         this.musicPlayerService.setCurrentMusicID(this.playMusic.id);
         this.musicPlayerService.setCurrentMusicUrl(this.playMusic.url);
+        this.musicPlayerService.setCurrentMusic(this.playMusic);
         this.musicPlayerService.onPlayPause('play', this.id);
         this.toogleButton();
         this.isPlaying = true;
@@ -441,6 +444,7 @@ export class MusicasComponent
       if (this.playMusic) {
         this.musicPlayerService.setCurrentMusicID(this.playMusic.id);
         this.musicPlayerService.setCurrentMusicUrl(this.playMusic.url);
+        this.musicPlayerService.setCurrentMusic(this.playMusic);
         this.musicPlayerService.onPlayPause('play', this.id);
         this.toogleButton();
         this.isPlaying = true;
@@ -454,8 +458,11 @@ export class MusicasComponent
     console.log(currentWaveSurfer);
     if (index === this.currentTrackIndex) {
       this.currentTrackIndex++;
-      this.id++;
       if (this.currentTrackIndex < this.arrMusica.length) {
+        const nextMusic = this.arrMusica[this.currentTrackIndex];
+        this.playMusic = nextMusic;
+        this.id = nextMusic?.id ?? this.id;
+        this.musicPlayerService.setCurrentMusic(nextMusic ?? null);
         this.playNextTrack();
       } else {
         this.isPlaying = false;
