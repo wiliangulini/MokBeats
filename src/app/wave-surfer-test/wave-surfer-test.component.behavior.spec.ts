@@ -4,7 +4,9 @@ import { MusicPlayerService } from '../service/music-player.service';
 
 class FakeWaveSurfer {
   time = 0;
+  duration = 100;
   setTime(t: number) { this.time = t; }
+  getDuration() { return this.duration; }
   destroy() {}
 }
 
@@ -54,5 +56,39 @@ describe('WaveSurferTestComponent behavior', () => {
       expect(fake.time).toBe(0);
       done();
     }, 20);
+  });
+
+  it('requests seek from minimap click when current track', () => {
+    (component as any).wavesurfer = fake as any;
+    component.ngOnInit();
+    service.setCurrentMusicID(1);
+    spyOn(service, 'requestSeek');
+
+    (component as any).requestSeekFromMinimap(0.5);
+
+    expect(service.requestSeek).toHaveBeenCalledWith(1, 50);
+  });
+
+  it('does not request seek from minimap click when not current track', () => {
+    (component as any).wavesurfer = fake as any;
+    component.ngOnInit();
+    service.setCurrentMusicID(2);
+    spyOn(service, 'requestSeek');
+
+    (component as any).requestSeekFromMinimap(0.5);
+
+    expect(service.requestSeek).not.toHaveBeenCalled();
+  });
+
+  it('does not request seek from minimap click with invalid duration', () => {
+    fake.duration = 0;
+    (component as any).wavesurfer = fake as any;
+    component.ngOnInit();
+    service.setCurrentMusicID(1);
+    spyOn(service, 'requestSeek');
+
+    (component as any).requestSeekFromMinimap(0.5);
+
+    expect(service.requestSeek).not.toHaveBeenCalled();
   });
 });

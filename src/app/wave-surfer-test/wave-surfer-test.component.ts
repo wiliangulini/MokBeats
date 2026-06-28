@@ -136,6 +136,13 @@ export class WaveSurferTestComponent
     }
 
     try {
+      const minimap = Minimap.create({
+        height: 40,
+        waveColor: '#fff',
+        progressColor: '#dcad54',
+        dragToSeek: true,
+      });
+
       this.wavesurfer = WaveSurfer.create({
         container: `#${this.idContainer}`,
         waveColor: '#fff',
@@ -145,14 +152,12 @@ export class WaveSurferTestComponent
         fillParent: true,
         height: 0,
         backend: 'MediaElement',
-        plugins: [
-          Minimap.create({
-            height: 40,
-            waveColor: '#fff',
-            progressColor: '#dcad54',
-            dragToSeek: true,
-          }),
-        ],
+        plugins: [minimap],
+      });
+
+      // O Minimap é a waveform visível; seu clique fornece posição relativa (0 a 1).
+      minimap.on('click', (relativeX: number) => {
+        this.requestSeekFromMinimap(relativeX);
       });
 
       // Aguardar a criação antes de carregar
@@ -210,21 +215,27 @@ export class WaveSurferTestComponent
             }
           });
 
-          // Propaga seek quando usuário interagir na lista (somente se for a faixa atual)
-          (this.wavesurfer as any).on('seek', (progress: number) => {
-            try {
-              const duration = this.wavesurfer.getDuration() || 0;
-              const time = progress * duration;
-              if (this.isCurrent) {
-                this.musicPlayerService.requestSeek(this.music.id, time);
-              }
-            } catch (e) {}
-          });
         }
       }, 50);
     } catch (error) {
       console.error('Error creating WaveSurfer:', error);
     }
+  }
+
+  private requestSeekFromMinimap(relativeX: number): void {
+    if (this.destroyed || !this.isCurrent || !this.wavesurfer) return;
+
+    const duration = this.wavesurfer.getDuration();
+    if (
+      !Number.isFinite(relativeX) ||
+      !Number.isFinite(duration) ||
+      duration <= 0
+    ) {
+      return;
+    }
+
+    const progress = Math.min(1, Math.max(0, relativeX));
+    this.musicPlayerService.requestSeek(this.music.id, progress * duration);
   }
 
   ngOnDestroy() {
