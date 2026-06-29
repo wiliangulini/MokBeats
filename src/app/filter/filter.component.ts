@@ -1,5 +1,5 @@
 import { empty, Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MusicasService } from "../musicas/musicas.service";
 
 @Component({
@@ -10,6 +10,7 @@ import { MusicasService } from "../musicas/musicas.service";
 export class FilterComponent implements OnInit, OnDestroy {
 
   @Input() hideSearch: boolean = false;
+  @Output() filterToggle = new EventEmitter<void>();
 
   generos: string[] = [];
   humor: string[] = [];
@@ -42,18 +43,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   filtrar() {
-    let navleft = document.getElementById('navLeft');
-    let cf = document.getElementById('cf');
-
-    if(navleft!.getAttribute('style') == 'width: 13vw;' || navleft!.getAttribute('style') == 'width: 13vw; opacity: 1;') {
-      navleft!.style.width = '0vw';
-      navleft!.style.opacity = '0';
-      cf!.style.width = '99vw';
-    } else {
-      navleft!.style.width = '13vw';
-      navleft!.style.opacity = '1';
-      cf!.style.width = '86vw';
-    }
+    this.filterToggle.emit();
   }
 
   verifyGen() {
@@ -74,4 +64,3 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.search$.next((value || '').trim());
   }
 }
-
