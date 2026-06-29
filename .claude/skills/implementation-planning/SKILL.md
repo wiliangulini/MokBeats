@@ -38,15 +38,10 @@ Não use quando:
 
 ## Pré-requisitos obrigatórios
 
-1. Ler `PROJECT_RULES.md`.
-2. Ler `AGENTS.md`.
-3. Ler `CLAUDE.md`.
-4. Ler `CODEX.md`, se existir.
-5. Ler `.claude/instructions.md`, se existir.
-6. Ler documentação ou relatório relevante.
-7. Identificar estado atual do projeto quando possível.
-8. Separar fatos de hipóteses.
-9. Identificar riscos em Angular 14, rotas, API, autenticação, player, upload, carrinho, licenças e dashboard.
+1. Ler documentação ou relatório relevante.
+2. Identificar estado atual do projeto quando possível.
+3. Separar fatos de hipóteses.
+4. Identificar riscos em Angular 14, rotas, API, autenticação, player, upload, carrinho, licenças e dashboard.
 
 ## Fluxo de execução
 

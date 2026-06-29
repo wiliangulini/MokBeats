@@ -166,6 +166,77 @@ Confirmar seek no waveform refletido no player global quando a faixa estiver toc
 
 ---
 
+## Relatório final
+
+### Resumo
+
+Corrigido o seek pela waveform visível da lista usando o evento tipado `click` do Minimap.
+
+### Arquivos lidos
+
+- `PROJECT_RULES.md`, `AGENTS.md`, `CODEX.md`, `.codex/instructions.md`
+- Componentes, service, testes e tipos locais do WaveSurfer relacionados ao fluxo.
+
+### Arquivos alterados
+
+- [wave-surfer-test.component.ts](/home/mr-robot/Documents/projetos/mokbeats/MokBeats/src/app/wave-surfer-test/wave-surfer-test.component.ts)
+- [wave-surfer-test.component.behavior.spec.ts](/home/mr-robot/Documents/projetos/mokbeats/MokBeats/src/app/wave-surfer-test/wave-surfer-test.component.behavior.spec.ts)
+
+### O que foi implementado ou revisado
+
+- Removido o listener inválido `seek`.
+- Mantida referência ao Minimap e registrado seu evento `click`.
+- Adicionados guards para componente destruído, faixa não atual e duração inválida.
+- Limitada a posição relativa ao intervalo `0–1`.
+- Adicionados três testes comportamentais.
+
+### Decisões técnicas
+
+A correção permaneceu localizada. Player, service, stems, cache, lazy loading e APIs não foram alterados.
+
+### Validação realizada
+
+- [x] `npm run build`
+- [x] teste comportamental focado
+- [ ] validação manual no navegador
+
+### Resultado das validações
+
+- Testes: `22 SUCCESS`.
+- Build de produção: concluído com sucesso.
+- `git diff --check`: sem erros.
+- Aviso preexistente no build sobre o seletor `.custom-file-input:lang(en)~.custom-file-label`.
+- A primeira execução do teste foi bloqueada pelo sandbox na porta 9876; a repetição autorizada passou.
+
+### Como testar manualmente
+
+1. Abrir `/musicas`.
+2. Tocar uma música.
+3. Clicar em diferentes pontos da waveform correspondente na lista.
+4. Confirmar que o player global muda para o tempo clicado.
+5. Clicar numa waveform não atual e confirmar que o player não muda.
+6. Trocar de página rapidamente e verificar o console.
+
+### Riscos
+
+A validação manual com áudio/API real ainda não foi executada. Arraste contínuo não foi incluído; somente clique, conforme o plano.
+
+### Pendências
+
+- Executar validação manual.
+- `.vscode/settings.json` continua modificado por alteração preexistente do usuário.
+- Nenhum commit foi criado.
+
+### Recomendações
+
+Validar o fluxo real no navegador antes de fechar a R11.
+
+### Status final
+
+Aprovado com observações.
+
+---
+
 ## Status final da etapa
 
  Aprovado com observações

@@ -18,12 +18,9 @@ Não altere arquivos inicialmente. Baseie achados em código real e indique como
 
 ## Leitura obrigatória
 
-1. Leia `PROJECT_RULES.md`.
-2. Leia `AGENTS.md`.
-3. Leia `CLAUDE.md`.
-4. Leia arquivos reais do escopo.
-5. Leia consumidores ou produtores de dados relacionados.
-6. Verifique `git diff`, se a revisão for sobre alteração atual.
+1. Leia arquivos reais do escopo.
+2. Leia consumidores ou produtores de dados relacionados.
+3. Verifique `git diff`, se a revisão for sobre alteração atual.
 
 ## Analise
 

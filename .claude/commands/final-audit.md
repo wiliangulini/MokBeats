@@ -18,14 +18,10 @@ Validar se a alteração está pronta para revisão, commit ou continuidade por 
 
 ## Leitura obrigatória
 
-1. Leia `PROJECT_RULES.md`.
-2. Leia `AGENTS.md`.
-3. Leia `CLAUDE.md`.
-4. Leia `CODEX.md`, se existir.
-5. Verifique branch atual.
-6. Verifique `git status`.
-7. Leia `git diff`.
-8. Leia arquivos alterados quando necessário.
+1. Verifique branch atual.
+2. Verifique `git status`.
+3. Leia `git diff`.
+4. Leia arquivos alterados quando necessário.
 
 ## Checklist de auditoria
 

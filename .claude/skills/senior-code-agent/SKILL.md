@@ -37,16 +37,11 @@ Não use quando:
 
 ## Pré-requisitos obrigatórios
 
-1. Ler `PROJECT_RULES.md`.
-2. Ler `AGENTS.md`.
-3. Ler `CLAUDE.md`.
-4. Ler `CODEX.md`, se existir.
-5. Ler `.claude/instructions.md`, se existir.
-6. Verificar `git status`.
-7. Ler relatório anterior, se fornecido.
-8. Identificar arquivos diretamente relacionados.
-9. Ler os arquivos antes de editar.
-10. Identificar scripts reais antes de sugerir validações.
+1. Verificar `git status`.
+2. Ler relatório anterior, se fornecido.
+3. Identificar arquivos diretamente relacionados.
+4. Ler os arquivos antes de editar.
+5. Identificar scripts reais antes de sugerir validações.
 
 ## Fluxo de execução
 

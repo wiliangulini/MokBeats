@@ -18,14 +18,10 @@ Refatoração não deve mudar comportamento funcional, salvo quando a tarefa sol
 
 ## Leitura obrigatória
 
-1. Leia `PROJECT_RULES.md`.
-2. Leia `AGENTS.md`.
-3. Leia `CLAUDE.md`.
-4. Leia `CODEX.md`, se existir.
-5. Verifique branch e estado do Git.
-6. Leia arquivos afetados.
-7. Identifique contratos públicos.
-8. Identifique testes existentes.
+1. Verifique branch e estado do Git.
+2. Leia arquivos afetados.
+3. Identifique contratos públicos.
+4. Identifique testes existentes.
 
 ## Antes de alterar
 

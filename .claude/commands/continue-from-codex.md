@@ -18,17 +18,12 @@ Continuar o trabalho iniciado pelo Codex sem perda de contexto, sem repetir trab
 
 ## Leitura obrigatória
 
-1. Leia `PROJECT_RULES.md`.
-2. Leia `AGENTS.md`.
-3. Leia `CLAUDE.md`.
-4. Leia `CODEX.md`.
-5. Leia `.claude/instructions.md`, se existir.
-6. Leia o relatório deixado pelo Codex.
-7. Verifique branch atual.
-8. Verifique `git status`.
-9. Verifique `git diff`.
-10. Leia arquivos alterados pelo Codex.
-11. Leia arquivos relacionados ao próximo passo.
+1. Leia o relatório deixado pelo Codex.
+2. Verifique branch atual.
+3. Verifique `git status`.
+4. Verifique `git diff`.
+5. Leia arquivos alterados pelo Codex.
+6. Leia arquivos relacionados ao próximo passo.
 
 ## Procedimento
 

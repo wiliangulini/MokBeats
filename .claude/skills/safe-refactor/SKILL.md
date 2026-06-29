@@ -40,16 +40,12 @@ Não use quando:
 
 ## Pré-requisitos obrigatórios
 
-1. Ler `PROJECT_RULES.md`.
-2. Ler `AGENTS.md`.
-3. Ler `CLAUDE.md`.
-4. Ler `CODEX.md`, se existir.
-5. Verificar `git status`.
-6. Identificar arquivos afetados.
-7. Ler os arquivos antes de editar.
-8. Identificar comportamento atual que deve permanecer igual.
-9. Identificar contratos públicos.
-10. Identificar validações disponíveis.
+1. Verificar `git status`.
+2. Identificar arquivos afetados.
+3. Ler os arquivos antes de editar.
+4. Identificar comportamento atual que deve permanecer igual.
+5. Identificar contratos públicos.
+6. Identificar validações disponíveis.
 
 ## Fluxo de execução
 

@@ -18,14 +18,9 @@ Não proponha solução genérica antes de analisar o projeto real. Preserve Ang
 
 ## Leitura obrigatória
 
-1. Leia `PROJECT_RULES.md`.
-2. Leia `AGENTS.md`.
-3. Leia `CLAUDE.md`.
-4. Leia `CODEX.md`, se existir.
-5. Leia `.claude/instructions.md`, se existir.
-6. Leia documentação e relatórios relacionados em `docs/ia-auditorias/`.
-7. Leia arquivos reais relacionados ao problema.
-8. Identifique padrões já usados no MokBeats.
+1. Leia documentação e relatórios relacionados em `docs/ia-auditorias/`.
+2. Leia arquivos reais relacionados ao problema.
+3. Identifique padrões já usados no MokBeats.
 
 ## Análise
 

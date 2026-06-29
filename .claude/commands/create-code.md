@@ -16,14 +16,9 @@ Atue como engenheiro de software sênior em Angular 14/TypeScript e agente de im
 
 Antes de alterar código:
 
-1. Leia `PROJECT_RULES.md`.
-2. Leia `AGENTS.md`.
-3. Leia `CLAUDE.md`.
-4. Leia `CODEX.md`, se existir.
-5. Leia `.claude/instructions.md`, se existir.
-6. Verifique branch e estado do Git.
-7. Mapeie arquivos diretamente relacionados.
-8. Entenda o comportamento atual.
+1. Verifique branch e estado do Git.
+2. Mapeie arquivos diretamente relacionados.
+3. Entenda o comportamento atual.
 
 ## Execução
 

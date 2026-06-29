@@ -38,16 +38,12 @@ Não use quando:
 
 ## Pré-requisitos obrigatórios
 
-1. Ler `PROJECT_RULES.md`.
-2. Ler `AGENTS.md`.
-3. Ler `CLAUDE.md`.
-4. Ler `CODEX.md`, se existir.
-5. Verificar branch atual.
-6. Verificar `git status`.
-7. Ler `git diff` ou diff fornecido.
-8. Ler todos os arquivos alterados.
-9. Ler arquivos relacionados quando necessário.
-10. Comparar implementação com escopo e critérios de aceite.
+1. Verificar branch atual.
+2. Verificar `git status`.
+3. Ler `git diff` ou diff fornecido.
+4. Ler todos os arquivos alterados.
+5. Ler arquivos relacionados quando necessário.
+6. Comparar implementação com escopo e critérios de aceite.
 
 ## Fluxo de execução
 

@@ -18,13 +18,9 @@ Investigue antes de alterar. Não implemente correções especulativas.
 
 ## Leitura obrigatória
 
-1. Leia `PROJECT_RULES.md`.
-2. Leia `AGENTS.md`.
-3. Leia `CLAUDE.md`.
-4. Leia `CODEX.md`, se existir.
-5. Verifique branch e estado do Git.
-6. Leia arquivos relacionados ao sintoma.
-7. Verifique logs, mensagens de erro ou comportamento relatado.
+1. Verifique branch e estado do Git.
+2. Leia arquivos relacionados ao sintoma.
+3. Verifique logs, mensagens de erro ou comportamento relatado.
 
 ## Fluxo obrigatório
 

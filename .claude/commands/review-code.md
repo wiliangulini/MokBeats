@@ -18,14 +18,10 @@ Não altere arquivos automaticamente. Corrija somente se o usuário pedir corre�
 
 ## Leitura obrigatória
 
-1. Leia `PROJECT_RULES.md`.
-2. Leia `AGENTS.md`.
-3. Leia `CLAUDE.md`.
-4. Leia `CODEX.md`, se existir.
-5. Verifique branch e estado do Git.
-6. Leia `git diff` ou o diff fornecido.
-7. Leia todos os arquivos alterados.
-8. Leia arquivos relacionados quando necessário para entender impacto.
+1. Verifique branch e estado do Git.
+2. Leia `git diff` ou o diff fornecido.
+3. Leia todos os arquivos alterados.
+4. Leia arquivos relacionados quando necessário para entender impacto.
 
 ## Critérios de revisão
 
