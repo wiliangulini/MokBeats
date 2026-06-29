@@ -5,10 +5,37 @@
   <h1>CARREGANDO</h1>
 </div>
 <main *ngIf="!isLoading" id="article" [formGroup]="formG">
-  <app-filter></app-filter>
-  <article class="one pb-5">
+  <app-filter (filterToggle)="toggleFilterPanel()"></app-filter>
+  <article
+    class="one pb-5"
+    [class.filters-open]="isFilterPanelOpen"
+    [class.filters-closed]="!isFilterPanelOpen"
+  >
     <div class="container-fluid w-100 p-0">
-      <div class="position-fixed" id="navLeft">
+      <button
+        class="filter-panel-backdrop"
+        type="button"
+        aria-label="Fechar filtros"
+        *ngIf="isFilterPanelOpen && !isDesktop"
+        (click)="closeFilterPanel()"
+      ></button>
+      <button
+        class="filter-reopen"
+        type="button"
+        aria-label="Abrir filtros"
+        *ngIf="!isFilterPanelOpen"
+        (click)="openFilterPanel()"
+      >
+        <span class="material-icons">tune</span>
+        <span>Filtros</span>
+      </button>
+      <div
+        class="filter-panel"
+        id="navLeft"
+        [class.filter-panel--open]="isFilterPanelOpen"
+        [class.filter-panel--closed]="!isFilterPanelOpen"
+        [attr.aria-hidden]="!isFilterPanelOpen"
+      >
         <ul class="w-100">
           <div class="control">
             <li class="nav-item p-0 close border-0">
@@ -16,7 +43,7 @@
                 class="nav-link d-flex justify-content-center align-items-center p-0 border-0"
                 type="button"
                 aria-label="Fechar filtros"
-                (click)="filtrar()"
+                (click)="closeFilterPanel()"
               >
                 <svg
                   clip-rule="evenodd"
@@ -67,6 +94,7 @@
                   >
                     <mat-checkbox
                       [value]="g"
+                      [checked]="selectedGeneros.includes(g)"
                       (change)="onGeneroChange($event)"
                       >{{ g }}</mat-checkbox
                     >
@@ -76,6 +104,7 @@
                     >
                       <mat-checkbox
                         [value]="mus"
+                        [checked]="selectedSubgeneros.includes(mus)"
                         (change)="onSubgeneroChange($event)"
                         >{{ mus }}</mat-checkbox
                       >
@@ -109,6 +138,7 @@
                   <div class="div2 pt-3" *ngFor="let g of vozes">
                     <mat-checkbox
                       [value]="g"
+                      [checked]="selectedVozes.includes(g)"
                       (change)="onVozesChange($event)"
                       >{{ g }}</mat-checkbox
                     >
@@ -138,6 +168,7 @@
                   <div class="div2 pt-3" *ngFor="let g of humor">
                     <mat-checkbox
                       [value]="g"
+                      [checked]="selectedHumores.includes(g)"
                       (change)="onHumorChange($event)"
                       >{{ g }}</mat-checkbox
                     >
@@ -258,6 +289,7 @@
                   <div class="div2 pt-3" *ngFor="let artista of artistas">
                     <mat-checkbox
                       [value]="artista"
+                      [checked]="selectedArtistas.includes(artista)"
                       (change)="onArtistaChange($event)"
                       >{{ artista }}</mat-checkbox
                     >
@@ -290,6 +322,7 @@
                   >
                     <mat-checkbox
                       [value]="instrumento"
+                      [checked]="selectedInstrumentos.includes(instrumento)"
                       (change)="onInstrumentoChange($event)"
                       >{{ instrumento }}</mat-checkbox
                     >
@@ -319,6 +352,7 @@
                   <div class="div2 pt-3" *ngFor="let k of keyOptions">
                     <mat-checkbox
                       [value]="k.value"
+                      [checked]="selectedKeys.includes(k.value)"
                       (change)="onKeyChange($event)"
                       >{{ k.label }}</mat-checkbox
                     >
@@ -329,7 +363,12 @@
           </div>
         </ul>
       </div>
-      <div id="cf" class="container-fluid mr-0 pt-4">
+      <div
+        id="cf"
+        class="container-fluid mr-0 pt-4 music-results"
+        [class.music-results--filter-open]="isFilterPanelOpen"
+        [class.music-results--filter-closed]="!isFilterPanelOpen"
+      >
         <div class="row">
           <div
             class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column align-items-start justify-content-center"
@@ -383,7 +422,13 @@
                   </button>
                 </div>
                 <div class="filterMobile">
-                  <button class="button" type="button" (click)="filtrar()">
+                  <button
+                    class="button"
+                    type="button"
+                    [attr.aria-expanded]="isFilterPanelOpen"
+                    aria-controls="navLeft"
+                    (click)="openFilterPanel()"
+                  >
                     <svg width="24" height="24" viewBox="0 0 24 24">
                       <path
                         d="M4 8.5H5.9a3.2 3.2 0 0 0 6.2 0H20a1 1 0 0 0 0-2H12.1a3.2 3.2 0 0 0-6.2 0H4a1 1 0 0 0 0 2Zm5-2.2a1.3 1.3 0 1 1-1.2 1.3A1.3 1.3 0 0 1 9 6.3ZM20 15.5H17.9a3.2 3.2 0 0 0-6.2 0H4a1 1 0 0 0 0 2h7.8a3.2 3.2 0 0 0 6.2 0H20a1 1 0 0 0 0-2Zm-5.1 2.3a1.3 1.3 0 1 1 1.3-1.2A1.3 1.3 0 0 1 14.9 17.7Z"

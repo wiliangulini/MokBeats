@@ -34,6 +34,7 @@ export class MusicasComponent
   isLoading: boolean = true;
   // Controla renderização do waveform por breakpoint
   isDesktop: boolean = true;
+  isFilterPanelOpen: boolean = true;
   @ViewChildren(WaveSurferTestComponent)
   waveSurfers!: QueryList<WaveSurferTestComponent>;
   public favorite: Musica = {};
@@ -169,16 +170,21 @@ export class MusicasComponent
     this.scrollService.scrollUp();
     // Define se deve renderizar o waveform na página músicas (>=768px)
     this.isDesktop = window.innerWidth >= 768;
-    if (screen.width < 769) {
-      document.getElementById('navLeft')!.style.width = '0';
-    }
+    this.isFilterPanelOpen = this.isDesktop;
     this.loadArtistas();
     this.loadInstrumentos();
   }
 
   @HostListener('window:resize', [])
   onResize() {
+    const wasDesktop = this.isDesktop;
     this.isDesktop = window.innerWidth >= 768;
+
+    if (this.isDesktop && !wasDesktop) {
+      this.openFilterPanel();
+    } else if (!this.isDesktop && wasDesktop) {
+      this.closeFilterPanel();
+    }
   }
 
   ngAfterViewInit() {
@@ -504,20 +510,16 @@ export class MusicasComponent
     this.musicService.sendFavorite(i, this.favorite);
   }
 
-  filtrar(): void {
-    let navleft: any = document.getElementById('navLeft');
-    if (
-      navleft!.getAttribute('style') == 'width: 0px;' ||
-      navleft!.getAttribute('style') == 'width: 0px; opacity: 0; z-index: 0;'
-    ) {
-      navleft!.style.width = '96vw';
-      navleft!.style.opacity = '1';
-      navleft!.style.zIndex = '99999';
-    } else {
-      navleft!.style.width = '0';
-      navleft!.style.opacity = '0';
-      navleft!.style.zIndex = '0';
-    }
+  openFilterPanel(): void {
+    this.isFilterPanelOpen = true;
+  }
+
+  closeFilterPanel(): void {
+    this.isFilterPanelOpen = false;
+  }
+
+  toggleFilterPanel(): void {
+    this.isFilterPanelOpen = !this.isFilterPanelOpen;
   }
 
   addMusicPlayList(music: Musica): void {
@@ -749,6 +751,20 @@ export class MusicasComponent
     this.selectedKeys = [];
     this.number = undefined;
     this.duration = undefined;
+    this.durationAut = undefined;
+    this.musicas = {
+      ...this.musicas,
+      bpm: undefined,
+      duracao: undefined,
+    };
+    this.formG.patchValue(
+      {
+        checkbox: null,
+        bpm: null,
+        duracao: null,
+      },
+      { emitEvent: false }
+    );
 
     // Limpa filtros atuais e recarrega primeira página
     this.currentFilters = null;
