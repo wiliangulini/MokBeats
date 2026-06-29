@@ -36,15 +36,11 @@ Não use quando:
 
 ## Pré-requisitos obrigatórios
 
-1. Ler `PROJECT_RULES.md`.
-2. Ler `AGENTS.md`.
-3. Ler `CLAUDE.md`.
-4. Ler `CODEX.md`, se existir.
-5. Verificar `git status`.
-6. Identificar módulo, pasta ou fluxo em análise.
-7. Ler arquivos centrais do fluxo.
-8. Ler arquivos consumidores quando necessário.
-9. Identificar scripts de validação disponíveis.
+1. Verificar `git status`.
+2. Identificar módulo, pasta ou fluxo em análise.
+3. Ler arquivos centrais do fluxo.
+4. Ler arquivos consumidores quando necessário.
+5. Identificar scripts de validação disponíveis.
 
 ## Fluxo de execução
 

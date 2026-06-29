@@ -49,14 +49,13 @@ Antes de alterar qualquer coisa:
 3. leia `CLAUDE.md`, quando estiver usando Claude Code;
 4. leia `CODEX.md`, quando estiver usando Codex ou houver continuidade entre Codex e Claude Code;
 5. leia `.codex/instructions.md` explicitamente, quando estiver usando Codex;
-6. leia `.claude/instructions.md`, quando estiver usando Claude Code;
-7. leia `README.md`, se existir;
-8. identifique a branch atual;
-9. verifique o estado do Git;
-10. identifique a stack real e os scripts disponíveis;
-11. leia os arquivos diretamente relacionados ao escopo;
-12. entenda o fluxo afetado;
-13. planeje a menor alteração suficiente.
+6. leia `README.md`, se existir;
+7. identifique a branch atual;
+8. verifique o estado do Git;
+9. identifique a stack real e os scripts disponíveis;
+10. leia os arquivos diretamente relacionados ao escopo;
+11. entenda o fluxo afetado;
+12. planeje a menor alteração suficiente.
 
 Toda tarefa deve respeitar o escopo solicitado.
 
@@ -741,11 +740,9 @@ Configurações de VPS/Linux devem ser documentadas apenas quando forem parte do
 
 ---
 
-## 12. Validação obrigatória e QA
+## 12. Validação, QA e critérios de aceite
 
-Antes de concluir, executar comandos disponíveis e relevantes, verificando primeiro os scripts reais em `package.json`.
-
-Exemplos possíveis, somente se existirem no projeto:
+Antes de concluir, executar comandos disponíveis verificando primeiro os scripts reais em `package.json`.
 
 ```bash
 npm run build
@@ -754,58 +751,19 @@ npm run lint
 npm run typecheck
 ```
 
-Nunca inventar comando.
+Nunca inventar comando. Se ausente, documentar: `Não há script X configurado no projeto.`
 
-Se não houver script disponível, documentar:
+Se um comando falhar, documentar: comando, erro, causa provável e se foi introduzido pela alteração ou já existia.
 
-```txt
-Não há script X configurado no projeto.
-```
+É proibido remover, desativar ou silenciar testes e validações existentes sem justificativa técnica, risco registrado e autorização.
 
-Se um comando falhar, documentar:
+### Fluxos a validar quando afetados
 
-- comando;
-- erro;
-- provável causa;
-- se o erro foi introduzido pela alteração ou já existia.
+**Público:** Home, Header/menu, Login/cadastro, Músicas, Player, Filtros, Efeitos sonoros, Preços/licenças, Carrinho, Footer.
 
-É proibido remover, desativar ou silenciar testes e validações existentes apenas
-para obter resultado positivo. Qualquer exceção exige justificativa técnica,
-risco registrado e autorização quando reduzir cobertura ou segurança.
+**Produtor:** Login, Menu, Upload, Dashboard, Pedidos, Dados pessoais, Formas de pagamento, Página do artista.
 
-### Fluxos públicos a validar quando afetados
-
-- Home.
-- Header/menu.
-- Login/cadastro.
-- Listagem de músicas.
-- Player.
-- Filtros.
-- Efeitos sonoros.
-- Preços/licenças.
-- Carrinho.
-- Footer.
-
-### Fluxos de produtor a validar quando afetados
-
-- Login como produtor.
-- Menu de produtor.
-- Upload.
-- Dashboard.
-- Pedidos.
-- Dados pessoais.
-- Formas de pagamento.
-- Página do artista.
-
-### Fluxos de comprador a validar quando afetados
-
-- Login como comprador.
-- Listar músicas.
-- Filtrar.
-- Tocar preview.
-- Escolher licença.
-- Adicionar ao carrinho.
-- Finalizar pedido.
+**Comprador:** Login, Listar músicas, Filtrar, Tocar preview, Escolher licença, Adicionar ao carrinho, Finalizar pedido.
 
 ### Checklist manual mínimo
 
@@ -824,69 +782,23 @@ risco registrado e autorização quando reduzir cobertura ou segurança.
 [ ] Código alterado é localizado
 ```
 
----
+### Critérios de aceite por tipo de tarefa
 
-## 13. Critérios de aceite por tipo de tarefa
+**Correção visual:** bug visual desaparece; não quebra responsividade; não afeta lógica.
 
-### Correção visual
+**Correção de navegação:** link/botão leva ao destino correto; sem reload indevido; sem link vazio residual.
 
-Aceita quando:
+**Correção de player:** música toca; waveform aparece; troca de faixa funciona; dados coerentes; sem áudios conflitantes.
 
-- bug visual desaparece;
-- não quebra responsividade;
-- não afeta lógica sem necessidade.
+**Correção de upload:** campos aparecem conforme modo; validações funcionam; FormData compatível; erros exibidos com clareza.
 
-### Correção de navegação
+**Dashboard:** rota protegida funciona; KPIs aparecem; filtros funcionam; tabela aparece; loading/erro tratados; visual responsivo.
 
-Aceita quando:
-
-- link/botão leva ao destino correto;
-- não há reload indevido;
-- não há link vazio residual no fluxo corrigido.
-
-### Correção de player
-
-Aceita quando:
-
-- música toca;
-- waveform aparece;
-- troca de faixa funciona;
-- dados exibidos são coerentes;
-- não há múltiplos áudios conflitantes.
-
-### Correção de upload
-
-Aceita quando:
-
-- campos aparecem conforme modo;
-- validações funcionam;
-- FormData permanece compatível;
-- erros são exibidos com clareza.
-
-### Dashboard
-
-Aceito quando:
-
-- rota protegida funciona;
-- KPIs aparecem;
-- filtros funcionam;
-- tabela aparece;
-- loading/erro tratados;
-- visual profissional e responsivo.
-
-### Refatoração
-
-Aceita quando:
-
-- estava no escopo ou era necessária para reduzir risco;
-- preservou comportamento existente;
-- foi localizada;
-- melhorou clareza, duplicação ou segurança;
-- foi validada.
+**Refatoração:** estava no escopo ou necessária para reduzir risco; preservou comportamento; foi localizada; melhorou clareza ou segurança; foi validada.
 
 ---
 
-## 14. Decisões pendentes que exigem validação humana
+## 13. Decisões pendentes que exigem validação humana
 
 Pedir validação antes de decidir definitivamente:
 
@@ -907,7 +819,7 @@ Pedir validação antes de decidir definitivamente:
 
 ---
 
-## 15. Convenção de commits recomendada
+## 14. Convenção de commits recomendada
 
 Usar commits pequenos e objetivos:
 
@@ -932,7 +844,7 @@ mudanças
 
 ---
 
-## 16. Relatório obrigatório
+## 15. Relatório obrigatório
 
 Toda entrega deve conter:
 
@@ -990,7 +902,7 @@ Não crie pasta paralela de relatórios sem justificativa.
 
 ---
 
-## 17. Objetivo final do projeto
+## 16. Objetivo final do projeto
 
 O MokBeats deve evoluir para uma plataforma musical estável, profissional e pronta para uso comercial, com:
 

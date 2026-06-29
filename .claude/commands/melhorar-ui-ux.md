@@ -14,13 +14,12 @@ Atue como engenheiro front-end sênior com foco em UI/UX para marketplace musica
 
 ## Antes de alterar
 
-1. Leia `PROJECT_RULES.md`.
-2. Identifique componente, template, SCSS e rota envolvidos.
-3. Preserve Angular 14, Bootstrap, Angular Material e SCSS local.
-4. Preserve comportamento funcional.
-5. Preserve responsividade.
-6. Não reescreva a tela inteira sem necessidade.
-7. Não introduza biblioteca visual sem aprovação.
+1. Identifique componente, template, SCSS e rota envolvidos.
+2. Preserve Angular 14, Bootstrap, Angular Material e SCSS local.
+3. Preserve comportamento funcional.
+4. Preserve responsividade.
+5. Não reescreva a tela inteira sem necessidade.
+6. Não introduza biblioteca visual sem aprovação.
 
 ## Avalie
 

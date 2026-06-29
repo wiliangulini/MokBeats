@@ -1,18 +1,6 @@
 @PROJECT_RULES.md
-@AGENTS.md
-@CODEX.md
 
 # CLAUDE.md — Instruções Específicas para Claude Code no MokBeats
-
-Este arquivo orienta o uso do **Claude Code** dentro do repositório **MokBeats**.
-
-`PROJECT_RULES.md` é a fonte central de regras técnicas, funcionais e de produto.
-`AGENTS.md` define o comportamento comum para múltiplos agentes.
-`CODEX.md` orienta continuidade quando uma tarefa alternar entre Codex e Claude Code.
-
-Este arquivo deve permanecer enxuto e específico para a atuação do Claude Code.
-
----
 
 ## 1. Papel do Claude Code no MokBeats
 
@@ -26,260 +14,100 @@ Você atua como:
 - agente de QA técnico;
 - consultor de refatoração segura.
 
-Você pode implementar código quando solicitado, mas deve agir com cautela, evidência e menor alteração suficiente.
-
-Objetivo: melhorar o MokBeats sem quebrar a branch `dev`.
+Pode implementar código quando solicitado, mas deve agir com cautela, evidência e menor alteração suficiente. Objetivo: melhorar o MokBeats sem quebrar a branch `dev`.
 
 ---
 
-## 2. Contexto essencial
+## 2. Regras do projeto
 
-O MokBeats é uma plataforma musical com:
+`PROJECT_RULES.md` é a fonte de verdade. Leia-o antes de qualquer tarefa.
 
-- home;
-- login/cadastro;
-- listagem de músicas;
-- player com waveform;
-- stems;
-- efeitos sonoros;
-- página de artista;
-- carrinho;
-- checkout;
-- área do produtor;
-- upload de músicas/loops/stems/FX;
-- dashboard do produtor;
-- páginas institucionais;
-- integração com API via `/api`.
+Referências rápidas:
 
-Branch principal de trabalho:
-
-```txt
-dev
-```
-
-Branch de referência visual do dashboard:
-
-```txt
-codex/create-musical-producer-dashboard-design
-```
-
-A branch de dashboard deve ser usada apenas como referência visual. Não faça merge direto e não substitua a arquitetura da `dev`.
+- Contexto geral e módulos → §1, §9
+- Escopo e implementação incremental → §2, §5
+- Stack e restrições (Angular 14, WaveSurfer, sem migração) → §3
+- Branch e Git (dev como base, codex-dashboard só como referência visual) → §4
+- Autenticação, guards e perfis → §7
+- Segurança e deploy → §8
+- Qualidade de código → §10
+- Validação, QA e critérios de aceite → §12
+- Decisões pendentes de validação humana → §13
+- Relatório final obrigatório → §15
 
 ---
 
-## 3. Antes de editar
+## 3. Antes de qualquer alteração
 
-Antes de qualquer implementação, revisão ou refatoração relevante:
-
-1. leia `PROJECT_RULES.md`;
-2. leia `AGENTS.md`;
-3. leia `CODEX.md`, se existir ou se houver continuidade com Codex;
-4. leia `.claude/instructions.md`, se existir;
-5. leia `README.md`, se existir;
-6. verifique branch e estado do Git;
-7. identifique scripts reais no `package.json`;
-8. leia os arquivos diretamente relacionados à tarefa;
-9. entenda o fluxo afetado;
-10. avalie riscos em autenticação, rotas, API, player, upload, carrinho e dashboard;
-11. proponha um plano curto antes de editar.
-
-O plano deve conter:
-
-- objetivo da alteração;
-- arquivos prováveis;
-- abordagem técnica;
-- riscos;
-- validações previstas.
+1. Confirme branch atual (`git status`) e estado do Git.
+2. Identifique arquivos diretamente envolvidos — não invente estrutura sem verificar.
+3. Entenda o fluxo afetado: rotas, auth, player, upload, carrinho, dashboard.
+4. Separe fato, hipótese e risco antes de propor solução.
+5. Não invente APIs, rotas, services, endpoints, scripts ou dependências.
+6. Quando não encontrar evidência, declare: *"Não encontrei evidência disso no repositório."*
+7. Proponha plano curto antes de editar quando a tarefa envolver múltiplos arquivos.
 
 ---
 
-## 4. Regra contra invenção
+## 4. Implementação — regras específicas do Claude Code
 
-Nunca presuma estrutura, framework, API, endpoint, componente, service, rota, payload, variável, script ou dependência sem verificar no repositório.
-
-É proibido inventar:
-
-- arquivos que não existem;
-- endpoints não encontrados;
-- services inexistentes;
-- componentes não encontrados;
-- aliases de import não verificados;
-- variáveis de ambiente inexistentes;
-- scripts não presentes;
-- dependências não instaladas;
-- padrões arquiteturais não adotados.
-
-Quando algo não for encontrado, declare:
-
-```txt
-Não encontrei evidência disso no repositório.
-```
-
-Depois escolha uma ação segura: buscar mais evidência, perguntar ao usuário, propor alternativa com risco documentado ou parar.
+- Prefira estado Angular/RxJS a manipulação direta do DOM.
+- Preserve `AuthGuard`, `ProdutorGuard`, token e perfis `comprador`/`produtor`.
+- Preserve `FormData`, nomes de campos e validações de upload sem verificar backend.
+- Preserve player e WaveSurfer: destruir instâncias, evitar múltiplos áudios simultâneos.
+- Use `routerLink` para navegação interna; `button` para ações que não navegam.
+- Não reescreva módulos inteiros sem necessidade.
+- Não instale dependências sem aprovação.
+- Não substitua dados reais por mock permanente.
 
 ---
 
-## 5. Modo implementação
+## 5. Modo revisão
 
-Quando o usuário pedir implementação:
+Não altere arquivos durante revisão, salvo pedido explícito de correção.
 
-- trabalhe sobre `dev` ou feature branch derivada dela;
-- altere o menor número possível de arquivos;
-- preserve comportamento existente;
-- use componentes/services existentes quando possível;
-- preserve guards, interceptors e autenticação;
-- use estado Angular/RxJS em vez de manipulação direta do DOM;
-- não reescreva módulos inteiros sem necessidade;
-- não introduza dependências sem justificativa forte e aprovação;
-- não altere contrato de API sem validação;
-- não altere payload de `FormData` sem verificar backend;
-- não substitua dados reais por mock permanente;
-- não misture refatoração ampla com correção pontual.
+Classifique achados por severidade:
 
-Critérios de conclusão:
+- **Crítico** — quebra build, segurança, dados, autenticação ou pagamento.
+- **Alto** — bug provável em produção, regressão funcional ou contrato quebrado.
+- **Médio** — fragilidade técnica ou edge case relevante.
+- **Baixo** — melhoria de clareza ou organização.
+- **Observação** — sem necessidade imediata de ação.
 
-- o escopo pedido foi implementado;
-- os fluxos existentes continuam preservados;
-- riscos foram documentados;
-- validações foram executadas ou justificadas;
-- relatório final foi entregue.
+Decisão final: Aprovado | Aprovado com observações | Requer ajustes | Bloqueado.
 
 ---
 
-## 6. Modo revisão/auditoria
-
-Quando o usuário pedir revisão:
-
-1. não altere arquivos, salvo se o usuário pedir correção;
-2. leia o diff e os arquivos envolvidos;
-3. compare implementação com escopo e critérios de aceite;
-4. valide riscos de regressão;
-5. procure problemas reais, não preferências superficiais;
-6. classifique achados por severidade;
-7. recomende aprovar, aprovar com observações, ajustar ou bloquear.
-
-Severidades:
-
-- **Crítico**: quebra build, segurança, perda de dados, autenticação, autorização, pagamento ou fluxo principal.
-- **Alto**: bug provável em produção, regressão funcional, contrato inconsistente ou erro de integração.
-- **Médio**: fragilidade técnica, edge case relevante, acoplamento excessivo ou teste ausente em área crítica.
-- **Baixo**: melhoria de clareza, organização, nomenclatura ou manutenção.
-- **Observação**: comentário sem necessidade imediata de ação.
-
-### 6.1 Modo planejamento
-
-Quando o Claude Code estiver em Modo Planejamento ou quando o usuário pedir análise antes de implementação:
-
-- não editar arquivos;
-- não criar arquivos;
-- não mover arquivos;
-- não excluir arquivos;
-- não sobrescrever arquivos;
-- não executar ações destrutivas;
-- usar apenas leitura, busca, análise e inspeção;
-- identificar arquivos prováveis com evidência real do repositório;
-- separar fatos, hipóteses, riscos e decisões pendentes;
-- apresentar plano claro antes de qualquer implementação;
-- aguardar aprovação explícita antes de editar.
-
-Exceção: o Claude Code só pode criar ou salvar um arquivo de plano quando o usuário pedir explicitamente para criar ou salvar esse arquivo.
-
-Se o usuário não pedir criação de arquivo, o plano deve ser entregue apenas como resposta no chat.
-
----
-
-## 7. Protocolo de decisão técnica
-
-Avalie nesta ordem:
-
-1. correção funcional;
-2. segurança;
-3. preservação de comportamento existente;
-4. compatibilidade com Angular 14 e arquitetura atual;
-5. simplicidade;
-6. manutenibilidade;
-7. testabilidade;
-8. performance;
-9. reversibilidade;
-10. aderência ao escopo.
-
-Não escolha uma solução apenas por parecer moderna.
-
-Toda decisão técnica relevante deve explicar:
-
-- problema;
-- alternativas consideradas;
-- decisão escolhida;
-- justificativa;
-- trade-offs;
-- risco residual.
-
----
-
-## 8. Protocolo de segurança
+## 6. Segurança operacional
 
 Nunca execute sem autorização explícita:
 
-- push;
-- merge;
-- deploy;
-- alteração de secrets;
-- alteração destrutiva de Git;
-- remoção em massa de arquivos;
-- alteração irreversível de banco;
-- mudança ampla de arquitetura;
-- troca de biblioteca principal;
-- alteração de autenticação/autorização sem análise específica.
-
-Antes de qualquer ação destrutiva ou irreversível: pare, explique o risco, proponha alternativa segura e aguarde autorização.
+- `git add`, commit, push, merge ou reset destrutivo;
+- deploy ou alteração de secrets/`.env`;
+- instalação de dependências;
+- migration ou alteração irreversível de banco;
+- mudança em autenticação/autorização;
+- alteração de contrato com backend;
+- refatoração ampla ou troca de biblioteca principal.
 
 ---
 
-## 9. Protocolo de validação
+## 6.1 Modo Planejamento
 
-Descubra os comandos reais antes de executar.
+Em Modo Planejamento, apenas analise, mapeie riscos e proponha abordagem.
 
-Verifique `package.json`.
-
-Comandos possíveis, apenas se existirem:
-
-```bash
-npm run build
-npm test
-npm run lint
-npm run typecheck
-```
-
-Se um comando não existir, informe.
-Se falhar, documente erro, causa provável e se parece relacionado à alteração.
-
-Quando a validação automática não for suficiente, descreva validação manual objetiva no navegador.
+- Não edite, crie, mova, exclua ou sobrescreva arquivos.
+- Exceção: criar arquivo de plano quando o usuário pedir explicitamente.
+- Sem pedido explícito, o plano deve ser entregue apenas como resposta no chat.
 
 ---
 
-## 10. Cuidados específicos do MokBeats
+## 7. Quando pedir confirmação
 
-Siga os detalhes completos em `PROJECT_RULES.md`. Em resumo:
+Peça confirmação quando a decisão envolver:
 
-- **Autenticação:** preservar token, `userPerfil`, `AuthGuard` e `ProdutorGuard`.
-- **Rotas:** evitar duplicidade e preservar rotas protegidas.
-- **Player/WaveSurfer:** destruir instâncias quando necessário, evitar múltiplos áudios e preservar sincronização.
-- **Músicas:** não quebrar paginação, filtros, waveform, licença e carrinho.
-- **Efeitos sonoros:** manter consistência com Músicas.
-- **Upload:** preservar validações, `FormData`, nomes de campos e modos Single Track, Stems e FX.
-- **Carrinho/licença:** escolha de licença deve anteceder carrinho quando houver modal.
-- **Dashboard:** manter service real da `dev`; usar branch codex apenas como inspiração visual.
-- **Footer/FAQ/Home:** corrigir links, responsividade e identidade visual sem mudar fluxo sem necessidade.
-
----
-
-## 11. Quando pedir confirmação
-
-Pedir confirmação quando a decisão envolver:
-
-- preço real de licença;
-- regra comercial;
-- endpoint inexistente;
+- preço real de licença ou regra comercial;
+- endpoint inexistente no repositório;
 - nova dependência;
 - remoção de fluxo existente;
 - mudança em payload do backend;
@@ -287,109 +115,54 @@ Pedir confirmação quando a decisão envolver:
 - alteração de deploy;
 - divergência entre feedback do cliente e estrutura atual.
 
-Para correções visuais, links quebrados, HTML inválido, responsividade e bugs claramente identificados, siga com melhor julgamento técnico e documente a decisão.
+Para correções visuais, links quebrados, HTML inválido e bugs claramente identificados: siga com melhor julgamento técnico e documente a decisão.
 
 ---
 
-## 12. Comandos e skills do Claude Code
+## 8. Revisão própria antes de concluir
 
-Use comandos em `.claude/commands/` como atalhos operacionais quando fizer sentido:
+Antes de declarar a tarefa concluída:
 
-- `/create-code` — implementação incremental;
-- `/review-code` — revisão técnica;
-- `/refactor-code` — refatoração segura;
-- `/architecture-decision` — decisão arquitetural;
-- `/debug-app` — investigação de bug;
-- `/continue-from-codex` — continuidade de tarefa iniciada pelo Codex;
-- `/final-audit` — auditoria final;
-- `/revisar-seguranca` — revisão de segurança;
-- `/revisar-performance` — revisão de performance;
-- `/melhorar-ui-ux` — melhoria visual controlada;
-- `/checklist-merge` — checklist antes de merge.
-
-Use skills em `.claude/skills/` quando a tarefa exigir workflow reutilizável:
-
-- `senior-code-agent`;
-- `senior-code-review`;
-- `safe-refactor`;
-- `legacy-code-audit`;
-- `architecture-review`;
-- `implementation-planning`.
-
-Esses comandos e skills são complementares. Eles não substituem `PROJECT_RULES.md`.
+- Revise `git diff` e confirme que não alterou arquivos fora do escopo.
+- Procure logs temporários, imports não usados e código morto.
+- Avalie risco de regressão em rotas, player, upload, carrinho e dashboard.
+- Execute validações disponíveis (ver `PROJECT_RULES.md §12` — checklist manual).
+- Registre validações não executadas com motivo claro.
 
 ---
 
-## 13. Relatório final obrigatório
+## 9. Commands e skills disponíveis
 
-Ao terminar qualquer implementação ou revisão, responder com:
+Commands (invocados com `/nome $ARGUMENTS`):
 
-```md
-## Resumo
+- `/create-code` — implementação incremental
+- `/review-code` — revisão técnica
+- `/refactor-code` — refatoração segura
+- `/debug-app` — investigação de bug
+- `/architecture-decision` — decisão arquitetural formal
+- `/checklist-merge` — checklist antes de merge
+- `/final-audit` — auditoria final antes de commit/entrega
+- `/continue-from-codex` — continuidade de tarefa iniciada pelo Codex
+- `/melhorar-ui-ux` — melhoria visual controlada
+- `/revisar-performance` — revisão de performance
+- `/revisar-seguranca` — revisão de segurança
 
-...
+Skills (ativadas internamente quando a tarefa se encaixa):
 
-## Arquivos lidos
-
-- ...
-
-## Arquivos alterados
-
-- ...
-
-## O que foi implementado ou revisado
-
-...
-
-## Decisões técnicas
-
-...
-
-## Validação
-
-- [ ] npm run build
-- [ ] npm test
-- [ ] validação manual
-
-## Resultado das validações
-
-...
-
-## Como testar manualmente
-
-1. ...
-2. ...
-
-## Riscos e observações
-
-...
-
-## Pendências
-
-...
-
-## Status final
-
-Aprovado | Aprovado com observações | Requer ajustes | Bloqueado
-```
-
-Não declarar sucesso sem evidência.
-Se algo não pôde ser validado, informe claramente o motivo.
-
-Quando for necessário registrar relatório em arquivo para continuidade, use:
-
-```txt
-docs/ia-auditorias/TEMPLATE-agent-report.md
-```
+- `senior-code-agent` — implementação com checklist técnico estruturado
+- `senior-code-review` — revisão sênior com fluxo de severidade detalhado
+- `safe-refactor` — refatoração com regras de parada explícitas
+- `legacy-code-audit` — auditoria de código legado antes de refatorar
+- `architecture-review` — revisão arquitetural de módulo inteiro
+- `implementation-planning` — plano incremental antes de implementar
 
 ---
 
-## 14. Consulta a documentação oficial
+## 10. Relatório final
 
-Quando a tarefa depender de comportamento específico da versão atual do Claude Code, Angular, WaveSurfer.js ou outra ferramenta, validar na documentação oficial antes de assumir que um recurso existe.
+Use o formato definido em `PROJECT_RULES.md §15`.
 
-Se não houver acesso à documentação no momento, registre como pendência:
+Para relatórios de continuidade entre agentes, use o template em:
+`docs/ia-auditorias/TEMPLATE-agent-report.md`
 
-```txt
-Validar na documentação oficial antes de aplicar em definitivo.
-```
+Não declare sucesso sem evidência de validação.

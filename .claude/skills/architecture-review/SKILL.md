@@ -40,15 +40,10 @@ Não use quando:
 
 ## Pré-requisitos obrigatórios
 
-1. Ler `PROJECT_RULES.md`.
-2. Ler `AGENTS.md`.
-3. Ler `CLAUDE.md`.
-4. Ler `CODEX.md`, se existir.
-5. Ler `.claude/instructions.md`, se existir.
-6. Ler documentação e relatórios relacionados em `docs/ia-auditorias/`.
-7. Ler arquivos reais relacionados.
-8. Identificar restrições de Angular 14, TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API e WaveSurfer.js.
-9. Identificar impactos em autenticação, rotas, player, upload, carrinho, licenças e dashboard.
+1. Ler documentação e relatórios relacionados em `docs/ia-auditorias/`.
+2. Ler arquivos reais relacionados.
+3. Identificar restrições de Angular 14, TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API e WaveSurfer.js.
+4. Identificar impactos em autenticação, rotas, player, upload, carrinho, licenças e dashboard.
 
 ## Fluxo de execução
 

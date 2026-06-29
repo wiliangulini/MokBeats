@@ -2,10 +2,10 @@
 
 ## Diferença fundamental
 
-| Tipo | Como usar | Aceita prompt junto? | Edita arquivos? |
-|------|-----------|---------------------|-----------------|
-| **Command** (`/nome`) | Você digita `/nome sua_descrição_aqui` | Sim — o texto vira `$ARGUMENTS` | Depende do comando |
-| **Skill** (invocado internamente) | Ativado pelo Claude Code quando a tarefa se encaixa | Não — você descreve a tarefa normalmente | Depende da skill |
+| Tipo                              | Como usar                                           | Aceita prompt junto?                     | Edita arquivos?    |
+|------                             |-----------                                          |---------------------                     |-----------------   |
+| **Command** (`/nome`)             | Você digita `/nome sua_descrição_aqui`              | Sim — o texto vira `$ARGUMENTS`          | Depende do comando |
+| **Skill** (invocado internamente) | Ativado pelo Claude Code quando a tarefa se encaixa | Não — você descreve a tarefa normalmente | Depende da skill   |
 
 ---
 
