@@ -135,3 +135,21 @@ Para continuar esta tarefa:
 ## 22. Observações finais
 
 [Qualquer observação relevante.]
+
+---
+
+## Convenção de nomenclatura de relatórios
+
+Padrão: `YYYY-MM-DD__escopo__agente.md`
+
+Exemplos:
+
+```txt
+2026-06-29__dashboard-produtor__codex.md
+2026-06-29__dashboard-produtor__claude-review.md
+2026-06-29__dashboard-produtor__claude-final-audit.md
+```
+
+Quando gerar relatório: para qualquer tarefa com auth, upload, checkout, dashboard, player,
+múltiplos arquivos ou continuidade Codex → Claude, registrar em `docs/ia-auditorias/`
+usando este template.
