@@ -140,7 +140,7 @@ A implementação é tecnicamente sólida para o escopo proposto. Os três bugs 
 
 ## Status final da etapa
 
-Aprovado / Aprovado com observações / Reprovado
+Aprovado com observações
 
 ## Pendências para etapas futuras
 

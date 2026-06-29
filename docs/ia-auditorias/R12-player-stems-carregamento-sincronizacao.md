@@ -113,7 +113,7 @@ Troca de faixa com e sem stems disponíveis
 
 ## Status final da etapa
 
-Aprovado / Aprovado com observações / Reprovado
+Aprovado com observações
 
 ## Pendências para etapas futuras
 

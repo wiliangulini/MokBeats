@@ -1,4 +1,4 @@
-# RXX — Nome da etapa
+# R03 — Etapa 3 — Comparação técnica `dev` x branch Dashboard
 
 ## Relatório do Codex
 
@@ -160,7 +160,7 @@ Aprovado com observações
 
 ## Status final da etapa
 
-Aprovado / Aprovado com observações / Reprovado
+Aprovado com observações
 
 ## Pendências para etapas futuras
 

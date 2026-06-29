@@ -1,6 +1,6 @@
 # R01 — Auditoria inicial da branch dev
 
-## **Relatório do Codex**
+## Relatório do Codex
 
 ## Resumo da etapa
 
@@ -98,7 +98,7 @@ Não alterei nenhum arquivo. A auditoria ficou dentro do escopo da Etapa 1; apen
 
 ---
 
-## **Revisão do Claude Code**
+## Revisão do Claude Code
 
 Revisão Claude Code — Etapa 1 — Auditoria inicial da branch dev
 Classificação final: Aprovado com observações
@@ -152,7 +152,7 @@ A branch dev está estável e pronta para início de implementação nas próxim
 
 ---
 
-## **Complemento pós-revisão**
+## Complemento pós-revisão
 
 ## Complemento da auditoria R01
 
