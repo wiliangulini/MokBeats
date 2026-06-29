@@ -76,29 +76,30 @@ Resumo
 O diff é pequeno (171 linhas adicionadas, 52 removidas), localizado em 4 arquivos (3 autorizados + doc), sem regressões em player, waveform, carrinho ou serviços globais. Todos os 5 critérios de aceite foram atendidos.
 
 Pontos aprovados
-Item	Antes	Depois	Status
-Nome da música	<a href="#">	<span class="music-name">	✅
-Link do produtor	(click) + href="" + [routerLink] (triplo)	só [routerLink] + [queryParams]	✅
-Botão de licença	<a href="javascript:void(0)"><button>	<button type="button"> direto	✅
-Dropdown de ordenação	<a class="dropdown-item">	<button type="button" class="dropdown-item">	✅
-Fechar / Limpar filtros	clique no <li>	clique no <button> interno com type="button"	✅
-arrVExtendida	<a id="arrve"> sem href	<span id="arrve">	✅
-Play button	sem type	type="button"	✅
-Grid desktop ≥1366px	colunas desalinhadas	grid-template-columns: 24% 31% 10% 16% 9% 10%	✅
-Remoção de Router e pagArtist()	presentes	removidos limpos	✅
-Escopo	—	services, guards, player, carrinho intactos	✅
+Item Antes Depois Status
+Nome da música <a href="#"> <span class="music-name"> ✅
+Link do produtor (click) + href="" + [routerLink] (triplo) só [routerLink] + [queryParams] ✅
+Botão de licença <a href="javascript:void(0)"><button> <button type="button"> direto ✅
+Dropdown de ordenação <a class="dropdown-item"> <button type="button" class="dropdown-item"> ✅
+Fechar / Limpar filtros clique no <li> clique no <button> interno com type="button" ✅
+arrVExtendida <a id="arrve"> sem href <span id="arrve"> ✅
+Play button sem type type="button" ✅
+Grid desktop ≥1366px colunas desalinhadas grid-template-columns: 24% 31% 10% 16% 9% 10% ✅
+Remoção de Router e pagArtist() presentes removidos limpos ✅
+Escopo — services, guards, player, carrinho intactos ✅
 Problemas encontrados
 Bloqueadores
 Nenhum.
 
 Importantes
+
 1. Dois blocos @media (min-width: 1366px) no SCSS
 
 O arquivo original já tinha um bloco min-width: 1366px. O novo bloco de grid foi inserido antes dele (linha ~886). Ambos coexistem no arquivo. Se o bloco pré-existente sobrescrever display ou grid-template-columns nos mesmos seletores, o alinhamento não será visível em tela larga.
 
 Ação: verificar manualmente em viewport ≥1366px. Se conflitar, consolidar em etapa futura.
 
-2. Mudança de cor não declarada no nome da música
+1. Mudança de cor não declarada no nome da música
 
 A âncora <a href="#"> em <p class="h4"> não era afetada pelo seletor article.one .text p.h6 a (que só cobre h6) — então recebia cor azul padrão de link do Bootstrap. Com a troca para <span class="music-name"> + color: #fff, o nome ficou branco. É visualmente melhor no tema escuro, mas a mudança não foi declarada no relatório do Codex.
 
@@ -109,12 +110,12 @@ Menores
 IDs duplicados no *ngFor (id="duracao", id="bpm", id="arrve", id="accordionT1"): pré-existente, documentado pelo Codex, não introduzido nesta etapa.
 Botões incompletos ("copiar link", botão mobile, ordenação): pré-existentes, corretamente sinalizados como pendência de produto.
 Checklist de aceite
-Critério	Status
-Clique no nome da música não vai para Home	✅
-Links internos usam routerLink ou ação Angular	✅
-Não há links vazios nos botões principais	✅
-Layout alinhado em desktop	✅ (verificação manual recomendada)
-Player e waveform continuam funcionando	✅ (não tocados)
+Critério Status
+Clique no nome da música não vai para Home ✅
+Links internos usam routerLink ou ação Angular ✅
+Não há links vazios nos botões principais ✅
+Layout alinhado em desktop ✅ (verificação manual recomendada)
+Player e waveform continuam funcionando ✅ (não tocados)
 Correções exigidas para o Codex
 Nenhuma correção bloqueadora de código. Apenas verificação manual:
 
@@ -131,7 +132,7 @@ Confirmar que nome da música em branco é o visual desejado.
 
 ## Status final da etapa
 
-Aprovado / Aprovado com observações / Reprovado
+Aprovado com observações
 
 ## Pendências para etapas futuras
 

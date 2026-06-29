@@ -1,1 +1,0 @@
-AGENTS.md, CLAUDE.md e PROJECT_RULES.md

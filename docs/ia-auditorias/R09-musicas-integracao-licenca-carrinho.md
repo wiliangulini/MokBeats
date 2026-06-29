@@ -132,7 +132,7 @@ Persistência do carrinho (localStorage ou sessão) + integração real do onSub
 
 ## Status final da etapa
 
-Aprovado / Aprovado com observações / Reprovado
+Aprovado com observações
 
 ## Pendências para etapas futuras
 
