@@ -24,6 +24,14 @@ export type Musica = {
   duracaoCarregando?: boolean; // Flag para indicar que está carregando
 };
 
+export type MusicStem = {
+  id?: number;
+  label?: string;
+  type?: string;
+  url?: string;
+  duration_ms?: number;
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -476,9 +484,9 @@ export class MusicasService extends CrudService<Musica> {
     return this.http.get(`${this.baseUrl}/subgeneros`, { params: { genero } });
   }
 
-  getStemsByMusicId(id: number): Observable<any> {
+  getStemsByMusicId(id: number): Observable<MusicStem[]> {
     // Usa o endpoint mais novo (alias de compatibilidade no backend)
-    return this.http.get(`${this.baseUrl}/tracks/${id}/stems`);
+    return this.http.get<MusicStem[]>(`${this.baseUrl}/tracks/${id}/stems`);
   }
 
   getLatestUniqueByProducer(limit: number): Observable<any> {

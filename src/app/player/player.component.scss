@@ -81,6 +81,9 @@
   padding: 2px 8px;
   font-size: 11px;
 }
+.row.track.stem-track-disabled {
+  opacity: 0.35;
+}
 section .container-fluid .row.audioCanva,
 section .container-fluid .row.player {
   background: #000;
@@ -359,6 +362,27 @@ button.btn.btn-icons.mobile {
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
+}
+
+.stems-status {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  line-height: 1.2;
+  margin-top: 8px;
+  max-width: 76px;
+  text-align: center;
+}
+
+.stems-status-error {
+  color: #ffb4a8;
+}
+
+#volumeOnTrackCustom1:disabled,
+#volumeOnTrackCustom2:disabled,
+#volumeOnTrackCustom3:disabled,
+#volumeOnTrackCustom4:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
 }
 
 // Label "Faixa Inteira" fica opaca quando stems estão ativos

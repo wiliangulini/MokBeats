@@ -3,6 +3,7 @@ import { PlayerComponent } from './player.component';
 import { MusicPlayerService } from '../service/music-player.service';
 import { PlayerService } from './player.service';
 import { MusicasService } from '../musicas/musicas.service';
+import { of, throwError } from 'rxjs';
 
 class StubPlayerService {
   showPlayer = jasmine.createSpy('showPlayer');
@@ -11,8 +12,9 @@ class StubPlayerService {
 }
 
 class StubMusicasService {
-  getStemsByMusicId = jasmine.createSpy('getStemsByMusicId').and.returnValue({
-    subscribe: (cb: Function) => cb([])
+  stemsResponse: any[] = [];
+  getStemsByMusicId = jasmine.createSpy('getStemsByMusicId').and.callFake(() => {
+    return of(this.stemsResponse);
   });
 }
 
@@ -20,6 +22,9 @@ class StubMusicasService {
 class FakeWaveSurfer {
   time = 0;
   playing = false;
+  destroyed = false;
+  muted = false;
+  volume = 0.75;
   private handlers: Record<string, Function[]> = {};
 
   on(event: string, handler: Function) {
@@ -29,15 +34,15 @@ class FakeWaveSurfer {
   emit(event: string, ...args: any[]) {
     (this.handlers[event] || []).forEach(fn => fn(...args));
   }
-  destroy() {}
+  destroy() { this.destroyed = true; }
   load() {}
   play()  { this.playing = true;  this.emit('play'); }
   pause() { this.playing = false; this.emit('pause'); }
   setTime(t: number) { this.time = t; }
   skip() {}
   getDuration() { return 100; }
-  setVolume() {}
-  setMuted() {}
+  setVolume(volume: number) { this.volume = volume; }
+  setMuted(muted: boolean) { this.muted = muted; }
   getCurrentTime() { return this.time; }
 }
 
@@ -46,6 +51,8 @@ describe('PlayerComponent behavior', () => {
   let fixture: ComponentFixture<PlayerComponent>;
   let mps: MusicPlayerService;
   let ps: StubPlayerService;
+  let musicService: StubMusicasService;
+  let createdWaveSurfers: FakeWaveSurfer[] = [];
 
   beforeAll(() => {
     const dynamicRequire = (id: string): any => {
@@ -59,7 +66,11 @@ describe('PlayerComponent behavior', () => {
 
     const ws = dynamicRequire('wavesurfer.js') || {};
     (ws as any).default = ws.default || ws;
-    (ws as any).create = () => new FakeWaveSurfer() as any;
+    (ws as any).create = () => {
+      const fake = new FakeWaveSurfer();
+      createdWaveSurfers.push(fake);
+      return fake as any;
+    };
 
     const mm = dynamicRequire('wavesurfer.js/dist/plugins/minimap') || dynamicRequire('wavesurfer.js/dist/plugins/minimap.cjs') || {};
     (mm as any).default = mm.default || mm;
@@ -80,6 +91,8 @@ describe('PlayerComponent behavior', () => {
     component = fixture.componentInstance;
     mps = TestBed.inject(MusicPlayerService);
     ps = TestBed.inject(PlayerService) as any;
+    musicService = TestBed.inject(MusicasService) as any;
+    createdWaveSurfers = [];
     // Não chamar detectChanges para evitar ngAfterViewInit pesado
     component.wavesurfer = new FakeWaveSurfer() as any; // injeta fake
     (component as any).idMusicCurrent = 7;
@@ -104,6 +117,8 @@ describe('PlayerComponent behavior', () => {
     (comp as any).stems = fakes;
     (comp as any).stemsReady = true;
     (comp as any).stemsReadyCount = count;
+    (comp as any).stemsExpectedCount = count;
+    (comp as any).stemTrackAvailable = [true, true, true, true].slice(0, count);
     return fakes;
   }
 
@@ -199,6 +214,59 @@ describe('PlayerComponent behavior', () => {
       expect((component as any).stemsReadyCount).toBe(0);
     });
 
+    it('T7.1: loadStems() trata resposta vazia sem criar WaveSurfer', () => {
+      (component as any).idMusicCurrent = 99;
+      musicService.stemsResponse = [];
+
+      (component as any).loadStems(99);
+
+      expect(component.stemsEmpty).toBe(true);
+      expect(component.stemsLoadError).toBe(false);
+      expect(component.stems.length).toBe(0);
+      expect(createdWaveSurfers.length).toBe(0);
+    });
+
+    it('T7.2: loadStems() trata erro de API sem quebrar player principal', () => {
+      const mainFake = component.wavesurfer as any as FakeWaveSurfer;
+      (component as any).idMusicCurrent = 99;
+      musicService.getStemsByMusicId.and.returnValue(
+        throwError(() => ({ status: 500 })),
+      );
+
+      (component as any).loadStems(99);
+
+      expect(component.stemsLoadError).toBe(true);
+      expect(component.stemsReady).toBe(false);
+      expect(component.stems.length).toBe(0);
+      expect(mainFake.destroyed).toBe(false);
+    });
+
+    it('T7.3: loadStems() trata 404 como sem stems disponíveis', () => {
+      (component as any).idMusicCurrent = 99;
+      musicService.getStemsByMusicId.and.returnValue(
+        throwError(() => ({ status: 404 })),
+      );
+
+      (component as any).loadStems(99);
+
+      expect(component.stemsEmpty).toBe(true);
+      expect(component.stemsLoadError).toBe(false);
+      expect(component.stemsReady).toBe(false);
+    });
+
+    it('T7.4: loadStems() destrói stems anteriores ao trocar de faixa', () => {
+      const previousStems = injectFakeStems(component);
+      previousStems.forEach(s => { s.playing = true; });
+      (component as any).idMusicCurrent = 99;
+      musicService.stemsResponse = [];
+
+      (component as any).loadStems(99);
+
+      previousStems.forEach(s => expect(s.destroyed).toBe(true));
+      expect(component.stems.length).toBe(0);
+      expect((component as any).playbackMode).toBe('full');
+    });
+
     // T8: seek no wavesurfer sincroniza tempo nos stems sem recursão
     it('T8: seek no wavesurfer sincroniza tempo em todos os stems', () => {
       component.ngOnInit();
@@ -242,6 +310,25 @@ describe('PlayerComponent behavior', () => {
         expect(s.time).toBe(10, 'stem deve ser sincronizado ao tempo atual');
         expect(s.playing).toBe(true, 'stem deve estar tocando');
       });
+    });
+
+    it('T12: playPause() em modo stems pausa stems sem tocar faixa inteira', () => {
+      const mainFake = component.wavesurfer as any as FakeWaveSurfer;
+      const stemFakes = injectFakeStems(component);
+      stemFakes.forEach(s => {
+        s.playing = true;
+        s.time = 33;
+      });
+      (component as any).playbackMode = 'stems';
+      component.isStemsPlaying = true;
+      component.isPlaying2 = false;
+
+      component.playPause();
+
+      expect(mainFake.playing).toBe(false);
+      expect(mainFake.time).toBe(33);
+      expect(component.isStemsPlaying).toBe(false);
+      stemFakes.forEach(s => expect(s.playing).toBe(false));
     });
 
   });
