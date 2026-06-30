@@ -10,11 +10,11 @@
 #            - Verifica Node.js, npm e PM2
 #
 # Uso: Execute este script NA VPS via SSH
-#      ssh root@147.79.87.156 'bash -s' < setup-vps.sh
+#      ssh root@31.97.160.61 'bash -s' < setup-vps.sh
 #
 #      Ou copie para VPS e execute:
-#      scp setup-vps.sh root@147.79.87.156:/tmp/
-#      ssh root@147.79.87.156
+#      scp setup-vps.sh root@31.97.160.61:/tmp/
+#      ssh root@31.97.160.61
 #      chmod +x /tmp/setup-vps.sh
 #      /tmp/setup-vps.sh
 #
@@ -28,7 +28,7 @@ set -e  # Para execução em caso de erro
 # CONFIGURAÇÕES
 # ============================================================================
 
-WEB_ROOT="/var/www/mokbeats"
+WEB_ROOT="/var/www/html/gulini.com.br/mokbeats"
 APACHE_USER="www-data"
 REQUIRED_NODE_VERSION="14"
 
@@ -387,8 +387,8 @@ show_summary() {
     echo ""
 
     print_info "Documentação:"
-    echo "  - BUILD_AND_DEPLOY.md (guia completo)"
-    echo "  - server/DEPLOY_VPS.md (deploy do servidor)"
+    echo "  - docs/SCRIPTS_SHELL.md (inventario dos scripts shell)"
+    echo "  - deploy-to-vps.sh --help (deploy atual)"
     echo ""
 }
 

@@ -14,5 +14,5 @@
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "editor.fontSize": 11
+  "editor.fontSize": 10
 }
