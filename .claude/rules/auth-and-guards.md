@@ -9,7 +9,7 @@ paths:
 
 # Auth and guards
 
-Derived from `PROJECT_RULES.md §7`; if this file diverges, update the project rule first.
+Derived from `docs/areas/auth-and-guards.md` (PROJECT_RULES.md §7); if this file diverges, update the project rule first.
 
 - Preserve token/profile flow and role semantics `comprador` and `produtor`.
 - Never weaken `AuthGuard` or `ProdutorGuard`.

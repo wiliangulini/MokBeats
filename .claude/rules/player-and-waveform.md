@@ -9,7 +9,7 @@ paths:
 
 # Player and waveform
 
-Derived from `PROJECT_RULES.md §9.5`; if this file diverges, update the project rule first.
+Derived from `docs/areas/player-and-waveform.md` (PROJECT_RULES.md §9.5); if this file diverges, update the project rule first.
 
 - Preserve WaveSurfer lifecycle and existing playback flow.
 - Destroy or reuse instances correctly; do not allow multiple audio instances to leak.
