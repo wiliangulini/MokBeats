@@ -49,3 +49,5 @@ Thumbs.db
 # Claude Code
 .claude/settings.local.json
 CLAUDE_SKILLS_COMMANDS.md
+
+_tmp/
