@@ -56,4 +56,7 @@ Thumbs.db
 .claude/settings.local.json
 CLAUDE_SKILLS_COMMANDS.md
 
+# Local planning docs
+docs/roadmap_tecnico_MokBeats_Codex_Claude.md
+
 _tmp/
