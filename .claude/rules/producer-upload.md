@@ -7,7 +7,7 @@ paths:
 
 # Producer upload
 
-Derived from `PROJECT_RULES.md §9.9`; if this file diverges, update the project rule first.
+Derived from `docs/areas/producer-upload.md` (PROJECT_RULES.md §9.9); if this file diverges, update the project rule first.
 
 - Preserve real `FormData` field names and current backend contract unless backend explicitly verified.
 - Do not make stems mandatory for `Single Track` mode.

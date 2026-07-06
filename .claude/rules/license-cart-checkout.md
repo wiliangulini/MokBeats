@@ -11,7 +11,7 @@ paths:
 
 # License, cart, and checkout
 
-Derived from `PROJECT_RULES.md §9.7` and `§9.8`; if this file diverges, update the project rule first.
+Derived from `docs/areas/license-cart-checkout.md` (PROJECT_RULES.md §9.7 and §9.8); if this file diverges, update the project rule first.
 
 - Preserve the flow: item → license selection → cart → checkout.
 - Do not bypass license choice when a modal or explicit selection is expected.

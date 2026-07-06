@@ -42,30 +42,10 @@ A prioridade do projeto é evoluir a base existente com segurança, sem quebrar 
 
 Este arquivo é a fonte central de regras técnicas, funcionais e de produto do MokBeats.
 
-Antes de alterar qualquer coisa:
-
-1. leia este arquivo;
-2. leia `AGENTS.md`;
-3. leia `CLAUDE.md`, quando estiver usando Claude Code;
-4. leia `CODEX.md`, quando estiver usando Codex ou houver continuidade entre Codex e Claude Code;
-5. leia `.codex/instructions.md` explicitamente, quando estiver usando Codex;
-6. leia `README.md`, se existir;
-7. identifique a branch atual;
-8. verifique o estado do Git;
-9. identifique a stack real e os scripts disponíveis;
-10. leia os arquivos diretamente relacionados ao escopo;
-11. entenda o fluxo afetado;
-12. planeje a menor alteração suficiente.
-
 Toda tarefa deve respeitar o escopo solicitado.
 
-Antes de editar, formalize conforme a complexidade da tarefa:
-
-- objetivo;
-- comportamento atual e comportamento esperado;
-- arquivos prováveis e arquivos proibidos, quando aplicável;
-- critérios de aceite;
-- validações necessárias.
+> Protocolo de leitura antes de alterar qualquer coisa e formalização pré-edição:
+> [`docs/areas/protocolo-planejamento.md`](docs/areas/protocolo-planejamento.md) — load on demand.
 
 É proibido:
 
@@ -84,31 +64,7 @@ Antes de editar, formalize conforme a complexidade da tarefa:
 
 ## 3. Stack do projeto
 
-Stack atual conhecida:
-
-```txt
-Angular 14
-TypeScript
-SCSS
-Bootstrap
-Angular Material
-WaveSurfer.js
-Node.js/API
-Proxy local para /api
-```
-
-Restrições:
-
-- Não migrar Angular sem autorização.
-- Não converter o projeto para arquitetura standalone sem autorização.
-- Não trocar a stack principal sem autorização.
-- Não remover WaveSurfer.js.
-- Não substituir a estrutura existente por arquitetura nova sem necessidade.
-- Não quebrar compatibilidade com a API atual.
-- Não inserir regras extensas de React, Next.js, Java, Spring ou SQL como se fossem parte do MokBeats sem evidência no repositório.
-
----
-
+> Moved to [`docs/resources/stack-tecnica.md`](docs/resources/stack-tecnica.md) — load on demand.
 ## 4. Git, branch e segurança operacional
 
 ### Branch de implementação
@@ -119,682 +75,98 @@ dev
 
 A branch `dev` é a base principal para implementação.
 
-### Branch de referência visual do dashboard
+Nunca fazer merge direto da branch de referência visual do dashboard na `dev`, nem executar ações
+destrutivas de Git sem pedido explícito.
 
-```txt
-codex/create-musical-producer-dashboard-design
-```
-
-Esta branch serve apenas como referência visual e conceitual para o dashboard do produtor.
-
-Regras:
-
-- Não fazer merge direto na `dev`.
-- Não substituir a estrutura da `dev` pela estrutura dessa branch.
-- Não copiar cegamente módulos globais, routing, guards, interceptors ou services dessa branch.
-- Não remover guards, interceptors ou services da `dev`.
-- Aproveitar apenas elementos visuais, ideias de layout e componentes pontuais compatíveis.
-- Manter a implementação final do dashboard alinhada à estrutura real da `dev`.
-
-Antes de iniciar uma tarefa:
-
-- verificar branch atual;
-- verificar alterações pendentes;
-- evitar sobrescrever trabalho existente;
-- não criar commits sem pedido explícito;
-- não executar push sem autorização explícita;
-- não fazer merge sem autorização explícita;
-- não executar ações destrutivas de Git, arquivos, banco ou deploy.
-
-Commits devem ser pequenos, objetivos e criados apenas quando solicitados.
+> Regras da branch de referência visual do dashboard, checklist pré-tarefa e convenção de commits:
+> [`docs/areas/git-e-branches.md`](docs/areas/git-e-branches.md) — load on demand.
 
 ---
 
 ## 5. Padrão de implementação incremental
 
-Toda implementação deve ser:
+Toda implementação deve ser incremental, localizada, simples, testável e reversível — pequena o
+suficiente para revisão humana. Evite overengineering, abstrações prematuras e mocks permanentes.
 
-- incremental;
-- localizada;
-- simples;
-- testável;
-- reversível;
-- compatível com a arquitetura atual;
-- coerente com padrões já existentes;
-- pequena o suficiente para revisão humana.
-
-Prefira:
-
-- menor mudança suficiente;
-- nomes explícitos;
-- tipagem clara;
-- validação de entrada;
-- tratamento de erro consistente;
-- reaproveitamento de componentes/services existentes;
-- estado Angular/RxJS em vez de manipulação direta do DOM;
-- correções localizadas antes de refatorações amplas.
-
-Evite:
-
-- overengineering;
-- abstrações prematuras;
-- duplicação desnecessária;
-- lógica de negócio complexa em componentes visuais;
-- código morto;
-- mocks permanentes substituindo dados reais;
-- dependências novas sem necessidade comprovada;
-- reformatação de arquivos inteiros sem relação com a tarefa.
+> Listas completas de práticas a preferir e evitar:
+> [`docs/areas/padrao-implementacao.md`](docs/areas/padrao-implementacao.md) — load on demand.
 
 ---
 
 ## 6. Regras gerais de arquitetura
 
-### Angular
-
-- Respeitar Angular 14.
-- Manter estrutura baseada em módulos.
-- Preservar `modules`, `components`, `services`, `guards`, `interceptors` e `routing`.
-- Componentes devem conter lógica de tela, não regra de negócio extensa.
-- Services devem concentrar comunicação com API e lógica reutilizável.
-- Guards devem proteger rotas privadas.
-- Interceptors devem preservar autenticação e comportamento HTTP existente.
-- Templates devem ser simples, declarativos e com HTML válido.
-- Evitar subscriptions sem cleanup em fluxos longos.
-- Evitar mexer em arquivos globais sem necessidade clara.
-
-### Estado e DOM
-
-- Preferir estado Angular/RxJS em vez de manipulação direta do DOM.
-- Evitar `document.querySelector`, `getElementById`, jQuery e manipulação manual em novas implementações.
-- Quando houver legado com manipulação direta do DOM, corrigir gradualmente e com cautela.
-
-### Rotas e navegação
-
-- Usar `routerLink` para navegação interna.
-- Usar `button` para ações que não são navegação.
-- Evitar links vazios ou âncoras falsas.
-- Links externos devem usar URL real e proteção adequada para nova aba quando aplicável.
-- Não duplicar rotas existentes.
-- Rotas privadas devem continuar protegidas.
-- Verificar `app-routing.module.ts` antes de alterar navegação.
-
-### API Node.js
-
-- Usar `/api` como base quando o projeto estiver configurado assim.
-- Não alterar endpoints sem validar backend.
-- Não alterar payloads sem validar API.
-- Preservar contrato atual sempre que possível.
-- Preservar método HTTP, URL, query params, path params, formato da resposta,
-  status HTTP, paginação, filtros e ordenação.
-- Validar entradas e tratar erros.
-- Não logar tokens, senhas ou dados sensíveis.
-- Quando endpoint não existir, registrar pendência ou criar camada temporária claramente isolada, nunca mock permanente disfarçado de integração real.
-
----
-
+> Moved to [`docs/areas/arquitetura-angular.md`](docs/areas/arquitetura-angular.md) — load on demand.
 ## 7. Autenticação e perfis
 
-Perfis principais:
-
-```txt
-comprador
-produtor
-```
-
-Regras:
-
-- Usuário não autenticado não deve acessar áreas privadas.
-- Comprador não deve acessar dashboard do produtor.
-- Produtor deve acessar upload, dashboard e área do produtor.
-- `AuthGuard` deve proteger rotas autenticadas.
-- `ProdutorGuard` deve proteger rotas exclusivas de produtor.
-- Não remover validações de perfil.
-- Não quebrar login, cadastro, armazenamento de token ou leitura de perfil.
-- Qualquer alteração em autenticação, autorização, guards, interceptors, token, sessão ou perfil é área sensível e exige validação específica.
-
----
-
+> Moved to [`docs/areas/auth-and-guards.md`](docs/areas/auth-and-guards.md) — load on demand.
 ## 8. Identidade visual e UX
 
-O MokBeats deve ter uma interface:
-
-- escura;
-- moderna;
-- musical;
-- premium;
-- responsiva;
-- objetiva;
-- coerente entre telas;
-- focada em áudio, waveform e ação de compra.
-
-Diretrizes:
-
-- Priorizar clareza sobre excesso de efeitos.
-- Evitar poluição visual.
-- Destacar player, música, waveform, licença e carrinho.
-- Manter consistência entre Músicas e Efeitos Sonoros.
-- Dashboard deve parecer profissional e analítico.
-- Área do produtor deve ser objetiva.
-- Menus devem funcionar em desktop e mobile.
-- Botões sem função devem ser implementados, corrigidos ou ocultados.
-- Header não pode sobrepor conteúdo.
-- Filtros não podem desaparecer indevidamente.
-- Cards, tabelas e player devem ter tratamento responsivo.
-- Evitar soluções frágeis dependentes de apenas um navegador.
-- Priorizar compatibilidade com Chrome, Firefox, Edge e Safari quando possível.
-
----
-
+> Moved to [`docs/areas/identidade-visual-ux.md`](docs/areas/identidade-visual-ux.md) — load on demand.
 ## 9. Regras por módulo
 
 ### 9.1 Header/Menu
 
-O header deve:
-
-- exibir logo corretamente;
-- manter navegação principal;
-- conter link correto para MokBeats Hub;
-- exibir carrinho quando aplicável;
-- funcionar em mobile.
-
-Regras:
-
-- Link do MokBeats Hub deve ser tratado como link externo.
-- Links internos devem usar navegação Angular.
-- Contador do carrinho não deve depender de manipulação frágil do DOM.
-
----
-
+> Moved to [`docs/areas/modulos/header-menu.md`](docs/areas/modulos/header-menu.md) — load on demand.
 ### 9.2 Home
 
-A home deve:
-
-- apresentar proposta da plataforma;
-- direcionar para músicas;
-- direcionar para produtores;
-- exibir músicas recentes quando disponível;
-- ter botões funcionais;
-- não conter links vazios.
-
-Demandas conhecidas:
-
-- corrigir botões “Saber mais”;
-- seção de produtores deve levar para fluxo de produtor;
-- preservar botão de download se estiver funcional.
-
----
-
+> Moved to [`docs/areas/modulos/home.md`](docs/areas/modulos/home.md) — load on demand.
 ### 9.3 Login e Cadastro
 
-Regras:
-
-- Manter seleção de tipo de pessoa/perfil.
-- Manter valores compatíveis com backend:
-  - `comprador`;
-  - `produtor`.
-- Corrigir bug visual dos pontinhos/fonte no tipo de perfil.
-- Não quebrar login.
-- Não quebrar cadastro.
-- Não quebrar armazenamento de token.
-- Não alterar payload de autenticação sem validar backend.
-
----
-
+> Moved to [`docs/areas/modulos/login-cadastro.md`](docs/areas/modulos/login-cadastro.md) — load on demand.
 ### 9.4 Página de Músicas
 
-A página de músicas deve permitir:
-
-- listar músicas paginadas;
-- filtrar músicas;
-- ouvir preview;
-- visualizar waveform;
-- curtir;
-- acessar produtor/artista;
-- escolher licença;
-- adicionar ao carrinho;
-- navegar sem bugs.
-
-Regras:
-
-- Waveform deve permanecer funcional.
-- Player deve receber música correta.
-- Não usar índice baseado em `id - 1` quando isso puder quebrar paginação.
-- Nome da música não deve ser link quebrado.
-- Ação de licença deve abrir seleção de licença antes do carrinho.
-- Filtros devem ser acessíveis e responsivos.
-- Colunas devem permanecer alinhadas.
-- Não quebrar paginação dinâmica.
-
----
-
+> Moved to [`docs/areas/modulos/pagina-musicas.md`](docs/areas/modulos/pagina-musicas.md) — load on demand.
 ### 9.5 Player
 
-O player deve:
-
-- tocar música selecionada;
-- exibir waveform;
-- exibir dados reais da música quando disponíveis;
-- suportar stems quando disponíveis;
-- preservar sincronização;
-- não manter metadados hard-coded;
-- não ter botões falsos ou sem ação visível.
-
-Regras:
-
-- Destruir instâncias do WaveSurfer quando necessário.
-- Evitar vazamento de memória.
-- Evitar múltiplas instâncias tocando simultaneamente.
-- Manter comportamento previsível ao trocar de faixa.
-- Preservar integração com `music-player.service` ou service equivalente existente.
-
----
-
+> Moved to [`docs/areas/player-and-waveform.md`](docs/areas/player-and-waveform.md) — load on demand.
 ### 9.6 Efeitos Sonoros
 
-A página de efeitos sonoros deve seguir o mesmo padrão de qualidade da página de músicas.
-
-Regras:
-
-- Visual deve ser padronizado.
-- Paginação deve ser padronizada.
-- Filtros devem ser claros.
-- Player/waveform devem ser usados se houver áudio.
-- Não deixar dados estáticos definitivos se houver API.
-- Botões de licença/carrinho devem seguir fluxo de compra.
-- Responsividade deve ser equivalente à página de músicas.
-
----
-
+> Moved to [`docs/areas/modulos/efeitos-sonoros.md`](docs/areas/modulos/efeitos-sonoros.md) — load on demand.
 ### 9.7 Licenças e Preços
 
-A área de licenças deve:
-
-- explicar planos com clareza;
-- alternar entre 6 meses e 12 meses;
-- exibir valores corretamente;
-- ser responsiva;
-- funcionar sem depender de links vazios.
-
-Regras:
-
-- Usar estado Angular para alternância.
-- Preços fictícios podem ser usados enquanto valores reais não forem definidos.
-- Não esconder informação importante de licença.
-- Modal de licença deve informar claramente o que está sendo comprado.
-- Regras comerciais reais exigem validação humana.
-
----
-
+> Moved to [`docs/areas/license-cart-checkout.md`](docs/areas/license-cart-checkout.md) — load on demand.
 ### 9.8 Carrinho e Checkout
 
-Fluxo correto:
-
-```txt
-Usuário escolhe música/efeito
-Usuário escolhe licença
-Item vai ao carrinho
-Usuário revisa carrinho
-Usuário preenche dados do projeto/observações
-Usuário aceita termos
-Usuário finaliza pedido
-```
-
-Campos importantes:
-
-- nome do projeto;
-- observações/comentários;
-- dados pessoais/faturamento;
-- forma de pagamento;
-- aceite dos termos.
-
-Regras:
-
-- Não adicionar licença diretamente ao carrinho sem escolha quando houver modal.
-- Evitar duplicidade entre carrinho e finalizar compra.
-- Carrinho deve atualizar contador de forma confiável.
-- Não depender de manipulação direta do DOM para estado do carrinho.
-- Preservar dados necessários para checkout.
-- Gateway de pagamento e endpoint final de checkout exigem validação humana.
-
----
-
+> Moved to [`docs/areas/license-cart-checkout.md`](docs/areas/license-cart-checkout.md) — load on demand.
 ### 9.9 Upload do Produtor
 
-O upload do produtor é área crítica.
-
-Modos conhecidos:
-
-```txt
-Single Track
-Single Track + Stems
-Efeitos FX
-```
-
-#### Single Track
-
-Deve exibir:
-
-- arquivo principal da música;
-- loops, se aplicável;
-- metadados da faixa;
-- termos.
-
-Não deve exigir Stems.
-
-#### Single Track + Stems
-
-Deve exibir:
-
-- arquivo principal da música;
-- loops;
-- stems:
-  - Melodia;
-  - Harmonia;
-  - Ritmo;
-  - Efeitos FX;
-- metadados;
-- termos.
-
-#### Efeitos FX
-
-Deve exibir:
-
-- campos de efeitos;
-- metadados necessários;
-- termos.
-
-Não deve exibir Stems de música como obrigatórios.
-
-#### Regras técnicas
-
-- Preservar validações de duração.
-- Preservar `FormData`.
-- Não alterar nomes enviados ao backend sem validação.
-- Mostrar mensagens claras de erro.
-- Layout deve ser organizado e responsivo.
-- Single Track deve ter destaque e largura adequada.
-- Não alterar payload real sem verificar backend.
-
----
-
+> Moved to [`docs/areas/producer-upload.md`](docs/areas/producer-upload.md) — load on demand.
 ### 9.10 Página do Artista
 
-A página do artista deve:
-
-- exibir dados reais quando disponíveis;
-- não depender de nome hard-coded;
-- listar músicas do artista correto;
-- ter HTML válido;
-- funcionar como página pública.
-
-Regras:
-
-- Corrigir tags inválidas.
-- Separar página pública da área privada do produtor.
-- Não misturar edição de perfil com visualização pública sem clareza.
-
----
-
+> Moved to [`docs/areas/modulos/pagina-artista.md`](docs/areas/modulos/pagina-artista.md) — load on demand.
 ### 9.11 Área do Produtor
 
-A área do produtor deve conter navegação clara para:
-
-1. Dashboard;
-2. Assinatura;
-3. Pedidos;
-4. Dados Pessoais;
-5. Formas de Pagamento;
-6. Artista, quando aplicável.
-
-Regras:
-
-- Dashboard deve ser primeiro item quando o usuário for produtor.
-- Menu deve respeitar autenticação.
-- Não exibir opções privadas para usuários sem permissão.
-- Área pública do artista e área privada do produtor devem permanecer conceitualmente separadas.
-
----
-
+> Moved to [`docs/areas/producer-dashboard.md`](docs/areas/producer-dashboard.md) — load on demand.
 ### 9.12 Dashboard do Produtor
 
-O dashboard deve consolidar informações de desempenho.
-
-Dados esperados:
-
-- receita;
-- vendas;
-- curtidas;
-- taxa de conversão;
-- vendas por faixa;
-- vendas por origem;
-- receita por faixa;
-- likes vs vendas;
-- filtros por período;
-- tabela de músicas/faixas.
-
-Regras:
-
-- Usar `DashboardService` existente quando disponível.
-- Não deixar mocks permanentes.
-- Tratar loading.
-- Tratar erro.
-- Manter responsividade.
-- Manter rota protegida por produtor.
-- Branch de design pode orientar visual, não a arquitetura.
-- Exportação pode permanecer desativada se não existir backend.
-- Se for necessário instalar biblioteca de gráficos, justificar antes e validar compatibilidade com Angular 14.
-
-MVP aceitável:
-
-- cards de KPIs;
-- filtros de período;
-- tabela de desempenho;
-- origem das vendas;
-- placeholders claros para gráficos se API ainda não estiver pronta.
-
----
-
+> Moved to [`docs/areas/producer-dashboard.md`](docs/areas/producer-dashboard.md) — load on demand.
 ### 9.13 Footer
 
-O footer deve:
-
-- exibir links institucionais corretos;
-- substituir “Testemunhos” por “Termos e Condições”;
-- incluir LinkedIn;
-- não conter links genéricos incorretos;
-- abrir links externos corretamente.
-
-Links internos devem usar navegação Angular.
-
----
-
+> Moved to [`docs/areas/modulos/footer.md`](docs/areas/modulos/footer.md) — load on demand.
 ### 9.14 FAQ
 
-FAQ deve:
-
-- manter visual coerente com o site;
-- responder dúvidas reais de comprador/produtor;
-- ser responsiva;
-- não parecer página isolada fora da identidade visual.
-
----
-
+> Moved to [`docs/areas/modulos/faq.md`](docs/areas/modulos/faq.md) — load on demand.
 ## 10. Qualidade de código
 
-### TypeScript
-
-- Preferir interfaces e tipos claros.
-- Evitar `any` sem justificativa.
-- Evitar silenciar erros sem explicação.
-- Não usar `@ts-ignore` nem suprimir lint sem justificativa técnica registrada.
-- Evitar `catch` vazio.
-- Tratar `null` e `undefined`.
-- Não acessar propriedades sem verificar existência quando dados vêm da API.
-- Respeitar ESLint/Prettier quando existirem.
-- Não quebrar compatibilidade com a versão configurada do projeto.
-
-### HTML Angular
-
-- Evitar templates muito complexos.
-- Evitar links vazios.
-- Usar `button` para ações.
-- Usar `a` apenas para navegação real.
-- Garantir tags válidas.
-- Usar `aria-label` quando necessário.
-- Preservar labels, estados de erro e feedbacks.
-
-### SCSS
-
-- Preferir estilos localizados no componente.
-- Evitar estilos globais desnecessários.
-- Manter responsividade.
-- Evitar `!important`, exceto em correções pontuais inevitáveis.
-- Não quebrar Bootstrap/Material sem necessidade.
-
-### Services
-
-- Services devem isolar comunicação HTTP.
-- Não colocar lógica de UI dentro de service, salvo estado compartilhado simples.
-- Não manipular DOM dentro de service.
-- Retornar `Observable` quando usar HttpClient.
-- Preservar contratos já consumidos por componentes.
-
-### Dependências
-
-Antes de adicionar ou atualizar uma dependência:
-
-- verificar se o projeto já possui solução equivalente;
-- justificar necessidade e alternativa sem dependência;
-- validar compatibilidade com Angular 14 e TypeScript configurado;
-- avaliar impacto no bundle, build, manutenção e segurança;
-- obter aprovação antes de alterar `package.json` ou arquivos de lock.
-
-### Performance
-
-- Medir ou apresentar evidência do gargalo antes de otimizar.
-- Evitar busca de dados em excesso, renderização cara, loops desnecessários e imports pesados.
-- Avaliar impacto no bundle inicial quando a mudança afetar dependências ou carregamento.
-- Não trocar clareza e segurança por micro-otimização sem benefício demonstrável.
-
-### Documentação
-
-Atualizar documentação quando a mudança afetar:
-
-- comportamento público;
-- comando de execução ou validação;
-- variável de ambiente;
-- decisão arquitetural relevante;
-- contrato de API;
-- fluxo operacional ou procedimento de deploy.
-
----
-
+> Moved to [`docs/areas/qualidade-de-codigo.md`](docs/areas/qualidade-de-codigo.md) — load on demand.
 ## 11. Secrets, variáveis e deploy
 
-### Secrets e variáveis
+Nunca versionar arquivos de ambiente, nunca expor secret/token/senha em log, resposta ou client, e
+nunca executar deploy sem autorização explícita.
 
-É proibido:
-
-- versionar arquivos locais de ambiente;
-- exibir secrets em logs;
-- inventar valor de secret;
-- alterar secret real sem autorização;
-- usar credencial de produção em teste;
-- mover secret para código fonte;
-- expor token, senha ou dado sensível no client.
-
-Quando uma variável for necessária, documentar apenas nome e finalidade.
-
-### Segurança da aplicação
-
-- Validar dados externos e regras críticas também no backend; validação do frontend não substitui autorização server-side.
-- Preservar validações de upload, tipo, tamanho e permissões existentes.
-- Não liberar CORS de forma ampla sem justificativa e análise de risco.
-- Não expor stack trace, token, senha, segredo ou dado sensível em resposta ou mensagem de erro.
-- Não reduzir autenticação ou autorização para contornar falhas de integração.
-
-### Banco e migrations
-
-Quando banco ou migration entrarem explicitamente no escopo:
-
-- avaliar compatibilidade com dados existentes;
-- descrever impacto em leitura, escrita e performance;
-- definir rollback antes de alteração irreversível;
-- não remover tabela, coluna ou dados sem autorização explícita;
-- validar contrato com backend e consumidores.
-
-### Deploy/VPS/Linux
-
-Deploy só pode ser executado quando explicitamente solicitado.
-
-Antes de qualquer deploy:
-
-- validar build;
-- verificar variáveis necessárias;
-- verificar processo de rollback;
-- verificar processo de execução do front/API;
-- verificar proxy e SSL quando aplicável;
-- não reiniciar serviços críticos sem autorização.
-
-Configurações de VPS/Linux devem ser documentadas apenas quando forem parte do escopo.
+> Detalhe completo (variáveis, segurança da aplicação, banco/migrations, deploy/VPS):
+> [`docs/areas/variaveis-seguranca-deploy.md`](docs/areas/variaveis-seguranca-deploy.md) — load on demand.
 
 ---
 
 ## 12. Validação, QA e critérios de aceite
 
-Antes de concluir, executar comandos disponíveis verificando primeiro os scripts reais em `package.json`.
+Antes de concluir, rodar os scripts reais disponíveis em `package.json` (`npm run build`, `npm test`,
+`npm run lint`, `npm run typecheck`); nunca inventar comando nem declarar validação sem executá-la.
+É proibido remover, desativar ou silenciar teste/validação existente sem justificativa e autorização.
 
-```bash
-npm run build
-npm test
-npm run lint
-npm run typecheck
-```
-
-Nunca inventar comando. Se ausente, documentar: `Não há script X configurado no projeto.`
-
-Se um comando falhar, documentar: comando, erro, causa provável e se foi introduzido pela alteração ou já existia.
-
-É proibido remover, desativar ou silenciar testes e validações existentes sem justificativa técnica, risco registrado e autorização.
-
-### Fluxos a validar quando afetados
-
-**Público:** Home, Header/menu, Login/cadastro, Músicas, Player, Filtros, Efeitos sonoros, Preços/licenças, Carrinho, Footer.
-
-**Produtor:** Login, Menu, Upload, Dashboard, Pedidos, Dados pessoais, Formas de pagamento, Página do artista.
-
-**Comprador:** Login, Listar músicas, Filtrar, Tocar preview, Escolher licença, Adicionar ao carrinho, Finalizar pedido.
-
-### Checklist manual mínimo
-
-```txt
-[ ] npm run build executado ou erro documentado
-[ ] Tela alterada abre sem erro
-[ ] Console do navegador sem erro crítico novo
-[ ] Desktop validado
-[ ] Mobile validado
-[ ] Rotas protegidas preservadas
-[ ] Links quebrados removidos
-[ ] Player ainda funciona
-[ ] Carrinho ainda funciona
-[ ] Upload ainda envia FormData esperado
-[ ] Dashboard não aparece para comprador
-[ ] Código alterado é localizado
-```
-
-### Critérios de aceite por tipo de tarefa
-
-**Correção visual:** bug visual desaparece; não quebra responsividade; não afeta lógica.
-
-**Correção de navegação:** link/botão leva ao destino correto; sem reload indevido; sem link vazio residual.
-
-**Correção de player:** música toca; waveform aparece; troca de faixa funciona; dados coerentes; sem áudios conflitantes.
-
-**Correção de upload:** campos aparecem conforme modo; validações funcionam; FormData compatível; erros exibidos com clareza.
-
-**Dashboard:** rota protegida funciona; KPIs aparecem; filtros funcionam; tabela aparece; loading/erro tratados; visual responsivo.
-
-**Refatoração:** estava no escopo ou necessária para reduzir risco; preservou comportamento; foi localizada; melhorou clareza ou segurança; foi validada.
+> Fluxos a validar, checklist manual completo e critérios de aceite por tipo de tarefa:
+> [`docs/areas/validacao-qa.md`](docs/areas/validacao-qa.md) — load on demand.
 
 ---
 
@@ -917,3 +289,34 @@ O MokBeats deve evoluir para uma plataforma musical estável, profissional e pro
 - código sustentável para futuras evoluções.
 
 A prioridade é entregar valor real ao usuário e ao cliente sem comprometer a estabilidade da base existente.
+
+<!-- drydocs:index:start -->
+## Documentation index
+
+### Areas
+- [6. Regras gerais de arquitetura](docs/areas/arquitetura-angular.md)
+- [7. Autenticação e perfis](docs/areas/auth-and-guards.md)
+- [4. Git, branch e segurança operacional — branch de referência e checklist](docs/areas/git-e-branches.md)
+- [8. Identidade visual e UX](docs/areas/identidade-visual-ux.md)
+- [9.7 Licenças e Preços](docs/areas/license-cart-checkout.md)
+- [9.6 Efeitos Sonoros](docs/areas/modulos/efeitos-sonoros.md)
+- [9.14 FAQ](docs/areas/modulos/faq.md)
+- [9.13 Footer](docs/areas/modulos/footer.md)
+- [9.1 Header/Menu](docs/areas/modulos/header-menu.md)
+- [9.2 Home](docs/areas/modulos/home.md)
+- [9.3 Login e Cadastro](docs/areas/modulos/login-cadastro.md)
+- [9.10 Página do Artista](docs/areas/modulos/pagina-artista.md)
+- [9.4 Página de Músicas](docs/areas/modulos/pagina-musicas.md)
+- [5. Padrão de implementação incremental](docs/areas/padrao-implementacao.md)
+- [9.5 Player](docs/areas/player-and-waveform.md)
+- [9.12 Dashboard do Produtor](docs/areas/producer-dashboard.md)
+- [9.9 Upload do Produtor](docs/areas/producer-upload.md)
+- [2. Fonte de verdade e escopo — protocolo de leitura e planejamento](docs/areas/protocolo-planejamento.md)
+- [10. Qualidade de código](docs/areas/qualidade-de-codigo.md)
+- [12. Validação, QA e critérios de aceite](docs/areas/validacao-qa.md)
+- [11. Secrets, variáveis e deploy](docs/areas/variaveis-seguranca-deploy.md)
+
+### Resources
+- [3. Stack do projeto](docs/resources/stack-tecnica.md)
+
+<!-- drydocs:index:end -->
