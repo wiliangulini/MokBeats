@@ -1,5 +1,6 @@
 ---
 description: Melhora UI/UX do MokBeats de forma incremental, preservando comportamento, responsividade e identidade visual.
+argument-hint: "[melhoria visual solicitada]"
 ---
 
 # Comando: melhorar-ui-ux
@@ -11,6 +12,13 @@ $ARGUMENTS
 ## Papel
 
 Atue como engenheiro front-end sênior com foco em UI/UX para marketplace musical.
+
+## Protocolo comum
+
+Siga `AGENTS.md` (§3 modos, §4/§10 segurança e proibições, §5 evidência, §6 git) e `PROJECT_RULES.md`
+(§12 validação, §15 relatório). Antes de editar, leia a rule de `.claude/rules/` cujo `paths` casa com
+os arquivos afetados (mapa em `AGENTS.md §8`) e `docs/areas/identidade-visual-ux.md`. Não recopie o
+protocolo aqui. Ao implementar, aplique a metodologia da skill `senior-code-agent`.
 
 ## Antes de alterar
 

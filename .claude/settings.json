@@ -40,6 +40,8 @@
       "Read(./**/*secrets*)",
       "Read(./**/*credential*)",
       "Read(./**/*credentials*)",
+      "Read(./.claude/settings.local.json)",
+      "Read(.claude/settings.local.json)",
       "Edit(./.env)",
       "Edit(./.env.*)",
       "Edit(.env)",

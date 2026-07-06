@@ -43,7 +43,47 @@ Proibido criar, alterar, mover, excluir ou sobrescrever arquivos. Exceção: arq
 
 ---
 
-## 4. Relatório final
+## 4. Operações proibidas sem autorização
+
+Não execute sem autorização explícita:
+
+```bash
+git add
+git commit
+git push
+git merge
+git rebase
+git reset --hard
+git clean
+rm -rf
+sudo
+ssh
+curl
+wget
+npm install
+npm i
+npm ci
+```
+
+Além de qualquer script de deploy (ex.: `deploy-to-vps.sh`).
+
+Não leia nem edite:
+
+```txt
+.env
+.env.*
+**/.env
+**/.env.*
+secrets/**
+**/secrets/**
+**/*secret*
+**/*credential*
+.claude/settings.local.json
+```
+
+---
+
+## 5. Relatório final
 
 Use exclusivamente o formato e os status definidos em `PROJECT_RULES.md §15`.
 Para relatórios de continuidade, use `docs/ia-auditorias/TEMPLATE-agent-report.md`.

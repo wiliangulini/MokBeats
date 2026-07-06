@@ -1,5 +1,6 @@
 ---
 description: Executa checklist objetivo antes de merge, verificando escopo, diff, segurança, validações e risco de regressão.
+argument-hint: "[contexto do merge; caminho -auditoria.md opcional]"
 ---
 
 # Comando: checklist-merge
@@ -12,9 +13,17 @@ $ARGUMENTS
 
 Atue como revisor final antes de merge no MokBeats.
 
-## Regra principal
+## Protocolo comum
 
-Não altere arquivos. Faça análise objetiva com base em evidência.
+Siga `AGENTS.md` (§3 modos, §4/§10 segurança, §5 evidência, §6 git) e `PROJECT_RULES.md` (§12 validação,
+§15 relatório). Leia a rule de `.claude/rules/` aplicável (mapa em `AGENTS.md §8`). Não recopie o
+protocolo aqui. Aplique a metodologia da skill `senior-code-review`.
+
+## Contrato de escrita
+
+Não altere arquivos. Faça análise objetiva com base em evidência. A única escrita permitida é o
+relatório em `docs/ia-auditorias/`, e somente quando `$ARGUMENTS` informar um caminho exato; sem
+caminho, responda apenas no chat.
 
 ## Verificações obrigatórias
 

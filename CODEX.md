@@ -28,7 +28,7 @@ Para regras de implementação, revisão, debug, refatoração e arquitetura, co
 
 - `PROJECT_RULES.md §2, §5, §6, §7` — escopo, implementação, qualidade, decisão técnica
 - `AGENTS.md §3, §4, §5` — modos de atuação, segurança, evidência
-- `.codex/instructions.md §2-§3` — matriz de impacto e critérios para alterar arquivos
+- `.codex/instructions.md §1-§4` — matriz de impacto, critérios para alterar arquivos e operações proibidas
 
 Nunca implemente com base apenas em suposição.
 

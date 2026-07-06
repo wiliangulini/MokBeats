@@ -1,5 +1,6 @@
 ---
 description: Executa auditoria final antes de commit, entrega ou continuidade por outro agente.
+argument-hint: "[contexto; caminho exato em docs/ia-auditorias/*-auditoria-final.md opcional]"
 ---
 
 # Comando: final-audit
@@ -11,6 +12,18 @@ $ARGUMENTS
 ## Papel
 
 Atue como auditor técnico sênior antes de commit ou entrega.
+
+## Protocolo comum
+
+Siga `AGENTS.md` (§3 modos, §4/§10 segurança, §5 evidência, §6 git) e `PROJECT_RULES.md` (§12 validação,
+§15 relatório). Leia a rule de `.claude/rules/` aplicável (mapa em `AGENTS.md §8`). Não recopie o
+protocolo aqui. Aplique a metodologia de revisão da skill `senior-code-review`.
+
+## Contrato de escrita
+
+Não corrija a implementação auditada. A única escrita permitida é o relatório em `docs/ia-auditorias/`,
+e somente quando `$ARGUMENTS` informar um caminho exato terminado em `-auditoria-final.md`; sem caminho
+ou com caminho ambíguo, responda apenas no chat e reporte bloqueio se um relatório era esperado.
 
 ## Objetivo
 

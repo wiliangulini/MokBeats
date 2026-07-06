@@ -28,6 +28,15 @@
 - Preserve upload `FormData` field names unless backend validation explicitly supports change.
 - Preserve license selection before cart/checkout flow.
 
+## Commands, skills, and rules
+
+- **Commands** (`.claude/commands/*`) are explicit entrypoints (`/name` + `$ARGUMENTS`) that set the mode, the checklist, the allowed output, and — for review/audit — a write contract.
+- **Skills** (`.claude/skills/**`) are reusable methodologies and specialized knowledge; a skill does not grant authorization to edit files.
+- **Rules** (`.claude/rules/*`) are domain invariants activated by matching `paths` (map in `AGENTS.md §8`); they are not executable workflows.
+- Do not invoke an equivalent command and skill simultaneously; pick the most specific resource for the task.
+- Review/audit commands do not change implementation; they may write only the report whose exact path is authorized in the arguments.
+- The common protocol (validation block, report format, prohibitions) lives in `PROJECT_RULES.md` and `AGENTS.md`; commands and rules reference it, they do not recopy it.
+
 ## Scope control
 
 - Do not duplicate module-specific rules here; keep those in `.claude/rules/`.

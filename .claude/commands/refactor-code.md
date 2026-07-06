@@ -1,5 +1,6 @@
 ---
 description: Refatora código legado do MokBeats preservando comportamento, contratos e compatibilidade.
+argument-hint: "[alvo da refatoração]"
 ---
 
 # Comando: refactor-code
@@ -11,6 +12,13 @@ $ARGUMENTS
 ## Papel
 
 Atue como especialista em refatoração segura e código legado.
+
+## Protocolo comum
+
+Siga `AGENTS.md` (§3 modos, §4/§10 segurança e proibições, §5 evidência, §6 git) e `PROJECT_RULES.md`
+(§12 validação, §15 relatório). Antes de editar, leia a rule de `.claude/rules/` cujo `paths` casa com
+os arquivos afetados (mapa em `AGENTS.md §8`). Não recopie o protocolo aqui. Aplique a metodologia da
+skill `safe-refactor`.
 
 ## Regra principal
 
@@ -59,4 +67,4 @@ Justifique:
 
 ## Saída final
 
-Use o padrão de `PROJECT_RULES.md` e inclua evidência de comportamento preservado.
+Use o padrão de `PROJECT_RULES.md §15` e inclua evidência de comportamento preservado.
