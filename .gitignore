@@ -46,6 +46,12 @@ Thumbs.db
 /server/node_modules
 /server/uploads
 
+# Env / secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+
 # Claude Code
 .claude/settings.local.json
 CLAUDE_SKILLS_COMMANDS.md
