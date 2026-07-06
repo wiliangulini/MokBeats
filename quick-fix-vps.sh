@@ -248,7 +248,7 @@ fi
 node scripts/generate-peaks.js
 
 if [ -f "data/musicas.json" ]; then
-  peaks_count=$(grep -o '"peaks":\[' data/musicas.json | wc -l)
+  peaks_count=$(grep -Eo '"peaks"[[:space:]]*:[[:space:]]*\[' data/musicas.json | wc -l)
   echo "[OK] musicas.json contem ${peaks_count} campo(s) peaks"
 else
   echo "[ERROR] data/musicas.json nao encontrado apos geracao"
