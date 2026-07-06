@@ -10,7 +10,18 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'mokbeats-dev-secret-change-in-prod';
+// JWT_SECRET é obrigatório em produção. Nunca use segredo hardcoded: em produção,
+// aborta se não estiver definido; em desenvolvimento, gera um segredo efêmero
+// (tokens invalidam ao reiniciar) para não versionar segredo no código.
+let JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  if (process.env.NODE_ENV === 'production') {
+    console.error('FATAL: variável de ambiente JWT_SECRET não definida em produção. Abortando.');
+    process.exit(1);
+  }
+  JWT_SECRET = require('crypto').randomBytes(32).toString('hex');
+  console.warn('⚠️  JWT_SECRET ausente: usando segredo efêmero de desenvolvimento (tokens invalidam ao reiniciar).');
+}
 
 const app = express();
 app.use(bodyParser.json());
