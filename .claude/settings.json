@@ -1,16 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "autoCompactEnabled": true,
-  "autoMemoryEnabled": true,
   "cleanupPeriodDays": 14,
-  "defaultMode": "default",
-  "disableAutoMode": "disable",
-  "disableBypassPermissionsMode": "disable",
-  "claudeMdExcludes": [
-    "**/node_modules/**/CLAUDE.md",
-    "**/dist/**/CLAUDE.md",
-    "**/build/**/CLAUDE.md"
-  ],
   "permissions": {
     "allow": [
       "Bash(git status)",
@@ -34,22 +24,6 @@
       "Bash(npm run typecheck)",
       "Bash(npx ng test *)",
       "Bash(npx ng build *)"
-    ],
-    "ask": [
-      "Bash(git add *)",
-      "Bash(git commit *)",
-      "Bash(npm install *)",
-      "Bash(npm i *)",
-      "Bash(npm ci)",
-      "Bash(npx *)",
-      "Bash(mysql *)",
-      "Bash(mysqldump *)",
-      "Bash(docker *)",
-      "Bash(docker-compose *)",
-      "Bash(docker compose *)",
-      "Bash(npm run migration *)",
-      "Bash(npm run migrate *)",
-      "WebFetch"
     ],
     "deny": [
       "Read(./.env)",
@@ -104,6 +78,35 @@
       "Bash(truncate *)",
       "Bash(*deploy*)",
       "Bash(ssh *)"
+    ],
+    "ask": [
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(npm install *)",
+      "Bash(npm i *)",
+      "Bash(npm ci)",
+      "Bash(npx *)",
+      "Bash(mysql *)",
+      "Bash(mysqldump *)",
+      "Bash(docker *)",
+      "Bash(docker-compose *)",
+      "Bash(docker compose *)",
+      "Bash(npm run migration *)",
+      "Bash(npm run migrate *)",
+      "WebFetch"
     ]
+  },
+  "autoMemoryEnabled": true,
+  "disableAutoMode": "disable",
+  "claudeMdExcludes": [
+    "**/node_modules/**/CLAUDE.md",
+    "**/dist/**/CLAUDE.md",
+    "**/build/**/CLAUDE.md"
+  ],
+  "autoCompactEnabled": true,
+  "defaultMode": "default",
+  "disableBypassPermissionsMode": "disable",
+  "enabledPlugins": {
+    "drydocs@cardio": true
   }
 }
