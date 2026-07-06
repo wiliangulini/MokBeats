@@ -1,5 +1,6 @@
 ---
 description: Continua uma tarefa iniciada pelo Codex usando relatório anterior, estado real do Git e regras do MokBeats.
+argument-hint: "[relatório/contexto do Codex]"
 ---
 
 # Comando: continue-from-codex
@@ -11,6 +12,14 @@ $ARGUMENTS
 ## Papel
 
 Atue como agente de continuidade entre Codex e Claude Code.
+
+## Protocolo comum
+
+Siga `AGENTS.md` (§3 modos, §4/§10 segurança e proibições, §5 evidência, §6 git, §12 continuidade) e
+`PROJECT_RULES.md` (§12 validação, §15 relatório). Antes de editar, leia a rule de `.claude/rules/`
+cujo `paths` casa com os arquivos afetados (mapa em `AGENTS.md §8`). Não recopie o protocolo aqui.
+Aplique a metodologia adequada ao próximo passo: `senior-code-agent` (implementar),
+`senior-code-review` (revisar) ou `safe-refactor` (refatorar).
 
 ## Objetivo
 
@@ -48,7 +57,7 @@ Se o relatório do Codex disser algo que não aparece no Git:
 
 ## Relatório final
 
-Use o padrão de `PROJECT_RULES.md` e, quando fizer sentido registrar em arquivo, `docs/ia-auditorias/TEMPLATE-agent-report.md`.
+Use o padrão de `PROJECT_RULES.md §15` e, quando fizer sentido registrar em arquivo, `docs/ia-auditorias/TEMPLATE-agent-report.md`.
 
 Inclua:
 

@@ -25,6 +25,24 @@ Use este arquivo para Codex, Claude Code e qualquer outro agente que atue neste 
 
 Conflito entre instruções: preserve a estabilidade da `dev` e comunique antes de aplicar alterações grandes.
 
+### 2.1 Mapa de responsabilidades (quem responde pelo quê)
+
+Cada assunto tem um dono. Não duplique conteúdo entre arquivos; referencie o dono.
+
+| Arquivo | Responsabilidade | Não deve |
+| --- | --- | --- |
+| `PROJECT_RULES.md` | Fonte de verdade única: escopo, stack, domínio, segurança, **bloco de validação (§12)** e **formato de relatório (§15)** canônicos. | — |
+| `AGENTS.md` | Roteador operacional comum: prioridade, modos, segurança, evidência, git, continuidade e roteamento por domínio. | Recopiar seções inteiras de `PROJECT_RULES.md`. |
+| `CLAUDE.md` | Comportamento do Claude Code (carrega `@PROJECT_RULES.md`). | Duplicar regras de domínio. |
+| `CODEX.md` + `.codex/instructions.md` | Comportamento e matriz de impacto do Codex. | Criar formato de relatório concorrente. |
+| `.claude/commands/*` | Entrypoints de tarefa (`/nome` + `$ARGUMENTS`): papel + regra principal + checklist + saída + contrato de escrita. | Recopiar o protocolo comum. |
+| `.claude/skills/**` | Metodologias reutilizáveis. Não concedem autorização de escrita. | Virar workflow duplicado de um command. |
+| `.claude/rules/*` | Invariantes de domínio, acionados por `paths`. | Repetir procedimento/validação/bloqueio genéricos. |
+| `docs/areas/**`, `docs/ia-*/**` | Documentação de domínio e relatórios. | Ser fonte de regra concorrente. |
+
+O protocolo comum (validação, formato de relatório, proibições) vive em `PROJECT_RULES.md` e neste
+`AGENTS.md`; commands e rules **referenciam**, não recopiam.
+
 ---
 
 ## 3. Modos de atuação
@@ -91,6 +109,22 @@ Ver `PROJECT_RULES.md §12` para checklist manual completo.
 ## 8. Áreas principais do projeto — arquivos prováveis
 
 As regras comportamentais por módulo estão em `PROJECT_RULES.md §9`. Esta seção fornece os caminhos de arquivo para localização rápida.
+
+### 8.0 Roteamento por domínio (área → rule → seção-fonte)
+
+Antes de editar um arquivo, leia a rule de `.claude/rules/` cujo frontmatter `paths` casa com o
+caminho. Ela referencia a nota completa em `docs/areas/` e a seção-fonte em `PROJECT_RULES.md`.
+
+| Área/caminho | Rule acionável | Seção-fonte |
+| --- | --- | --- |
+| Login, guards, interceptors, token/perfil | `.claude/rules/auth-and-guards.md` | §7 |
+| Estrutura Angular 14, módulos, rotas globais, DI | `.claude/rules/angular-14.md` | §6 |
+| Services HTTP, payloads, endpoints, environments | `.claude/rules/api-contracts.md` | §13 |
+| Home, menu, filtros, paginação, FAQ, footer (descoberta) | `.claude/rules/buyer-flow.md` | §9.1, §9.2, §9.13, §9.14 |
+| Músicas, efeitos, licença, carrinho, checkout | `.claude/rules/license-cart-checkout.md` | §9.4, §9.7, §9.8 |
+| Player, WaveSurfer, stems | `.claude/rules/player-and-waveform.md` | §9.5 |
+| Upload do produtor, `FormData` | `.claude/rules/producer-upload.md` | §9.9 |
+| Página do artista, área e dashboard do produtor | `.claude/rules/producer-dashboard.md` | §9.11, §9.12 |
 
 ### 8.1 Header/Menu
 

@@ -1,5 +1,6 @@
 ---
 description: Analisa decisão arquitetural no MokBeats com base no projeto real, trade-offs e segurança de legado.
+argument-hint: "[decisão ou problema; caminho docs/adr/*.md opcional]"
 ---
 
 # Comando: architecture-decision
@@ -11,6 +12,18 @@ $ARGUMENTS
 ## Papel
 
 Atue como arquiteto de software sênior para o MokBeats.
+
+## Protocolo comum
+
+Siga `AGENTS.md` (§3 modos, §4/§10 segurança, §5 evidência) e `PROJECT_RULES.md` (§13 decisões
+pendentes, §15 relatório). Leia a rule de `.claude/rules/` aplicável (mapa em `AGENTS.md §8`). Não
+recopie o protocolo aqui. Aplique a metodologia da skill `architecture-review`.
+
+## Contrato de escrita
+
+Não implemente código automaticamente, salvo se o usuário pedir. A única escrita permitida é o ADR
+em `docs/adr/`, e somente quando `$ARGUMENTS` informar um caminho exato; sem caminho, responda apenas
+no chat. Decisões pendentes de `PROJECT_RULES.md §13` exigem validação humana antes de serem fixadas.
 
 ## Regra principal
 
@@ -71,7 +84,3 @@ Proposta | Aceita | Rejeitada | Substituída
 
 ## Critérios de aceite
 ```
-
-## Saída final
-
-Não implemente código automaticamente, salvo se o usuário pedir.

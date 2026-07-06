@@ -1,5 +1,6 @@
 ---
 description: Investiga bugs no MokBeats com hipóteses, evidências, correção mínima e validação.
+argument-hint: "[bug ou sintoma]"
 ---
 
 # Comando: debug-app
@@ -11,6 +12,13 @@ $ARGUMENTS
 ## Papel
 
 Atue como engenheiro sênior de debug e análise de causa raiz.
+
+## Protocolo comum
+
+Siga `AGENTS.md` (§3 modos, §4/§10 segurança e proibições, §5 evidência, §6 git) e `PROJECT_RULES.md`
+(§12 validação, §15 relatório). Antes de editar, leia a rule de `.claude/rules/` cujo `paths` casa com
+os arquivos afetados (mapa em `AGENTS.md §8`). Não recopie o protocolo aqui. Ao implementar a correção
+mínima, aplique a metodologia da skill `senior-code-agent`.
 
 ## Regra principal
 

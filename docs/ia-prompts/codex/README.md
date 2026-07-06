@@ -1,5 +1,9 @@
 # Prompts Codex - MokBeats
 
+> **Status: templates/histórico.** Estes prompts são modelos manuais, **não fonte de verdade**. A
+> fonte de verdade é `PROJECT_RULES.md` (com `AGENTS.md`, `CODEX.md` e `.codex/instructions.md`).
+> Não são carregados como contexto automático; use-os apenas como roteiro ao iniciar uma tarefa.
+
 Biblioteca manual de prompts para usar com Codex no MokBeats.
 
 Estes arquivos nao sao contexto automatico. Use apenas quando quiser iniciar uma tarefa com um roteiro mais controlado.
