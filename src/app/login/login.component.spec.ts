@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -12,22 +12,19 @@ describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let authService: jasmine.SpyObj<AuthService>;
-  let router: jasmine.SpyObj<Router>;
   let activeModal: jasmine.SpyObj<NgbActiveModal>;
 
   beforeEach(async () => {
     const authServiceSpy = jasmine.createSpyObj<AuthService>('AuthService', ['registrar', 'fazerLogin', 'loginComGoogle']);
     authServiceSpy.registrar.and.returnValue(of({}));
     authServiceSpy.fazerLogin.and.returnValue(of({}));
-    router = jasmine.createSpyObj<Router>('Router', ['navigate']);
     activeModal = jasmine.createSpyObj<NgbActiveModal>('NgbActiveModal', ['close']);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, RouterTestingModule],
       declarations: [LoginComponent],
       providers: [
         { provide: AuthService, useValue: authServiceSpy },
-        { provide: Router, useValue: router },
         { provide: NgbActiveModal, useValue: activeModal },
       ],
       schemas: [NO_ERRORS_SCHEMA],
