@@ -20,4 +20,11 @@ describe('EfeitosSonorosComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('deve desabilitar o botao de previa de audio (SFX ainda nao possui audio/id/url reais)', () => {
+    const previewButton: HTMLButtonElement = fixture.nativeElement.querySelector('button.svg');
+    expect(previewButton).toBeTruthy();
+    expect(previewButton.disabled).toBeTrue();
+    expect(previewButton.title).toContain('Prévia indisponível');
+  });
 });
