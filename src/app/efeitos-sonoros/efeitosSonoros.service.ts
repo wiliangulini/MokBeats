@@ -11,6 +11,7 @@ export class EfeitosSonorosService {
   convertida: Array<any> = [];
   convertida2: Array<any> = [];
 
+  // Mock estático: não existe endpoint real de categorias de efeitos (/api/efeitos) — ver auditoria R14.
   public categorias: any = [
     {
       "Air": [

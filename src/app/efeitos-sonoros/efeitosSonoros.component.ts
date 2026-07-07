@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
-import { FormBuilder, FormGroup } from "@angular/forms";
 import { EfeitosSonorosService } from "./efeitosSonoros.service";
 import {ScrollService} from "../service/scroll.service";
 
@@ -14,7 +13,6 @@ export class EfeitosSonorosComponent implements OnInit, AfterViewInit {
   music: any[];
   musicas: any = {};
   number!: number;
-  formG!: FormGroup;
   valor: any;
   frase: string = "Elegante e moderno com elementos dance pop, com pads de sintetizador, percussão, baixo de sintetizador e guitarra elétrica, criando um clima suave e noturno.";
   select: any = 'Mais Relevantes';
@@ -25,6 +23,8 @@ export class EfeitosSonorosComponent implements OnInit, AfterViewInit {
     "Oohs e Aahs",
     "Todos os Cantores",
   ]
+  // Mock estático: não existe endpoint /api/efeitos hoje (ver auditoria R14).
+  // Paginação é client-side sobre este array fixo até a API existir.
   dados: Array<any> =  [
     {value: 'Sweet Spot', viewValue: 'Sweet Spot'},
     {value: 'Bonieky', viewValue: 'Bonieky'},
@@ -98,22 +98,26 @@ export class EfeitosSonorosComponent implements OnInit, AfterViewInit {
 
   @Output('ngModelChange') update: any = new EventEmitter();
 
+  // Paginação client-side (dados mock, sem backend) — ver comentário acima de `dados`.
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  itensPaginados: Array<{ viewValue: string; produtor: string }> = [];
+
+  get totalPages(): number {
+    return Math.ceil(this.arrMusic.length / this.itemsPerPage);
+  }
+
   constructor(
     private effectSoundService: EfeitosSonorosService,
-    private fb: FormBuilder,
     private scrollService: ScrollService,
   ) {
-    this.formG = this.fb.group({
-      checkbox: [],
-      bpm: [],
-      duracao: [],
-    });
     this.titles = this.effectSoundService.convertida2;
     this.music = this.effectSoundService.convertida;
   }
 
   ngOnInit(): void {
     this.scrollService.scrollUp();
+    this.atualizarPaginaAtual();
 
     let div1: any = document.getElementById('div1');
     let div2: any = document.getElementById('div2');
@@ -124,6 +128,26 @@ export class EfeitosSonorosComponent implements OnInit, AfterViewInit {
       document.getElementById('navLeft')!.style.width = '0';
     }
   }
+
+  // Combina arrMusic[i] (nome) + dados[i] (produtor) pelo mesmo índice global,
+  // evitando descompasso entre nome e produtor ao trocar de página.
+  private atualizarPaginaAtual(): void {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.itensPaginados = this.arrMusic
+      .slice(start, end)
+      .map((efeito, idx) => ({
+        viewValue: efeito.viewValue,
+        produtor: this.dados[start + idx].viewValue,
+      }));
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.atualizarPaginaAtual();
+    this.scrollService.scrollUp();
+  }
+
   ngAfterViewInit() {
     document.querySelectorAll('.mat-checkbox-frame')?.forEach((e: any) => {
       e.style.borderColor = "#FFF";
