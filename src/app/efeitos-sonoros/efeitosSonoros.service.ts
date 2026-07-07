@@ -109,6 +109,9 @@ export class EfeitosSonorosService {
     }
   }
 
+  // Não integrado com CarrinhoService/CartModalComponent (R16): o efeito sonoro mock não
+  // tem id/url/preço, e o carrinho hoje é tipado contra Musica — ver comentário em
+  // efeitosSonoros.component.ts#comprarLicensa e docs/ia-auditorias/R16.
   public comprarLicensa(i: number) {
     this.authService.verificaLogin();
     console.log(i);

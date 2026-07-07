@@ -172,6 +172,13 @@ export class EfeitosSonorosComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // Pendência objetiva (R16): não chama CarrinhoService.openModalCart aqui.
+  // O contrato do carrinho (CartItem = Musica & CartSelection, openModalCart(music: Musica))
+  // é acoplado nominal e semanticamente a Musica (id/url/nome_musica/nome_produtor), e o
+  // efeito sonoro mock não tem nenhum desses campos (sem id, sem url, sem preço real).
+  // Forçar esse objeto no fluxo geraria um CartItem inválido/deduplicação quebrada e um
+  // modal com labels erradas ("Música selecionada"). Retomar somente quando existir
+  // /api/efeitos real e um tipo EfeitoSonoro com id/url/preço (ver docs/ia-auditorias/R14, R16).
   comprarLicensa(i: number): void {
     this.effectSoundService.comprarLicensa(i);
   }

@@ -76,9 +76,16 @@
           <div class="controlDivs d-flex flex-column w-100">
             <div class="controlDivsInt row">
               <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex align-items-start justify-content-start pr-5" >
-                <span class="svg">
+                <!-- Sem dado de áudio real (mock 100% estático, sem /api/efeitos — ver R14/R16): botão fica desabilitado com mensagem clara em vez de simular uma prévia inexistente. -->
+                <button
+                  type="button"
+                  class="svg"
+                  disabled
+                  title="Prévia indisponível: este efeito sonoro ainda não possui áudio associado."
+                  aria-label="Prévia de áudio indisponível para este efeito sonoro"
+                >
                   <svg width="24" fill="#FFF" height="24" viewBox="0 0 24 24"><path d="M20.7 12.4L7.9 20a.5.5 0 01-.8-.4v-15a.5.5 0 01.8-.4l12.8 7.5a.5.5 0 010 .8z"></path></svg>
-                </span>
+                </button>
                 <div class="text d-flex flex-column align-items-start justify-content-start">
                   <p class="h4"><span class="effect-name">{{itens.viewValue}}</span></p>
                   <p class="h6">por <span class="effect-producer">{{itens.produtor}}</span></p>
