@@ -1,14 +1,14 @@
 # R17 — Upload produtor: UI, single, stems e FX
 
-## Relatório do Codex
+## Relatório do Claude Code
 
-[cole aqui o relatório do Codex]
+[cole aqui o relatório de implementação executado pelo do Claude Code]
 
 ---
 
 ## Revisão do Claude Code
 
-[cole aqui o relatório do Claude Code]
+[cole aqui o relatório da revisão executado pelo do Claude Code]
 
 ---
 
