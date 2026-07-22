@@ -1,8 +1,8 @@
 # R26 — Carrinho: modelo de item, contador e licença
 
-## Relatório do Codex
+## Relatório do Claude Code
 
-[cole aqui o relatório do Codex]
+[cole aqui o relatório do Claude Code]
 
 ---
 
