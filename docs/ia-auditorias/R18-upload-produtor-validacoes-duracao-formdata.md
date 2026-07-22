@@ -1,8 +1,8 @@
 # R18 — Upload produtor: validações, duração e FormData
 
-## Relatório do Codex
+## Relatório do Claude Code
 
-[cole aqui o relatório do Codex]
+[cole aqui o relatório do Claude Code]
 
 ---
 
