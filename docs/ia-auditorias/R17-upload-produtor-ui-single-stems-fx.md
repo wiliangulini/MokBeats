@@ -123,12 +123,13 @@ necessidade de sair do escopo.
 
 ## Revisão do Claude Code
 
-# Revisão Claude Code — Etapa 11A — Upload do Produtor — reorganização visual Single/Stems/FX
+### Revisão Claude Code — Etapa 11A — Upload do Produtor — reorganização visual Single/Stems/FX
 
-## Classificação final
+#### Classificação final
+
 Aprovado com observações
 
-## Resumo da revisão
+#### Resumo da revisão
 
 O diff é exatamente o descrito no relatório de implementação: dois arquivos-fonte
 (`produtores.component.html`, `produtores.component.scss`), zero linhas tocadas em
@@ -142,7 +143,8 @@ continuam controlados por `applyModeValidators` em TS, intocado. `FormData` (`tr
 `loop15/30/60`, `stem_melody/harmony/drums/fx`, `effect1..6`, `meta`, `schemaVersion`, `mode`)
 preservado byte a byte. Build de produção e suíte de testes completa rodaram limpos.
 
-## Arquivos inspecionados
+#### Arquivos inspecionados
+
 - `src/app/produtores/produtores.component.html` (leitura integral, 515 linhas)
 - `src/app/produtores/produtores.component.ts` (leitura integral, 526 linhas)
 - `src/app/produtores/produtores.component.scss` (leitura integral, 254 linhas)
@@ -154,7 +156,8 @@ preservado byte a byte. Build de produção e suíte de testes completa rodaram 
 - `grep -rn` para `loop-row-start` e `single-track-primary` em todo `src/` (verificação de
   classes órfãs/duplicadas)
 
-## Pontos aprovados
+#### Pontos aprovados
+
 - `/upload` (lazy, `AuthGuard` + `ProfileCompleteGuard`) e `/produtores` (sem guard) renderizam
   o mesmo `ProdutoresComponent` — confirmado em `app-routing.module.ts:45,58` e
   `upload-file-routing.module.ts`. Guards não tocados.
@@ -176,14 +179,18 @@ preservado byte a byte. Build de produção e suíte de testes completa rodaram 
   permanentes introduzidos no diff.
 - Diff pequeno, localizado, rastreável e trivialmente reversível (2 arquivos, ~50 linhas).
 
-## Problemas encontrados
-### Bloqueadores
+#### Problemas encontrados
+
+##### Bloqueadores
+
 - Nenhum.
 
-### Importantes
+##### Importantes
+
 - Nenhum.
 
-### Menores
+##### Menores
+
 - Os textos `stems-title` ("Stems") e `stems-helper` (HTML 289–292) continuam fixos na coluna
   do seletor de modo e visíveis em **todos** os três modos, inclusive Single Track e Efeitos FX,
   onde não há stems de música. Não é um campo obrigatório nem afeta validação — é ruído visual,
@@ -191,17 +198,20 @@ preservado byte a byte. Build de produção e suíte de testes completa rodaram 
   Correção sugerida (fora do escopo mínimo desta etapa, registrar como melhoria futura): envolver
   esse bloco em `*ngIf="isMode('trackWithStems')"` ou reposicioná-lo junto ao grupo de stems real.
 
-## Regressões potenciais
+#### Regressões potenciais
+
 - Nenhuma identificada. Player/WaveSurfer, carrinho, checkout e dashboard não foram tocados
   (fora do escopo do diff). Suíte de testes completa (115 specs, incluindo
   `produtores.component.spec.ts`) roda sem falhas após a mudança.
 
-## Validação de comandos
+#### Validação de comandos
+
 - [x] git status
 - [x] npm run build
 - [x] npm test
 
-## Resultado dos comandos
+#### Resultado dos comandos (revisão independente)
+
 - `git status --short` → 3 arquivos modificados: este relatório `.md` +
   `produtores.component.html` + `produtores.component.scss`. Nenhum arquivo fora do escopo.
 - `git diff --stat` → `produtores.component.html` (42 linhas, +/-), `produtores.component.scss`
@@ -217,10 +227,12 @@ preservado byte a byte. Build de produção e suíte de testes completa rodaram 
   behavior updates current url and id' has no expectations") e logs de depuração de outro módulo
   (carrinho) aparecem no output — não são falhas nem specs novos, e não pertencem a este componente.
 
-## Correções exigidas para nova execução
+#### Correções exigidas para nova execução
+
 Nenhuma correção bloqueadora. Nenhuma correção obrigatória para esta etapa.
 
-## Observações finais
+#### Observações finais
+
 Implementação fiel ao escopo pedido: reorganização puramente visual, sem tocar TypeScript,
 service, rotas, guards ou payload. A decisão de adiar a ocultação de Single Track/Loops no modo
 Efeitos FX para a R18 é tecnicamente correta — ocultá-los agora exigiria reescrever
