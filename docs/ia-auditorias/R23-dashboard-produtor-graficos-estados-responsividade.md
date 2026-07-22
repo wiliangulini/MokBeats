@@ -1,8 +1,8 @@
 # R23 — Dashboard produtor: gráficos, estados e responsividade
 
-## Relatório do Codex
+## Relatório do Claude Code
 
-[cole aqui o relatório do Codex]
+[cole aqui o relatório do Claude Code]
 
 ---
 
