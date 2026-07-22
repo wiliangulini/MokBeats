@@ -292,7 +292,27 @@
             </p>
           </div>
 
-          <div class="grid-item span-4 loop-row-start">
+          <div class="grid-item span-12 single-track-primary">
+            <p class="field-label">Single Track <span>*</span></p>
+            <app-custom-file-upload
+              title=""
+              subtitle="+ UPLOAD"
+              [multiple]="false"
+              accept="audio/*"
+              variant="compact"
+              formControlName="singleTrackFile"
+            ></app-custom-file-upload>
+            <small class="text-muted upload-hint"
+              >Faça upload de um arquivo de áudio.</small
+            >
+            <small
+              class="text-danger"
+              *ngIf="hasError('singleTrackFile', 'required')"
+              >Single Track é obrigatório.</small
+            >
+          </div>
+
+          <div class="grid-item span-4">
             <p class="field-label">Loop 15s <span>*</span></p>
             <app-custom-file-upload
               title=""
@@ -349,26 +369,6 @@
               class="text-danger"
               *ngIf="hasError('loop60File', 'required')"
               >Loop 60s é obrigatório.</small
-            >
-          </div>
-
-          <div class="grid-item span-6">
-            <p class="field-label">Single Track <span>*</span></p>
-            <app-custom-file-upload
-              title=""
-              subtitle="+ UPLOAD"
-              [multiple]="false"
-              accept="audio/*"
-              variant="compact"
-              formControlName="singleTrackFile"
-            ></app-custom-file-upload>
-            <small class="text-muted upload-hint"
-              >Faça upload de um arquivo de áudio.</small
-            >
-            <small
-              class="text-danger"
-              *ngIf="hasError('singleTrackFile', 'required')"
-              >Single Track é obrigatório.</small
             >
           </div>
 
