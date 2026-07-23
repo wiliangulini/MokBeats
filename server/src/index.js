@@ -1,4 +1,6 @@
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'test') {
+  require('dotenv').config();
+}
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -70,7 +72,9 @@ app.use('/assets/audios', express.static(audioPath, {
 }));
 
 // ─── Persistência de usuários (JSON file) ─────────────────────────────────
-const USERS_FILE = path.join(__dirname, '../data/users.json');
+const USERS_FILE = (process.env.NODE_ENV === 'test' && process.env.TEST_USERS_FILE)
+  ? process.env.TEST_USERS_FILE
+  : path.join(__dirname, '../data/users.json');
 
 function loadUsers() {
   try {
@@ -105,11 +109,17 @@ function authenticateToken(req, res, next) {
 }
 
 // ─── Multer para upload de documentos ─────────────────────────────────────
+// Raiz de uploads de documentos: override exclusivo em teste via TEST_DOCUMENTS_UPLOADS_DIR;
+// mantém exatamente o caminho atual como default de desenvolvimento/produção.
+const DOCUMENTS_UPLOADS_DIR = (process.env.NODE_ENV === 'test' && process.env.TEST_DOCUMENTS_UPLOADS_DIR)
+  ? process.env.TEST_DOCUMENTS_UPLOADS_DIR
+  : path.join(__dirname, 'uploads', 'documents');
+
 const documentStorage = multer.diskStorage({
   destination: (req, _file, cb) => {
     const userId = req.user?.userId || 'unknown';
     const tipo = req.params.tipo || 'outros';
-    const dir = path.join(__dirname, 'uploads', 'documents', userId, tipo);
+    const dir = path.join(DOCUMENTS_UPLOADS_DIR, userId, tipo);
     fs.mkdirSync(dir, { recursive: true });
     cb(null, dir);
   },
@@ -223,7 +233,13 @@ app.post('/api/auth/google', (req, res) => {
   });
 });
 
-const multipartMiddleware = multipart({ uploadDir: './uploads' });
+// Raiz de upload legado (connect-multiparty): override exclusivo em teste via
+// TEST_LEGACY_UPLOAD_DIR; mantém exatamente './uploads' (relativo ao CWD) como
+// default de desenvolvimento/produção — diretório distinto de DOCUMENTS_UPLOADS_DIR.
+const LEGACY_UPLOAD_DIR = (process.env.NODE_ENV === 'test' && process.env.TEST_LEGACY_UPLOAD_DIR)
+  ? process.env.TEST_LEGACY_UPLOAD_DIR
+  : './uploads';
+const multipartMiddleware = multipart({ uploadDir: LEGACY_UPLOAD_DIR });
 app.post('/api/uploads/', multipartMiddleware, (req, res) => {
   const files = req.files;
   console.log(files);
@@ -325,7 +341,7 @@ app.post('/api/user/documents/:tipo', authenticateToken, (req, res) => {
 });
 
 // Servir documentos de usuário
-app.use('/uploads/documents', express.static(path.join(__dirname, 'uploads', 'documents')));
+app.use('/uploads/documents', express.static(DOCUMENTS_UPLOADS_DIR));
 
 // ─── Dashboard do Produtor ─────────────────────────────────────────────────
 // MOCK — todos os dados abaixo são estáticos para validar o contrato de API.
@@ -430,10 +446,6 @@ app.get('/api/dashboard/likes-vs-sales', dashboardMiddleware, (req, res) => {
 // ─── Fim Dashboard ─────────────────────────────────────────────────────────
 
 app.use((err, req, res, next) => res.json({ message: err.message }));
-
-app.listen(3100, () => {
-  console.log('Servidor Iniciado!');
-});
 
 // Dados estáticos movidos do front (simulação de backend)
 const GENERO_MAP = {
@@ -2309,3 +2321,11 @@ var FAVORITOS = [
     loops: 7
   }
 ];
+
+module.exports = app;
+
+if (require.main === module) {
+  app.listen(3100, () => {
+    console.log('Servidor Iniciado!');
+  });
+}
