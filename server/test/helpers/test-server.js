@@ -20,18 +20,15 @@ async function startTestServer() {
 
   const usersFile = path.join(tmpRoot, 'users.json');
   const documentsUploadsDir = path.join(tmpRoot, 'uploads', 'documents');
-  const legacyUploadDir = path.join(tmpRoot, 'uploads', 'legacy');
   const legacyApiUploadDir = path.join(tmpRoot, 'uploads', 'legacy-api');
   const producerTrackUploadDir = path.join(tmpRoot, 'uploads', 'producer-track');
 
   fs.mkdirSync(documentsUploadsDir, { recursive: true });
-  fs.mkdirSync(legacyUploadDir, { recursive: true });
   fs.mkdirSync(legacyApiUploadDir, { recursive: true });
   fs.mkdirSync(producerTrackUploadDir, { recursive: true });
 
   process.env.TEST_USERS_FILE = usersFile;
   process.env.TEST_DOCUMENTS_UPLOADS_DIR = documentsUploadsDir;
-  process.env.TEST_LEGACY_UPLOAD_DIR = legacyUploadDir;
   process.env.TEST_LEGACY_API_UPLOAD_DIR = legacyApiUploadDir;
   process.env.TEST_PRODUCER_TRACK_UPLOAD_DIR = producerTrackUploadDir;
 
@@ -50,7 +47,6 @@ async function startTestServer() {
     baseUrl: `http://127.0.0.1:${port}`,
     usersFile,
     documentsUploadsDir,
-    legacyUploadDir,
     legacyApiUploadDir,
     producerTrackUploadDir,
     async close() {

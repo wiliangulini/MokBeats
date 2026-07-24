@@ -4,7 +4,6 @@ if (process.env.NODE_ENV !== 'test') {
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const multipart = require('connect-multiparty');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -245,14 +244,6 @@ app.post('/api/auth/google', (req, res) => {
   });
 });
 
-// Raiz de upload legado (connect-multiparty): override exclusivo em teste via
-// TEST_LEGACY_UPLOAD_DIR; mantém exatamente './uploads' (relativo ao CWD) como
-// default de desenvolvimento/produção — diretório distinto de DOCUMENTS_UPLOADS_DIR.
-const LEGACY_UPLOAD_DIR = (process.env.NODE_ENV === 'test' && process.env.TEST_LEGACY_UPLOAD_DIR)
-  ? process.env.TEST_LEGACY_UPLOAD_DIR
-  : './uploads';
-const multipartMiddleware = multipart({ uploadDir: LEGACY_UPLOAD_DIR });
-
 // Raiz temporária exclusiva de POST /api/uploads/ (lote U2a): fora de
 // server/src/uploads, server/uploads, ./uploads e de qualquer árvore servida
 // estaticamente. A rota nunca persiste os arquivos recebidos — cada um é
@@ -402,9 +393,9 @@ app.post('/api/uploads/', (req, res) => {
 
 // Raiz temporária exclusiva de POST /api/producers/track (lote U2b): fora de
 // server/src/uploads, server/uploads, ./uploads e de qualquer árvore servida
-// estaticamente; distinta de DOCUMENTS_UPLOADS_DIR, LEGACY_UPLOAD_DIR e
-// LEGACY_API_UPLOAD_DIR. A rota nunca persiste os arquivos recebidos — cada um
-// é removido assim que o resultado da validação funcional é montado.
+// estaticamente; distinta de DOCUMENTS_UPLOADS_DIR e LEGACY_API_UPLOAD_DIR.
+// A rota nunca persiste os arquivos recebidos — cada um é removido assim que
+// o resultado da validação funcional é montado.
 const PRODUCER_TRACK_UPLOAD_DIR = (process.env.NODE_ENV === 'test' && process.env.TEST_PRODUCER_TRACK_UPLOAD_DIR)
   ? process.env.TEST_PRODUCER_TRACK_UPLOAD_DIR
   : path.join(os.tmpdir(), 'mokbeats-producer-track-uploads');
