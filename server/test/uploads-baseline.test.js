@@ -6,8 +6,13 @@ const { test, before, after } = require('node:test');
 
 const { startTestServer } = require('./helpers/test-server');
 
-// Baseline read-only do comportamento ATUAL de /api/uploads/ e /api/producers/track,
-// ainda usando connect-multiparty (antes de U2a/U2b/U2c). Serial (--test-concurrency=1).
+// Baseline read-only do comportamento ATUAL de /api/uploads/ e /api/producers/track.
+// /api/uploads/ migrou para Multer 2.2.0 route-local na U2a; /api/producers/track
+// migrou para Multer 2.2.0 route-local (fields()) na U2b — connect-multiparty
+// permanece instalado, sem consumidor, para remoção isolada na U2c. As três
+// asserções de /api/producers/track abaixo continuam validando o mesmo
+// contrato funcional (200/422), agora servido pelo parser Multer. Serial
+// (--test-concurrency=1).
 
 let ctx;
 
