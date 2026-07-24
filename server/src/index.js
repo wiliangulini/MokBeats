@@ -400,6 +400,420 @@ app.post('/api/uploads/', (req, res) => {
   });
 });
 
+// Raiz temporária exclusiva de POST /api/producers/track (lote U2b): fora de
+// server/src/uploads, server/uploads, ./uploads e de qualquer árvore servida
+// estaticamente; distinta de DOCUMENTS_UPLOADS_DIR, LEGACY_UPLOAD_DIR e
+// LEGACY_API_UPLOAD_DIR. A rota nunca persiste os arquivos recebidos — cada um
+// é removido assim que o resultado da validação funcional é montado.
+const PRODUCER_TRACK_UPLOAD_DIR = (process.env.NODE_ENV === 'test' && process.env.TEST_PRODUCER_TRACK_UPLOAD_DIR)
+  ? process.env.TEST_PRODUCER_TRACK_UPLOAD_DIR
+  : path.join(os.tmpdir(), 'mokbeats-producer-track-uploads');
+
+const producerTrackStorage = multer.diskStorage({
+  destination: PRODUCER_TRACK_UPLOAD_DIR,
+  // Nome físico aleatório, síncrono e independente de originalname/extensão —
+  // mesma proteção contra abort comprovada na U2a (ver legacyApiStorage acima):
+  // o gerador assíncrono padrão do DiskStorage pode resolver depois do cleanup
+  // de abort do próprio Multer já ter rodado, criando um órfão sem rastreamento.
+  filename: (_req, _file, cb) => cb(null, crypto.randomBytes(16).toString('hex')),
+});
+
+// Allowlist de campos de arquivo aceitos por POST /api/producers/track.
+// "stem" (legado) permanece o único campo multi-arquivo (até 4); todos os
+// demais são de arquivo único.
+const PRODUCER_TRACK_FIELDS = [
+  { name: 'track', maxCount: 1 },
+  { name: 'image', maxCount: 1 },
+  { name: 'loop15', maxCount: 1 },
+  { name: 'loop30', maxCount: 1 },
+  { name: 'loop60', maxCount: 1 },
+  { name: 'stem_melody', maxCount: 1 },
+  { name: 'stem_harmony', maxCount: 1 },
+  { name: 'stem_drums', maxCount: 1 },
+  { name: 'stem_fx', maxCount: 1 },
+  { name: 'effect1', maxCount: 1 },
+  { name: 'effect2', maxCount: 1 },
+  { name: 'effect3', maxCount: 1 },
+  { name: 'effect4', maxCount: 1 },
+  { name: 'effect5', maxCount: 1 },
+  { name: 'effect6', maxCount: 1 },
+  { name: 'stem', maxCount: 4 },
+];
+
+const producerTrackUpload = multer({
+  storage: producerTrackStorage,
+  limits: {
+    fileSize: 100 * 1024 * 1024,
+    files: 11,
+    fields: 3,
+    // parts:15 (não 14): mesma semântica do busboy confirmada em U1/U2a — N
+    // partes lógicas exigem parts >= N+1 (server/node_modules/busboy/lib/types/
+    // multipart.js, ~linha 548). O payload máximo legítimo desta rota contém 11
+    // arquivos (track+image+loop15+loop30+loop60+effect1..effect6) e 3 campos
+    // textuais (schemaVersion+mode+meta) = 14 partes lógicas, logo parts:15.
+    // Revalidado com teste de fronteira isolado antes da implementação:
+    // parts:14 rejeita esse payload com LIMIT_PART_COUNT; parts:15 aceita.
+    parts: 15,
+    fieldSize: 64 * 1024,
+    fieldNestingDepth: 0,
+  },
+  // Sem fileFilter: mantém aceitação de qualquer MIME (contrato atual).
+});
+
+const PRODUCER_TRACK_FS_ERROR_CODES = new Set(['ENOSPC', 'EACCES', 'EMFILE', 'ENFILE', 'EROFS', 'EIO']);
+
+function classifyProducerTrackUploadError(err) {
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return { status: 413, message: 'Arquivo excede o limite de 100 MiB.' };
+    }
+    return { status: 400, message: 'Upload multipart inválido ou acima dos limites permitidos.' };
+  }
+  if (err && PRODUCER_TRACK_FS_ERROR_CODES.has(err.code)) {
+    return { status: 500, message: 'Erro interno ao processar upload.' };
+  }
+  // Boundary ausente/malformada, header multipart malformado ou encerramento
+  // inesperado do form chegam aqui como Error genérico do busboy.
+  return { status: 400, message: 'Upload multipart inválido ou acima dos limites permitidos.' };
+}
+
+// Multer .fields() entrega req.files como objeto de arrays para TODOS os
+// campos declarados. Normaliza preservando o comportamento funcional atual:
+// campos maxCount:1 viram o objeto de arquivo único; "stem" (legado) permanece
+// array; a ordem de Object.keys() é a ordem de encontro das partes (mesma
+// ordem de chaves de req.files, preservada pela inserção em Object.create(null)).
+function normalizeProducerTrackFiles(rawFiles) {
+  const normalized = Object.create(null);
+  for (const fieldname of Object.keys(rawFiles || {})) {
+    const arr = rawFiles[fieldname];
+    if (!Array.isArray(arr) || arr.length === 0) continue;
+    normalized[fieldname] = fieldname === 'stem' ? arr : arr[0];
+  }
+  return normalized;
+}
+
+// Achata req.files (objeto de arrays) em uma lista única de arquivos físicos,
+// para cleanup — usado ANTES da normalização funcional.
+function flattenProducerTrackFiles(rawFiles) {
+  const flat = [];
+  for (const fieldname of Object.keys(rawFiles || {})) {
+    const arr = rawFiles[fieldname];
+    if (Array.isArray(arr)) {
+      for (const file of arr) flat.push(file);
+    }
+  }
+  return flat;
+}
+
+// Remove apenas os arquivos físicos gerados pelo Multer para ESTA requisição,
+// validando que cada caminho pertence à raiz temporária dedicada (nunca rm
+// recursivo no diretório compartilhado). ENOENT é ignorado — idempotente.
+async function cleanupProducerTrackFiles(files) {
+  const root = path.resolve(PRODUCER_TRACK_UPLOAD_DIR) + path.sep;
+  await Promise.all(files.map(async (file) => {
+    if (!file || !file.path) return;
+    const resolved = path.resolve(file.path);
+    if (!resolved.startsWith(root)) return;
+    try {
+      await fs.promises.unlink(resolved);
+    } catch (unlinkErr) {
+      if (unlinkErr.code === 'ENOENT') return;
+      throw unlinkErr;
+    }
+  }));
+}
+
+// Validação funcional de POST /api/producers/track (contratos v2 e legado),
+// preservada literalmente da implementação anterior a U2b — apenas
+// refatorada para retornar {status, body} em vez de chamar res.status().json()
+// diretamente, permitindo que o cleanup termine ANTES da resposta.
+function validateProducerTrackUpload(body, files) {
+  const schemaVersion = body.schemaVersion;
+  const mode = body.mode; // 'trackNoStems' | 'trackWithStems' | 'effectsFx'
+  const metaRaw = body.meta;
+  let meta = {};
+  try { meta = metaRaw ? JSON.parse(metaRaw) : {}; } catch (e) { meta = {}; }
+
+  // V2: contrato do novo formulário de produtores
+  if (schemaVersion === 'producer_form_v2') {
+    const allowedModes = ['trackNoStems', 'trackWithStems', 'effectsFx'];
+    if (!allowedModes.includes(mode)) {
+      return { status: 422, body: { message: 'Modo inválido. Use trackNoStems, trackWithStems ou effectsFx.' } };
+    }
+
+    const track = files.track;
+    const image = files.image;
+    const stemMelody = files.stem_melody;
+    const stemHarmony = files.stem_harmony;
+    const stemDrums = files.stem_drums;
+    const stemFx = files.stem_fx;
+    const effects = [files.effect1, files.effect2, files.effect3, files.effect4, files.effect5, files.effect6];
+
+    if (!track) {
+      return { status: 422, body: { message: 'É obrigatório enviar o arquivo Single Track.' } };
+    }
+
+    if (mode === 'trackNoStems') {
+      if (stemMelody || stemHarmony || stemDrums || stemFx || effects.some(Boolean)) {
+        return { status: 422, body: { message: 'Modo Single track não permite stems ou efeitos extras.' } };
+      }
+    }
+
+    if (mode === 'trackWithStems') {
+      if (!(stemMelody && stemHarmony && stemDrums && stemFx)) {
+        return { status: 422, body: { message: 'No modo Single track + Stems, envie Melodias, Harmonias, Ritmos e Efeitos.' } };
+      }
+      if (effects.some(Boolean)) {
+        return { status: 422, body: { message: 'No modo Single track + Stems, não envie os campos effect1..effect6.' } };
+      }
+    }
+
+    if (mode === 'effectsFx') {
+      if (stemMelody || stemHarmony || stemDrums || stemFx) {
+        return { status: 422, body: { message: 'No modo Efeitos (FX), não envie stem_melody/stem_harmony/stem_drums/stem_fx.' } };
+      }
+      if (effects.some((file) => !file)) {
+        return { status: 422, body: { message: 'No modo Efeitos (FX), envie todos os arquivos effect1..effect6.' } };
+      }
+    }
+
+    const requiredMeta = ['artistName', 'email', 'countryCode', 'phone', 'identification', 'trackName', 'category', 'genre', 'bpm', 'key'];
+    for (const field of requiredMeta) {
+      if (meta?.[field] === undefined || meta?.[field] === null || String(meta?.[field]).trim() === '') {
+        return { status: 422, body: { message: `Campo obrigatório ausente no meta: ${field}.` } };
+      }
+    }
+
+    if (!meta?.termsAccepted) {
+      return { status: 422, body: { message: 'É obrigatório aceitar os termos e condições.' } };
+    }
+
+    const email = String(meta?.email || '').trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return { status: 422, body: { message: 'Email inválido.' } };
+    }
+
+    const bpm = parseInt(meta?.bpm, 10);
+    if (!Number.isFinite(bpm) || bpm < 1 || bpm > 300) {
+      return { status: 422, body: { message: 'BPM inválido. Deve estar entre 1 e 300.' } };
+    }
+
+    const externalLink = String(meta?.externalLink || '').trim();
+    if (externalLink && !/^https?:\/\/[^\s/$.?#].[^\s]*$/i.test(externalLink)) {
+      return { status: 422, body: { message: 'Link externo inválido. Use http:// ou https://.' } };
+    }
+
+    // Registro flexível (ao menos um identificador válido)
+    const registryRaw = String(meta?.registryRaw || meta?.registryValue || '').trim();
+    const isrc = String(meta?.isrc || '').trim();
+    const upc = String(meta?.upc || '').trim();
+    const hashType = String(meta?.hashType || '').trim().toUpperCase();
+    const registryTypeRaw = String(meta?.registryType || '').trim().toUpperCase();
+    const registryValue = String(meta?.registryValue || registryRaw).trim();
+
+    const inferRegistryType = () => {
+      if (registryTypeRaw) return registryTypeRaw;
+      if (/^[A-Za-z0-9]{12}$/.test(isrc || registryRaw)) return 'ISRC';
+      if (/^(?:\d{12}|\d{6})$/.test(upc || registryRaw)) return 'UPC';
+      if (/^[A-Fa-f0-9]{32}$/.test(registryRaw)) return 'HASH';
+      if (/^[A-Fa-f0-9]{40}$/.test(registryRaw)) return 'HASH';
+      if (/^[A-Fa-f0-9]{64}$/.test(registryRaw)) return 'HASH';
+      if (/^[A-Fa-f0-9]{128}$/.test(registryRaw)) return 'HASH';
+      return registryRaw ? 'OUTROS' : '';
+    };
+
+    const registryType = inferRegistryType();
+
+    if (registryType) {
+      if (registryType === 'ISRC') {
+        const value = isrc || registryRaw;
+        if (!/^[A-Za-z0-9]{12}$/.test(value)) {
+          return { status: 422, body: { message: 'ISRC inválido. Deve conter 12 caracteres alfanuméricos.' } };
+        }
+      } else if (registryType === 'UPC') {
+        const value = upc || registryRaw;
+        if (!/^(?:\d{12}|\d{6})$/.test(value)) {
+          return { status: 422, body: { message: 'UPC inválido. Deve conter 12 dígitos (UPC-A) ou 6 dígitos (UPC-E).' } };
+        }
+      } else if (registryType === 'HASH') {
+        const value = registryValue || registryRaw;
+        const map = { MD5: 32, 'SHA-1': 40, 'SHA-256': 64, 'SHA-512': 128 };
+        let resolvedType = hashType;
+        if (!resolvedType) {
+          if (/^[A-Fa-f0-9]{32}$/.test(value)) resolvedType = 'MD5';
+          else if (/^[A-Fa-f0-9]{40}$/.test(value)) resolvedType = 'SHA-1';
+          else if (/^[A-Fa-f0-9]{64}$/.test(value)) resolvedType = 'SHA-256';
+          else if (/^[A-Fa-f0-9]{128}$/.test(value)) resolvedType = 'SHA-512';
+        }
+        const len = map[resolvedType] || 0;
+        const re = new RegExp(`^[A-Fa-f0-9]{${len}}$`);
+        if (!len || !re.test(value)) {
+          return { status: 422, body: { message: 'HASH inválido para o tipo selecionado.' } };
+        }
+      } else if (registryType === 'OUTROS') {
+        if (!registryRaw || registryRaw.length < 3) {
+          return { status: 422, body: { message: 'Registro inválido. Informe ao menos 3 caracteres para OUTROS.' } };
+        }
+      } else {
+        return { status: 422, body: { message: 'Tipo de registro inválido.' } };
+      }
+    } // fim if (registryType)
+
+    // Durações (mesma duração do track para stems/efeitos)
+    const TOL = 200; // ms
+    const eq = (a, b, tol) => Math.abs(a - b) <= tol;
+    const toInt = (v) => typeof v === 'string' ? parseInt(v, 10) : v;
+    const d = meta?.durations || {};
+    const trackMs = toInt(d?.track_ms);
+    if (!trackMs || !Number.isFinite(trackMs)) {
+      return { status: 422, body: { message: 'Informe duration_ms da faixa principal (meta.durations.track_ms).' } };
+    }
+
+    if (mode === 'trackWithStems') {
+      let stemDurations = [toInt(d?.stem_melody_ms), toInt(d?.stem_harmony_ms), toInt(d?.stem_drums_ms), toInt(d?.stem_fx_ms)];
+      if (stemDurations.some((value) => !value) && Array.isArray(d?.stems_ms)) {
+        stemDurations = d.stems_ms.map(toInt);
+      }
+      if (stemDurations.length !== 4 || stemDurations.some((value) => !value)) {
+        return { status: 422, body: { message: 'Informe as durações de todos os stems (melody/harmony/drums/fx).' } };
+      }
+      for (let i = 0; i < stemDurations.length; i++) {
+        if (!eq(stemDurations[i], trackMs, TOL)) {
+          return { status: 422, body: { message: `Stem #${i + 1} não possui a mesma duração do Single Track.` } };
+        }
+      }
+    }
+
+    if (mode === 'effectsFx') {
+      let effectDurations = [toInt(d?.effect1_ms), toInt(d?.effect2_ms), toInt(d?.effect3_ms), toInt(d?.effect4_ms), toInt(d?.effect5_ms), toInt(d?.effect6_ms)];
+      if (effectDurations.some((value) => !value) && Array.isArray(d?.effects_ms)) {
+        effectDurations = d.effects_ms.map(toInt);
+      }
+      if (effectDurations.length !== 6 || effectDurations.some((value) => !value)) {
+        return { status: 422, body: { message: 'Informe as durações de todos os efeitos (effect1_ms..effect6_ms).' } };
+      }
+      for (let i = 0; i < effectDurations.length; i++) {
+        if (!eq(effectDurations[i], trackMs, TOL)) {
+          return { status: 422, body: { message: `Efeito #${i + 1} não possui a mesma duração do Single Track.` } };
+        }
+      }
+    }
+
+    // Loops obrigatórios (15s, 30s, 60s)
+    const loop15v2 = files.loop15;
+    const loop30v2 = files.loop30;
+    const loop60v2 = files.loop60;
+    if (!loop15v2 || !loop30v2 || !loop60v2) {
+      return { status: 422, body: { message: 'Envie os três loops obrigatórios: loop15, loop30 e loop60.' } };
+    }
+    const loopTargets = { loop15_ms: 15000, loop30_ms: 30000, loop60_ms: 60000 };
+    for (const [field, expected] of Object.entries(loopTargets)) {
+      const actual = toInt(d?.[field]);
+      if (!actual || !Number.isFinite(actual)) {
+        return { status: 422, body: { message: `Informe a duração do ${field} em meta.durations.` } };
+      }
+      if (!eq(actual, expected, TOL)) {
+        return { status: 422, body: { message: `${field} fora da duração esperada (esperado: ${expected / 1000}s ±200ms).` } };
+      }
+    }
+
+    return {
+      status: 200,
+      body: {
+        message: 'Upload v2 validado e recebido com sucesso.',
+        schemaVersion,
+        mode,
+        files: Object.keys(files),
+        hasImage: !!image,
+      },
+    };
+  }
+
+  // Legacy: mantém compatibilidade com formulário antigo
+  const track = files.track; // único
+  const stems = toArray(files.stem); // 0..4
+  const loop15 = files.loop15;
+  const loop30 = files.loop30;
+  const loop60 = files.loop60;
+
+  if (!track) {
+    return { status: 422, body: { message: 'É obrigatório enviar uma música completa (track).' } };
+  }
+
+  // Validação de modo
+  if (mode === 'trackNoStems') {
+    if (stems.length > 0) {
+      return { status: 422, body: { message: 'Modo sem stems selecionado, mas arquivos de stems foram enviados.' } };
+    }
+  } else if (mode === 'trackWithStems') {
+    if (stems.length < 1 || stems.length > 4) {
+      return { status: 422, body: { message: 'Envie entre 1 e 4 stems quando o modo "com stems" estiver selecionado.' } };
+    }
+  } else {
+    return { status: 422, body: { message: 'Modo inválido. Use trackNoStems ou trackWithStems.' } };
+  }
+
+  // Loops obrigatórios
+  if (!loop15 || !loop30 || !loop60) {
+    return { status: 422, body: { message: 'Envie os loops obrigatórios de 15s, 30s e 60s.' } };
+  }
+
+  // Validações de duração (opcionalmente usando metadados)
+  const TOL = 200; // ms
+  const eq = (a, b, tol) => Math.abs(a - b) <= tol;
+  const toInt = (v) => typeof v === 'string' ? parseInt(v, 10) : v;
+
+  if (meta && meta.durations) {
+    const d = meta.durations;
+    if (mode === 'trackWithStems') {
+      const tms = toInt(d?.track_ms);
+      if (!tms) return { status: 422, body: { message: 'Informe duration_ms da música completa (meta.durations.track_ms).' } };
+      const stemsMs = d?.stems_ms || [];
+      if (!Array.isArray(stemsMs) || stemsMs.length !== stems.length) {
+        return { status: 422, body: { message: 'Informe durations dos stems compatível com a quantidade enviada.' } };
+      }
+      for (let i = 0; i < stemsMs.length; i++) {
+        if (!eq(toInt(stemsMs[i]), tms, TOL)) {
+          return { status: 422, body: { message: `Stem #${i + 1} não possui a mesma duração da música completa.` } };
+        }
+      }
+    }
+    // Loops 15/30/60s
+    const l15 = toInt(d?.loop15_ms);
+    const l30 = toInt(d?.loop30_ms);
+    const l60 = toInt(d?.loop60_ms);
+    if (!(l15 && l30 && l60)) {
+      return { status: 422, body: { message: 'Informe as durações dos loops (meta.durations.loop15_ms/loop30_ms/loop60_ms).' } };
+    }
+    if (!eq(l15, 15000, TOL) || !eq(l30, 30000, TOL) || !eq(l60, 60000, TOL)) {
+      return { status: 422, body: { message: 'Loops devem ter 15s, 30s e 60s (±200ms).\nVerifique as durações informadas.' } };
+    }
+  }
+
+  // Validações ISRC/UPC/HASH
+  const isrc = meta?.isrc;
+  const upc = meta?.upc;
+  if (!isrc || !/^[A-Za-z0-9]{12}$/.test(isrc)) {
+    return { status: 422, body: { message: 'ISRC inválido. Deve conter 12 caracteres alfanuméricos.' } };
+  }
+  if (!upc || !/^(?:\d{12}|\d{6})$/.test(upc)) {
+    return { status: 422, body: { message: 'UPC inválido. Deve conter 12 dígitos (UPC-A) ou 6 dígitos (UPC-E).' } };
+  }
+  if (meta?.registryType === 'HASH') {
+    const hv = meta?.registryValue || '';
+    const ht = meta?.hashType;
+    const map = { 'MD5': 32, 'SHA-1': 40, 'SHA-256': 64, 'SHA-512': 128 };
+    const len = map[ht] || 0;
+    const re = new RegExp(`^[A-Fa-f0-9]{${len}}$`);
+    if (!len || !re.test(hv)) {
+      return { status: 422, body: { message: 'HASH inválido para o tipo selecionado.' } };
+    }
+  }
+
+  // Sucesso (simulação)
+  return { status: 200, body: { message: 'Upload validado e recebido com sucesso.', files: Object.keys(files) } };
+}
+
 // ─── Endpoints de perfil do usuário ───────────────────────────────────────
 
 // GET /api/user/profile — retorna dados pessoais do usuário autenticado
@@ -1257,295 +1671,54 @@ app.route('/api/favoritos/:id').delete((request, response) => {
 });
 
 // Regras de upload de produtores
-app.post('/api/producers/track', multipartMiddleware, (req, res) => {
-  try {
-    const schemaVersion = req.body.schemaVersion;
-    const mode = req.body.mode; // 'trackNoStems' | 'trackWithStems' | 'effectsFx'
-    const metaRaw = req.body.meta;
-    let meta = {};
-    try { meta = metaRaw ? JSON.parse(metaRaw) : {}; } catch (e) { meta = {}; }
+app.post('/api/producers/track', (req, res) => {
+  // Nota: req.destroyed não serve como sinal de "cliente desconectou" — mesmo
+  // racional da U2a (ver /api/uploads/ acima). O sinal real é o socket da
+  // resposta (res.socket.destroyed).
+  const connectionAlive = () => !res.headersSent && res.socket && !res.socket.destroyed;
 
-    const files = req.files || {};
+  producerTrackUpload.fields(PRODUCER_TRACK_FIELDS)(req, res, async (err) => {
+    const rawFiles = req.files || {};
+    const flatFiles = flattenProducerTrackFiles(rawFiles);
 
-    // V2: contrato do novo formulário de produtores
-    if (schemaVersion === 'producer_form_v2') {
-      const allowedModes = ['trackNoStems', 'trackWithStems', 'effectsFx'];
-      if (!allowedModes.includes(mode)) {
-        return res.status(422).json({ message: 'Modo inválido. Use trackNoStems, trackWithStems ou effectsFx.' });
+    if (err) {
+      try {
+        await cleanupProducerTrackFiles(flatFiles);
+      } catch (cleanupErr) {
+        console.error('Falha ao limpar uploads temporários (producer track):', cleanupErr.code || cleanupErr.message);
       }
-
-      const track = files.track;
-      const image = files.image;
-      const stemMelody = files.stem_melody;
-      const stemHarmony = files.stem_harmony;
-      const stemDrums = files.stem_drums;
-      const stemFx = files.stem_fx;
-      const effects = [files.effect1, files.effect2, files.effect3, files.effect4, files.effect5, files.effect6];
-
-      if (!track) {
-        return res.status(422).json({ message: 'É obrigatório enviar o arquivo Single Track.' });
-      }
-
-      if (mode === 'trackNoStems') {
-        if (stemMelody || stemHarmony || stemDrums || stemFx || effects.some(Boolean)) {
-          return res.status(422).json({ message: 'Modo Single track não permite stems ou efeitos extras.' });
-        }
-      }
-
-      if (mode === 'trackWithStems') {
-        if (!(stemMelody && stemHarmony && stemDrums && stemFx)) {
-          return res.status(422).json({ message: 'No modo Single track + Stems, envie Melodias, Harmonias, Ritmos e Efeitos.' });
-        }
-        if (effects.some(Boolean)) {
-          return res.status(422).json({ message: 'No modo Single track + Stems, não envie os campos effect1..effect6.' });
-        }
-      }
-
-      if (mode === 'effectsFx') {
-        if (stemMelody || stemHarmony || stemDrums || stemFx) {
-          return res.status(422).json({ message: 'No modo Efeitos (FX), não envie stem_melody/stem_harmony/stem_drums/stem_fx.' });
-        }
-        if (effects.some((file) => !file)) {
-          return res.status(422).json({ message: 'No modo Efeitos (FX), envie todos os arquivos effect1..effect6.' });
-        }
-      }
-
-      const requiredMeta = ['artistName', 'email', 'countryCode', 'phone', 'identification', 'trackName', 'category', 'genre', 'bpm', 'key'];
-      for (const field of requiredMeta) {
-        if (meta?.[field] === undefined || meta?.[field] === null || String(meta?.[field]).trim() === '') {
-          return res.status(422).json({ message: `Campo obrigatório ausente no meta: ${field}.` });
-        }
-      }
-
-      if (!meta?.termsAccepted) {
-        return res.status(422).json({ message: 'É obrigatório aceitar os termos e condições.' });
-      }
-
-      const email = String(meta?.email || '').trim();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        return res.status(422).json({ message: 'Email inválido.' });
-      }
-
-      const bpm = parseInt(meta?.bpm, 10);
-      if (!Number.isFinite(bpm) || bpm < 1 || bpm > 300) {
-        return res.status(422).json({ message: 'BPM inválido. Deve estar entre 1 e 300.' });
-      }
-
-      const externalLink = String(meta?.externalLink || '').trim();
-      if (externalLink && !/^https?:\/\/[^\s/$.?#].[^\s]*$/i.test(externalLink)) {
-        return res.status(422).json({ message: 'Link externo inválido. Use http:// ou https://.' });
-      }
-
-      // Registro flexível (ao menos um identificador válido)
-      const registryRaw = String(meta?.registryRaw || meta?.registryValue || '').trim();
-      const isrc = String(meta?.isrc || '').trim();
-      const upc = String(meta?.upc || '').trim();
-      const hashType = String(meta?.hashType || '').trim().toUpperCase();
-      const registryTypeRaw = String(meta?.registryType || '').trim().toUpperCase();
-      const registryValue = String(meta?.registryValue || registryRaw).trim();
-
-      const inferRegistryType = () => {
-        if (registryTypeRaw) return registryTypeRaw;
-        if (/^[A-Za-z0-9]{12}$/.test(isrc || registryRaw)) return 'ISRC';
-        if (/^(?:\d{12}|\d{6})$/.test(upc || registryRaw)) return 'UPC';
-        if (/^[A-Fa-f0-9]{32}$/.test(registryRaw)) return 'HASH';
-        if (/^[A-Fa-f0-9]{40}$/.test(registryRaw)) return 'HASH';
-        if (/^[A-Fa-f0-9]{64}$/.test(registryRaw)) return 'HASH';
-        if (/^[A-Fa-f0-9]{128}$/.test(registryRaw)) return 'HASH';
-        return registryRaw ? 'OUTROS' : '';
-      };
-
-      const registryType = inferRegistryType();
-
-      if (registryType) {
-      if (registryType === 'ISRC') {
-        const value = isrc || registryRaw;
-        if (!/^[A-Za-z0-9]{12}$/.test(value)) {
-          return res.status(422).json({ message: 'ISRC inválido. Deve conter 12 caracteres alfanuméricos.' });
-        }
-      } else if (registryType === 'UPC') {
-        const value = upc || registryRaw;
-        if (!/^(?:\d{12}|\d{6})$/.test(value)) {
-          return res.status(422).json({ message: 'UPC inválido. Deve conter 12 dígitos (UPC-A) ou 6 dígitos (UPC-E).' });
-        }
-      } else if (registryType === 'HASH') {
-        const value = registryValue || registryRaw;
-        const map = { MD5: 32, 'SHA-1': 40, 'SHA-256': 64, 'SHA-512': 128 };
-        let resolvedType = hashType;
-        if (!resolvedType) {
-          if (/^[A-Fa-f0-9]{32}$/.test(value)) resolvedType = 'MD5';
-          else if (/^[A-Fa-f0-9]{40}$/.test(value)) resolvedType = 'SHA-1';
-          else if (/^[A-Fa-f0-9]{64}$/.test(value)) resolvedType = 'SHA-256';
-          else if (/^[A-Fa-f0-9]{128}$/.test(value)) resolvedType = 'SHA-512';
-        }
-        const len = map[resolvedType] || 0;
-        const re = new RegExp(`^[A-Fa-f0-9]{${len}}$`);
-        if (!len || !re.test(value)) {
-          return res.status(422).json({ message: 'HASH inválido para o tipo selecionado.' });
-        }
-      } else if (registryType === 'OUTROS') {
-        if (!registryRaw || registryRaw.length < 3) {
-          return res.status(422).json({ message: 'Registro inválido. Informe ao menos 3 caracteres para OUTROS.' });
-        }
-      } else {
-        return res.status(422).json({ message: 'Tipo de registro inválido.' });
-      }
-      } // fim if (registryType)
-
-      // Durações (mesma duração do track para stems/efeitos)
-      const TOL = 200; // ms
-      const eq = (a, b, tol) => Math.abs(a - b) <= tol;
-      const toInt = (v) => typeof v === 'string' ? parseInt(v, 10) : v;
-      const d = meta?.durations || {};
-      const trackMs = toInt(d?.track_ms);
-      if (!trackMs || !Number.isFinite(trackMs)) {
-        return res.status(422).json({ message: 'Informe duration_ms da faixa principal (meta.durations.track_ms).' });
-      }
-
-      if (mode === 'trackWithStems') {
-        let stemDurations = [toInt(d?.stem_melody_ms), toInt(d?.stem_harmony_ms), toInt(d?.stem_drums_ms), toInt(d?.stem_fx_ms)];
-        if (stemDurations.some((value) => !value) && Array.isArray(d?.stems_ms)) {
-          stemDurations = d.stems_ms.map(toInt);
-        }
-        if (stemDurations.length !== 4 || stemDurations.some((value) => !value)) {
-          return res.status(422).json({ message: 'Informe as durações de todos os stems (melody/harmony/drums/fx).' });
-        }
-        for (let i = 0; i < stemDurations.length; i++) {
-          if (!eq(stemDurations[i], trackMs, TOL)) {
-            return res.status(422).json({ message: `Stem #${i + 1} não possui a mesma duração do Single Track.` });
-          }
-        }
-      }
-
-      if (mode === 'effectsFx') {
-        let effectDurations = [toInt(d?.effect1_ms), toInt(d?.effect2_ms), toInt(d?.effect3_ms), toInt(d?.effect4_ms), toInt(d?.effect5_ms), toInt(d?.effect6_ms)];
-        if (effectDurations.some((value) => !value) && Array.isArray(d?.effects_ms)) {
-          effectDurations = d.effects_ms.map(toInt);
-        }
-        if (effectDurations.length !== 6 || effectDurations.some((value) => !value)) {
-          return res.status(422).json({ message: 'Informe as durações de todos os efeitos (effect1_ms..effect6_ms).' });
-        }
-        for (let i = 0; i < effectDurations.length; i++) {
-          if (!eq(effectDurations[i], trackMs, TOL)) {
-            return res.status(422).json({ message: `Efeito #${i + 1} não possui a mesma duração do Single Track.` });
-          }
-        }
-      }
-
-      // Loops obrigatórios (15s, 30s, 60s)
-      const loop15v2 = files.loop15;
-      const loop30v2 = files.loop30;
-      const loop60v2 = files.loop60;
-      if (!loop15v2 || !loop30v2 || !loop60v2) {
-        return res.status(422).json({ message: 'Envie os três loops obrigatórios: loop15, loop30 e loop60.' });
-      }
-      const loopTargets = { loop15_ms: 15000, loop30_ms: 30000, loop60_ms: 60000 };
-      for (const [field, expected] of Object.entries(loopTargets)) {
-        const actual = toInt(d?.[field]);
-        if (!actual || !Number.isFinite(actual)) {
-          return res.status(422).json({ message: `Informe a duração do ${field} em meta.durations.` });
-        }
-        if (!eq(actual, expected, TOL)) {
-          return res.status(422).json({ message: `${field} fora da duração esperada (esperado: ${expected / 1000}s ±200ms).` });
-        }
-      }
-
-      return res.status(200).json({
-        message: 'Upload v2 validado e recebido com sucesso.',
-        schemaVersion,
-        mode,
-        files: Object.keys(files),
-        hasImage: !!image,
-      });
+      if (!connectionAlive()) return;
+      const { status, message } = classifyProducerTrackUploadError(err);
+      return res.status(status).json({ message });
     }
 
-    // Legacy: mantém compatibilidade com formulário antigo
-    const track = files.track; // único
-    const stems = toArray(files.stem); // 0..4
-    const loop15 = files.loop15;
-    const loop30 = files.loop30;
-    const loop60 = files.loop60;
-
-    if (!track) {
-      return res.status(422).json({ message: 'É obrigatório enviar uma música completa (track).' });
+    if (!connectionAlive()) {
+      await cleanupProducerTrackFiles(flatFiles).catch(() => {});
+      return;
     }
 
-    // Validação de modo
-    if (mode === 'trackNoStems') {
-      if (stems.length > 0) {
-        return res.status(422).json({ message: 'Modo sem stems selecionado, mas arquivos de stems foram enviados.' });
+    const files = normalizeProducerTrackFiles(rawFiles);
+    let result;
+    try {
+      result = validateProducerTrackUpload(req.body || {}, files);
+    } catch (validationErr) {
+      console.error(validationErr);
+      result = { status: 500, body: { message: 'Erro interno ao processar upload.' } };
+    }
+
+    try {
+      await cleanupProducerTrackFiles(flatFiles);
+    } catch (cleanupErr) {
+      console.error('Falha ao limpar uploads temporários (producer track):', cleanupErr.code || cleanupErr.message);
+      if (connectionAlive()) {
+        return res.status(500).json({ message: 'Erro interno ao processar upload.' });
       }
-    } else if (mode === 'trackWithStems') {
-      if (stems.length < 1 || stems.length > 4) {
-        return res.status(422).json({ message: 'Envie entre 1 e 4 stems quando o modo "com stems" estiver selecionado.' });
-      }
-    } else {
-      return res.status(422).json({ message: 'Modo inválido. Use trackNoStems ou trackWithStems.' });
+      return;
     }
 
-    // Loops obrigatórios
-    if (!loop15 || !loop30 || !loop60) {
-      return res.status(422).json({ message: 'Envie os loops obrigatórios de 15s, 30s e 60s.' });
-    }
-
-    // Validações de duração (opcionalmente usando metadados)
-    const TOL = 200; // ms
-    const eq = (a, b, tol) => Math.abs(a - b) <= tol;
-    const toInt = (v) => typeof v === 'string' ? parseInt(v, 10) : v;
-
-    if (meta && meta.durations) {
-      const d = meta.durations;
-      if (mode === 'trackWithStems') {
-        const tms = toInt(d?.track_ms);
-        if (!tms) return res.status(422).json({ message: 'Informe duration_ms da música completa (meta.durations.track_ms).' });
-        const stemsMs = d?.stems_ms || [];
-        if (!Array.isArray(stemsMs) || stemsMs.length !== stems.length) {
-          return res.status(422).json({ message: 'Informe durations dos stems compatível com a quantidade enviada.' });
-        }
-        for (let i = 0; i < stemsMs.length; i++) {
-          if (!eq(toInt(stemsMs[i]), tms, TOL)) {
-            return res.status(422).json({ message: `Stem #${i + 1} não possui a mesma duração da música completa.` });
-          }
-        }
-      }
-      // Loops 15/30/60s
-      const l15 = toInt(d?.loop15_ms);
-      const l30 = toInt(d?.loop30_ms);
-      const l60 = toInt(d?.loop60_ms);
-      if (!(l15 && l30 && l60)) {
-        return res.status(422).json({ message: 'Informe as durações dos loops (meta.durations.loop15_ms/loop30_ms/loop60_ms).' });
-      }
-      if (!eq(l15, 15000, TOL) || !eq(l30, 30000, TOL) || !eq(l60, 60000, TOL)) {
-        return res.status(422).json({ message: 'Loops devem ter 15s, 30s e 60s (±200ms).\nVerifique as durações informadas.' });
-      }
-    }
-
-    // Validações ISRC/UPC/HASH
-    const isrc = meta?.isrc;
-    const upc = meta?.upc;
-    if (!isrc || !/^[A-Za-z0-9]{12}$/.test(isrc)) {
-      return res.status(422).json({ message: 'ISRC inválido. Deve conter 12 caracteres alfanuméricos.' });
-    }
-    if (!upc || !/^(?:\d{12}|\d{6})$/.test(upc)) {
-      return res.status(422).json({ message: 'UPC inválido. Deve conter 12 dígitos (UPC-A) ou 6 dígitos (UPC-E).' });
-    }
-    if (meta?.registryType === 'HASH') {
-      const hv = meta?.registryValue || '';
-      const ht = meta?.hashType;
-      const map = { 'MD5': 32, 'SHA-1': 40, 'SHA-256': 64, 'SHA-512': 128 };
-      const len = map[ht] || 0;
-      const re = new RegExp(`^[A-Fa-f0-9]{${len}}$`);
-      if (!len || !re.test(hv)) {
-        return res.status(422).json({ message: 'HASH inválido para o tipo selecionado.' });
-      }
-    }
-
-    // Sucesso (simulação)
-    return res.status(200).json({ message: 'Upload validado e recebido com sucesso.', files: Object.keys(files) });
-  } catch (e) {
-    console.error(e);
-    return res.status(500).json({ message: 'Erro interno ao processar upload.' });
-  }
+    if (!connectionAlive()) return;
+    return res.status(result.status).json(result.body);
+  });
 });
 
 function toArray(x) {
