@@ -21,13 +21,16 @@ async function startTestServer() {
   const usersFile = path.join(tmpRoot, 'users.json');
   const documentsUploadsDir = path.join(tmpRoot, 'uploads', 'documents');
   const legacyUploadDir = path.join(tmpRoot, 'uploads', 'legacy');
+  const legacyApiUploadDir = path.join(tmpRoot, 'uploads', 'legacy-api');
 
   fs.mkdirSync(documentsUploadsDir, { recursive: true });
   fs.mkdirSync(legacyUploadDir, { recursive: true });
+  fs.mkdirSync(legacyApiUploadDir, { recursive: true });
 
   process.env.TEST_USERS_FILE = usersFile;
   process.env.TEST_DOCUMENTS_UPLOADS_DIR = documentsUploadsDir;
   process.env.TEST_LEGACY_UPLOAD_DIR = legacyUploadDir;
+  process.env.TEST_LEGACY_API_UPLOAD_DIR = legacyApiUploadDir;
 
   delete require.cache[require.resolve(APP_ENTRY)];
   const app = require(APP_ENTRY);
@@ -45,6 +48,7 @@ async function startTestServer() {
     usersFile,
     documentsUploadsDir,
     legacyUploadDir,
+    legacyApiUploadDir,
     async close() {
       await new Promise((resolve, reject) => {
         server.close((err) => (err ? reject(err) : resolve()));

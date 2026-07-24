@@ -19,9 +19,10 @@ after(async () => {
   await ctx.close();
 });
 
-test('POST /api/uploads/ (legado, sem auth) aceita multipart e grava no diretório temporário', async () => {
+test('POST /api/uploads/ (legado, sem auth) aceita multipart, sanitiza e não persiste em disco (U2a)', async () => {
+  const conteudo = 'conteudo-fake-de-upload-legado';
   const form = new FormData();
-  form.append('file', new Blob([Buffer.from('conteudo-fake-de-upload-legado')], { type: 'application/octet-stream' }), 'arquivo.bin');
+  form.append('file', new Blob([Buffer.from(conteudo)], { type: 'application/octet-stream' }), 'arquivo.bin');
 
   const res = await fetch(`${ctx.baseUrl}/api/uploads/`, {
     method: 'POST',
@@ -30,12 +31,20 @@ test('POST /api/uploads/ (legado, sem auth) aceita multipart e grava no diretór
 
   assert.strictEqual(res.status, 200);
   const body = await res.json();
-  assert.ok(body.message, 'contrato atual retorna { message: files } — deve conter os metadados dos arquivos recebidos');
-  assert.ok(body.message.file, 'campo "file" deve estar presente no objeto de arquivos retornado');
+  assert.deepStrictEqual(Object.keys(body), ['message']);
+  assert.deepStrictEqual(Object.keys(body.message), ['file']);
+  assert.deepStrictEqual(body.message.file, {
+    fieldName: 'file',
+    originalFilename: 'arquivo.bin',
+    mimetype: 'application/octet-stream',
+    size: Buffer.byteLength(conteudo),
+  });
 
-  // Confirma que o arquivo foi de fato escrito na raiz de upload TEMPORÁRIA, nunca na real.
-  const filesOnDisk = fs.readdirSync(ctx.legacyUploadDir);
-  assert.ok(filesOnDisk.length > 0, 'ao menos um arquivo deve ter sido gravado em legacyUploadDir (temporário)');
+  // U2a: rota deixou de persistir em disco — nunca grava na raiz legada do
+  // connect-multiparty (usada só por /api/producers/track) nem acumula
+  // conteúdo em sua própria raiz temporária dedicada (limpa a cada requisição).
+  assert.deepStrictEqual(fs.readdirSync(ctx.legacyUploadDir), []);
+  assert.deepStrictEqual(fs.readdirSync(ctx.legacyApiUploadDir), []);
 });
 
 test('POST /api/producers/track — contrato producer_form_v2, modo trackNoStems', async () => {

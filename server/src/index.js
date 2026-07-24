@@ -8,6 +8,8 @@ const multipart = require('connect-multiparty');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
+const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
@@ -250,10 +252,152 @@ const LEGACY_UPLOAD_DIR = (process.env.NODE_ENV === 'test' && process.env.TEST_L
   ? process.env.TEST_LEGACY_UPLOAD_DIR
   : './uploads';
 const multipartMiddleware = multipart({ uploadDir: LEGACY_UPLOAD_DIR });
-app.post('/api/uploads/', multipartMiddleware, (req, res) => {
-  const files = req.files;
-  console.log(files);
-  res.json({ message: files });
+
+// Raiz temporária exclusiva de POST /api/uploads/ (lote U2a): fora de
+// server/src/uploads, server/uploads, ./uploads e de qualquer árvore servida
+// estaticamente. A rota nunca persiste os arquivos recebidos — cada um é
+// removido assim que a resposta é montada.
+const LEGACY_API_UPLOAD_DIR = (process.env.NODE_ENV === 'test' && process.env.TEST_LEGACY_API_UPLOAD_DIR)
+  ? process.env.TEST_LEGACY_API_UPLOAD_DIR
+  : path.join(os.tmpdir(), 'mokbeats-legacy-api-uploads');
+
+const legacyApiStorage = multer.diskStorage({
+  // destination como string: o próprio Multer cria o diretório (fs.mkdirSync
+  // recursivo) antes do primeiro uso.
+  destination: LEGACY_API_UPLOAD_DIR,
+  // Nome físico aleatório, independente de originalname/extensão do cliente.
+  // Gerado de forma SÍNCRONA (não o callback assíncrono padrão do
+  // DiskStorage, que roda em cima de crypto.randomBytes com callback e passa
+  // pela threadpool do libuv): em um abort do cliente muito rápido, o
+  // callback assíncrono pode chegar DEPOIS do cleanup de abort do próprio
+  // Multer já ter rodado, criando um arquivo órfão fora de qualquer
+  // rastreamento (confirmado empiricamente com um cliente que aborta ~5ms
+  // após iniciar o envio). Gerar o nome de forma síncrona elimina essa janela.
+  filename: (_req, _file, cb) => cb(null, crypto.randomBytes(16).toString('hex')),
+});
+
+const legacyUpload = multer({
+  storage: legacyApiStorage,
+  limits: {
+    fileSize: 100 * 1024 * 1024,
+    files: 10,
+    fields: 10,
+    // parts:21 (não 20): confirmado em server/node_modules/busboy/lib/types/multipart.js
+    // (linha ~548) que o contador de "parts" incrementa uma vez por boundary de
+    // abertura de cada parte real MAIS uma vez no boundary de fechamento do corpo —
+    // ou seja, N partes lógicas geram N+1 incrementos, e o limite dispara quando
+    // parts === partsLimit. Para admitir exatamente 20 partes lógicas (10 arquivos +
+    // 10 campos) sem disparar o limite, é necessário parts >= 21. Consistente com a
+    // descoberta da U1 (1 parte lógica exigia parts:2 = 1+1).
+    parts: 21,
+    fieldSize: 64 * 1024,
+    fieldNestingDepth: 0,
+  },
+  // Sem fileFilter: rota aceita qualquer MIME, como no contrato legado.
+});
+
+const LEGACY_API_FS_ERROR_CODES = new Set(['ENOSPC', 'EACCES', 'EMFILE', 'ENFILE', 'EROFS', 'EIO']);
+
+function classifyLegacyUploadError(err) {
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return { status: 413, message: 'Arquivo excede o limite de 100 MiB.' };
+    }
+    return { status: 400, message: 'Upload multipart inválido ou acima dos limites permitidos.' };
+  }
+  if (err && LEGACY_API_FS_ERROR_CODES.has(err.code)) {
+    return { status: 500, message: 'Erro interno ao processar o upload.' };
+  }
+  // Boundary ausente/malformada, header multipart malformado ou encerramento
+  // inesperado do form chegam aqui como Error genérico do busboy.
+  return { status: 400, message: 'Upload multipart inválido ou acima dos limites permitidos.' };
+}
+
+// Agrupa req.files (array, formato de .any()) por fieldname, expondo apenas os
+// quatro atributos autorizados. Object.create(null) garante que fieldnames
+// como "__proto__"/"constructor" nunca alcancem Object.prototype.
+function sanitizeLegacyFiles(files) {
+  const grouped = Object.create(null);
+  for (const file of files) {
+    const meta = {
+      fieldName: file.fieldname,
+      originalFilename: file.originalname,
+      mimetype: file.mimetype,
+      size: file.size,
+    };
+    if (grouped[file.fieldname] === undefined) {
+      grouped[file.fieldname] = meta;
+    } else if (Array.isArray(grouped[file.fieldname])) {
+      grouped[file.fieldname].push(meta);
+    } else {
+      grouped[file.fieldname] = [grouped[file.fieldname], meta];
+    }
+  }
+  return grouped;
+}
+
+// Remove apenas os arquivos físicos gerados pelo Multer para ESTA requisição,
+// validando que cada caminho pertence à raiz temporária dedicada (nunca rm
+// recursivo no diretório compartilhado). ENOENT é ignorado — o próprio Multer
+// 2.2.0 já remove internamente os arquivos de uma requisição abortada/rejeitada
+// antes deste callback rodar; tentar removê-los de novo é idempotente por design.
+async function cleanupLegacyApiFiles(files) {
+  const root = path.resolve(LEGACY_API_UPLOAD_DIR) + path.sep;
+  await Promise.all(files.map(async (file) => {
+    // Placeholders sem path (arquivo abortado antes de _handleFile concluir)
+    // nunca chegaram a existir fisicamente sob este path — nada a remover.
+    if (!file || !file.path) return;
+    const resolved = path.resolve(file.path);
+    if (!resolved.startsWith(root)) return;
+    try {
+      await fs.promises.unlink(resolved);
+    } catch (unlinkErr) {
+      if (unlinkErr.code === 'ENOENT') return;
+      throw unlinkErr;
+    }
+  }));
+}
+
+app.post('/api/uploads/', (req, res) => {
+  // Nota: req.destroyed não serve como sinal de "cliente desconectou" — o
+  // stream de requisição se autodestrói assim que o corpo é totalmente
+  // consumido, inclusive em uploads bem-sucedidos. O sinal real de conexão
+  // encerrada é o socket da resposta (res.socket.destroyed).
+  const connectionAlive = () => !res.headersSent && res.socket && !res.socket.destroyed;
+
+  legacyUpload.any()(req, res, async (err) => {
+    const files = Array.isArray(req.files) ? req.files : [];
+
+    if (err) {
+      try {
+        await cleanupLegacyApiFiles(files);
+      } catch (cleanupErr) {
+        console.error('Falha ao limpar uploads temporários (legacy api):', cleanupErr.code || cleanupErr.message);
+      }
+      if (!connectionAlive()) return;
+      const { status, message } = classifyLegacyUploadError(err);
+      return res.status(status).json({ message });
+    }
+
+    if (!connectionAlive()) {
+      await cleanupLegacyApiFiles(files).catch(() => {});
+      return;
+    }
+
+    const sanitized = sanitizeLegacyFiles(files);
+    try {
+      await cleanupLegacyApiFiles(files);
+    } catch (cleanupErr) {
+      console.error('Falha ao limpar uploads temporários (legacy api):', cleanupErr.code || cleanupErr.message);
+      if (connectionAlive()) {
+        return res.status(500).json({ message: 'Erro interno ao processar o upload.' });
+      }
+      return;
+    }
+
+    if (!connectionAlive()) return;
+    return res.json({ message: sanitized });
+  });
 });
 
 // ─── Endpoints de perfil do usuário ───────────────────────────────────────
