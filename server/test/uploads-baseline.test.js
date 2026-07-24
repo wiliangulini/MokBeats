@@ -8,9 +8,9 @@ const { startTestServer } = require('./helpers/test-server');
 
 // Baseline read-only do comportamento ATUAL de /api/uploads/ e /api/producers/track.
 // /api/uploads/ migrou para Multer 2.2.0 route-local na U2a; /api/producers/track
-// migrou para Multer 2.2.0 route-local (fields()) na U2b — connect-multiparty
-// permanece instalado, sem consumidor, para remoção isolada na U2c. As três
-// asserções de /api/producers/track abaixo continuam validando o mesmo
+// migrou para Multer 2.2.0 route-local (fields()) na U2b; connect-multiparty e
+// multiparty foram removidos do projeto na U2c (sem consumidor restante). As
+// três asserções de /api/producers/track abaixo continuam validando o mesmo
 // contrato funcional (200/422), agora servido pelo parser Multer. Serial
 // (--test-concurrency=1).
 
@@ -45,10 +45,8 @@ test('POST /api/uploads/ (legado, sem auth) aceita multipart, sanitiza e não pe
     size: Buffer.byteLength(conteudo),
   });
 
-  // U2a: rota deixou de persistir em disco — nunca grava na raiz legada do
-  // connect-multiparty (usada só por /api/producers/track) nem acumula
-  // conteúdo em sua própria raiz temporária dedicada (limpa a cada requisição).
-  assert.deepStrictEqual(fs.readdirSync(ctx.legacyUploadDir), []);
+  // U2a: rota deixou de persistir em disco — nunca acumula conteúdo em sua
+  // própria raiz temporária dedicada (limpa a cada requisição).
   assert.deepStrictEqual(fs.readdirSync(ctx.legacyApiUploadDir), []);
 });
 

@@ -7,10 +7,10 @@ const { test, before, after } = require('node:test');
 
 const { startTestServer, APP_ENTRY } = require('./helpers/test-server');
 
-// Baseline read-only: fixa o comportamento ATUAL do backend (ainda com
-// connect-multiparty) antes dos lotes de remediação de dependências (U1..U2c).
-// Roda serialmente (--test-concurrency=1); cada teste usa e-mail próprio para
-// não colidir no users.json temporário compartilhado do arquivo.
+// Baseline read-only: fixa o comportamento ATUAL do backend, após os lotes de
+// remediação de dependências de upload (U1..U2c). Roda serialmente
+// (--test-concurrency=1); cada teste usa e-mail próprio para não colidir no
+// users.json temporário compartilhado do arquivo.
 
 test('importar server/src/index.js não abre porta automaticamente (ex.: 3100)', async () => {
   process.env.NODE_ENV = 'test';
