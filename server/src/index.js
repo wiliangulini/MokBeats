@@ -132,7 +132,17 @@ const documentStorage = multer.diskStorage({
 const ALLOWED_MIMES = ['image/jpeg', 'image/png', 'application/pdf'];
 const documentUpload = multer({
   storage: documentStorage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10 MB
+    files: 1,
+    fields: 0,
+    // parts:2 (não 1): o busboy do Multer 2.2.0 conta uma única parte lógica
+    // (1 arquivo OU 1 campo) como 2 internamente — confirmado empiricamente.
+    // parts:1 rejeitava 100% dos uploads válidos com "Too many parts".
+    // files:1 e fields:0 continuam bloqueando múltiplos arquivos/campos extras.
+    parts: 2,
+    fieldNestingDepth: 0,
+  },
   fileFilter: (_req, file, cb) => {
     if (ALLOWED_MIMES.includes(file.mimetype)) cb(null, true);
     else cb(new Error('Tipo de arquivo não permitido. Use JPG, PNG ou PDF.'));
