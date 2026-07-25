@@ -4,13 +4,17 @@ const assert = require('node:assert/strict');
 const path = require('node:path');
 const fs = require('node:fs');
 const { test, before, after } = require('node:test');
+const jwt = require('jsonwebtoken');
 
 const { startTestServer, APP_ENTRY } = require('./helpers/test-server');
 
 // Baseline read-only: fixa o comportamento ATUAL do backend, após os lotes de
-// remediação de dependências de upload (U1..U2c). Roda serialmente
-// (--test-concurrency=1); cada teste usa e-mail próprio para não colidir no
-// users.json temporário compartilhado do arquivo.
+// remediação de dependências de upload (U1..U2c) e da migração de uuid para
+// crypto.randomUUID() (I1). Roda serialmente (--test-concurrency=1); cada
+// teste usa e-mail próprio para não colidir no users.json temporário
+// compartilhado do arquivo.
+
+const UUID_V4_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 test('importar server/src/index.js não abre porta automaticamente (ex.: 3100)', async () => {
   process.env.NODE_ENV = 'test';
@@ -55,7 +59,39 @@ test('cadastro (register) grava no USERS_FILE temporário e retorna token', asyn
   assert.strictEqual(body.user.tipoPerfil, 'comprador');
 
   const persisted = JSON.parse(fs.readFileSync(ctx.usersFile, 'utf8'));
-  assert.ok(persisted.some((u) => u.email === email), 'usuário deve estar persistido no USERS_FILE temporário');
+  const persistedUser = persisted.find((u) => u.email === email);
+  assert.ok(persistedUser, 'usuário deve estar persistido no USERS_FILE temporário');
+  assert.strictEqual(typeof persistedUser.id, 'string');
+  assert.match(persistedUser.id, UUID_V4_RE, 'id persistido deve ser um UUID v4 (crypto.randomUUID(), lote I1)');
+});
+
+// Ramo legado: email sem registro prévio no login usa o 2º call site de
+// crypto.randomUUID() (antes uuidv4()) apenas para compor o payload do JWT —
+// não persiste o usuário. Este comportamento é preservado tal como está pela
+// I1, não é uma decisão nova deste lote; caracterizado aqui apenas para
+// comprovar que o call site continua gerando UUID v4 válido.
+test('login com e-mail inexistente (ramo legado) preserva comportamento atual e usa UUID v4 no JWT', async () => {
+  const email = `t0-login-legado-${Date.now()}@example.com`;
+  const password = 'senhaComOitoOuMais';
+
+  const res = await fetch(`${ctx.baseUrl}/api/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
+
+  assert.strictEqual(res.status, 200);
+  const body = await res.json();
+  assert.strictEqual(typeof body.token, 'string');
+  assert.strictEqual(body.user.email, email);
+  assert.strictEqual(body.user.tipoPerfil, 'comprador');
+
+  const payload = jwt.decode(body.token);
+  assert.strictEqual(typeof payload.userId, 'string');
+  assert.match(payload.userId, UUID_V4_RE, 'userId do 2º call site deve ser um UUID v4 (crypto.randomUUID(), lote I1)');
+
+  const persisted = JSON.parse(fs.readFileSync(ctx.usersFile, 'utf8'));
+  assert.ok(!persisted.some((u) => u.email === email), 'e-mail inexistente não deve ser persistido apenas por logar (comportamento legado preservado)');
 });
 
 test('login com credenciais corretas retorna 200 e token; com senha errada retorna 401', async () => {
