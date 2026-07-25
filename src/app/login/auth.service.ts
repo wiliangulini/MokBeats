@@ -86,7 +86,7 @@ export class AuthService {
 
   /**
    * Stub — integração com Google ainda não configurada.
-   * Para integrar, utilize AngularFire (firebase@10.3.0 já está instalado).
+   * Para integrar, adicione o AngularFire e a dependência firebase ao projeto.
    */
   public loginComGoogle(): void {
     alert('Login com Google ainda não está disponível. Em breve!');
