@@ -11,7 +11,6 @@ const os = require('os');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { v4: uuidv4 } = require('uuid');
 
 // JWT_SECRET é obrigatório em produção. Nunca use segredo hardcoded: em produção,
 // aborta se não estiver definido; em desenvolvimento, gera um segredo efêmero
@@ -176,7 +175,7 @@ app.post('/api/auth/register', async (req, res) => {
     }
 
     const passwordHash = await bcrypt.hash(String(password), 10);
-    const userId = uuidv4();
+    const userId = crypto.randomUUID();
     const user = {
       id: userId,
       email,
@@ -220,7 +219,7 @@ app.post('/api/auth/login', async (req, res) => {
         return res.status(401).json({ message: 'Credenciais inválidas.' });
       }
       const tipoPerfil = found ? found.tipoPerfil : 'comprador';
-      const userId = found ? found.id : uuidv4();
+      const userId = found ? found.id : crypto.randomUUID();
       const token = jwt.sign({ userId, email, tipoPerfil }, JWT_SECRET, { expiresIn: '7d' });
       return res.status(200).json({ token, user: { email, tipoPerfil } });
     }
