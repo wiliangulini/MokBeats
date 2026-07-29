@@ -94,7 +94,7 @@
 - [ ] **Verificar Node.js**
 
   ```bash
-  node --version  # Mínimo v14+
+  node --version  # Backend: mínimo v24.18.1 (major 24) — lote R1a do Plano P0 v2.2
   npm --version
   ```
 

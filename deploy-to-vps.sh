@@ -13,6 +13,8 @@
 #   --backend-only    Envia apenas backend e reinicia PM2
 #   --generate-peaks  Executa server/scripts/generate-peaks.js na VPS
 #   --dry-run         Mostra o que seria enviado/configurado, sem alterar a VPS
+#   --allow-runtime-mismatch  Prossegue mesmo se o Node remoto divergir do
+#                      exigido (>=24.18.1, major 24); nao recomendado, ver R1a/R1b
 #   --help            Mostra esta ajuda
 ################################################################################
 
@@ -26,12 +28,18 @@ PM2_NAME="mok-backend"
 BACKEND_PORT=3100
 SSH="${VPS_USER}@${VPS_IP}"
 
+# Runtime exigido do backend remoto (lote R1a do Plano P0 v2.2). O upgrade da
+# VPS em si pertence ao lote R1b (fora deste script) — aqui so verificamos.
+REQUIRED_NODE_MAJOR=24
+REQUIRED_NODE_MIN="24.18.1"
+
 NO_AUDIO=false
 NO_BUILD=false
 FRONTEND_ONLY=false
 BACKEND_ONLY=false
 GENERATE_PEAKS=false
 DRY_RUN=false
+ALLOW_RUNTIME_MISMATCH=false
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -57,6 +65,8 @@ Opcoes:
   --backend-only    Envia apenas backend e reinicia PM2
   --generate-peaks  Executa server/scripts/generate-peaks.js na VPS
   --dry-run         Mostra o que seria enviado/configurado, sem alterar a VPS
+  --allow-runtime-mismatch  Prossegue mesmo se o Node remoto divergir do
+                     exigido (>=24.18.1, major 24); nao recomendado, ver R1a/R1b
   --help, -h        Mostra esta ajuda
 
 Destino:
@@ -73,6 +83,7 @@ parse_args() {
       --backend-only) BACKEND_ONLY=true ;;
       --generate-peaks) GENERATE_PEAKS=true ;;
       --dry-run) DRY_RUN=true ;;
+      --allow-runtime-mismatch) ALLOW_RUNTIME_MISMATCH=true ;;
       --help|-h)
         show_help
         exit 0
@@ -193,6 +204,59 @@ HTACCESS
   ok ".htaccess configurado"
 }
 
+check_remote_runtime() {
+  if [ "$FRONTEND_ONLY" = true ]; then
+    return
+  fi
+
+  step "Verificar runtime Node remoto"
+  if [ "$DRY_RUN" = true ]; then
+    info "DRY-RUN: verificaria se o Node remoto e major ${REQUIRED_NODE_MAJOR}, >= v${REQUIRED_NODE_MIN}."
+    return
+  fi
+
+  local remote_version
+  remote_version="$(ssh "$SSH" 'command -v node >/dev/null 2>&1 && node --version || echo MISSING')"
+
+  if [ "$remote_version" = "MISSING" ]; then
+    if [ "$ALLOW_RUNTIME_MISMATCH" = true ]; then
+      warn "Node.js nao encontrado na VPS. Prosseguindo por --allow-runtime-mismatch (o backend ira falhar adiante se o runtime nao existir de fato)."
+      return
+    fi
+    err "Node.js nao encontrado na VPS."
+    info "Provisionamento/upgrade da VPS pertence ao lote R1b (fora deste script); nao sera instalado automaticamente."
+    info "Use --allow-runtime-mismatch para prosseguir mesmo assim (nao recomendado)."
+    exit 1
+  fi
+
+  local major
+  major="$(echo "$remote_version" | sed 's/^v\([0-9]*\).*/\1/')"
+
+  local compatible=true
+  if [ "$major" != "$REQUIRED_NODE_MAJOR" ]; then
+    compatible=false
+  else
+    local lowest
+    lowest="$(printf '%s\n%s\n' "${remote_version#v}" "$REQUIRED_NODE_MIN" | sort -V | head -n1)"
+    [ "$lowest" = "$REQUIRED_NODE_MIN" ] || compatible=false
+  fi
+
+  if [ "$compatible" = true ]; then
+    ok "Node remoto ${remote_version} compativel (major ${REQUIRED_NODE_MAJOR}, >= v${REQUIRED_NODE_MIN})."
+    return
+  fi
+
+  if [ "$ALLOW_RUNTIME_MISMATCH" = true ]; then
+    warn "Node remoto ${remote_version} diverge do exigido (major ${REQUIRED_NODE_MAJOR}, >= v${REQUIRED_NODE_MIN}). Prosseguindo por --allow-runtime-mismatch."
+    return
+  fi
+
+  err "Node remoto ${remote_version} diverge do exigido (major ${REQUIRED_NODE_MAJOR}, >= v${REQUIRED_NODE_MIN})."
+  info "Upgrade da VPS pertence ao lote R1b (fora deste script); nao sera instalado/atualizado automaticamente."
+  info "Use --allow-runtime-mismatch para prosseguir mesmo assim (nao recomendado; bcrypt 6 exige Node >=18 e pode falhar em runtime divergente)."
+  exit 1
+}
+
 upload_backend() {
   if [ "$FRONTEND_ONLY" = true ]; then
     return
@@ -242,21 +306,34 @@ configure_remote_env() {
     return
   fi
 
-  ssh "$SSH" bash -s -- "$VPS_PATH" "$BACKEND_PORT" "$PM2_NAME" <<'REMOTE'
+  local skip_check="0"
+  if [ "$ALLOW_RUNTIME_MISMATCH" = true ]; then
+    skip_check="1"
+  fi
+
+  ssh "$SSH" bash -s -- "$VPS_PATH" "$BACKEND_PORT" "$PM2_NAME" "$skip_check" <<'REMOTE'
 set -euo pipefail
 
 VPS_PATH="$1"
 BACKEND_PORT="$2"
 PM2_NAME="$3"
+SKIP_NODE_CHECK="$4"
 ENV_FILE="${VPS_PATH}/server/.env"
 VHOST_FILE="/etc/apache2/sites-available/gulini.com.br-le-ssl.conf"
 
+# Node.js remoto ja foi verificado por check_remote_runtime() (lote R1a do
+# Plano P0 v2.2); este script nunca instala/atualiza Node na VPS -
+# provisionamento pertence ao lote R1b.
 if ! command -v node >/dev/null 2>&1; then
-  echo "[STEP] Instalando Node.js LTS via NodeSource..."
-  curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-  apt-get install -y nodejs
+  echo "[ERROR] Node.js nao encontrado na VPS. Provisionamento pertence ao lote R1b."
+  exit 1
 fi
 echo "[OK] Node.js $(node --version)"
+
+if [ "$SKIP_NODE_CHECK" = "1" ]; then
+  export MOKBEATS_SKIP_NODE_CHECK=1
+  echo "[WARN] MOKBEATS_SKIP_NODE_CHECK=1 (via --allow-runtime-mismatch) - verificacao de runtime do backend (server/scripts/check-node.js) ignorada."
+fi
 
 if ! command -v pm2 >/dev/null 2>&1; then
   echo "[STEP] Instalando PM2..."
@@ -414,6 +491,7 @@ check_local_prerequisites
 print_banner
 build_frontend
 upload_frontend
+check_remote_runtime
 upload_backend
 upload_audio
 configure_remote_env
