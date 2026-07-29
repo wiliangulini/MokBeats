@@ -3,7 +3,7 @@
 ## Estrutura de Diretórios na VPS
 
 ```
-/var/www/mokbeats/
+/var/www/html/gulini.com.br/mokbeats/
 ├── index.html          # Frontend Angular (build)
 ├── main.js
 ├── polyfills.js
@@ -15,7 +15,7 @@
 │   └── ...
 └── (outros arquivos do build Angular)
 
-/var/www/mokbeats/server/     # Backend Node.js
+/var/www/html/gulini.com.br/mokbeats/server/     # Backend Node.js
 ├── src/
 │   └── index.js
 ├── package.json
@@ -36,7 +36,7 @@
     ServerAlias www.mokbeats.com
 
     # Diretório do frontend Angular (arquivos do build)
-    DocumentRoot /var/www/mokbeats
+    DocumentRoot /var/www/html/gulini.com.br/mokbeats
 
     # ===== PROXY REVERSO PARA API (Backend Node.js na porta 3100) =====
     ProxyPreserveHost On
@@ -44,7 +44,7 @@
     ProxyPassReverse /api http://localhost:3100/api
 
     # ===== Configuração do diretório do frontend =====
-    <Directory /var/www/mokbeats>
+    <Directory /var/www/html/gulini.com.br/mokbeats>
         # -Indexes: Não listar diretórios (segurança)
         # +FollowSymLinks: Permitir links simbólicos
         Options -Indexes +FollowSymLinks
@@ -104,7 +104,7 @@
     ServerName mokbeats.com
     ServerAlias www.mokbeats.com
 
-    DocumentRoot /var/www/mokbeats
+    DocumentRoot /var/www/html/gulini.com.br/mokbeats
 
     # Proxy para API
     ProxyPreserveHost On
@@ -112,7 +112,7 @@
     ProxyPassReverse /api http://localhost:3100/api
 
     # Configuração do frontend
-    <Directory /var/www/mokbeats>
+    <Directory /var/www/html/gulini.com.br/mokbeats>
         Options -Indexes +FollowSymLinks
         AllowOverride All
         Require all granted
@@ -138,7 +138,7 @@
 ### 1. Conectar na VPS
 
 ```bash
-ssh root@147.79.87.156
+ssh root@31.97.160.61
 ```
 
 ### 2. Fazer backup das configurações atuais
@@ -227,7 +227,7 @@ pm2 list
 ### Se não estiver rodando, iniciar:
 
 ```bash
-cd /var/www/mokbeats/server
+cd /var/www/html/gulini.com.br/mokbeats/server
 pm2 start src/index.js --name mok-backend
 pm2 save
 ```
@@ -447,7 +447,7 @@ https://mokbeats.com/
     ↓
 Apache (porta 443) - mokbeats-le-ssl.conf
     ↓
-DocumentRoot /var/www/mokbeats
+DocumentRoot /var/www/html/gulini.com.br/mokbeats
     ↓
 Serve index.html
     ↓
@@ -460,7 +460,7 @@ Angular carrega e faz routing no cliente
 
 ### ❌ SUA CONFIGURAÇÃO ATUAL:
 ```apache
-<Directory /var/www/mokbeats>
+<Directory /var/www/html/gulini.com.br/mokbeats>
     Options Indexes FollowSymLinks    # ❌ "Indexes" expõe listagem
     AllowOverride All
     Require all granted
@@ -477,7 +477,7 @@ ProxyPreserveHost On
 ProxyPass /api http://localhost:3100/api
 ProxyPassReverse /api http://localhost:3100/api
 
-<Directory /var/www/mokbeats>
+<Directory /var/www/html/gulini.com.br/mokbeats>
     Options -Indexes +FollowSymLinks  # ✅ Seguro
     AllowOverride All
     Require all granted
@@ -502,9 +502,9 @@ Se continuar com problemas:
 
 1. **Verificar permissões dos arquivos:**
 ```bash
-ls -la /var/www/mokbeats/index.html
-chown -R www-data:www-data /var/www/mokbeats
-chmod -R 755 /var/www/mokbeats
+ls -la /var/www/html/gulini.com.br/mokbeats/index.html
+chown -R www-data:www-data /var/www/html/gulini.com.br/mokbeats
+chmod -R 755 /var/www/html/gulini.com.br/mokbeats
 ```
 
 2. **Verificar se porta 3100 está escutando:**
@@ -516,11 +516,11 @@ lsof -i :3100
 
 3. **Verificar configuração do backend:**
 ```bash
-cat /var/www/mokbeats/server/src/index.js | grep "listen"
+cat /var/www/html/gulini.com.br/mokbeats/server/src/index.js | grep "listen"
 # Deve mostrar: app.listen(3100, ...)
 ```
 
 ---
 
 **Última atualização:** 2025-10-12
-**Estrutura validada:** ✅ `/var/www/mokbeats` contém arquivos do build Angular
+**Estrutura validada:** ✅ `/var/www/html/gulini.com.br/mokbeats` contém arquivos do build Angular
