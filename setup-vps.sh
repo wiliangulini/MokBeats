@@ -30,7 +30,10 @@ set -e  # Para execução em caso de erro
 
 WEB_ROOT="/var/www/html/gulini.com.br/mokbeats"
 APACHE_USER="www-data"
-REQUIRED_NODE_VERSION="14"
+# Runtime exigido do backend (lote R1a do Plano P0 v2.2). Este script apenas
+# avisa se a VPS estiver desatualizada — o upgrade em si pertence ao lote R1b.
+REQUIRED_NODE_MAJOR="24"
+REQUIRED_NODE_MIN="24.18.1"
 
 # Cores para output
 RED='\033[0;31m'
@@ -206,14 +209,17 @@ check_nodejs() {
 
         # Extrair versão major
         NODE_MAJOR=$(echo $NODE_VERSION | sed 's/v\([0-9]*\).*/\1/')
+        NODE_BARE_VERSION="${NODE_VERSION#v}"
+        NODE_LOWEST=$(printf '%s\n%s\n' "$NODE_BARE_VERSION" "$REQUIRED_NODE_MIN" | sort -V | head -n1)
 
-        if [ "$NODE_MAJOR" -lt "$REQUIRED_NODE_VERSION" ]; then
-            print_warning "Node.js versão ${NODE_VERSION} é antiga (mínimo: v${REQUIRED_NODE_VERSION})"
-            print_info "Considere atualizar: https://nodejs.org/"
+        if [ "$NODE_MAJOR" != "$REQUIRED_NODE_MAJOR" ] || [ "$NODE_LOWEST" != "$REQUIRED_NODE_MIN" ]; then
+            print_warning "Node.js versão ${NODE_VERSION} diverge do exigido pelo backend (major ${REQUIRED_NODE_MAJOR}, mínimo v${REQUIRED_NODE_MIN})"
+            print_info "Upgrade/provisionamento da VPS pertence ao lote R1b — nao instalado automaticamente aqui."
+            print_info "Visite: https://nodejs.org/ ou use nvm"
         fi
     else
         print_error "Node.js não instalado"
-        print_info "Instale Node.js v${REQUIRED_NODE_VERSION}+ antes de continuar"
+        print_info "Instale Node.js v${REQUIRED_NODE_MIN}+ (major ${REQUIRED_NODE_MAJOR}) antes de continuar"
         print_info "Visite: https://nodejs.org/ ou use nvm"
         exit 1
     fi
