@@ -6,7 +6,7 @@
         <ul class="w-100">
           <div class="control">
             <li class="nav-item p-0 close border-0" (click)="filtrar()">
-              <a class="nav-link d-flex justify-content-center align-items-center p-0 border-0" type="button">
+              <a class="nav-link d-flex justify-content-center align-items-center p-0 border-0">
                 <svg clip-rule="evenodd" fill="#fff" fill-rule="evenodd" width="24px" height="24px" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"/></svg>
               </a>
             </li>
@@ -176,8 +176,11 @@
                   <svg width="24" fill="#FFF" height="24" viewBox="0 0 24 24"><path d="M20.7 12.4L7.9 20a.5.5 0 01-.8-.4v-15a.5.5 0 01.8-.4l12.8 7.5a.5.5 0 010 .8z"></path></svg>
                 </span>
                   <div class="text d-flex flex-column align-items-start justify-content-start">
-                    <p class="h4"><a href="#">{{itens.nome_musica}}</a></p>
-                    <p class="h6 mt-1">por <a href="#">{{itens.nome_produtor}}</a></p>
+                    <p class="h4"><span class="music-name">{{itens.nome_musica}}</span></p>
+                    <p class="h6 mt-1">por
+                      <a [routerLink]="['/pagina-artista']"
+                        [queryParams]="{ nome_produtor: itens.nome_produtor }">{{itens.nome_produtor}}</a>
+                    </p>
                   </div>
                 </div>
                 <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around pl-2 pr-2 pt-0 pb-0">
@@ -220,7 +223,7 @@
                   </button>
                 </div>
                 <div class="div w-100 accordion"  id="accordionT1">
-                  <div class="row flex-column" id="collapseT" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion1">
+                  <div class="collapse mb-5" id="collapseT" aria-labelledby="headingOne" data-parent="#accordion1">
                     <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 mb-3">{{frase}}</div>
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl12 w-100 d-block" >
                       <div class="div2 float-left mt-4 mr-2" *ngFor="let vx of arrVExtendida; let i = index;">
@@ -242,15 +245,15 @@
         <nav aria-label="Page navigation example" class="d-flex justify-content-center align-items-center w-75">
           <ul class="pagination mb-0 w-75 d-flex justify-content-center align-items-center">
             <li class="page-item previous">
-              <a class="page-link" href="" aria-label="Previous">
+              <a class="page-link" aria-label="Previous">
                 <span aria-hidden="true" class="material-icons">navigate_next</span>
               </a>
             </li>
-            <li class="page-item active"><a class="page-link" href="">1</a></li>
-            <li class="page-item"><a class="page-link" href="">2</a></li>
-            <li class="page-item"><a class="page-link" href="">3</a></li>
+            <li class="page-item active"><a class="page-link">1</a></li>
+            <li class="page-item"><a class="page-link">2</a></li>
+            <li class="page-item"><a class="page-link">3</a></li>
             <li class="page-item next">
-              <a class="page-link" href="" aria-label="Next">
+              <a class="page-link" aria-label="Next">
                 <span aria-hidden="true" class="material-icons">navigate_next</span>
               </a>
             </li>

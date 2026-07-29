@@ -48,7 +48,7 @@ const routes: Routes = [
   { path: 'assinatura', component: AssinaturaComponent, canActivate: [AuthGuard] },
   { path: 'pedidos', component: PedidosComponent, canActivate: [AuthGuard] },
   { path: 'formas-de-pagamento', component: FormasDePagamentoComponent, canActivate: [AuthGuard] },
-  { path: 'artista', component: ArtistComponent },
+  { path: 'artista', component: ArtistComponent, canActivate: [AuthGuard] },
   { path: 'pagina-artista', component: UsuarioArtistaComponent },
   { path: 'atualizar-informacoes', component: AtualizarInformacoesComponent, canActivate: [AuthGuard] },
   { path: 'finalizar-compra', component: FinalizarCompraComponent, canActivate: [AuthGuard, ProfileCompleteGuard] },

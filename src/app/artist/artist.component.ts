@@ -170,10 +170,8 @@ export class ArtistComponent implements OnInit, AfterViewInit {
   }
 
   editDescription() {
-    console.log('description');
     let description: any = document.querySelector('.description');
     let nameArtist: any = document.querySelector('.nameArtist');
-    let save: any = document.getElementById('save');
     description.removeAttribute('disabled');
     nameArtist.removeAttribute('disabled');
     this.formG.patchValue({
@@ -184,22 +182,6 @@ export class ArtistComponent implements OnInit, AfterViewInit {
     nameArtist.style.background = "#FFF";
     nameArtist.style.color = "#000";
     description.focus();
-    save.classList.remove('d-none');
-    save.classList.add('d-flex');
-  }
-
-  saveDescription() {
-    let description: any = document.querySelector('.description');
-    let nameArtist: any = document.querySelector('.nameArtist');
-    let save: any = document.getElementById('save');
-    console.log(this.formG.get('nameArtist')?.value); // jogar os valores dentro de console.log em uma variavel e salvar com a função save apontando pro backend.
-    console.log(this.formG.get('textAreaDescription')?.value);
-    description.setAttribute('disabled', 'true');
-    nameArtist.setAttribute('disabled', 'true');
-    description.removeAttribute('style');
-    nameArtist.removeAttribute('style');
-    save.classList.add('d-none');
-    save.classList.remove('d-flex');
   }
 
   msToMinute(ms: any) {

@@ -239,7 +239,6 @@ button.btn.btn-warning a {
 }
 article.one .container-fluid .row h4,
 article.one .material-icons,
-article.one .text p.h4 a,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-1.col-md-1.col-lg-1.col-xl-1.one p,
 article.one .container-fluid .row .col-sm-12.col-md-12.col-lg-12.col-xl-12 .col-sm-2.col-md-2.col-lg-2.col-xl-2 button.btn.btn-primary,
 #generoAccordion .container-fluid .row button.btn.btn-warning,
@@ -336,6 +335,9 @@ article.one .text p.h6 a {
   color: #b4b4b5;
   font-weight: 600 !important;
 }
+.music-name {
+  color: #fff;
+}
 article.one .text p.h6 {
   color: #828282;
   font-weight: 200 !important;
@@ -354,15 +356,6 @@ article.one .material-icons.edit {
   position: absolute;
   right: 11%;
   bottom: 24%;
-}
-article.one .material-icons.save {
-  font-size: 20px !important;
-  position: absolute;
-  right: 15%;
-  bottom: 6%;
-  border-radius: 50%;
-  box-shadow: 0 0 10px 0 #ddd;
-  padding: 5px;
 }
 article.one .material-icons.edit2 {
   font-size: 20px !important;

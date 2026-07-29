@@ -3,10 +3,10 @@
   <article class="one pb-5">
     <div class="container-fluid w-100 p-0">
       <div class="position-absolute" id="navLeft">
-        <<ul class="w-100">
+        <ul class="w-100">
           <div class="control">
             <li class="nav-item p-0 close border-0" (click)="filtrar()">
-              <a class="nav-link d-flex justify-content-center align-items-center p-0 border-0" type="button">
+              <a class="nav-link d-flex justify-content-center align-items-center p-0 border-0">
                 <svg clip-rule="evenodd" fill="#fff" fill-rule="evenodd" width="24px" height="24px"
                   stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -110,7 +110,7 @@
             <li class="d-flex align-items-center justify-content-between w-100">Instrumentos <span
                 class="ml-3 material-icons">add</span></li>
           </div>
-        </ul>>
+        </ul>
       </div>
       <div id="cf" class="container-fluid mr-0 pt-4">
         <div class="row">
@@ -133,7 +133,6 @@
                   <textarea class="description" formControlName="textAreaDescription"
                     name="textAreaDescription"></textarea>
                   <span id="edit2" (click)="editDescription()" class="material-icons edit2">edit</span>
-                  <span id="save" (click)="saveDescription()" class="material-icons save d-none">save</span>
                 </div>
                 <div class="styleMusic d-flex justify-content-center align-items-center w-75">
                   <div class="mt-4 mr-2" *ngFor="let vx of arrVExtendida; let i = index;">
@@ -219,8 +218,11 @@
                     </svg>
                   </span>
                   <div class="text d-flex flex-column align-items-start justify-content-start">
-                    <p class="h4"><a href="#">{{itens.nome_musica}}</a></p>
-                    <p class="h6 mt-1">por <a href="#">{{itens.nome_produtor}}</a></p>
+                    <p class="h4"><span class="music-name">{{itens.nome_musica}}</span></p>
+                    <p class="h6 mt-1">por
+                      <a [routerLink]="['/pagina-artista']"
+                        [queryParams]="{ nome_produtor: itens.nome_produtor }">{{itens.nome_produtor}}</a>
+                    </p>
                   </div>
                 </div>
                 <div
@@ -319,7 +321,7 @@
                   </button>
                 </div>
                 <div class="div w-100 accordion" id="accordionT1">
-                  <div class="row flex-column" id="collapseT" class="collapse mb-5" aria-labelledby="headingOne"
+                  <div class="collapse mb-5" id="collapseT" aria-labelledby="headingOne"
                     data-parent="#accordion1">
                     <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 mb-3">{{frase}}</div>
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl12 w-100 d-block">
@@ -342,15 +344,15 @@
         <nav aria-label="Page navigation example" class="d-flex justify-content-center align-items-center w-75">
           <ul class="pagination mb-0 w-75 d-flex justify-content-center align-items-center">
             <li class="page-item previous">
-              <a class="page-link" href="" aria-label="Previous">
+              <a class="page-link" aria-label="Previous">
                 <span aria-hidden="true" class="material-icons">navigate_next</span>
               </a>
             </li>
-            <li class="page-item active"><a class="page-link" href="">1</a></li>
-            <li class="page-item"><a class="page-link" href="">2</a></li>
-            <li class="page-item"><a class="page-link" href="">3</a></li>
+            <li class="page-item active"><a class="page-link">1</a></li>
+            <li class="page-item"><a class="page-link">2</a></li>
+            <li class="page-item"><a class="page-link">3</a></li>
             <li class="page-item next">
-              <a class="page-link" href="" aria-label="Next">
+              <a class="page-link" aria-label="Next">
                 <span aria-hidden="true" class="material-icons">navigate_next</span>
               </a>
             </li>
