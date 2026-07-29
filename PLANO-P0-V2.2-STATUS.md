@@ -13,7 +13,7 @@ autorização explícita.
 ## Branch e commits
 
 - Branch: `fix/security-dependencies-p0` (a partir de `dev`)
-- 9 commits, um por lote, todos já enviados a `origin/fix/security-dependencies-p0`
+- 11 commits, um por lote (9 anteriores + R1a + B1)
 - Preexistência isolada à parte: `chore/editor-font-size` (ajuste de fonte do editor,
   branch e commit próprios, nunca misturado aos lotes de segurança)
 
@@ -29,6 +29,8 @@ autorização explícita.
 | **E1** | `26fcc6a` | Atualizou `express` (`4.18.2→4.22.2`) e `body-parser` (`1.20.2→1.20.6`), permanecendo nas mesmas majors. |
 | **I1** | `28f7238` | Substituiu o pacote `uuid` pela API nativa `crypto.randomUUID()` nos 2 pontos de geração de ID (cadastro e login legado). |
 | **F1** | `1e00f16` | Removeu o SDK `firebase` (não utilizado) da raiz do projeto — sem consumidor real. |
+| **R1a** | `90a4294` | Fixou Node 24.18.1 (versão corrigida da atualização de segurança de 2026-07-28) como runtime do backend (`server/.nvmrc`, `engines`, `server/scripts/check-node.js` fail-fast em `preinstall`/`prestart`), separado do frontend em Node 16.20.2 (`.nvmrc` raiz, bridge EOL); `start.sh`/`start.ps1` passam a resolver dois binários node; `deploy-to-vps.sh` troca a instalação silenciosa de Node por verificação com abort (`--allow-runtime-mismatch` como escape); `setup-vps.sh` e docs reconciliados. |
+| **B1** | `02c781f` | Atualizou `bcrypt` de `5.1.1` para `6.0.0`, eliminando a cadeia crítica `@mapbox/node-pre-gyp`→`tar` e as altas de `brace-expansion` via `rimraf`→`glob`→`minimatch`; instalação limpa sob Node 24.18.1; novo `server/test/bcrypt-compat.test.js` comprova compatibilidade com hashes do bcrypt 5. |
 
 Cada lote foi auditado de forma independente (`/final-audit`) antes do commit, com
 reexecução de testes, comparação estrutural de lockfile e confirmação de contratos
@@ -44,6 +46,7 @@ preservados. Todos classificados **Aprovado**.
 | Depois de U2c | 12 | 1 | 6 | 2 | 3 |
 | Depois de E1 | 5 | 1 | 3 | 1 | 0 |
 | Depois de I1 | 4 | 1 | 3 | 0 | 0 |
+| Depois de B1 | **0** | **0** | **0** | 0 | 0 |
 
 **Raiz (frontend):**
 
@@ -52,9 +55,9 @@ preservados. Todos classificados **Aprovado**.
 | Antes de F1 | 73 | 1 | 45 | 24 | 3 |
 | Depois de F1 | 63 | 1 | 44 | 15 | 3 |
 
-Residuais atuais do backend (`bcrypt`, `@mapbox/node-pre-gyp`, `tar` — crítica —,
-`brace-expansion`) pertencem à trilha **B1**, bloqueada até **R1a**. Residuais da raiz
-(Angular/Cypress/toolchain) pertencem à trilha **T1**, fora da execução atual.
+Backend zerado (`npm audit` e `npm audit --omit=dev`, ambos 0 vulnerabilidades, verificado
+sob Node 24.18.1). Residuais da raiz (Angular/Cypress/toolchain) pertencem à trilha **T1**,
+fora da execução atual.
 
 ## O que não foi tocado (por decisão de escopo)
 
@@ -66,15 +69,13 @@ Residuais atuais do backend (`bcrypt`, `@mapbox/node-pre-gyp`, `tar` — crític
 
 ## Pendências e próximos passos
 
-- **R1a** (bloqueado): fixar a versão corrigida do Node 24 assim que a atualização de
-  segurança for publicada (esperada ≥ 27/07/2026); separar runtime do frontend
-  (Node 16.20.2, bridge EOL) do backend (Node 24).
-- **B1** (bloqueado, depende de R1a): atualizar `bcrypt` para a major 6, resolvendo a
-  cadeia crítica de `tar`/`@mapbox/node-pre-gyp`.
-- **R1b** (fora da execução atual): operação de deploy/VPS — só especificação futura,
-  sem acesso remoto autorizado.
+- **R1a** e **B1**: concluídos em 2026-07-29 — Node 24.18.1 (atualização de segurança
+  publicada em 2026-07-28) fixado, `bcrypt` na major 6, backend com 0 vulnerabilidades.
+- **R1b** (fora da execução atual): operação de deploy/VPS real — upgrade do Node remoto,
+  janela de manutenção, rollback do par release/runtime; só especificação até aqui, sem
+  acesso remoto autorizado. `deploy-to-vps.sh`/`setup-vps.sh` já verificam e avisam/abortam
+  sobre o runtime remoto divergente, mas não o instalam nem atualizam.
 - **T1** (posterior): atualização do toolchain Angular/Cypress — migração maior, separada
   deste plano de segurança.
 
-Nenhum destes pode ser antecipado sem autorização explícita e sem a atualização de Node 24
-correspondente.
+R1b e T1 não podem ser antecipados sem autorização explícita.
