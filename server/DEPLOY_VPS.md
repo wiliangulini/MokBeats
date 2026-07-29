@@ -6,7 +6,8 @@ Este documento contém instruções completas para fazer deploy do sistema de pe
 
 - VPS com Ubuntu/Debian (Ubuntu 24.04 LTS)
 - Acesso SSH à VPS (root@147.79.87.156)
-- Node.js instalado (v14+)
+- Node.js instalado — backend exige major 24, mínimo v24.18.1 (versão corrigida; ver lote R1a
+  do Plano P0 v2.2); upgrade da VPS é operação separada (lote R1b), não automatizada aqui
 - PM2 instalado e configurado
 - ⚠️ **CRÍTICO:** Arquivos de áudio (.mp3) em `/var/www/mokbeats/assets/audios/`
 - ⚠️ **CRÍTICO:** Arquivo `.env` em `/var/www/mokbeats/server/` com `NODE_ENV=production`
@@ -578,4 +579,4 @@ Se encontrar problemas:
 
 **Última atualização:** 2025-10-19
 **Versão do sistema:** 1.0.0
-**Compatibilidade:** Node.js 14+, Ubuntu 20.04+
+**Compatibilidade:** Node.js 24.18.1+ (backend, major 24), Ubuntu 20.04+

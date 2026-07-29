@@ -157,8 +157,8 @@ audiowaveform --version
 ### Passo 2.3: Verificar Node.js e PM2
 
 ```bash
-# Verificar Node.js
-node --version  # Deve ser v14+
+# Verificar Node.js (backend exige major 24, mínimo v24.18.1 — lote R1a do Plano P0 v2.2)
+node --version  # Deve ser v24.18.1+ (major 24)
 
 # Verificar npm
 npm --version
