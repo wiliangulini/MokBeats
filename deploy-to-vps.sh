@@ -33,6 +33,14 @@ SSH="${VPS_USER}@${VPS_IP}"
 REQUIRED_NODE_MAJOR=24
 REQUIRED_NODE_MIN="24.18.1"
 
+# Caminho absoluto do binario Node remoto resolvido por check_remote_runtime()
+# (nvm-first, com fallback ao node do PATH) e reutilizado por
+# configure_remote_env(). Necessario porque nvm.sh so e carregado em shells
+# interativos via .bashrc — uma sessao `ssh host comando` nao-interativa nao
+# enxerga versoes instaladas via nvm a menos que resolvamos o caminho
+# explicitamente (mesmo padrao ja usado nesta VPS pelo PM2 de outras apps).
+REMOTE_NODE_BIN=""
+
 NO_AUDIO=false
 NO_BUILD=false
 FRONTEND_ONLY=false
@@ -204,6 +212,42 @@ HTACCESS
   ok ".htaccess configurado"
 }
 
+resolve_remote_node_bin() {
+  ssh "$SSH" bash -s -- "$REQUIRED_NODE_MIN" "$REQUIRED_NODE_MAJOR" <<'REMOTE'
+set -u
+WANT_MIN="$1"
+WANT_MAJOR="$2"
+
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  # shellcheck disable=SC1091
+  . "$NVM_DIR/nvm.sh" >/dev/null 2>&1
+fi
+
+CANDIDATE=""
+if command -v nvm >/dev/null 2>&1; then
+  CANDIDATE="$(nvm which "$WANT_MIN" 2>/dev/null)"
+  [ "$CANDIDATE" = "N/A" ] && CANDIDATE=""
+  if [ -z "$CANDIDATE" ]; then
+    CANDIDATE="$(nvm which "$WANT_MAJOR" 2>/dev/null)"
+    [ "$CANDIDATE" = "N/A" ] && CANDIDATE=""
+  fi
+fi
+
+if [ -z "$CANDIDATE" ]; then
+  CANDIDATE="$(command -v node 2>/dev/null || true)"
+fi
+
+if [ -z "$CANDIDATE" ] || [ ! -x "$CANDIDATE" ]; then
+  echo "MISSING"
+  exit 0
+fi
+
+VERSION="$("$CANDIDATE" --version 2>/dev/null)"
+echo "${CANDIDATE}|${VERSION}"
+REMOTE
+}
+
 check_remote_runtime() {
   if [ "$FRONTEND_ONLY" = true ]; then
     return
@@ -211,23 +255,27 @@ check_remote_runtime() {
 
   step "Verificar runtime Node remoto"
   if [ "$DRY_RUN" = true ]; then
-    info "DRY-RUN: verificaria se o Node remoto e major ${REQUIRED_NODE_MAJOR}, >= v${REQUIRED_NODE_MIN}."
+    info "DRY-RUN: verificaria se o Node remoto e major ${REQUIRED_NODE_MAJOR}, >= v${REQUIRED_NODE_MIN} (nvm-first, fallback ao PATH)."
     return
   fi
 
-  local remote_version
-  remote_version="$(ssh "$SSH" 'command -v node >/dev/null 2>&1 && node --version || echo MISSING')"
+  local probe remote_bin remote_version
+  probe="$(resolve_remote_node_bin)"
 
-  if [ "$remote_version" = "MISSING" ]; then
+  if [ "$probe" = "MISSING" ]; then
     if [ "$ALLOW_RUNTIME_MISMATCH" = true ]; then
-      warn "Node.js nao encontrado na VPS. Prosseguindo por --allow-runtime-mismatch (o backend ira falhar adiante se o runtime nao existir de fato)."
+      warn "Node.js nao encontrado na VPS (nem via nvm, nem no PATH). Prosseguindo por --allow-runtime-mismatch (o backend ira falhar adiante se o runtime nao existir de fato)."
+      REMOTE_NODE_BIN=""
       return
     fi
-    err "Node.js nao encontrado na VPS."
+    err "Node.js nao encontrado na VPS (nem via nvm, nem no PATH)."
     info "Provisionamento/upgrade da VPS pertence ao lote R1b (fora deste script); nao sera instalado automaticamente."
     info "Use --allow-runtime-mismatch para prosseguir mesmo assim (nao recomendado)."
     exit 1
   fi
+
+  remote_bin="${probe%%|*}"
+  remote_version="${probe#*|}"
 
   local major
   major="$(echo "$remote_version" | sed 's/^v\([0-9]*\).*/\1/')"
@@ -243,16 +291,21 @@ check_remote_runtime() {
 
   if [ "$compatible" = true ]; then
     ok "Node remoto ${remote_version} compativel (major ${REQUIRED_NODE_MAJOR}, >= v${REQUIRED_NODE_MIN})."
+    info "Binario: ${remote_bin}"
+    REMOTE_NODE_BIN="$remote_bin"
     return
   fi
 
   if [ "$ALLOW_RUNTIME_MISMATCH" = true ]; then
-    warn "Node remoto ${remote_version} diverge do exigido (major ${REQUIRED_NODE_MAJOR}, >= v${REQUIRED_NODE_MIN}). Prosseguindo por --allow-runtime-mismatch."
+    warn "Node remoto ${remote_version} (${remote_bin}) diverge do exigido (major ${REQUIRED_NODE_MAJOR}, >= v${REQUIRED_NODE_MIN}). Prosseguindo por --allow-runtime-mismatch."
+    REMOTE_NODE_BIN="$remote_bin"
     return
   fi
 
-  err "Node remoto ${remote_version} diverge do exigido (major ${REQUIRED_NODE_MAJOR}, >= v${REQUIRED_NODE_MIN})."
+  err "Node remoto ${remote_version} (${remote_bin}) diverge do exigido (major ${REQUIRED_NODE_MAJOR}, >= v${REQUIRED_NODE_MIN})."
   info "Upgrade da VPS pertence ao lote R1b (fora deste script); nao sera instalado/atualizado automaticamente."
+  info "Se o Node correto ja estiver instalado via nvm, confirme com:"
+  info "  ssh ${SSH} 'export NVM_DIR=\$HOME/.nvm; . \$NVM_DIR/nvm.sh; nvm ls'"
   info "Use --allow-runtime-mismatch para prosseguir mesmo assim (nao recomendado; bcrypt 6 exige Node >=18 e pode falhar em runtime divergente)."
   exit 1
 }
@@ -265,11 +318,12 @@ upload_backend() {
   [ -d "server" ] || { err "server/ nao encontrado."; exit 1; }
 
   step "Upload do backend"
-  info "Excluindo: node_modules/, .env, uploads/"
+  info "Excluindo: node_modules/, .env*, uploads/"
   run_ssh "mkdir -p '${VPS_PATH}/server'"
   rsync_run --delete \
     --exclude=node_modules \
     --exclude=.env \
+    --exclude=.env.* \
     --exclude=uploads/ \
     server/ "${SSH}:${VPS_PATH}/server/"
   ok "Backend enviado"
@@ -277,7 +331,13 @@ upload_backend() {
 
 upload_audio() {
   if [ "$FRONTEND_ONLY" = true ] || [ "$BACKEND_ONLY" = true ] || [ "$NO_AUDIO" = true ]; then
-    [ "$NO_AUDIO" = true ] && warn "Upload de audio pulado (--no-audio)"
+    # if em vez de "[ ] && warn" — sob set -e, um teste falso nessa forma
+    # curta faz a funcao retornar o status do teste (1), abortando o
+    # script no call site mesmo sem nenhum erro real (bug pre-existente,
+    # so nao se manifestava porque deploys anteriores usavam --no-audio).
+    if [ "$NO_AUDIO" = true ]; then
+      warn "Upload de audio pulado (--no-audio)"
+    fi
     return
   fi
 
@@ -311,24 +371,34 @@ configure_remote_env() {
     skip_check="1"
   fi
 
-  ssh "$SSH" bash -s -- "$VPS_PATH" "$BACKEND_PORT" "$PM2_NAME" "$skip_check" <<'REMOTE'
+  ssh "$SSH" bash -s -- "$VPS_PATH" "$BACKEND_PORT" "$PM2_NAME" "$skip_check" "$REMOTE_NODE_BIN" <<'REMOTE'
 set -euo pipefail
 
 VPS_PATH="$1"
 BACKEND_PORT="$2"
 PM2_NAME="$3"
 SKIP_NODE_CHECK="$4"
+NODE_BIN="$5"
 ENV_FILE="${VPS_PATH}/server/.env"
 VHOST_FILE="/etc/apache2/sites-available/gulini.com.br-le-ssl.conf"
 
-# Node.js remoto ja foi verificado por check_remote_runtime() (lote R1a do
-# Plano P0 v2.2); este script nunca instala/atualiza Node na VPS -
-# provisionamento pertence ao lote R1b.
-if ! command -v node >/dev/null 2>&1; then
+# Node.js remoto ja foi resolvido por check_remote_runtime() (lote R1a do
+# Plano P0 v2.2) via resolve_remote_node_bin() (nvm-first, fallback ao PATH)
+# e chega aqui como caminho absoluto — necessario porque esta sessao SSH
+# nao-interativa nao enxerga nvm.sh. Este script nunca instala/atualiza Node
+# na VPS - provisionamento pertence ao lote R1b.
+if [ -z "$NODE_BIN" ] || [ ! -x "$NODE_BIN" ]; then
+  NODE_BIN="$(command -v node || true)"
+fi
+if [ -z "$NODE_BIN" ]; then
   echo "[ERROR] Node.js nao encontrado na VPS. Provisionamento pertence ao lote R1b."
   exit 1
 fi
-echo "[OK] Node.js $(node --version)"
+NODE_DIR="$(dirname "$NODE_BIN")"
+NPM_BIN="${NODE_DIR}/npm"
+[ -x "$NPM_BIN" ] || NPM_BIN="$(command -v npm || true)"
+PATH="${NODE_DIR}:${PATH}"
+echo "[OK] Node.js $("$NODE_BIN" --version) (${NODE_BIN})"
 
 if [ "$SKIP_NODE_CHECK" = "1" ]; then
   export MOKBEATS_SKIP_NODE_CHECK=1
@@ -337,7 +407,7 @@ fi
 
 if ! command -v pm2 >/dev/null 2>&1; then
   echo "[STEP] Instalando PM2..."
-  npm install -g pm2
+  "$NPM_BIN" install -g pm2
 fi
 echo "[OK] PM2 $(pm2 --version)"
 
@@ -375,9 +445,9 @@ chmod 600 "$ENV_FILE" || true
 echo "[STEP] Instalando dependencias do backend..."
 cd "${VPS_PATH}/server"
 if [ -f package-lock.json ]; then
-  npm ci --omit=dev
+  "$NPM_BIN" ci --omit=dev
 else
-  npm install --omit=dev
+  "$NPM_BIN" install --omit=dev
 fi
 echo "[OK] Dependencias do backend instaladas"
 
@@ -397,14 +467,17 @@ else
 fi
 
 echo "[STEP] Iniciando/reiniciando backend com PM2..."
+# Recriado (delete + start) em vez de "pm2 restart" para garantir que o
+# --interpreter fique sempre fixado no NODE_BIN resolvido acima — "pm2
+# restart" nao altera o interpretador de um processo ja existente, e o
+# mok-backend pode ter sido criado antes do R1b com o node do PATH (system).
 if pm2 describe "$PM2_NAME" >/dev/null 2>&1; then
-  pm2 restart "$PM2_NAME"
-else
-  pm2 start "${VPS_PATH}/server/src/index.js" --name "$PM2_NAME"
+  pm2 delete "$PM2_NAME"
 fi
+pm2 start "${VPS_PATH}/server/src/index.js" --name "$PM2_NAME" --interpreter "$NODE_BIN"
 pm2 save
 pm2 startup 2>/dev/null || true
-echo "[OK] Backend em PM2 configurado"
+echo "[OK] Backend em PM2 configurado (interpreter: ${NODE_BIN})"
 REMOTE
 
   ok "Ambiente remoto configurado"
@@ -472,6 +545,8 @@ REMOTE
       warn "Frontend pode estar indisponivel. Verifique manualmente: ${PUBLIC_URL}"
     fi
   fi
+
+  return 0
 }
 
 show_summary() {
@@ -484,6 +559,7 @@ show_summary() {
   info "Backend via proxy: https://gulini.com.br/api"
   info "Logs: ssh ${SSH} 'pm2 logs ${PM2_NAME}'"
   info "Status: ssh ${SSH} 'pm2 status'"
+  return 0
 }
 
 parse_args "$@"
