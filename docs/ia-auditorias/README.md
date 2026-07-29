@@ -54,6 +54,10 @@ Legenda: **Preenchido** = conteúdo real · **Modelo** = stub não preenchido ("
 - `TEMPLATE-agent-report.md` — template canônico de relatório final/handoff (use este).
 - `relatorio-prompt-claude.md` — registro histórico de uma tarefa de configuração de IA anterior.
 - `DIAGNOSTICO-*` / relatórios de migração de IA, quando existirem — histórico da governança.
+- `2026-07-29__plano-p0-v2.2-status-final__claude.md` e
+  `2026-07-29__plano-p0-v2.2-auditoria-t0-b1__claude-final-audit.md` — status e auditoria final
+  do Plano P0 v2.2 (remediação de vulnerabilidades de dependências), arquivados após merge do PR
+  #2 em `dev` (commit `20569dc`). Backend encerrado com 0 vulnerabilidades no `npm audit`.
 
 > Os relatórios **Modelo** (R14–R28) são stubs planejados: preencha-os ao executar a etapa
 > correspondente, não os trate como auditoria concluída. R02 está vazio e deve ser refeito ou
