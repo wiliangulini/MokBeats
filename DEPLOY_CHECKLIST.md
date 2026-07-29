@@ -64,18 +64,18 @@
 
 ### Informações da VPS
 
-- **IP**: 147.79.87.156
+- **IP**: 31.97.160.61
 - **SO**: Ubuntu 24.04 LTS
 - **Usuário**: root
-- **SSH**: `ssh root@147.79.87.156`
-- **Diretório Web**: `/var/www/mokbeats`
+- **SSH**: `ssh root@31.97.160.61`
+- **Diretório Web**: `/var/www/html/gulini.com.br/mokbeats`
 
 ### Instalação de Dependências na VPS
 
 - [ ] **Conectar à VPS**
 
   ```bash
-  ssh root@147.79.87.156
+  ssh root@31.97.160.61
   ```
 
 - [ ] **Instalar audiowaveform via PPA** (MÉTODO CORRETO)
@@ -109,10 +109,10 @@
 - [ ] **Criar estrutura de diretórios**
 
   ```bash
-  sudo mkdir -p /var/www/mokbeats/assets/audios
-  sudo mkdir -p /var/www/mokbeats/server
-  sudo chown -R root:root /var/www/mokbeats
-  sudo chmod -R 755 /var/www/mokbeats
+  sudo mkdir -p /var/www/html/gulini.com.br/mokbeats/assets/audios
+  sudo mkdir -p /var/www/html/gulini.com.br/mokbeats/server
+  sudo chown -R root:root /var/www/html/gulini.com.br/mokbeats
+  sudo chmod -R 755 /var/www/html/gulini.com.br/mokbeats
   ```
 
 ---
@@ -127,13 +127,13 @@
 
   ```bash
   cd /home/hustler/Documentos/projetos/MokBeats
-  rsync -avz --delete dist/ root@147.79.87.156:/var/www/mokbeats/
+  rsync -avz --delete dist/ root@31.97.160.61:/var/www/html/gulini.com.br/mokbeats/
   ```
 
 - [ ] **Verificar na VPS**
 
   ```bash
-  ssh root@147.79.87.156 "ls -la /var/www/mokbeats/index.html"
+  ssh root@31.97.160.61 "ls -la /var/www/html/gulini.com.br/mokbeats/index.html"
   ```
 
 ### Upload do Backend
@@ -142,13 +142,13 @@
 
   ```bash
   cd /home/hustler/Documentos/projetos/MokBeats
-  rsync -avz --delete server/ root@147.79.87.156:/var/www/mokbeats/server/
+  rsync -avz --delete server/ root@31.97.160.61:/var/www/html/gulini.com.br/mokbeats/server/
   ```
 
 - [ ] **Verificar na VPS**
 
   ```bash
-  ssh root@147.79.87.156 "ls -la /var/www/mokbeats/server/src/index.js"
+  ssh root@31.97.160.61 "ls -la /var/www/html/gulini.com.br/mokbeats/server/src/index.js"
   ```
 
 ### Upload dos Áudios (se necessário)
@@ -156,13 +156,13 @@
 - [ ] **Verificar se áudios já estão na VPS**
 
   ```bash
-  ssh root@147.79.87.156 "ls -lah /var/www/mokbeats/assets/audios/"
+  ssh root@31.97.160.61 "ls -lah /var/www/html/gulini.com.br/mokbeats/assets/audios/"
   ```
 
 - [ ] **Upload dos áudios (se não estiverem)**
 
   ```bash
-  rsync -avz src/assets/audios/ root@147.79.87.156:/var/www/mokbeats/assets/audios/
+  rsync -avz src/assets/audios/ root@31.97.160.61:/var/www/html/gulini.com.br/mokbeats/assets/audios/
   ```
 
 ---
@@ -174,7 +174,7 @@
 - [ ] **Instalar dependências do backend**
 
   ```bash
-  cd /var/www/mokbeats/server
+  cd /var/www/html/gulini.com.br/mokbeats/server
   npm install
   ```
 
@@ -183,7 +183,7 @@
 - [ ] **Configurar variáveis de ambiente (.env)**
 
   ```bash
-  cd /var/www/mokbeats/server
+  cd /var/www/html/gulini.com.br/mokbeats/server
 
   # Criar arquivo .env
   cat > .env << 'EOF'
@@ -200,7 +200,7 @@
 - [ ] **Gerar peaks reais dos áudios**
 
   ```bash
-  cd /var/www/mokbeats/server
+  cd /var/www/html/gulini.com.br/mokbeats/server
   node scripts/generate-peaks.js
   ```
 
@@ -210,7 +210,7 @@
   🎵 Iniciando processamento de músicas...
 
   🔧 Ambiente: production
-  📁 Base path para áudios: /var/www/mokbeats
+  📁 Base path para áudios: /var/www/html/gulini.com.br/mokbeats
 
   ✅ 24 músicas carregadas do JSON
 
@@ -223,8 +223,8 @@
 - [ ] **Verificar arquivo musicas.json criado**
 
   ```bash
-  ls -la /var/www/mokbeats/server/data/musicas.json
-  cat /var/www/mokbeats/server/data/musicas.json | grep -c '"peaks"'
+  ls -la /var/www/html/gulini.com.br/mokbeats/server/data/musicas.json
+  cat /var/www/html/gulini.com.br/mokbeats/server/data/musicas.json | grep -c '"peaks"'
   ```
 
 ---
@@ -241,7 +241,7 @@
 - [ ] **Iniciar novo backend**
 
   ```bash
-  cd /var/www/mokbeats/server
+  cd /var/www/html/gulini.com.br/mokbeats/server
   pm2 start src/index.js --name mok-backend
   ```
 
@@ -337,7 +337,7 @@
 
 ### Testes do Frontend (Navegador)
 
-- [ ] **Acessar site**: `http://147.79.87.156`
+- [ ] **Acessar site**: `http://31.97.160.61`
 
 - [ ] **Verificar se página carrega**
 
@@ -433,8 +433,8 @@
 
 ```bash
 # Enviar para VPS e executar:
-scp setup-vps.sh root@147.79.87.156:/tmp/
-ssh root@147.79.87.156
+scp setup-vps.sh root@31.97.160.61:/tmp/
+ssh root@31.97.160.61
 chmod +x /tmp/setup-vps.sh
 /tmp/setup-vps.sh
 ```
@@ -442,7 +442,7 @@ chmod +x /tmp/setup-vps.sh
 **Ou executar remotamente**:
 
 ```bash
-ssh root@147.79.87.156 'bash -s' < setup-vps.sh
+ssh root@31.97.160.61 'bash -s' < setup-vps.sh
 ```
 
 **Checklist do script**:
@@ -474,8 +474,8 @@ ssh root@147.79.87.156 'bash -s' < setup-vps.sh
 **Verificar**:
 
 ```bash
-ssh root@147.79.87.156 "ls -la /var/www/mokbeats/index.html"
-ssh root@147.79.87.156 "sudo chmod -R 755 /var/www/mokbeats"
+ssh root@31.97.160.61 "ls -la /var/www/html/gulini.com.br/mokbeats/index.html"
+ssh root@31.97.160.61 "sudo chmod -R 755 /var/www/html/gulini.com.br/mokbeats"
 ```
 
 ### Problema: Backend não inicia
@@ -483,7 +483,7 @@ ssh root@147.79.87.156 "sudo chmod -R 755 /var/www/mokbeats"
 **Verificar logs**:
 
 ```bash
-ssh root@147.79.87.156 "pm2 logs mok-backend --err --lines 50"
+ssh root@31.97.160.61 "pm2 logs mok-backend --err --lines 50"
 ```
 
 ### Problema: Peaks não carregam
@@ -491,8 +491,8 @@ ssh root@147.79.87.156 "pm2 logs mok-backend --err --lines 50"
 **Regenerar peaks**:
 
 ```bash
-ssh root@147.79.87.156 "cd /var/www/mokbeats/server && node scripts/generate-peaks.js"
-ssh root@147.79.87.156 "pm2 restart mok-backend"
+ssh root@31.97.160.61 "cd /var/www/html/gulini.com.br/mokbeats/server && node scripts/generate-peaks.js"
+ssh root@31.97.160.61 "pm2 restart mok-backend"
 ```
 
 ### Problema: Áudios não tocam
@@ -500,8 +500,8 @@ ssh root@147.79.87.156 "pm2 restart mok-backend"
 **Verificar arquivos**:
 
 ```bash
-ssh root@147.79.87.156 "ls -lah /var/www/mokbeats/assets/audios/"
-ssh root@147.79.87.156 "sudo chmod 644 /var/www/mokbeats/assets/audios/*.mp3"
+ssh root@31.97.160.61 "ls -lah /var/www/html/gulini.com.br/mokbeats/assets/audios/"
+ssh root@31.97.160.61 "sudo chmod 644 /var/www/html/gulini.com.br/mokbeats/assets/audios/*.mp3"
 ```
 
 ### Problema: audiowaveform não encontrado
@@ -509,7 +509,7 @@ ssh root@147.79.87.156 "sudo chmod 644 /var/www/mokbeats/assets/audios/*.mp3"
 **Reinstalar via PPA**:
 
 ```bash
-ssh root@147.79.87.156 << 'EOF'
+ssh root@31.97.160.61 << 'EOF'
 sudo apt update
 sudo apt install -y software-properties-common
 sudo add-apt-repository -y ppa:chris-needham/ppa
@@ -525,7 +525,7 @@ EOF
 
 Após completar todos os itens acima, seu deploy está completo quando:
 
-- ✅ Site acessível em `http://147.79.87.156`
+- ✅ Site acessível em `http://31.97.160.61`
 - ✅ Backend rodando: `pm2 status` mostra `mok-backend` online
 - ✅ Logs sem erros: `pm2 logs mok-backend`
 - ✅ API respondendo: `curl http://localhost:3100/api/musicas`
