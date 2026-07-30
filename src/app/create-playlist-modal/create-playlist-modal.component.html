@@ -8,13 +8,13 @@
     <div class="modal-body">
       <div class="card border-0">
         <div class="row justify-content-center align-items-center">
-          <h1 class="font-weight-bold mb-3 text-center">Nova Playlist</h1>
+          <h1 class="fw-bold mb-3 text-center">Nova Playlist</h1>
         </div>
         <div class="row flex-column newPlayListInt">
           <form [formGroup]="form" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-center align-items-center flex-column pt-2 pb-2">
             <input type="text" formControlName="name" placeholder="Nome da Playlist" [(ngModel)]="playlist['name']" required />
             <input type="text" formControlName="description" placeholder="Descrição (Opcional)" [(ngModel)]="playlist.description" />
-            <a type="submit" (click)="save()" class="font-weight-bold p-1 w-50 submit d-flex justify-content-center align-items-center">Criar Playlist</a>
+            <a type="submit" (click)="save()" class="fw-bold p-1 w-50 submit d-flex justify-content-center align-items-center">Criar Playlist</a>
           </form>
         </div>
       </div>

@@ -5,7 +5,7 @@
       <div class="col-sm-11 col-md-9 col-lg-8 col-xl-7 d-flex flex-column align-items-center">
 
         <div class="title mb-4">
-          <h1 class="titleInt font-weight-bold">Dados Pessoais</h1>
+          <h1 class="titleInt fw-bold">Dados Pessoais</h1>
           <p class="text-muted text-center mb-0">Mantenha seus dados atualizados para comprar, vender ou receber pagamentos.</p>
         </div>
 
@@ -22,7 +22,7 @@
 
           <!-- ── Seção 1: Identidade ── -->
           <div class="card mb-4 p-3">
-            <h5 class="font-weight-bold mb-3">Identificação</h5>
+            <h5 class="fw-bold mb-3">Identificação</h5>
 
             <mat-form-field appearance="fill" class="w-100 mb-3">
               <mat-label>Nome completo</mat-label>
@@ -88,7 +88,7 @@
 
           <!-- ── Seção 2: Endereço ── -->
           <div class="card mb-4 p-3">
-            <h5 class="font-weight-bold mb-3">Endereço</h5>
+            <h5 class="fw-bold mb-3">Endereço</h5>
 
             <mat-form-field appearance="fill" class="w-100 mb-3">
               <mat-label>Endereço</mat-label>
@@ -121,10 +121,10 @@
 
           <!-- ── Seção 3: Documentos (uploads) ── -->
           <div class="card mb-4 p-3">
-            <h5 class="font-weight-bold mb-3">Documentos</h5>
+            <h5 class="fw-bold mb-3">Documentos</h5>
 
             <div class="mb-4">
-              <label class="d-block font-weight-bold mb-1">Foto segurando documento <span class="text-danger">*</span></label>
+              <label class="d-block fw-bold mb-1">Foto segurando documento <span class="text-danger">*</span></label>
               <p class="text-muted small mb-2">Tire uma selfie segurando seu documento de identidade (RG, CNH ou Passaporte) aberto e visível.</p>
               <app-custom-file-upload
                 title="Foto com documento"
@@ -140,7 +140,7 @@
             </div>
 
             <div class="mb-0">
-              <label class="d-block font-weight-bold mb-1">Comprovante de residência <span class="text-danger">*</span></label>
+              <label class="d-block fw-bold mb-1">Comprovante de residência <span class="text-danger">*</span></label>
               <p class="text-muted small mb-2">Aceito: conta de luz, água, gás, telefone ou extrato bancário (últimos 3 meses).</p>
               <app-custom-file-upload
                 title="Comprovante de residência"
@@ -158,7 +158,7 @@
 
           <!-- ── Seção 4: Tipo de conta (Jurídica) ── -->
           <div class="card mb-4 p-3">
-            <h5 class="font-weight-bold mb-3">Tipo de Conta</h5>
+            <h5 class="fw-bold mb-3">Tipo de Conta</h5>
 
             <mat-radio-group formControlName="tipoConta" class="d-flex flex-column gap-2">
               <mat-radio-button value="none">Pessoa Física</mat-radio-button>
@@ -168,7 +168,7 @@
 
             <!-- Conta Jurídica Brasileira -->
             <div *ngIf="tipoConta === 'br'" class="mt-4">
-              <h6 class="font-weight-bold mb-3">Dados da Empresa (Brasil)</h6>
+              <h6 class="fw-bold mb-3">Dados da Empresa (Brasil)</h6>
 
               <mat-form-field appearance="fill" class="w-100 mb-3">
                 <mat-label>Nome da empresa</mat-label>
@@ -185,7 +185,7 @@
               </mat-form-field>
 
               <div class="mb-0">
-                <label class="d-block font-weight-bold mb-1">Documento da empresa <span class="text-danger">*</span></label>
+                <label class="d-block fw-bold mb-1">Documento da empresa <span class="text-danger">*</span></label>
                 <p class="text-muted small mb-2">
                   Documentos aceitos: Contrato Social, CNPJ (cartão), Certificado de MEI, ou qualquer documento oficial emitido pela Receita Federal.
                 </p>
@@ -205,7 +205,7 @@
 
             <!-- Conta Jurídica Estrangeira -->
             <div *ngIf="tipoConta === 'foreign'" class="mt-4">
-              <h6 class="font-weight-bold mb-3">Dados da Empresa (Estrangeira)</h6>
+              <h6 class="fw-bold mb-3">Dados da Empresa (Estrangeira)</h6>
 
               <mat-form-field appearance="fill" class="w-100 mb-3">
                 <mat-label>Nome da empresa</mat-label>
@@ -228,7 +228,7 @@
               </mat-form-field>
 
               <div class="mb-0">
-                <label class="d-block font-weight-bold mb-1">Documento da empresa <span class="text-danger">*</span></label>
+                <label class="d-block fw-bold mb-1">Documento da empresa <span class="text-danger">*</span></label>
                 <p class="text-muted small mb-2">
                   Documentos aceitos: Commercial Registry / Business Certificate, Articles of Incorporation, Certificate of Formation (LLC), ou qualquer documento de registro oficial emitido pelo governo do país de origem.
                 </p>
@@ -247,7 +247,7 @@
             </div>
           </div>
 
-          <button type="submit" class="btn-warning font-weight-bold text-uppercase text-center w-100 mb-5"
+          <button type="submit" class="btn-warning fw-bold text-uppercase text-center w-100 mb-5"
             [disabled]="savingProfile">
             {{ savingProfile ? 'Salvando...' : 'Salvar Dados Pessoais' }}
           </button>
@@ -257,7 +257,7 @@
         <div class="card mb-5 p-3 w-100">
           <div class="d-flex justify-content-between align-items-center"
                style="cursor:pointer;" (click)="senhaAberta = !senhaAberta">
-            <h5 class="font-weight-bold mb-0">Alterar Senha</h5>
+            <h5 class="fw-bold mb-0">Alterar Senha</h5>
             <span class="material-icons">{{ senhaAberta ? 'expand_less' : 'expand_more' }}</span>
           </div>
 
@@ -295,7 +295,7 @@
                 </mat-error>
               </mat-form-field>
 
-              <button type="submit" class="btn btn-outline-warning font-weight-bold text-uppercase w-100"
+              <button type="submit" class="btn btn-outline-warning fw-bold text-uppercase w-100"
                 [disabled]="savingPassword">
                 {{ savingPassword ? 'Alterando...' : 'Alterar Senha' }}
               </button>

@@ -72,13 +72,13 @@
               </button>
             </li>
             <li
-              data-toggle="collapse"
-              data-target="#collapse01"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapse01"
               aria-expanded="false"
               aria-controls="collapse01"
               class="d-flex align-items-center justify-content-between w-100"
             >
-              Gênero <span class="ml-3 material-icons">add</span>
+              Gênero <span class="ms-3 material-icons">add</span>
             </li>
             <div class="accordion w-100" id="accordion1">
               <div class="card">
@@ -86,7 +86,7 @@
                   id="collapse01"
                   class="collapse mb-5"
                   aria-labelledby="headingOne"
-                  data-parent="#accordion1"
+                  data-bs-parent="#accordion1"
                 >
                   <div
                     class="div2 pt-3"
@@ -100,7 +100,7 @@
                     >
                     <div
                       *ngFor="let mus of music[i]"
-                      class="textMusic d-flex mt-3 mb-3 pl-3"
+                      class="textMusic d-flex mt-3 mb-3 ps-3"
                     >
                       <mat-checkbox
                         [value]="mus"
@@ -116,16 +116,16 @@
           </div>
           <div class="control">
             <li
-              data-toggle="collapse"
-              data-target="#collapse02"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapse02"
               aria-expanded="true"
               aria-controls="collapse02"
               class="d-flex align-items-center justify-content-between w-100"
             >
               <p class="m-0">
-                Vozes <span id="up" class="ml-1 text-uppercase">Novidade</span>
+                Vozes <span id="up" class="ms-1 text-uppercase">Novidade</span>
               </p>
-              <span class="ml-3 material-icons">add</span>
+              <span class="ms-3 material-icons">add</span>
             </li>
             <div class="accordion w-100" id="accordion2">
               <div class="card">
@@ -133,7 +133,7 @@
                   id="collapse02"
                   class="collapse mb-5"
                   aria-labelledby="headingOne"
-                  data-parent="#accordion2"
+                  data-bs-parent="#accordion2"
                 >
                   <div class="div2 pt-3" *ngFor="let g of vozes">
                     <mat-checkbox
@@ -149,13 +149,13 @@
           </div>
           <div class="control">
             <li
-              data-toggle="collapse"
-              data-target="#collapse03"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapse03"
               aria-expanded="false"
               aria-controls="collapse03"
               class="d-flex align-items-center justify-content-between w-100"
             >
-              Humor <span class="ml-3 material-icons">add</span>
+              Humor <span class="ms-3 material-icons">add</span>
             </li>
             <div class="accordion w-100" id="accordion3">
               <div class="card">
@@ -163,7 +163,7 @@
                   id="collapse03"
                   class="collapse mb-5"
                   aria-labelledby="headingOne"
-                  data-parent="#accordion3"
+                  data-bs-parent="#accordion3"
                 >
                   <div class="div2 pt-3" *ngFor="let g of humor">
                     <mat-checkbox
@@ -179,8 +179,8 @@
           </div>
           <div class="control">
             <li
-              data-toggle="collapse"
-              data-target="#collapse04"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapse04"
               aria-expanded="true"
               aria-controls="collapse04"
               class="d-flex align-items-center justify-content-between w-100"
@@ -190,7 +190,7 @@
                 (0-<span id="num">{{ number }}</span
                 >)
               </p>
-              <span class="ml-3 material-icons">add</span>
+              <span class="ms-3 material-icons">add</span>
             </li>
             <div class="accordion w-100" id="accordion4">
               <div class="card">
@@ -198,7 +198,7 @@
                   id="collapse04"
                   class="collapse mb-5"
                   aria-labelledby="headingOne"
-                  data-parent="#accordion4"
+                  data-bs-parent="#accordion4"
                 >
                   <div class="div2 pt-3">
                     <input
@@ -223,8 +223,8 @@
           </div>
           <div class="control">
             <li
-              data-toggle="collapse"
-              data-target="#collapse05"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapse05"
               aria-expanded="true"
               aria-controls="collapse05"
               class="d-flex align-items-center justify-content-between w-100"
@@ -237,7 +237,7 @@
                 (0:00-<span id="dur">{{ durationAut }}</span
                 >)
               </p>
-              <span class="ml-3 material-icons">add</span>
+              <span class="ms-3 material-icons">add</span>
             </li>
             <div class="accordion w-100" id="accordion5">
               <div class="card">
@@ -245,7 +245,7 @@
                   id="collapse05"
                   class="collapse mb-5"
                   aria-labelledby="headingOne"
-                  data-parent="#accordion5"
+                  data-bs-parent="#accordion5"
                 >
                   <div class="div2 pt-3">
                     <input
@@ -270,13 +270,13 @@
           </div>
           <div class="control">
             <li
-              data-toggle="collapse"
-              data-target="#collapse06"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapse06"
               aria-expanded="false"
               aria-controls="collapse06"
               class="d-flex align-items-center justify-content-between w-100"
             >
-              Artistas <span class="ml-3 material-icons">add</span>
+              Artistas <span class="ms-3 material-icons">add</span>
             </li>
             <div class="accordion w-100" id="accordion6">
               <div class="card">
@@ -284,7 +284,7 @@
                   id="collapse06"
                   class="collapse mb-5"
                   aria-labelledby="headingOne"
-                  data-parent="#accordion6"
+                  data-bs-parent="#accordion6"
                 >
                   <div class="div2 pt-3" *ngFor="let artista of artistas">
                     <mat-checkbox
@@ -300,13 +300,13 @@
           </div>
           <div class="control">
             <li
-              data-toggle="collapse"
-              data-target="#collapse07"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapse07"
               aria-expanded="false"
               aria-controls="collapse07"
               class="d-flex align-items-center justify-content-between w-100"
             >
-              Instrumentos <span class="ml-3 material-icons">add</span>
+              Instrumentos <span class="ms-3 material-icons">add</span>
             </li>
             <div class="accordion w-100" id="accordion7">
               <div class="card">
@@ -314,7 +314,7 @@
                   id="collapse07"
                   class="collapse mb-5"
                   aria-labelledby="headingOne"
-                  data-parent="#accordion7"
+                  data-bs-parent="#accordion7"
                 >
                   <div
                     class="div2 pt-3"
@@ -333,13 +333,13 @@
           </div>
           <div class="control">
             <li
-              data-toggle="collapse"
-              data-target="#collapse08"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapse08"
               aria-expanded="false"
               aria-controls="collapse08"
               class="d-flex align-items-center justify-content-between w-100"
             >
-              Tom <span class="ml-3 material-icons">add</span>
+              Tom <span class="ms-3 material-icons">add</span>
             </li>
             <div class="accordion w-100" id="accordion8">
               <div class="card">
@@ -347,7 +347,7 @@
                   id="collapse08"
                   class="collapse mb-5"
                   aria-labelledby="headingOne"
-                  data-parent="#accordion8"
+                  data-bs-parent="#accordion8"
                 >
                   <div class="div2 pt-3" *ngFor="let k of keyOptions">
                     <mat-checkbox
@@ -365,7 +365,7 @@
       </div>
       <div
         id="cf"
-        class="container-fluid mr-0 pt-4 music-results"
+        class="container-fluid me-0 pt-4 music-results"
         [class.music-results--filter-open]="isFilterPanelOpen"
         [class.music-results--filter-closed]="!isFilterPanelOpen"
       >
@@ -389,7 +389,7 @@
                     <button
                       class="bttn dropdown-toggle"
                       type="button"
-                      data-toggle="dropdown"
+                      data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
                       {{ select }}
@@ -409,8 +409,8 @@
                   <button
                     class="button"
                     type="button"
-                    data-toggle="collapse"
-                    data-target="#collapseT"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseT"
                     aria-expanded="true"
                     aria-controls="collapseT"
                   >
@@ -448,7 +448,7 @@
             <div
               class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start music-grid-col music-info-col"
             >
-              <div class="titlesMusic position-relative pl-5">
+              <div class="titlesMusic position-relative ps-5">
                 <p>Nome</p>
               </div>
             </div>
@@ -491,7 +491,7 @@
             <div class="controlDivs d-flex flex-column w-100">
               <div class="controlDivsInt row">
                 <div
-                  class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start pr-5 info-col music-grid-col music-info-col"
+                  class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start pe-5 info-col music-grid-col music-info-col"
                 >
                   <button
                     class="svg play"
@@ -531,7 +531,7 @@
                   ></app-wave-surfer-test>
                 </div>
                 <div
-                  class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around pl-2 pr-2 pt-0 pb-0 music-grid-col music-metrics-col"
+                  class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around ps-2 pe-2 pt-0 pb-0 music-grid-col music-metrics-col"
                   [ngClass]="{'col-sm-1': isDesktop, 'col-sm-5': !isDesktop}"
                 >
                   <p class="h6 mb-0" id="duracao">
@@ -567,7 +567,7 @@
                 >
                   <button
                     type="button"
-                    data-toggle="tooltip"
+                    data-bs-toggle="tooltip"
                     data-placement="bot"
                     title="Adicionar aos favoritos"
                     class="btn btn-icons"
@@ -601,7 +601,7 @@
                   <button
                     class="btn btn-icons"
                     type="button"
-                    data-toggle="tooltip"
+                    data-bs-toggle="tooltip"
                     data-placement="top"
                     title="Adicionar a playlist"
                     (click)="addMusicPlayList(itens)"
@@ -627,7 +627,7 @@
                   <button
                     class="btn btn-icons rmv"
                     type="button"
-                    data-toggle="tooltip"
+                    data-bs-toggle="tooltip"
                     data-placement="top"
                     title="Copiar link"
                     (click)="copiarLink(i)"
@@ -646,7 +646,7 @@
                   <button
                     class="btn btn-icons rmv"
                     type="button"
-                    data-toggle="tooltip"
+                    data-bs-toggle="tooltip"
                     data-placement="top"
                     title="Baixar amostra"
                     (click)="baixarAmostra(i)"
@@ -735,7 +735,7 @@
                     id="collapseT"
                     class="collapse mb-5"
                     aria-labelledby="headingOne"
-                    data-parent="#accordion1"
+                    data-bs-parent="#accordion1"
                   >
                     <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 mb-3">
                       {{ frase }}
@@ -744,7 +744,7 @@
                       class="col-sm-12 col-md-12 col-lg-12 col-xl12 w-100 d-block"
                     >
                       <div
-                        class="div2 float-left mt-4 mr-2"
+                        class="div2 float-start mt-4 me-2"
                         *ngFor="let vx of arrVExtendida; let i = index"
                       >
                         <span id="arrve" class="p-2 text-center">
@@ -777,9 +777,9 @@
       <div
         class="row titlesAtalhos d-flex justify-content-center align-items-center flex-column mb-5"
       >
-        <p class="h3 font-weight-bold mb-0">
+        <p class="h3 fw-bold mb-0">
           Atalhos do teclado
-          <span class="material-icons ml-2">expand_less</span>
+          <span class="material-icons ms-2">expand_less</span>
         </p>
         <p class="h6">
           Descubra atalhos para uma experiência de navegação ainda melhor
@@ -928,47 +928,47 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex txt pl-5">
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex txt ps-5">
           <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 one">
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">Esquerda/Direita</p>
+              <p class="h5 fw-bold">Esquerda/Direita</p>
               <div class="lineInt"></div>
               <p class="font12">Retroceder/Avançar</p>
             </div>
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">Para Cima/Para Baixo</p>
+              <p class="h5 fw-bold">Para Cima/Para Baixo</p>
               <div class="lineInt"></div>
               <p class="font12">Música anterior/próxima</p>
             </div>
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">Barra de espaço</p>
+              <p class="h5 fw-bold">Barra de espaço</p>
               <div class="lineInt"></div>
               <p class="font12">Reproduzir/Pausar</p>
             </div>
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">C</p>
+              <p class="h5 fw-bold">C</p>
               <div class="lineInt"></div>
               <p class="font12">Finalizar a compra</p>
             </div>
           </div>
           <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 two">
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">F</p>
+              <p class="h5 fw-bold">F</p>
               <div class="lineInt"></div>
               <p class="font12">Adicionar aos favoritos</p>
             </div>
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">A</p>
+              <p class="h5 fw-bold">A</p>
               <div class="lineInt"></div>
               <p class="font12">Adicionar ao carrinho</p>
             </div>
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">P</p>
+              <p class="h5 fw-bold">P</p>
               <div class="lineInt"></div>
               <p class="font12">Adicionar a uma playlist</p>
             </div>
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">L</p>
+              <p class="h5 fw-bold">L</p>
               <div class="lineInt"></div>
               <p class="font12">Adicionar à playlist mais recente</p>
             </div>

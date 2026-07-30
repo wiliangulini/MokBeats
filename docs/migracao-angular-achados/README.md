@@ -29,3 +29,7 @@ em que foram descobertos.
 | [0005](0005-tooltips-bootstrap-inertes.md) | 30 tooltips `data-toggle="tooltip"` inertes (sem JS de inicialização) | 0 (herdado do plano, A12) | Baixa | Aberto |
 | [0006](0006-typo-data-toogle-add-playlist-modal.md) | Typo `data-toogle` — 2 ocorrências, não 1 (contagem corrigida) | 0 (herdado do plano, A12) | Baixa | Aberto |
 | [0007](0007-inputmask-dependencia-morta.md) | `inputmask@5.0.8` (npm) instalado mas nunca importado | 0 (herdado do plano, A4) | Baixa | Aberto |
+| [0008](0008-cypress-fullpage-screenshot-bug-home.md) | `cy.screenshot({capture:'fullPage'})` quebra na rota Home (bug do Cypress, não do app) | 3 | Baixa | Resolvido (mig/e3) |
+| [0009](0009-faq-nao-tem-accordion-bootstrap.md) | FAQ não usa accordion do Bootstrap (correção de premissa do checklist) | 3 | Baixa | Resolvido (documentado) |
+| [0010](0010-close-e-custom-file-nao-existem-como-bootstrap.md) | `.close` e `custom-file` do plano (3b) não existem como componentes Bootstrap reais | 3 | Baixa | Resolvido (documentado) |
+| [0011](0011-form-group-mantido-intocado.md) | `form-group` mantido intocado (risco de colisão com CSS custom) | 3 | Baixa | Resolvido (documentado) |
