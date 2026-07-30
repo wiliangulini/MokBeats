@@ -2,19 +2,26 @@
 // comparação nas Etapas 3 (Bootstrap 4→5) e D1 (Material 15/MDC). Screenshots
 // em cypress/screenshots/baseline-visual.cy.ts/ — comparar manualmente após
 // cada etapa que toque template/estilo global.
+//
+// capture:'viewport' (não 'fullPage'): a Home tem uma imagem de fundo grande
+// no hero que confunde o algoritmo de scroll+stitch do Cypress em
+// 'fullPage' — captura o mesmo frame do topo repetidamente, empilhado,
+// mesmo com o layout real intacto (confirmado por scroll manual + screenshot
+// de viewport em múltiplas posições). Não é regressão do app; é limitação do
+// mecanismo de captura do Cypress para essa página. Ver achado 0008.
 describe('Baseline visual', () => {
   it('rotas públicas', () => {
     cy.visit('/#/home');
     cy.wait(800);
-    cy.screenshot('home', { capture: 'fullPage' });
+    cy.screenshot('home', { capture: 'viewport' });
 
     cy.visit('/#/musicas');
     cy.wait(1000);
-    cy.screenshot('musicas', { capture: 'fullPage' });
+    cy.screenshot('musicas', { capture: 'viewport' });
 
     cy.visit('/#/login');
     cy.wait(500);
-    cy.screenshot('login', { capture: 'fullPage' });
+    cy.screenshot('login', { capture: 'viewport' });
   });
 
   it('carrinho com item (logado como comprador)', () => {
@@ -37,7 +44,7 @@ describe('Baseline visual', () => {
 
     cy.get('a.cart-link').click({ force: true });
     cy.wait(500);
-    cy.screenshot('carrinho', { capture: 'fullPage' });
+    cy.screenshot('carrinho', { capture: 'viewport' });
   });
 
   it('finalizar-compra e upload (logado como produtor com perfil completo)', () => {
@@ -75,11 +82,11 @@ describe('Baseline visual', () => {
         },
       });
       cy.wait(800);
-      cy.screenshot('finalizar-compra', { capture: 'fullPage' });
+      cy.screenshot('finalizar-compra', { capture: 'viewport' });
 
       cy.visit('/#/upload');
       cy.wait(1000);
-      cy.screenshot('upload-mat-form-field', { capture: 'fullPage' });
+      cy.screenshot('upload-mat-form-field', { capture: 'viewport' });
     });
   });
 });

@@ -10,13 +10,13 @@
                 <svg clip-rule="evenodd" fill="#fff" fill-rule="evenodd" width="24px" height="24px" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"/></svg>
               </a>
             </li>
-            <li data-toggle="collapse" data-target="#collapse01" aria-expanded="true" aria-controls="collapse01" class="d-flex align-items-center justify-content-between w-100">Estilos <span class="ml-3 material-icons">add</span></li>
+            <li data-bs-toggle="collapse" data-bs-target="#collapse01" aria-expanded="true" aria-controls="collapse01" class="d-flex align-items-center justify-content-between w-100">Estilos <span class="ms-3 material-icons">add</span></li>
             <div class="accordion w-100" id="accordion1">
               <div class="card">
-                <div id="collapse01" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion1">
+                <div id="collapse01" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion1">
                   <div class="div2 pt-3" *ngFor="let g of titles; let i = index;">
                     <mat-checkbox>{{g}}</mat-checkbox>
-                    <div *ngFor="let mus of music[i];" class="textMusic d-flex mt-3 mb-3 pl-3">
+                    <div *ngFor="let mus of music[i];" class="textMusic d-flex mt-3 mb-3 ps-3">
                       <mat-checkbox>{{mus}}</mat-checkbox>
                     </div>
                   </div>
@@ -25,10 +25,10 @@
             </div>
           </div>
           <div class="control">
-            <li data-toggle="collapse" data-target="#collapse02" aria-expanded="true" aria-controls="collapse02" class="d-flex align-items-center justify-content-between w-100"><p class="m-0">Vozes <span id="up" class="ml-1 text-uppercase">Novidade</span></p><span class="ml-3 material-icons">add</span></li>
+            <li data-bs-toggle="collapse" data-bs-target="#collapse02" aria-expanded="true" aria-controls="collapse02" class="d-flex align-items-center justify-content-between w-100"><p class="m-0">Vozes <span id="up" class="ms-1 text-uppercase">Novidade</span></p><span class="ms-3 material-icons">add</span></li>
             <div class="accordion w-100" id="accordion2">
               <div class="card">
-                <div id="collapse02" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion2">
+                <div id="collapse02" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion2">
                   <div class="div2 pt-3" *ngFor="let g of vozes;">
                     <mat-checkbox>{{g}}</mat-checkbox>
                   </div>
@@ -37,10 +37,10 @@
             </div>
           </div>
           <div class="control">
-            <li data-toggle="collapse" data-target="#collapse03" aria-expanded="true" aria-controls="collapse03" class="d-flex align-items-center justify-content-between w-100">Humor <span class="ml-3 material-icons">add</span></li>
+            <li data-bs-toggle="collapse" data-bs-target="#collapse03" aria-expanded="true" aria-controls="collapse03" class="d-flex align-items-center justify-content-between w-100">Humor <span class="ms-3 material-icons">add</span></li>
             <div class="accordion w-100" id="accordion3">
               <div class="card">
-                <div id="collapse03" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion3">
+                <div id="collapse03" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion3">
                   <div class="div2 pt-3" *ngFor="let g of humor;">
                     <mat-checkbox>{{g}}</mat-checkbox>
                   </div>
@@ -49,12 +49,12 @@
             </div>
           </div>
           <div class="control">
-            <li data-toggle="collapse" data-target="#collapse04" aria-expanded="true" aria-controls="collapse04" class="d-flex align-items-center justify-content-between w-100">
-              BPM <p class="mb-0 position-relative" *ngIf="number != undefined">(0-<span id="num">{{number}}</span>)</p><span class="ml-3 material-icons">add</span>
+            <li data-bs-toggle="collapse" data-bs-target="#collapse04" aria-expanded="true" aria-controls="collapse04" class="d-flex align-items-center justify-content-between w-100">
+              BPM <p class="mb-0 position-relative" *ngIf="number != undefined">(0-<span id="num">{{number}}</span>)</p><span class="ms-3 material-icons">add</span>
             </li>
             <div class="accordion w-100" id="accordion4">
               <div class="card">
-                <div id="collapse04" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion4">
+                <div id="collapse04" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion4">
                   <div class="div2 pt-3">
                     <input class="w-100" type="range" formControlName="bpm" min="1" max="250"  (ngModelChange)="onChangedEvent($event, 'bpm')"
                            [(ngModel)]="musicas.bpm"/>
@@ -68,12 +68,12 @@
             </div>
           </div>
           <div class="control">
-            <li data-toggle="collapse" data-target="#collapse05" aria-expanded="true" aria-controls="collapse05" class="d-flex align-items-center justify-content-between w-100">
-              Duração <p class="mb-0 position-relative dur" *ngIf="duration != undefined">(0:00-<span id="dur">{{durationAut}}</span>)</p><span class="ml-3 material-icons">add</span>
+            <li data-bs-toggle="collapse" data-bs-target="#collapse05" aria-expanded="true" aria-controls="collapse05" class="d-flex align-items-center justify-content-between w-100">
+              Duração <p class="mb-0 position-relative dur" *ngIf="duration != undefined">(0:00-<span id="dur">{{durationAut}}</span>)</p><span class="ms-3 material-icons">add</span>
             </li>
             <div class="accordion w-100" id="accordion5">
               <div class="card">
-                <div id="collapse05" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion5">
+                <div id="collapse05" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion5">
                   <div class="div2 pt-3">
                     <input class="w-100" type="range" formControlName="duracao" min="1" max="300"  (ngModelChange)="onChangedEvent($event, 'duracao')" [(ngModel)]="musicas.duracao"/>
                     <div class="num d-flex justify-content-between align-items-center w-100">
@@ -86,17 +86,17 @@
             </div>
           </div>
           <div class="control">
-            <li class="d-flex align-items-center justify-content-between w-100">Artistas <span class="ml-3 material-icons">add</span></li>
+            <li class="d-flex align-items-center justify-content-between w-100">Artistas <span class="ms-3 material-icons">add</span></li>
           </div>
           <div class="control">
-            <li class="d-flex align-items-center justify-content-between w-100">Instrumentos <span class="ml-3 material-icons">add</span></li>
+            <li class="d-flex align-items-center justify-content-between w-100">Instrumentos <span class="ms-3 material-icons">add</span></li>
           </div>
           <div class="control">
-            <li class="d-flex align-items-center justify-content-between w-100">Avançado <span class="ml-3 material-icons">add</span></li>
+            <li class="d-flex align-items-center justify-content-between w-100">Avançado <span class="ms-3 material-icons">add</span></li>
           </div>
         </ul>
       </div>
-      <div id="cf" class="container-fluid mr-0 pt-4">
+      <div id="cf" class="container-fluid me-0 pt-4">
         <div class="row">
           <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column align-items-start justify-content-center">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex p-0">
@@ -107,7 +107,7 @@
               <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 d-flex justify-content-end align-items-center">
                 <div class="popularidade">
                   <div class="dropdown">
-                    <button class="bttn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                    <button class="bttn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                       {{select}}
                     </button>
                     <div class="dropdown-menu">
@@ -116,7 +116,7 @@
                   </div>
                 </div>
                 <div class="visualizacao" >
-                  <button class="button" type="button"  data-toggle="collapse" data-target="#collapseT" aria-expanded="true" aria-controls="collapseT">
+                  <button class="button" type="button"  data-bs-toggle="collapse" data-bs-target="#collapseT" aria-expanded="true" aria-controls="collapseT">
                     <svg width="24" height="24" viewBox="0 0 24 24"><path d="M8 4.3h12v2H8zm-4 0h2v2H4zm4 4.5h12v2H8zm-4 0h2v2H4zm4 4.5h12v2H8zm-4 0h2v2H4zm4 4.5h12v2H8zm-4 0h2v2H4z"></path></svg>
                   </button>
                 </div>
@@ -133,7 +133,7 @@
         <div class="row mt-5">
           <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex titlesMDiv mb-3">
             <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start" >
-              <div class="titlesMusic position-relative pl-5">
+              <div class="titlesMusic position-relative ps-5">
                 <p>Nome</p>
               </div>
             </div>
@@ -160,7 +160,7 @@
           <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column border-bottom" id="array" *ngFor="let itens of arrMusica; let i = index;">
             <div class="controlDivs d-flex flex-column w-100">
               <div class="controlDivsInt row">
-                <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start pr-5" >
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start pe-5" >
                 <span class="svg">
                   <svg width="24" fill="#FFF" height="24" viewBox="0 0 24 24"><path d="M20.7 12.4L7.9 20a.5.5 0 01-.8-.4v-15a.5.5 0 01.8-.4l12.8 7.5a.5.5 0 010 .8z"></path></svg>
                 </span>
@@ -169,7 +169,7 @@
                     <p class="h6 mt-1">por <a href="#">{{itens.nome_produtor}}</a></p>
                   </div>
                 </div>
-                <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around pl-2 pr-2 pt-0 pb-0">
+                <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around ps-2 pe-2 pt-0 pb-0">
                   <p class="h6 mb-0" id="duracao">{{this.msToMinute(itens.duracao)}}</p>
                   <p class="h6 mb-0" id="bpm">{{itens.bpm}}</p>
                 </div>
@@ -181,7 +181,7 @@
                     <span class="h6 span" *ngFor="let t of trecho;">{{t}}</span>
                   </div>
                   <div class="controlLoops">
-                    <span class="span loopsIcon" type="button" data-toggle="dropdown" aria-expanded="false">
+                    <span class="span loopsIcon" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                       <svg width="16" height="16" viewBox="0 0 16 16"><path d="M11.5 4.4C13.5 4.4 15 6 15 8s-1.6 3.6-3.5 3.6H10l.4.4a.6.6 0 010 .8l-.4.2c-.1 0-.3 0-.4-.2l-1.3-1.3-.1-.2v-.7l1.5-1.5h.2L10 9h.1l.3.1a.6.6 0 010 .9l-.4.4h1.6c1.3 0 2.4-1.1 2.4-2.5s-1-2.5-2.4-2.5h-3A.6.6 0 018 5c0-.3.3-.5.6-.5zM6.1 3c.1 0 .3 0 .4.2l1.3 1.3.1.2v.6L6.3 6.9h-.2L6 7l-.3-.1a.6.6 0 010-.9l.4-.4H4.5A2.4 2.4 0 002 8c0 1.4 1 2.5 2.4 2.5h3c.2 0 .5.2.5.6 0 .3-.3.5-.6.5h-3C2.7 11.6 1 10 1 8s1.6-3.6 3.5-3.6H6L5.7 4a.6.6 0 010-.8l.4-.2z"></path></svg>
                       <span class="material-icons arrow">expand_more</span>
                     </span>
@@ -194,21 +194,21 @@
                   </div>
                 </div>
                 <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 d-flex align-items-center justify-content-around">
-                  <button type="button" data-toggle="tooltip" data-placement="bot" title="Adicionar aos favoritos" class="btn btn-icons" (click)="curtir(i)">
+                  <button type="button" data-bs-toggle="tooltip" data-placement="bot" title="Adicionar aos favoritos" class="btn btn-icons" (click)="curtir(i)">
                     <svg style="display: block;" class="hearth" width="24" height="24" fill="rgba(255,255,255,.5)" viewBox="0 0 24 24">
                       <path d="M12 21a1 1 0 01-.6-.3l-.7-.5c-5.6-4.6-9-7.3-9-11.4 0-2.9 1.3-5 3.7-5.5A6.8 6.8 0 0112 5.5a6.7 6.7 0 016.5-2.2c2.4.6 3.9 2.6 3.9 5.5 0 4-3.5 6.8-9.1 11.4l-.7.5a1 1 0 01-.6.2zM6.8 5a3.7 3.7 0 00-.9.2c-1.5.4-2.3 1.7-2.3 3.6 0 3.1 3.2 5.6 8.4 9.8 5.2-4.2 8.4-6.7 8.4-9.8 0-2-.9-3.2-2.4-3.6a4.7 4.7 0 00-5.1 2.4 1 1 0 01-1.8 0 5 5 0 00-4.3-2.5z"></path>
                     </svg>
                     <svg style="display: none;" class="hearth1" width="24" height="24" fill="#dcad54" viewBox="0 0 24 24"><path d="M18.5 3.3A6.7 6.7 0 0012 5.4a6.8 6.8 0 00-6.6-2.1C3 3.9 1.6 5.9 1.6 8.8c0 4 3.5 6.8 9.1 11.4l.7.5a1 1 0 001.2 0l.7-.5c5.6-4.6 9-7.3 9-11.4 0-2.9-1.4-5-3.8-5.5z"></path></svg>
                   </button>
-                  <button class="btn btn-icons" type="button" data-toggle="tooltip" data-placement="top" title="Remover música da playlist" (click)="removeMusicPlayList(i)">
+                  <button class="btn btn-icons" type="button" data-bs-toggle="tooltip" data-placement="top" title="Remover música da playlist" (click)="removeMusicPlayList(i)">
                     <span class="material-icons removePlaylist">playlist_remove</span>
                   </button>
-                  <button class="btn btn-icons rmv" type="button" data-toggle="tooltip" data-placement="top" title="Copiar link" (click)="copiarLink(i)">
+                  <button class="btn btn-icons rmv" type="button" data-bs-toggle="tooltip" data-placement="top" title="Copiar link" (click)="copiarLink(i)">
                     <svg width="24" height="24" fill="rgba(255,255,255,.5)" viewBox="0 0 24 24">
                       <path d="M22.5 4l-2.6-2.5a3 3 0 00-4.2 0L11 6.2a3 3 0 000 4.2l.4.4-.6.6-.4-.4a3 3 0 00-4.2 0l-4.7 4.7a3 3 0 000 4.2l2.6 2.6a3 3 0 004.2 0l4.7-4.7a3 3 0 000-4.2l-.8-.8.6-.6.8.8a3 3 0 004.2 0l4.7-4.7a3 3 0 000-4.2zm-11 11a1 1 0 010 1.4L7 21a1 1 0 01-1.4 0L3 18.4A1 1 0 013 17l4.7-4.7a1 1 0 011.4 0l.4.4-1.8 1.8A1 1 0 109 16l1.8-1.8zm9.6-8.1l-4.7 4.7a1 1 0 01-1.4 0l-.8-.8L16 9a1 1 0 00-1.4-1.4l-1.8 1.8-.4-.4a1 1 0 010-1.4L17.1 3a1 1 0 011.4 0l2.6 2.6a1 1 0 010 1.4z"></path>
                     </svg>
                   </button>
-                  <button class="btn btn-icons rmv" type="button" data-toggle="tooltip" data-placement="top" title="Baixar amostra" (click)="baixarAmostra(i)">
+                  <button class="btn btn-icons rmv" type="button" data-bs-toggle="tooltip" data-placement="top" title="Baixar amostra" (click)="baixarAmostra(i)">
                     <svg width="24" height="24" fill="rgba(255,255,255,.5)" viewBox="0 0 24 24">
                       <path d="M20 17.6a1 1 0 00-1.4.1L16.8 20H7.2l-1.8-2.3A1 1 0 003.8 19L6 21.6a1 1 0 00.8.4h10.6a1 1 0 00.8-.4l2-2.6a1 1 0 00-.1-1.4zM11.3 15a1 1 0 001.4 0l4.7-4.7A1 1 0 0016 8.8l-3 3V3a1 1 0 00-2 0v8.9l-3-3a1 1 0 00-1.4 1.4z"></path></svg>
                   </button>
@@ -224,10 +224,10 @@
                   </button>
                 </div>
                 <div class="div w-100 accordion"  id="accordionT1">
-                  <div class="row flex-column" id="collapseT" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion1">
+                  <div class="row flex-column" id="collapseT" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion1">
                     <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 mb-3">{{frase}}</div>
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl12 w-100 d-block" >
-                      <div class="div2 float-left mt-4 mr-2" *ngFor="let vx of arrVExtendida; let i = index;">
+                      <div class="div2 float-start mt-4 me-2" *ngFor="let vx of arrVExtendida; let i = index;">
                         <a id="arrve"  class="p-2 text-center">
                           {{vx.viewValue}}
                         </a>
@@ -266,7 +266,7 @@
   <section class="atalhos">
     <div class="container-fluid">
       <div class="row titlesAtalhos d-flex justify-content-center align-items-center flex-column mb-5">
-        <p class="h3 font-weight-bold mb-0">Atalhos do teclado <span class="material-icons ml-2">expand_less</span></p>
+        <p class="h3 fw-bold mb-0">Atalhos do teclado <span class="material-icons ms-2">expand_less</span></p>
         <p class="h6">Descubra atalhos para uma experiência de navegação ainda melhor</p>
       </div>
       <div class="row">
@@ -391,47 +391,47 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex txt pl-5">
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex txt ps-5">
           <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 one">
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">Esquerda/Direita</p>
+              <p class="h5 fw-bold">Esquerda/Direita</p>
               <div class="lineInt"></div>
               <p class="font12">Retroceder/Avançar</p>
             </div>
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">Para Cima/Para Baixo</p>
+              <p class="h5 fw-bold">Para Cima/Para Baixo</p>
               <div class="lineInt"></div>
               <p class="font12">Música anterior/próxima</p>
             </div>
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">Barra de espaço</p>
+              <p class="h5 fw-bold">Barra de espaço</p>
               <div class="lineInt"></div>
               <p class="font12">Reproduzir/Pausar</p>
             </div>
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">C</p>
+              <p class="h5 fw-bold">C</p>
               <div class="lineInt"></div>
               <p class="font12">Finalizar a compra</p>
             </div>
           </div>
           <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 two">
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">F</p>
+              <p class="h5 fw-bold">F</p>
               <div class="lineInt"></div>
               <p class="font12">Adicionar aos favoritos</p>
             </div>
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">A</p>
+              <p class="h5 fw-bold">A</p>
               <div class="lineInt"></div>
               <p class="font12">Adicionar ao carrinho</p>
             </div>
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">P</p>
+              <p class="h5 fw-bold">P</p>
               <div class="lineInt"></div>
               <p class="font12">Adicionar a uma playlist</p>
             </div>
             <div class="line d-flex justify-content-between align-items-center">
-              <p class="h5 font-weight-bold">L</p>
+              <p class="h5 fw-bold">L</p>
               <div class="lineInt"></div>
               <p class="font12">Adicionar à playlist mais recente</p>
             </div>

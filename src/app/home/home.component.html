@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row flex-column align-items-center justify-content-center">
       <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 title">
-        <h1 class="font-weight-bold">Aqui na MokBeats você encontra músicas e SFX que causam impacto</h1>
+        <h1 class="fw-bold">Aqui na MokBeats você encontra músicas e SFX que causam impacto</h1>
         <h3>Acesse músicas e efeitos sonoros de alta qualidade e com curadoria especializada que você não encontrará em
           nenhum outro lugar.</h3>
       </div>
@@ -18,7 +18,7 @@
                 </option>
               </select>
             </div>
-            <input class="form-control mr-sm-2" [(ngModel)]="mokbeats.search" type="search" formControlName="search"
+            <input class="form-control me-sm-2" [(ngModel)]="mokbeats.search" type="search" formControlName="search"
               placeholder="Pesquise aqui" aria-label="Search">
             <button class="btn btn-warning my-2 my-sm-0" type="submit">Pesquisar</button>
           </div>
@@ -47,8 +47,8 @@
           </div>
         </div>
         <div
-          class="col-sm-2 col-md-2 col-lg-2 col-xl-2 one d-flex align-items-center justify-content-center pl-2 pr-2 pt-0 pb-0">
-          <p class="h6 mr-3 mb-0">{{ musica?.duracao ? formatDur(musica.duracao) : '' }}</p>
+          class="col-sm-2 col-md-2 col-lg-2 col-xl-2 one d-flex align-items-center justify-content-center ps-2 pe-2 pt-0 pb-0">
+          <p class="h6 me-3 mb-0">{{ musica?.duracao ? formatDur(musica.duracao) : '' }}</p>
           <p class="h6 mb-0" *ngIf="musica?.bpm">{{ musica.bpm }} bpm</p>
         </div>
         <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 p-0 loops d-flex align-items-center justify-content-around">
@@ -57,19 +57,19 @@
           <p class="h6">60</p>
         </div>
         <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-center justify-content-around">
-          <button type="button" data-toggle="tooltip" data-placement="bot" title="Adicionar aos favoritos"
+          <button type="button" data-bs-toggle="tooltip" data-placement="bot" title="Adicionar aos favoritos"
             class="btn btn-icons" (click)="curtir(i)">
             <span class="material-icons addFavorite">favorite</span>
           </button>
-          <button class="btn btn-icons" type="button" data-toggle="tooltip" data-placement="top"
+          <button class="btn btn-icons" type="button" data-bs-toggle="tooltip" data-placement="top"
             title="Adicionar a playlist" (click)="addPlayList(musica)">
             <span class="material-icons addPlaylist">playlist_add</span>
           </button>
-          <button class="btn btn-icons" type="button" data-toggle="tooltip" data-placement="top" title="Copiar link"
+          <button class="btn btn-icons" type="button" data-bs-toggle="tooltip" data-placement="top" title="Copiar link"
             (click)="copiarLink(i)">
             <span class="material-icons">link</span>
           </button>
-          <button class="btn btn-icons" type="button" data-toggle="tooltip" data-placement="top" title="Baixar amostra"
+          <button class="btn btn-icons" type="button" data-bs-toggle="tooltip" data-placement="top" title="Baixar amostra"
             (click)="baixarAmostra(i)">
             <span class="material-icons">download</span>
           </button>
@@ -146,7 +146,7 @@
     </div>
     <div class="row m-0 pt-4 pb-4 trusted justify-content-center align-items-center">
       <p class="h5 mb-0 d-flex justify-content-center align-items-center"><span
-          class="material-icons mr-2">task_alt</span> Com a confiança das melhores empresas do mundo e profissionais criativos.
+          class="material-icons me-2">task_alt</span> Com a confiança das melhores empresas do mundo e profissionais criativos.
       </p>
     </div>
   </div>
@@ -157,7 +157,7 @@
       <p class="h1 text-center">Nunca perca uma batida</p>
       <p class="h5 text-center">Receba notícias, insights e dicas diretamente na sua caixa de entrada.</p>
       <form class="form w-50" [formGroup]="form" (ngSubmit)="onSubmit()">
-        <p class="h5 win"><span class="material-icons mr-2">task_alt</span>Congratulations, You have been Subscribed!
+        <p class="h5 win"><span class="material-icons me-2">task_alt</span>Congratulations, You have been Subscribed!
         </p>
         <div class="control w-100 d-flex justify-content-center align-items-center">
           <div class="inputInt d-flex justify-content-start align-items-center">

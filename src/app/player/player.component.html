@@ -48,11 +48,11 @@
          <p class="h6 mb-0">4</p>
        </div> -->
       <div
-        class="div d-flex flex-column align-items-center justify-content-center pl-3 pr-3 controls time"
+        class="div d-flex flex-column align-items-center justify-content-center ps-3 pe-3 controls time"
       >
         <div class="d-flex">
-          <span class="pr-1" id="time">0:00</span>/
-          <span class="pl-1" id="duration">0:00</span>
+          <span class="pe-1" id="time">0:00</span>/
+          <span class="ps-1" id="duration">0:00</span>
         </div>
         <small>{{ currentMusicBpm }}</small>
       </div>
@@ -76,7 +76,7 @@
         </button>
         <button
           type="button"
-          data-toggle="tooltip"
+          data-bs-toggle="tooltip"
           data-placement="bot"
           title="Adicionar aos favoritos"
           class="btn btn-icons"
@@ -110,7 +110,7 @@
         <button
           class="btn btn-icons"
           type="button"
-          data-toggle="tooltip"
+          data-bs-toggle="tooltip"
           data-placement="top"
           title="Adicionar a playlist"
           (click)="addMusicPlayList($event)"
@@ -136,7 +136,7 @@
         <button
           class="btn btn-icons rmv"
           type="button"
-          data-toggle="tooltip"
+          data-bs-toggle="tooltip"
           data-placement="top"
           title="Copiar link"
           (click)="copiarLink($event)"
@@ -155,7 +155,7 @@
         <button
           class="btn btn-icons mobile"
           type="button"
-          data-toggle="tooltip"
+          data-bs-toggle="tooltip"
           data-placement="top"
           title="Licença"
         >
@@ -207,9 +207,9 @@
         class="div controls down licenca d-flex justify-content-between align-items-center col-4"
       >
         <button
-          class="font-weight-bold d-flex btn btn-icons rmv"
+          class="fw-bold d-flex btn btn-icons rmv"
           type="button"
-          data-toggle="tooltip"
+          data-bs-toggle="tooltip"
           data-placement="top"
           title="Baixar amostra"
           (click)="baixarAmostra($event)"
@@ -224,22 +224,22 @@
               d="M20 17.6a1 1 0 00-1.4.1L16.8 20H7.2l-1.8-2.3A1 1 0 003.8 19L6 21.6a1 1 0 00.8.4h10.6a1 1 0 00.8-.4l2-2.6a1 1 0 00-.1-1.4zM11.3 15a1 1 0 001.4 0l4.7-4.7A1 1 0 0016 8.8l-3 3V3a1 1 0 00-2 0v8.9l-3-3a1 1 0 00-1.4 1.4z"
             ></path>
           </svg>
-          <p class="class text-uppercase m-0 font-weight-bold">download</p>
+          <p class="class text-uppercase m-0 fw-bold">download</p>
         </button>
         <button
-          class="font-weight-bold d-flex btn btn-icons rmv"
+          class="fw-bold d-flex btn btn-icons rmv"
           type="button"
-          data-toggle="tooltip"
+          data-bs-toggle="tooltip"
           data-placement="top"
           title="Licença"
           (click)="baixarAmostra($event)"
         >
-          <p class="class text-uppercase m-0 font-weight-bold">licença</p>
+          <p class="class text-uppercase m-0 fw-bold">licença</p>
         </button>
         <button
           type="button"
           (click)="trackCustomOpen()"
-          class="font-weight-bold text-uppercase text-center"
+          class="fw-bold text-uppercase text-center"
         >
           track custom
           <span class="material-icons iconTrackCustom"
@@ -249,7 +249,7 @@
         <button
           type="button"
           (click)="resetStems()"
-          class="font-weight-bold text-uppercase text-center"
+          class="fw-bold text-uppercase text-center"
         >
           reset volumes
         </button>
