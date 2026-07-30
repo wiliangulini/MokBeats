@@ -31,7 +31,7 @@ caminho, responda apenas no chat.
 2. `git diff`.
 3. Arquivos alterados.
 4. Aderência ao escopo.
-5. Riscos em Angular 14, rotas, player, upload, carrinho, licenças e dashboard.
+5. Riscos em Angular, rotas, player, upload, carrinho, licenças e dashboard.
 6. Autenticação/autorização: `AuthGuard`, `ProdutorGuard`, token e perfil.
 7. API/payloads/FormData quando aplicável.
 8. Build, lint, typecheck e testes disponíveis.

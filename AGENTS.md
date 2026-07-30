@@ -7,7 +7,7 @@ Use este arquivo para Codex, Claude Code e qualquer outro agente que atue neste 
 ## 1. Identidade do projeto
 
 **Projeto:** MokBeats — marketplace de beats, músicas, efeitos sonoros, licenças e área de produtores
-**Stack:** Angular 14, TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API, WaveSurfer.js
+**Stack:** Angular 14.3.0 — em migração para 22.1.0 (`docs/adr/0002-migracao-angular-14-para-22.md`; checkpoint em 21.2.19), TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API, WaveSurfer.js
 **Branch de implementação:** `dev`
 **Branch de referência visual (dashboard):** `codex/create-musical-producer-dashboard-design` — somente referência visual, nunca merge direto.
 
@@ -21,7 +21,7 @@ Use este arquivo para Codex, Claude Code e qualquer outro agente que atue neste 
 4. `CLAUDE.md` + `.claude/commands/` + `.claude/skills/` — quando estiver usando Claude Code.
 5. `CODEX.md` + `.codex/instructions.md` — quando estiver usando Codex ou houver continuidade.
 6. Código existente da branch atual.
-7. Boas práticas de Angular 14, TypeScript, SCSS, Bootstrap, Angular Material, WaveSurfer.js e UX.
+7. Boas práticas de Angular, TypeScript, SCSS, Bootstrap, Angular Material, WaveSurfer.js e UX.
 
 Conflito entre instruções: preserve a estabilidade da `dev` e comunique antes de aplicar alterações grandes.
 
@@ -118,7 +118,7 @@ caminho. Ela referencia a nota completa em `docs/areas/` e a seção-fonte em `P
 | Área/caminho | Rule acionável | Seção-fonte |
 | --- | --- | --- |
 | Login, guards, interceptors, token/perfil | `.claude/rules/auth-and-guards.md` | §7 |
-| Estrutura Angular 14, módulos, rotas globais, DI | `.claude/rules/angular-14.md` | §6 |
+| Estrutura Angular, módulos, rotas globais, DI | `.claude/rules/angular.md` | §6 |
 | Services HTTP, payloads, endpoints, environments | `.claude/rules/api-contracts.md` | §13 |
 | Home, menu, filtros, paginação, FAQ, footer (descoberta) | `.claude/rules/buyer-flow.md` | §9.1, §9.2, §9.13, §9.14 |
 | Músicas, efeitos, licença, carrinho, checkout | `.claude/rules/license-cart-checkout.md` | §9.4, §9.7, §9.8 |
@@ -163,8 +163,8 @@ src/app/musicas/musicas.component.html
 src/app/musicas/musicas.component.ts
 src/app/musicas/musicas.component.scss
 src/app/musicas/musicas.service.ts
-src/app/components/filter/*
-src/app/components/pagination/*
+src/app/filter/*
+src/app/shared/pagination/*
 src/app/wave-surfer-test/*
 ```
 
@@ -176,7 +176,7 @@ Atenção: modal de licença antes do carrinho, player, waveform, paginação di
 src/app/player/player.component.html
 src/app/player/player.component.ts
 src/app/player/player.component.scss
-src/app/services/music-player.service.ts
+src/app/service/music-player.service.ts
 ```
 
 Atenção: destruir instâncias WaveSurfer, evitar múltiplos áudios, metadados reais, troca de faixa.
@@ -184,10 +184,10 @@ Atenção: destruir instâncias WaveSurfer, evitar múltiplos áudios, metadados
 ### 8.6 Efeitos Sonoros
 
 ```txt
-src/app/efeitosSonoros/efeitosSonoros.component.html
-src/app/efeitosSonoros/efeitosSonoros.component.ts
-src/app/efeitosSonoros/efeitosSonoros.component.scss
-src/app/efeitosSonoros/efeitosSonoros.service.ts
+src/app/efeitos-sonoros/efeitosSonoros.component.html
+src/app/efeitos-sonoros/efeitosSonoros.component.ts
+src/app/efeitos-sonoros/efeitosSonoros.component.scss
+src/app/efeitos-sonoros/efeitosSonoros.service.ts
 ```
 
 Atenção: padronizar com Músicas, remover dados estáticos quando houver endpoint real.
@@ -206,7 +206,8 @@ Atenção: Single Track (sem Stems obrigatórios), Single Track + Stems, FX. Pre
 ### 8.8 Página do Artista / Área do Produtor
 
 ```txt
-src/app/pages/artist/*
+src/app/artist/*
+src/app/usuario-artista/*
 src/app/sub-menu/*
 src/app/menu-produtor/*
 ```
@@ -241,8 +242,8 @@ Atenção: toggle 6/12 meses via estado Angular, sem links vazios.
 ```txt
 src/app/carrinho/*
 src/app/finalizar-compra/*
-src/app/services/carrinho.service.ts
-src/app/cart-modal/*
+src/app/service/carrinho.service.ts
+src/app/carrinho/cartModal/*
 ```
 
 Atenção: escolha de licença antes de adicionar ao carrinho, fluxo até finalização.
@@ -260,7 +261,7 @@ Atenção: links institucionais corretos, "Termos e Condições" no lugar de "Te
 
 ## 9. Proibições
 
-Não fazer sem autorização explícita: migrar Angular, trocar Bootstrap/Material, remover WaveSurfer.js, alterar endpoints sem verificar backend, remover guards de autenticação, expor dashboard para não produtores, substituir dados reais por mocks permanentes, merge direto na branch de dashboard, alterar `package.json` sem justificar, quebrar rotas existentes, usar links vazios, inserir código morto, alterar secrets, executar deploy, executar ações destrutivas de Git ou banco.
+Não fazer sem autorização explícita: migrar Angular fora de um plano aprovado, trocar Bootstrap/Material, remover WaveSurfer.js, alterar endpoints sem verificar backend, remover guards de autenticação, expor dashboard para não produtores, substituir dados reais por mocks permanentes, merge direto na branch de dashboard, alterar `package.json` sem justificar, quebrar rotas existentes, usar links vazios, inserir código morto, alterar secrets, executar deploy, executar ações destrutivas de Git ou banco.
 
 ---
 

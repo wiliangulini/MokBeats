@@ -23,7 +23,7 @@ protocolo aqui. Ao implementar, aplique a metodologia da skill `senior-code-agen
 ## Antes de alterar
 
 1. Identifique componente, template, SCSS e rota envolvidos.
-2. Preserve Angular 14, Bootstrap, Angular Material e SCSS local.
+2. Preserve a estrutura Angular, Bootstrap, Angular Material e SCSS local.
 3. Preserve comportamento funcional.
 4. Preserve responsividade.
 5. Não reescreva a tela inteira sem necessidade.

@@ -2,8 +2,8 @@
 paths:
   - "src/app/home/**/*"
   - "src/app/menu/**/*"
-  - "src/app/components/filter/**/*"
-  - "src/app/components/pagination/**/*"
+  - "src/app/filter/**/*"
+  - "src/app/shared/pagination/**/*"
   - "src/app/faq/**/*"
   - "src/app/footer/**/*"
 ---

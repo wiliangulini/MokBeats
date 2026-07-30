@@ -41,7 +41,7 @@ Não use quando:
 1. Ler documentação ou relatório relevante.
 2. Identificar estado atual do projeto quando possível.
 3. Separar fatos de hipóteses.
-4. Identificar riscos em Angular 14, rotas, API, autenticação, player, upload, carrinho, licenças e dashboard.
+4. Identificar riscos em Angular, rotas, API, autenticação, player, upload, carrinho, licenças e dashboard.
 
 ## Fluxo de execução
 

@@ -27,7 +27,7 @@ no chat. Decisões pendentes de `PROJECT_RULES.md §13` exigem validação human
 
 ## Regra principal
 
-Não proponha solução genérica antes de analisar o projeto real. Preserve Angular 14, a branch `dev`, os guards, o fluxo de áudio/player, upload, licenças, carrinho e dashboard.
+Não proponha solução genérica antes de analisar o projeto real. Preserve a estrutura Angular, a branch `dev`, os guards, o fluxo de áudio/player, upload, licenças, carrinho e dashboard.
 
 ## Leitura obrigatória
 

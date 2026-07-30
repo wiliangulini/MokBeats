@@ -54,7 +54,7 @@ Antes de adicionar ou atualizar uma dependência:
 
 - verificar se o projeto já possui solução equivalente;
 - justificar necessidade e alternativa sem dependência;
-- validar compatibilidade com Angular 14 e TypeScript configurado;
+- validar compatibilidade com a versão vigente do Angular e o TypeScript configurado;
 - avaliar impacto no bundle, build, manutenção e segurança;
 - obter aprovação antes de alterar `package.json` ou arquivos de lock.
 

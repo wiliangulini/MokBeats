@@ -12,7 +12,7 @@ updated: 2026-07-06
 
 ### Angular
 
-- Respeitar Angular 14.
+- Respeitar a versão vigente do Angular (`package.json`; hoje 14.3.0, em migração para 22.1.0 — ver `docs/adr/0002-migracao-angular-14-para-22.md`).
 - Manter estrutura baseada em módulos.
 - Preservar `modules`, `components`, `services`, `guards`, `interceptors` e `routing`.
 - Componentes devem conter lógica de tela, não regra de negócio extensa.
