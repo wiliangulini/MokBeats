@@ -24,6 +24,10 @@ import {CarrinhoComponent} from "./carrinho/carrinho.component";
 import {UsuarioArtistaComponent} from "./usuario-artista/usuario-artista.component";
 import {PlayerComponent} from "./player/player.component";
 import { TermosPrivacidadeComponent } from "./termos-privacidade/termos-privacidade.component";
+import { AuthGuard } from "./guards/auth.guard";
+import { ProfileCompleteGuard } from "./guards/profile-complete.guard";
+import { ProdutorGuard } from "./guards/produtor.guard";
+import { DashboardProdutorComponent } from "./dashboard-produtor/dashboard-produtor.component";
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -39,19 +43,21 @@ const routes: Routes = [
   { path: 'humor', component: HumorComponent },
   { path: 'faq', component: FaqComponent },
   { path: 'produtores', component: ProdutoresComponent },
-  { path: 'favoritos', component: FavoritosComponent },
-  { path: 'playlists', component: PlaylistsComponent },
-  { path: 'assinatura', component: AssinaturaComponent },
-  { path: 'pedidos', component: PedidosComponent },
-  { path: 'formas-de-pagamento', component: FormasDePagamentoComponent },
-  { path: 'artista', component: ArtistComponent },
+  { path: 'favoritos', component: FavoritosComponent, canActivate: [AuthGuard] },
+  { path: 'playlists', component: PlaylistsComponent, canActivate: [AuthGuard] },
+  { path: 'assinatura', component: AssinaturaComponent, canActivate: [AuthGuard] },
+  { path: 'pedidos', component: PedidosComponent, canActivate: [AuthGuard] },
+  { path: 'formas-de-pagamento', component: FormasDePagamentoComponent, canActivate: [AuthGuard] },
+  { path: 'artista', component: ArtistComponent, canActivate: [AuthGuard] },
   { path: 'pagina-artista', component: UsuarioArtistaComponent },
-  { path: 'atualizar-informacoes', component: AtualizarInformacoesComponent },
-  { path: 'finalizar-compra', component: FinalizarCompraComponent },
+  { path: 'atualizar-informacoes', component: AtualizarInformacoesComponent, canActivate: [AuthGuard] },
+  { path: 'finalizar-compra', component: FinalizarCompraComponent, canActivate: [AuthGuard, ProfileCompleteGuard] },
   { path: 'contato', component: ContatoComponent },
   { path: 'pagina-playlist', component: PagPlaylistComponent },
   { path: 'carrinho', component: CarrinhoComponent },
-  { path: 'upload', loadChildren: () => import('./upload-file/upload-file.module').then(m => m.UploadFileModule) },
+  { path: 'upload', loadChildren: () => import('./upload-file/upload-file.module').then(m => m.UploadFileModule), canActivate: [AuthGuard, ProfileCompleteGuard] },
+  { path: 'dados-pessoais', redirectTo: 'atualizar-informacoes', pathMatch: 'full' },
+  { path: 'dashboard-produtor', component: DashboardProdutorComponent, canActivate: [AuthGuard, ProdutorGuard] },
 ];
 
 @NgModule({

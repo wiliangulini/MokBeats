@@ -13,6 +13,9 @@ body {
 a {
   text-decoration: none !important;
 }
+.gap-3 {
+  gap: 1rem !important;
+}
 .modal-backdrop {
   z-index: 1050 !important;
 }
@@ -33,6 +36,16 @@ a {
 a.btn.btn-warning:hover,
 button.btn.btn-warning:hover {
   background-color: #c29441 !important;
+}
+
+/* Profile notification banner */
+.profile-notification-banner {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #f0a500;
+  color: #1a1a1a;
+  font-size: 0.9rem;
 }
 
 /* Para inputs padrão */
@@ -84,6 +97,10 @@ textarea.mat-input-element {
 .mat-form-field-appearance-fill .mat-form-field-infix {
   background: #fff !important;
 }
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  padding-bottom: 0.35em !important;
+}
+
 .mat-form-field-appearance-fill .mat-form-field-underline::before {
   background-color: #ced4da !important;
 }

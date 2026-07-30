@@ -48,8 +48,15 @@
           <a class="nav-link" [routerLink]="['/produtores']" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()"
             (click)="closeNav()">Produtores</a>
         </li>
-        <li routerLinkActive="active" class="nav-item">
-          <a class="nav-link" (mouseover)="mouseOver($event)" (mouseout)="mouseOut()" (click)="closeNav()">HUB</a>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="https://www.mokbeats-hub.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            (mouseover)="mouseOver($event)"
+            (mouseout)="mouseOut()"
+            (click)="closeNav()">HUB</a>
         </li>
         <li routerLinkActive="active" class="nav-item">
           <a class="nav-link" [routerLink]="['/precos']" (click)="closeNav()">Preços</a>

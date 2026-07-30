@@ -20,4 +20,12 @@ describe('FilterComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should emit filterToggle when filter button is used', () => {
+    spyOn(component.filterToggle, 'emit');
+
+    component.filtrar();
+
+    expect(component.filterToggle.emit).toHaveBeenCalled();
+  });
 });

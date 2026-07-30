@@ -8,63 +8,343 @@
     <div class="modal-body">
       <div class="row">
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-100">
-          <div id="register" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center register">
+          <!-- ===== SEÇÃO: CADASTRO ===== -->
+          <div
+            id="register"
+            class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center register"
+          >
             <h1>Crie sua Conta</h1>
-            <p class="h5 w-75 text-center">Crie uma conta para fazer login na MokBeats, e poder comprar ou entao vender suas musicas!!!</p>
-            <input class="form-control mb-1 mt-3" type="email" formControlName="email"  placeholder="Email" [(ngModel)]="cadastro.email" />
-            <small class="text-danger d-block mb-2" *ngIf="form.get('email')?.hasError('required') && (form.get('email')?.touched || form.get('email')?.dirty)">E-mail é obrigatório.</small>
-            <small class="text-danger d-block mb-2" *ngIf="form.get('email')?.hasError('email') && (form.get('email')?.touched || form.get('email')?.dirty)">E-mail inválido.</small>
-            <input class="form-control mb-1" type="password" formControlName="senha" placeholder="Senha" [(ngModel)]="cadastro.senha" />
-            <small class="text-danger d-block mb-2" *ngIf="form.get('senha')?.hasError('required') && (form.get('senha')?.touched || form.get('senha')?.dirty)">Senha é obrigatória.</small>
-            <small class="text-danger d-block mb-2" *ngIf="form.get('senha')?.hasError('minlength') && (form.get('senha')?.touched || form.get('senha')?.dirty)">A senha deve ter pelo menos 8 caracteres.</small>
-            <div class="ls-select status forma">
-              <div class="control">
-                <p id="forma" class="txt m-0">Tipo de Conta</p>
-                <span id="arrow2" class="material-icons">
-                  keyboard_arrow_down
-                </span>
+            <p class="h5 w-75 text-center">
+              Crie uma conta para fazer login na MokBeats e poder comprar ou
+              vender suas músicas.
+            </p>
+
+            <!-- Email -->
+            <input
+              class="form-control mb-1 mt-3"
+              type="email"
+              formControlName="email"
+              placeholder="E-mail"
+            />
+            <small
+              class="text-danger d-block mb-2"
+              *ngIf="
+                form.get('email')?.hasError('required') &&
+                (form.get('email')?.touched || form.get('email')?.dirty)
+              "
+              >E-mail é obrigatório.</small
+            >
+            <small
+              class="text-danger d-block mb-2"
+              *ngIf="
+                form.get('email')?.hasError('email') &&
+                (form.get('email')?.touched || form.get('email')?.dirty)
+              "
+              >E-mail inválido.</small
+            >
+
+            <!-- Senha -->
+            <input
+              class="form-control mb-1"
+              type="password"
+              formControlName="senha"
+              placeholder="Senha (mínimo 8 caracteres)"
+            />
+            <small
+              class="text-danger d-block mb-2"
+              *ngIf="
+                form.get('senha')?.hasError('required') &&
+                (form.get('senha')?.touched || form.get('senha')?.dirty)
+              "
+              >Senha é obrigatória.</small
+            >
+            <small
+              class="text-danger d-block mb-2"
+              *ngIf="
+                form.get('senha')?.hasError('minlength') &&
+                (form.get('senha')?.touched || form.get('senha')?.dirty)
+              "
+              >A senha deve ter pelo menos 8 caracteres.</small
+            >
+
+            <!-- Confirmar Senha -->
+            <input
+              class="form-control mb-1"
+              type="password"
+              formControlName="confirmarSenha"
+              placeholder="Confirmar Senha"
+            />
+            <small
+              class="text-danger d-block mb-2"
+              *ngIf="
+                form.get('confirmarSenha')?.hasError('required') &&
+                (form.get('confirmarSenha')?.touched ||
+                  form.get('confirmarSenha')?.dirty)
+              "
+              >Confirmação de senha é obrigatória.</small
+            >
+            <small
+              class="text-danger d-block mb-2"
+              *ngIf="
+                form.hasError('senhasNaoConferem') &&
+                form.get('confirmarSenha')?.touched
+              "
+              >As senhas não conferem.</small
+            >
+
+            <!-- Tipo de Pessoa -->
+            <div
+              class="ls-select status mb-1"
+              data-select-key="typePerson"
+              [class.open]="isCustomSelectOpen('typePerson')"
+            >
+              <div
+                class="control"
+                role="combobox"
+                tabindex="0"
+                aria-haspopup="listbox"
+                [attr.aria-expanded]="isCustomSelectOpen('typePerson')"
+                [attr.aria-controls]="'listbox-typePerson'"
+                [attr.aria-label]="customSelectPlaceholders.typePerson"
+                (click)="toggleCustomSelect('typePerson')"
+                (keydown)="onCustomSelectKeydown($event, 'typePerson')"
+              >
+                <p class="txt m-0">{{ getSelectedLabel("typePerson") }}</p>
+                <span class="material-icons arrow">keyboard_arrow_down</span>
               </div>
-              <div class="down two val" style="display: none;">
-                <label id="ter1" class="radiocontainer d-flex">
-                  <input type="radio" class="radio" name="Terapia realizada" />
-                  <p (click)="radiocontainer(this)" id="label5" class="texto">Pessoa Física</p>
-                </label>
-                <label id="ter2" class="radiocontainer d-flex">
-                  <input type="radio" class="radio" name="Terapia marcada" />
-                  <p (click)="radiocontainer(this)" id="label6" class="texto">Pessoa Jurídica</p>
-                </label>
+              <div
+                id="listbox-typePerson"
+                class="down val"
+                role="listbox"
+                [class.open]="isCustomSelectOpen('typePerson')"
+                aria-label="Tipo de Pessoa"
+              >
+                <button
+                  type="button"
+                  class="option-item d-flex align-items-center"
+                  *ngFor="let option of customSelectOptions.typePerson"
+                  role="option"
+                  [attr.aria-selected]="
+                    form.get('typePerson')?.value === option.value
+                  "
+                  (click)="selectCustomOption($event, 'typePerson', option)"
+                >
+                  <span class="option-label">{{ option.label }}</span>
+                </button>
               </div>
             </div>
-            <small>As senhas devem ter pelo menos 8 caracteres.</small>
-            <button type="submit" class="btn btn-primary w-50 mb-4 mt-4" (click)="onSubmit()">Criar Conta</button>
-            <p class="h6 w-75 text-center">Ao clicar, concordo com os <a [routerLink]="['/termos-do-site']" (click)="closeModal()">Termos do site</a>, e a <a (click)="politica()">Política de privacidade</a></p>
+            <small
+              class="text-danger d-block mb-2"
+              *ngIf="
+                form.get('typePerson')?.hasError('required') &&
+                form.get('typePerson')?.touched
+              "
+              >Selecione o tipo de pessoa.</small
+            >
+
+            <!-- Tipo de Perfil -->
+            <div
+              class="ls-select status mt-3 mb-1"
+              data-select-key="tipoPerfil"
+              [class.open]="isCustomSelectOpen('tipoPerfil')"
+            >
+              <div
+                class="control"
+                role="combobox"
+                tabindex="0"
+                aria-haspopup="listbox"
+                [attr.aria-expanded]="isCustomSelectOpen('tipoPerfil')"
+                [attr.aria-controls]="'listbox-tipoPerfil'"
+                [attr.aria-label]="customSelectPlaceholders.tipoPerfil"
+                (click)="toggleCustomSelect('tipoPerfil')"
+                (keydown)="onCustomSelectKeydown($event, 'tipoPerfil')"
+              >
+                <p class="txt m-0">{{ getSelectedLabel("tipoPerfil") }}</p>
+                <span class="material-icons arrow">keyboard_arrow_down</span>
+              </div>
+              <div
+                id="listbox-tipoPerfil"
+                class="down val"
+                role="listbox"
+                [class.open]="isCustomSelectOpen('tipoPerfil')"
+                aria-label="Tipo de Perfil"
+              >
+                <button
+                  type="button"
+                  class="option-item d-flex align-items-center"
+                  data-profile-option="true"
+                  *ngFor="let option of customSelectOptions.tipoPerfil"
+                  role="option"
+                  [attr.aria-selected]="
+                    form.get('tipoPerfil')?.value === option.value
+                  "
+                  [ngbTooltip]="option.tooltip"
+                  placement="top"
+                  triggers="hover focus"
+                  (click)="selectCustomOption($event, 'tipoPerfil', option)"
+                >
+                  <span class="option-label option-help">{{
+                    option.label
+                  }}</span>
+                </button>
+              </div>
+            </div>
+            <small
+              class="text-danger d-block mb-3"
+              *ngIf="
+                form.get('tipoPerfil')?.hasError('required') &&
+                form.get('tipoPerfil')?.touched
+              "
+              >Selecione um tipo de perfil.</small
+            >
+
+            <!-- Botões -->
+            <button type="submit" class="btn btn-primary w-50 mb-2 mt-2">
+              Criar Conta
+            </button>
+            <button
+              type="button"
+              class="btn btn-google w-50 mb-3"
+              (click)="registrarComGoogle()"
+            >
+              Criar conta com Google
+            </button>
+
+            <p class="h6 w-75 text-center">
+              Ao clicar, concordo com os
+              <a [routerLink]="['/termos-do-site']" (click)="closeModal()"
+                >Termos do site</a
+              >, e a <a (click)="politica()">Política de privacidade</a>
+            </p>
           </div>
-          <div id="login" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center login">
+
+          <!-- ===== SEÇÃO: LOGIN ===== -->
+          <div
+            id="login"
+            class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center login"
+          >
             <h1>Login</h1>
-            <p class="h5 w-50 text-center">Faça login na MokBeats, e poder comprar ou entao vender suas musicas!!!</p>
-            <input class="form-control mb-1 mt-3" type="email" formControlName="emailLog"  placeholder="Email" [(ngModel)]="usuario.email" />
-            <small class="text-danger d-block mb-2" *ngIf="form.get('emailLog')?.hasError('required') && (form.get('emailLog')?.touched || form.get('emailLog')?.dirty)">E-mail é obrigatório.</small>
-            <small class="text-danger d-block mb-2" *ngIf="form.get('emailLog')?.hasError('email') && (form.get('emailLog')?.touched || form.get('emailLog')?.dirty)">E-mail inválido.</small>
-            <input class="form-control mb-1" type="password" formControlName="senhaLog" placeholder="Senha" [(ngModel)]="usuario.senha" />
-            <small class="text-danger d-block mb-2" *ngIf="form.get('senhaLog')?.hasError('required') && (form.get('senhaLog')?.touched || form.get('senhaLog')?.dirty)">Senha é obrigatória.</small>
-            <small class="text-danger d-block mb-2" *ngIf="form.get('senhaLog')?.hasError('minlength') && (form.get('senhaLog')?.touched || form.get('senhaLog')?.dirty)">A senha deve ter pelo menos 8 caracteres.</small>
-            <button type="submit" class="btn btn-primary w-50 mb-3" (click)="fazerLogin()">Fazer Login</button>
-            <a (click)="resetPassword()" class="btn btnReset">Esquecia a senha</a>
+            <p class="h5 w-50 text-center">
+              Faça login na MokBeats e acesse sua conta.
+            </p>
+
+            <!-- Email -->
+            <input
+              class="form-control mb-1 mt-3"
+              type="email"
+              formControlName="emailLog"
+              placeholder="E-mail"
+            />
+            <small
+              class="text-danger d-block mb-2"
+              *ngIf="
+                form.get('emailLog')?.hasError('required') &&
+                (form.get('emailLog')?.touched || form.get('emailLog')?.dirty)
+              "
+              >E-mail é obrigatório.</small
+            >
+            <small
+              class="text-danger d-block mb-2"
+              *ngIf="
+                form.get('emailLog')?.hasError('email') &&
+                (form.get('emailLog')?.touched || form.get('emailLog')?.dirty)
+              "
+              >E-mail inválido.</small
+            >
+
+            <!-- Senha -->
+            <input
+              class="form-control mb-1"
+              type="password"
+              formControlName="senhaLog"
+              placeholder="Senha"
+            />
+            <small
+              class="text-danger d-block mb-2"
+              *ngIf="
+                form.get('senhaLog')?.hasError('required') &&
+                (form.get('senhaLog')?.touched || form.get('senhaLog')?.dirty)
+              "
+              >Senha é obrigatória.</small
+            >
+            <small
+              class="text-danger d-block mb-2"
+              *ngIf="
+                form.get('senhaLog')?.hasError('minlength') &&
+                (form.get('senhaLog')?.touched || form.get('senhaLog')?.dirty)
+              "
+              >A senha deve ter pelo menos 8 caracteres.</small
+            >
+
+            <!-- Erro de autenticação (credenciais inválidas) -->
+            <small class="text-danger d-block mb-2" *ngIf="loginErro"
+              >E-mail ou senha inválidos.</small
+            >
+
+            <!-- Botões -->
+            <button
+              type="button"
+              class="btn btn-primary w-50 mb-2"
+              (click)="fazerLogin()"
+            >
+              Fazer Login
+            </button>
+            <button
+              type="button"
+              class="btn btn-google w-50 mb-2"
+              (click)="loginComGoogle()"
+            >
+              Entrar com Google
+            </button>
+            <a (click)="resetPassword()" class="btn btnReset"
+              >Esqueci a senha</a
+            >
           </div>
-          <div id="resetPass" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center resetPass">
+
+          <!-- ===== SEÇÃO: RECUPERAR SENHA ===== -->
+          <div
+            id="resetPass"
+            class="col-sm-12 col-md-12 col-lg-12 col-xl-12 flex-column justify-content-center align-items-center resetPass"
+          >
             <h1>Esqueceu a Senha?</h1>
-            <p class="h5 w-50 text-center">Envie um email que lhe notificaremos com um link pra troca de senha.</p>
-            <input class="form-control mb-2 mt-3" type="email" formControlName="emailReset"  placeholder="Email" [(ngModel)]="resetPass.email" />
-            <small class="text-danger d-block mb-2" *ngIf="form.get('emailReset')?.hasError('required') && (form.get('emailReset')?.touched || form.get('emailReset')?.dirty)">E-mail é obrigatório.</small>
-            <small class="text-danger d-block mb-2" *ngIf="form.get('emailReset')?.hasError('email') && (form.get('emailReset')?.touched || form.get('emailReset')?.dirty)">E-mail inválido.</small>
-            <button type="submit" class="btn btn-primary w-50 mb-3">Enviar</button>
-            <a (click)="back()" class="btn btnReset">voltar</a>
+            <p class="h5 w-50 text-center">
+              Informe seu e-mail e enviaremos um link para redefinição de senha.
+            </p>
+            <input
+              class="form-control mb-2 mt-3"
+              type="email"
+              formControlName="emailReset"
+              placeholder="E-mail"
+            />
+            <small
+              class="text-danger d-block mb-2"
+              *ngIf="
+                form.get('emailReset')?.hasError('required') &&
+                (form.get('emailReset')?.touched ||
+                  form.get('emailReset')?.dirty)
+              "
+              >E-mail é obrigatório.</small
+            >
+            <small
+              class="text-danger d-block mb-2"
+              *ngIf="
+                form.get('emailReset')?.hasError('email') &&
+                (form.get('emailReset')?.touched ||
+                  form.get('emailReset')?.dirty)
+              "
+              >E-mail inválido.</small
+            >
+            <button type="button" class="btn btn-primary w-50 mb-3">
+              Enviar
+            </button>
+            <a (click)="back()" class="btn btnReset">Voltar</a>
           </div>
         </form>
       </div>
     </div>
     <div id="mf" class="modal-footer justify-content-center align-items-center">
-      <p id="logCad" class="h4">Já tem uma conta?</p><a id="aLog" (click)="irProLogin($event)">Faça Login</a>
+      <p id="logCad" class="h4">Já tem uma conta?</p>
+      <a id="aLog" (click)="irProLogin($event)">Faça Login</a>
     </div>
   </div>
 </div>

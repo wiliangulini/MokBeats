@@ -13,6 +13,22 @@
   bottom: 0;
   height: 220px;
   border-top: 2px solid #FFF;
+  flex-wrap: nowrap;
+  align-items: stretch;
+}
+#stems-play-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  flex-shrink: 0;
+}
+#stems-tracks-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 #trackCustom1,
 #trackCustom2,
@@ -64,6 +80,9 @@
   border-radius: 12px;
   padding: 2px 8px;
   font-size: 11px;
+}
+.row.track.stem-track-disabled {
+  opacity: 0.35;
 }
 section .container-fluid .row.audioCanva,
 section .container-fluid .row.player {
@@ -181,6 +200,7 @@ svg,
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 11px;
 }
 span.material-icons.prev10sec,
 span.material-icons.prev10sec,
@@ -305,4 +325,68 @@ button.btn.btn-icons.mobile {
   button.btn.btn-icons.mobile {
     display: flex !important;
   }
+}
+
+.stems-play-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 33px;
+  color: #fff;
+  padding: 4px 16px;
+  height: 30px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+
+  &:hover:not(:disabled) {
+    border-color: #dcad54;
+    background: rgba(220, 173, 84, 0.1);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .material-icons {
+    font-size: 20px;
+    color: #dcad54;
+    line-height: 1;
+  }
+
+  .stems-play-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.stems-status {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  line-height: 1.2;
+  margin-top: 8px;
+  max-width: 76px;
+  text-align: center;
+}
+
+.stems-status-error {
+  color: #ffb4a8;
+}
+
+#volumeOnTrackCustom1:disabled,
+#volumeOnTrackCustom2:disabled,
+#volumeOnTrackCustom3:disabled,
+#volumeOnTrackCustom4:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+// Label "Faixa Inteira" fica opaca quando stems estão ativos
+.mode-inactive {
+  opacity: 0.4;
+  transition: opacity 0.2s;
 }

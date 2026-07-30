@@ -9,7 +9,7 @@ import {
 import { Subscription } from 'rxjs';
 import WaveSurfer from 'wavesurfer.js';
 import Minimap from 'wavesurfer.js/dist/plugins/minimap';
-import { Musica, MusicasService } from '../musicas/musicas.service';
+import { Musica, MusicasService, MusicStem } from '../musicas/musicas.service';
 import { MusicPlayerService } from '../service/music-player.service';
 import { PlayerService } from './player.service';
 
@@ -22,6 +22,7 @@ export class PlayerComponent
   implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy
 {
   arrMusica: Musica[] = [];
+  currentMusic: Musica | null = null;
   volumeInitial: any;
   volumeInitial1: any;
   volumeInitial2: any;
@@ -35,72 +36,93 @@ export class PlayerComponent
   musicId: any;
   idMusicCurrent!: number;
   arrayControl: any[] = [];
-  private subscription?: Subscription;
+  private subscription = new Subscription();
+  private stemsLoadSubscription?: Subscription;
   wavesurfer!: WaveSurfer;
   stems: WaveSurfer[] = [];
   stemLabels: string[] = [];
+  stemTrackAvailable: boolean[] = [false, false, false, false];
+  stemVolumes: number[] = [75, 75, 75, 75];
+  stemMuted: boolean[] = [false, false, false, false];
   private lastLoadedStemsMusicId: number = -1;
+  private playbackMode: 'full' | 'stems' = 'full';
+  isStemsPlaying: boolean = false;
+  stemsReady: boolean = false;
+  stemsLoading: boolean = false;
+  stemsEmpty: boolean = false;
+  stemsLoadError: boolean = false;
+  private stemsReadyCount: number = 0;
+  private stemsExpectedCount: number = 0;
+  private isSyncing: boolean = false;
 
   constructor(
     private musicService: MusicasService,
     private playerService: PlayerService,
     private cdRef: ChangeDetectorRef,
-    private musicPlayerService: MusicPlayerService
+    private musicPlayerService: MusicPlayerService,
   ) {}
 
   ngOnInit(): void {
-    this.subscription = this.musicPlayerService.playPauseAction$.subscribe(
-      ({ action, musicId }) => {
-        console.log(action, musicId);
-        this.musicId = musicId;
-        if (this.currentMusicUrl.length > 0) {
-          if (action === 'play') {
-            this.playerService.showPlayer();
-            this.playMusic(musicId);
-          } else if (action === 'pause') {
-            this.pauseMusic(musicId);
+    this.subscription.add(
+      this.musicPlayerService.playPauseAction$.subscribe(
+        ({ action, musicId }) => {
+          console.log(action, musicId);
+          this.musicId = musicId;
+          if (this.currentMusicUrl.length > 0) {
+            if (action === 'play') {
+              this.playerService.showPlayer();
+              this.playMusic(musicId);
+            } else if (action === 'pause') {
+              this.pauseMusic(musicId);
+            }
+          }
+        },
+      ),
+    );
+
+    this.subscription.add(
+      this.musicPlayerService.currentMusicUrl$.subscribe((url) => {
+        console.log(url);
+        this.currentMusicUrl = url;
+        if (url.length > 0) {
+          // Exibe o player assim que uma música for selecionada
+          this.playerService.showPlayer();
+          this.playMusicUrl(url);
+        }
+      }),
+    );
+
+    this.subscription.add(
+      this.musicPlayerService.currentMusicID$.subscribe((id) => {
+        console.log(id);
+        if (id > -1) {
+          this.idMusicPlay(id);
+          // Só recarrega stems se for uma música diferente
+          if (this.lastLoadedStemsMusicId !== id) {
+            this.loadStems(id);
+            this.lastLoadedStemsMusicId = id;
           }
         }
-      }
+      }),
     );
-    this.musicPlayerService.currentMusicUrl$.subscribe((url) => {
-      console.log(url);
-      this.currentMusicUrl = url;
-      if (url.length > 0) {
-        // Exibe o player assim que uma música for selecionada
-        this.playerService.showPlayer();
-        this.playMusicUrl(url);
-      }
-    });
-    this.musicPlayerService.currentMusicID$.subscribe((id) => {
-      console.log(id);
-      if (id > -1) {
-        this.idMusicPlay(id);
-        // Só recarrega stems se for uma música diferente
-        if (this.lastLoadedStemsMusicId !== id) {
-          this.loadStems(id);
-          this.lastLoadedStemsMusicId = id;
-        }
-      }
-    });
+
+    this.subscription.add(
+      this.musicPlayerService.currentMusic$.subscribe((music) => {
+        this.currentMusic = music;
+      }),
+    );
 
     // Responde às solicitações de seek vindas da lista
-    this.musicPlayerService.seekRequest$.subscribe(({ musicId, time }) => {
-      try {
-        if (this.idMusicCurrent === musicId && this.wavesurfer) {
-          this.wavesurfer.setTime(time);
-          // Mantém stems sincronizados ao seek originado na lista
-          try {
-            this.stems.forEach((s) => {
-              try {
-                s.setTime(time);
-              } catch (e) {}
-            });
-          } catch (e) {}
-          // stems e tempo global já são ajustados pelos handlers de seek/audioprocess
+    this.subscription.add(
+      this.musicPlayerService.seekRequest$.subscribe(({ musicId, time }) => {
+        try {
+          if (this.idMusicCurrent === musicId && this.wavesurfer) {
+            this.seekActivePlayback(time);
+          }
+        } catch (e) {
         }
-      } catch (e) {}
-    });
+      }),
+    );
   }
 
   ngAfterViewChecked() {
@@ -142,46 +164,11 @@ export class PlayerComponent
       ],
     });
 
-    // Sincronizar stems com a faixa principal
-    this.wavesurfer.on('play', () => {
-      const currentTime = (this.wavesurfer as any)?.getCurrentTime?.() || 0;
-      this.stems.forEach((s) => {
-        try {
-          // Sincroniza o tempo antes de tocar
-          s.setTime(currentTime);
-          s.play();
-        } catch (e) {}
-      });
-    });
-    this.wavesurfer.on('pause', () => {
-      this.stems.forEach((s) => {
-        try {
-          s.pause();
-        } catch (e) {}
-      });
-    });
-    (this.wavesurfer as any).on('seek', (progress: number) => {
-      try {
-        const time = progress * (this.wavesurfer.getDuration() || 0);
-        this.stems.forEach((s) => {
-          try {
-            s.setTime(time);
-          } catch (e) {}
-        });
-        // Atualiza o progresso global para sincronizar com a lista
-        this.musicPlayerService.setCurrentTime(time);
-      } catch (e) {}
-    });
-    (this.wavesurfer as any).on('audioprocess', () => {
-      try {
-        const time = (this.wavesurfer as any)?.getCurrentTime?.() || 0;
-        this.musicPlayerService.setCurrentTime(time);
-      } catch (e) {}
-    });
+    this.initWavesurferHandlers();
 
     const mutedTrack1: any = document.getElementById('mutedTrack1');
     const volumeOnTrackCustom1: any = document.getElementById(
-      'volumeOnTrackCustom1'
+      'volumeOnTrackCustom1',
     );
     const muteOn1: any = document.querySelector('.muteOn1');
     const muteOff1: any = document.querySelector('.muteOff1');
@@ -190,7 +177,7 @@ export class PlayerComponent
       .getAttribute('value');
     const mutedTrack2: any = document.getElementById('mutedTrack2');
     const volumeOnTrackCustom2: any = document.getElementById(
-      'volumeOnTrackCustom2'
+      'volumeOnTrackCustom2',
     );
     const muteOn2: any = document.querySelector('.muteOn2');
     const muteOff2: any = document.querySelector('.muteOff2');
@@ -199,7 +186,7 @@ export class PlayerComponent
       .getAttribute('value');
     const mutedTrack3: any = document.getElementById('mutedTrack3');
     const volumeOnTrackCustom3: any = document.getElementById(
-      'volumeOnTrackCustom3'
+      'volumeOnTrackCustom3',
     );
     const muteOn3: any = document.querySelector('.muteOn3');
     const muteOff3: any = document.querySelector('.muteOff3');
@@ -208,7 +195,7 @@ export class PlayerComponent
       .getAttribute('value');
     const mutedTrack4: any = document.getElementById('mutedTrack4');
     const volumeOnTrackCustom4: any = document.getElementById(
-      'volumeOnTrackCustom4'
+      'volumeOnTrackCustom4',
     );
     const muteOn4: any = document.querySelector('.muteOn4');
     const muteOff4: any = document.querySelector('.muteOff4');
@@ -423,25 +410,25 @@ export class PlayerComponent
 
     // todos segundos da track estao em timeskip, ao clicar vai direto pro final da musica ou inicio dependendo do botao clicado. API Wavesurfer Pre-decode = setTime(0) dentro de on('finish') faz a track ao terminar voltar ao inicio;
     forwardButton.addEventListener('click', (): void => {
-      this.wavesurfer.setTime(this.timeSkip);
+      this.seekActivePlayback(this.getActiveDuration());
       this.playerService.tooglePlayPause();
     });
     backButton.addEventListener('click', (): void => {
-      this.wavesurfer.setTime(-this.timeSkip);
+      this.seekActivePlayback(0);
       this.playerService.tooglePlayPause();
     });
     prev10.addEventListener('click', (): void => {
-      this.wavesurfer.skip(-10);
+      this.skipActivePlayback(-10);
     });
     next10.addEventListener('click', (): void => {
-      this.wavesurfer.skip(10);
+      this.skipActivePlayback(10);
     });
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.stemsLoadSubscription?.unsubscribe();
+    this.subscription.unsubscribe();
+    this.destroyStems();
     if (this.wavesurfer) {
       this.wavesurfer.destroy();
     }
@@ -464,6 +451,12 @@ export class PlayerComponent
   }
 
   playMusic(musicId: any) {
+    if (this.playbackMode === 'stems' || this.isStemsPlaying) {
+      this.pauseStemsMode();
+      return;
+    }
+    this.playbackMode = 'full';
+    this.pauseAllStems();
     this.wavesurfer.play();
     this.playerService.tooglePlayPause();
     this.isPlaying2 = true;
@@ -471,6 +464,10 @@ export class PlayerComponent
   }
 
   pauseMusic(musicId: any) {
+    if (this.playbackMode === 'stems' || this.isStemsPlaying) {
+      this.pauseStemsMode();
+      return;
+    }
     this.wavesurfer.pause();
     this.playerService.tooglePlayPause();
     this.isPlaying2 = false;
@@ -478,6 +475,10 @@ export class PlayerComponent
   }
 
   playPause(): void {
+    if (this.playbackMode === 'stems' || this.isStemsPlaying) {
+      this.pauseStemsMode();
+      return;
+    }
     !this.isPlaying2
       ? this.playMusic(this.musicId)
       : this.pauseMusic(this.musicId);
@@ -505,6 +506,9 @@ export class PlayerComponent
       waveform.setAttribute('style', 'bottom: 301px;');
       rowPlayer.setAttribute('style', 'bottom: 220px;');
     } else if (trackCustom.getAttribute('style') == 'display: flex;') {
+      if (this.isStemsPlaying) {
+        this.pauseStemsMode();
+      }
       trackCustom.setAttribute('style', 'display: none;');
       waveform.removeAttribute('style');
       rowPlayer.removeAttribute('style');
@@ -520,145 +524,334 @@ export class PlayerComponent
 
   private destroyStems() {
     try {
-      this.stems.forEach((s) => s.destroy());
-    } catch (e) {}
+      this.stems.forEach((s) => {
+        try {
+          s.pause();
+          s.destroy();
+        } catch (e) {}
+      });
+    } catch (e) {
+    }
     this.stems = [];
   }
 
-  private bindStemControls(index: number) {
+  private pauseAllStems(): void {
+    this.stems.forEach((s) => {
+      try {
+        s.pause();
+      } catch (e) {}
+    });
+    this.isStemsPlaying = false;
+  }
+
+  private resetStemLoadState(): void {
+    this.playbackMode = 'full';
+    this.isStemsPlaying = false;
+    this.stemsReady = false;
+    this.stemsLoading = false;
+    this.stemsEmpty = false;
+    this.stemsLoadError = false;
+    this.stemsReadyCount = 0;
+    this.stemsExpectedCount = 0;
+    this.stemLabels = [];
+    this.stemTrackAvailable = [false, false, false, false];
+    this.stemVolumes = [75, 75, 75, 75];
+    this.stemMuted = [false, false, false, false];
+  }
+
+  private clearStemContainers(): void {
+    for (let i = 0; i < 4; i++) {
+      const el = document.querySelector(`#trackCustom${i + 1}`) as HTMLElement | null;
+      if (!el) continue;
+      Array.from(el.children).forEach((child) => {
+        if (!(child as HTMLElement).classList.contains('stem-badge')) {
+          child.remove();
+        }
+      });
+    }
+  }
+
+  hasStem(index: number): boolean {
+    return !!this.stemTrackAvailable[index];
+  }
+
+  private normalizeStemResponse(data: MusicStem[] | unknown): MusicStem[] {
+    if (!Array.isArray(data)) {
+      return [];
+    }
+
+    return data
+      .filter((stem): stem is MusicStem => {
+        return !!stem && typeof stem.url === 'string' && stem.url.trim().length > 0;
+      })
+      .slice(0, 4)
+      .map((stem, index) => ({
+        ...stem,
+        label: this.getStemLabel(stem, index),
+        url: stem.url!.trim(),
+      }));
+  }
+
+  private getStemLabel(stem: MusicStem, index: number): string {
+    return stem.label || stem.type || `STEM ${index + 1}`;
+  }
+
+  private createStemWaveSurfer(stemData: MusicStem, index: number): void {
+    this.stemLabels[index] = this.getStemLabel(stemData, index);
+    this.stemTrackAvailable[index] = true;
+
+    const stem = WaveSurfer.create({
+      container: `#trackCustom${index + 1}`,
+      waveColor: '#fff',
+      progressColor: '#dcad54',
+      minPxPerSec: 100,
+      url: stemData.url,
+      hideScrollbar: true,
+      fillParent: true,
+      height: 0,
+      backend: 'MediaElement',
+      plugins: [
+        Minimap.create({
+          height: 40,
+          waveColor: '#fff',
+          progressColor: '#dcad54',
+          dragToSeek: true,
+        }),
+      ],
+    });
+
+    this.stems[index] = stem;
+
+    (stem as any).on('seek', (progress: number) => {
+      if (this.isSyncing) return;
+      const duration = stem.getDuration() || 0;
+      this.seekActivePlayback(progress * duration);
+    });
+
+    (stem as any).on('audioprocess', () => {
+      if (this.playbackMode !== 'stems') return;
+      try {
+        const time = (stem as any)?.getCurrentTime?.() || 0;
+        this.musicPlayerService.setCurrentTime(time);
+      } catch (e) {}
+    });
+
+    stem.on('ready', () => {
+      this.applyStoredStemSettings(index);
+      this.stemsReadyCount++;
+      this.stemsReady = this.stemsReadyCount >= this.stemsExpectedCount;
+      this.stemsLoading = !this.stemsReady;
+    });
+
+    (stem as any).on('error', (error: unknown) => {
+      this.stemsLoadError = true;
+      this.stemsLoading = false;
+      this.stemsReady = false;
+      console.warn('Erro ao carregar stem da música.', error);
+    });
+  }
+
+  onStemVolumeInput(event: Event, index: number): void {
+    const input = event.target as HTMLInputElement;
+    this.setStemVolume(index, Number(input.value));
+  }
+
+  toggleStemMute(index: number): void {
     const stem = this.stems[index];
     if (!stem) return;
-    const volInput: any = document.getElementById(`mutedTrack${index + 1}`);
-    const volumeBtn: any = document.getElementById(
-      `volumeOnTrackCustom${index + 1}`
-    );
-    const muteOn: any = document.querySelector(`.muteOn${index + 1}`);
-    const muteOff: any = document.querySelector(`.muteOff${index + 1}`);
-    const volbox: any = document.querySelector(`.volbox${index + 1}`);
-    const initial =
-      (
-        document.querySelector(`#mutedTrack${index + 1}`) as HTMLElement
-      )?.getAttribute('value') || '75';
-    stem.on('ready', () => {
-      // Estados persistidos
-      const volKey = this.getStemVolKey(index);
-      const mutedKey = this.getStemMutedKey(index);
+
+    if (this.stemMuted[index]) {
+      const restoredVolume = this.getStoredStemVolume(index);
+      this.stemMuted[index] = false;
+      this.stemVolumes[index] = restoredVolume;
+      stem.setMuted(false);
+      stem.setVolume(restoredVolume / 100);
+      this.persistStemSettings(index, restoredVolume, false);
+      return;
+    }
+
+    const currentVolume = this.stemVolumes[index] || this.getStoredStemVolume(index);
+    this.stemMuted[index] = true;
+    this.stemVolumes[index] = 0;
+    stem.setMuted(true);
+    this.persistStemSettings(index, currentVolume, true);
+  }
+
+  private setStemVolume(index: number, volume: number): void {
+    const stem = this.stems[index];
+    if (!stem) return;
+
+    const clampedVolume = this.clampVolume(volume);
+    const muted = clampedVolume === 0;
+    this.stemVolumes[index] = clampedVolume;
+    this.stemMuted[index] = muted;
+    stem.setVolume(clampedVolume / 100);
+    stem.setMuted(muted);
+    this.persistStemSettings(index, clampedVolume || this.getStoredStemVolume(index), muted);
+  }
+
+  private applyStoredStemSettings(index: number): void {
+    const stem = this.stems[index];
+    if (!stem) return;
+
+    const storedVolume = this.getStoredStemVolume(index);
+    const muted = this.getStoredStemMuted(index);
+    stem.setVolume(storedVolume / 100);
+    stem.setMuted(muted);
+    this.stemMuted[index] = muted;
+    this.stemVolumes[index] = muted ? 0 : storedVolume;
+  }
+
+  private persistStemSettings(index: number, volume: number, muted: boolean): void {
+    try {
+      localStorage.setItem(this.getStemVolKey(index), String(this.clampVolume(volume)));
+      localStorage.setItem(this.getStemMutedKey(index), String(muted));
+    } catch (e) {}
+  }
+
+  private getStoredStemVolume(index: number): number {
+    try {
+      const stored = Number(localStorage.getItem(this.getStemVolKey(index)));
+      return this.clampVolume(Number.isFinite(stored) && stored > 0 ? stored : 75);
+    } catch (e) {
+      return 75;
+    }
+  }
+
+  private getStoredStemMuted(index: number): boolean {
+    try {
+      return localStorage.getItem(this.getStemMutedKey(index)) === 'true';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  private clampVolume(volume: number): number {
+    if (!Number.isFinite(volume)) return 0;
+    return Math.max(0, Math.min(100, Math.round(volume)));
+  }
+
+  private getActiveCurrentTime(): number {
+    try {
+      if (this.playbackMode === 'stems' && this.stems[0]) {
+        return (this.stems[0] as any)?.getCurrentTime?.() || 0;
+      }
+      return (this.wavesurfer as any)?.getCurrentTime?.() || 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  private getActiveDuration(): number {
+    try {
+      if (this.playbackMode === 'stems' && this.stems[0]) {
+        return this.stems[0].getDuration() || this.timeSkip || 0;
+      }
+      return this.wavesurfer?.getDuration?.() || this.timeSkip || 0;
+    } catch (e) {
+      return this.timeSkip || 0;
+    }
+  }
+
+  private skipActivePlayback(delta: number): void {
+    const duration = this.getActiveDuration();
+    const currentTime = this.getActiveCurrentTime();
+    const targetTime = Math.max(0, Math.min(duration, currentTime + delta));
+    this.seekActivePlayback(targetTime);
+  }
+
+  private seekActivePlayback(time: number): void {
+    const duration = this.getActiveDuration();
+    const targetTime = duration > 0 ? Math.max(0, Math.min(duration, time)) : Math.max(0, time);
+    this.isSyncing = true;
+
+    try {
+      if (this.wavesurfer) {
+        this.wavesurfer.setTime(targetTime);
+      }
+      this.stems.forEach((stem) => {
+        try {
+          stem.setTime(targetTime);
+        } catch (e) {}
+      });
+      this.musicPlayerService.setCurrentTime(targetTime);
+    } catch (e) {
+    } finally {
+      Promise.resolve().then(() => {
+        this.isSyncing = false;
+      });
+    }
+  }
+
+  initWavesurferHandlers(): void {
+    // Guard: só cascateia play para stems quando em modo 'stems'
+    this.wavesurfer.on('play', () => {
+      if (this.playbackMode !== 'stems') return;
+      const currentTime = (this.wavesurfer as any)?.getCurrentTime?.() || 0;
+      this.stems.forEach((s) => {
+        try { s.setTime(currentTime); s.play(); } catch (e) {}
+      });
+      this.isStemsPlaying = true;
+    });
+    // Guard: em modo 'stems', não cascatear pause para evitar race condition
+    this.wavesurfer.on('pause', () => {
+      if (this.playbackMode === 'stems') return;
+      this.pauseAllStems();
+    });
+    (this.wavesurfer as any).on('seek', (progress: number) => {
+      if (this.isSyncing) return;
       try {
-        const storedVol = localStorage.getItem(volKey);
-        const storedMuted = localStorage.getItem(mutedKey) === 'true';
-        if (storedVol && volInput) {
-          volInput.value = storedVol;
-          stem.setVolume((Number(storedVol) || 0) / 100);
-        }
-        if (storedMuted) {
-          stem.setMuted(true);
-          this.muteOffAdd(muteOn, muteOff);
-          if (volInput) volInput.value = '0';
-        } else {
-          this.muteOnAdd(muteOn, muteOff);
-        }
+        const time = progress * (this.wavesurfer.getDuration() || 0);
+        this.seekActivePlayback(time);
       } catch (e) {}
-      if (volInput) {
-        volInput.addEventListener('input', (e: any) => {
-          let vol: any = e.target.value;
-          stem.setVolume((vol || 0) / 100);
-          if (vol == '0') {
-            this.muteOffAdd(muteOn, muteOff);
-            try {
-              localStorage.setItem(mutedKey, 'true');
-            } catch (e) {}
-          } else {
-            this.muteOnAdd(muteOn, muteOff);
-            try {
-              localStorage.setItem(mutedKey, 'false');
-              localStorage.setItem(volKey, String(vol));
-            } catch (e) {}
-          }
-        });
-      }
-      if (volumeBtn) {
-        volumeBtn.addEventListener('click', () => {
-          if (muteOn?.classList?.contains('d-flex')) {
-            stem.setMuted(true);
-            this.muteOffAdd(muteOn, muteOff);
-            if (volInput) volInput.value = '0';
-            try {
-              localStorage.setItem(mutedKey, 'true');
-            } catch (e) {}
-          } else if (muteOff?.classList?.contains('d-flex')) {
-            stem.setMuted(false);
-            this.muteOnAdd(muteOn, muteOff);
-            if (volInput) volInput.value = initial;
-            try {
-              localStorage.setItem(mutedKey, 'false');
-              localStorage.setItem(volKey, String(initial));
-            } catch (e) {}
-          }
-        });
-        // Hover box for slider
-        const add = () => {
-          volbox?.classList?.add('d-flex');
-          volInput?.classList?.add('d-flex');
-        };
-        const rmv = () => {
-          volbox?.classList?.remove('d-flex');
-          volInput?.classList?.remove('d-flex');
-        };
-        volumeBtn.addEventListener('mouseover', () => {
-          add();
-          volbox?.addEventListener('mouseover', add);
-          volInput?.addEventListener('mouseover', add);
-        });
-        volumeBtn.addEventListener('mouseout', () => {
-          rmv();
-          volbox?.addEventListener('mouseout', rmv);
-          volInput?.addEventListener('mouseout', rmv);
-        });
-      }
+    });
+    (this.wavesurfer as any).on('audioprocess', () => {
+      if (this.playbackMode === 'stems') return;
+      try {
+        const time = (this.wavesurfer as any)?.getCurrentTime?.() || 0;
+        this.musicPlayerService.setCurrentTime(time);
+      } catch (e) {}
     });
   }
 
   private loadStems(id: number) {
-    // Limpa instâncias anteriores
+    this.stemsLoadSubscription?.unsubscribe();
+    this.resetStemLoadState();
     this.destroyStems();
-    const containers = [
-      '#trackCustom1',
-      '#trackCustom2',
-      '#trackCustom3',
-      '#trackCustom4',
-    ];
-    // Limpa DOM dos containers para garantir recriação
-    containers.forEach((sel) => {
-      const el = document.querySelector(sel) as HTMLElement | null;
-      if (el) el.innerHTML = '';
+    this.clearStemContainers();
+    this.stemsLoading = true;
+
+    this.stemsLoadSubscription = this.musicService.getStemsByMusicId(id).subscribe({
+      next: (data: MusicStem[]) => {
+        if (this.idMusicCurrent !== id) return;
+
+        const stems = this.normalizeStemResponse(data);
+        this.stemsExpectedCount = stems.length;
+
+        if (stems.length === 0) {
+          this.stemsLoading = false;
+          this.stemsEmpty = true;
+          return;
+        }
+
+        stems.forEach((stem, index) => this.createStemWaveSurfer(stem, index));
+      },
+      error: (error: any) => {
+        if (this.idMusicCurrent !== id) return;
+
+        this.stemsLoading = false;
+        this.stemsReady = false;
+        if (error?.status === 404) {
+          this.stemsEmpty = true;
+          return;
+        }
+
+        this.stemsLoadError = true;
+        console.warn('Erro ao carregar stems da música.', error);
+      },
     });
-    this.musicService.getStemsByMusicId(id).subscribe((data: any[]) => {
-      for (let i = 0; i < containers.length; i++) {
-        const url = data?.[i]?.url;
-        this.stemLabels[i] = data?.[i]?.label || `STEM ${i + 1}`;
-        const s = WaveSurfer.create({
-          container: containers[i],
-          waveColor: '#fff',
-          progressColor: '#dcad54',
-          minPxPerSec: 100,
-          url: url,
-          hideScrollbar: true,
-          fillParent: true,
-          height: 0,
-          backend: 'MediaElement',
-          plugins: [
-            Minimap.create({
-              height: 40,
-              waveColor: '#fff',
-              progressColor: '#dcad54',
-              dragToSeek: true,
-            }),
-          ],
-        });
-        this.stems.push(s);
-        this.bindStemControls(i);
-      }
-    });
+
+    this.subscription.add(this.stemsLoadSubscription);
   }
 
   private getStemVolKey(index: number): string {
@@ -670,6 +863,7 @@ export class PlayerComponent
   muteOnAdd(elm: any, elm2: any): void {
     let muteOn: any = elm;
     let muteOff: any = elm2;
+    if (!muteOn || !muteOff) return;
     muteOn.classList.add('d-flex');
     muteOn.classList.remove('d-none');
     muteOff.classList.remove('d-flex');
@@ -678,11 +872,16 @@ export class PlayerComponent
   muteOffAdd(elm: any, elm2: any): void {
     let muteOn: any = elm;
     let muteOff: any = elm2;
+    if (!muteOn || !muteOff) return;
     muteOff.classList.add('d-flex');
     muteOff.classList.remove('d-none');
     muteOn.classList.remove('d-flex');
     muteOn.classList.add('d-none');
   }
+  get currentMusicBpm(): string {
+    return this.currentMusic?.bpm ? `${this.currentMusic.bpm} bpm` : '—';
+  }
+
   valueInitial(event: any) {
     this.volumeInitial = event.target.value;
   }
@@ -697,6 +896,36 @@ export class PlayerComponent
   }
   baixarAmostra(i: any) {
     console.log(i);
+  }
+
+  playStemsMode(): void {
+    if (!this.stemsReady || this.stems.length === 0) return;
+    const currentTime = this.getActiveCurrentTime();
+    // Define modo ANTES de pausar wavesurfer: on('pause') verá 'stems' e não cascateará
+    this.playbackMode = 'stems';
+    try { this.wavesurfer.pause(); } catch (e) {}
+    this.seekActivePlayback(currentTime);
+    this.stems.forEach((s) => {
+      try { s.play(); } catch (e) {}
+    });
+    this.isStemsPlaying = true;
+    // Atualiza UI do botão principal se estava tocando
+    if (this.isPlaying2) {
+      this.playerService.tooglePlayPause();
+      this.isPlaying2 = false;
+    }
+  }
+
+  pauseStemsMode(): void {
+    const currentTime = this.getActiveCurrentTime();
+    this.playbackMode = 'full';
+    this.pauseAllStems();
+    // Sincroniza wavesurfer para handoff de tempo
+    try { this.seekActivePlayback(currentTime); } catch (e) {}
+  }
+
+  toggleStemsPlayback(): void {
+    this.isStemsPlaying ? this.pauseStemsMode() : this.playStemsMode();
   }
 
   resetStems() {
@@ -715,20 +944,14 @@ export class PlayerComponent
     // Reset stems
     for (let i = 0; i < 4; i++) {
       const stem = this.stems[i];
-      const volInput: any = document.getElementById(`mutedTrack${i + 1}`);
-      const muteOn: any = document.querySelector(`.muteOn${i + 1}`);
-      const muteOff: any = document.querySelector(`.muteOff${i + 1}`);
-      const volKey = this.getStemVolKey(i);
-      const mutedKey = this.getStemMutedKey(i);
       try {
         if (stem) {
           stem.setMuted(false);
           stem.setVolume(0.75);
         }
-        if (volInput) volInput.value = '75';
-        this.muteOnAdd(muteOn, muteOff);
-        localStorage.setItem(volKey, '75');
-        localStorage.setItem(mutedKey, 'false');
+        this.stemVolumes[i] = 75;
+        this.stemMuted[i] = false;
+        this.persistStemSettings(i, 75, false);
       } catch (e) {}
     }
   }

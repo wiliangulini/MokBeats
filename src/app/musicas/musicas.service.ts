@@ -19,8 +19,17 @@ export type Musica = {
   bpm?: number;
   trechos?: number;
   loops?: number;
+  key?: string;
   duracaoReal?: number; // Duração real em segundos obtida do áudio
   duracaoCarregando?: boolean; // Flag para indicar que está carregando
+};
+
+export type MusicStem = {
+  id?: number;
+  label?: string;
+  type?: string;
+  url?: string;
+  duration_ms?: number;
 };
 
 @Injectable({
@@ -437,11 +446,10 @@ export class MusicasService extends CrudService<Musica> {
     });
   }
 
-  public comprarLicensa(i: any) {
+  public comprarLicensa(i: any): void {
     this.authService.verificaLogin();
     if (this.authService.userAutetic()) {
-      this.cartService.openModalCart();
-      this.cartService.receivingCart(i);
+      this.cartService.openModalCart(i);
     }
   }
 
@@ -476,9 +484,9 @@ export class MusicasService extends CrudService<Musica> {
     return this.http.get(`${this.baseUrl}/subgeneros`, { params: { genero } });
   }
 
-  getStemsByMusicId(id: number): Observable<any> {
+  getStemsByMusicId(id: number): Observable<MusicStem[]> {
     // Usa o endpoint mais novo (alias de compatibilidade no backend)
-    return this.http.get(`${this.baseUrl}/tracks/${id}/stems`);
+    return this.http.get<MusicStem[]>(`${this.baseUrl}/tracks/${id}/stems`);
   }
 
   getLatestUniqueByProducer(limit: number): Observable<any> {

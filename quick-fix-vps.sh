@@ -1,264 +1,300 @@
 #!/bin/bash
 
 ################################################################################
-# Quick Fix VPS - Correção Imediata do Problema de Peaks
+# Quick Fix VPS - reparo controlado de peaks/env/backend
 #
-# Este script corrige o problema atual na VPS:
-# - Cria arquivo .env com NODE_ENV=production
-# - Verifica presença dos arquivos de áudio
-# - Re-executa generate-peaks.js
-# - Reinicia PM2
+# Uso:
+#   ./quick-fix-vps.sh [opcoes]
 #
-# Uso: ./quick-fix-vps.sh
+# Opcoes:
+#   --generate-peaks  Executa server/scripts/generate-peaks.js na VPS
+#   --restart-backend Reinicia/cria processo PM2 mok-backend
+#   --check-only      Apenas verifica estrutura, env, Node, PM2 e arquivos
+#   --dry-run         Mostra o que seria feito, sem alterar a VPS
+#   --help            Mostra esta ajuda
+#
+# Sem flags, o script executa reparo completo: env + generate-peaks + PM2.
 ################################################################################
 
-set -e
+set -euo pipefail
 
-# Cores para output
+VPS_IP="31.97.160.61"
+VPS_USER="root"
+VPS_PATH="/var/www/html/gulini.com.br/mokbeats"
+PM2_NAME="mok-backend"
+SSH="${VPS_USER}@${VPS_IP}"
+
+DO_GENERATE_PEAKS=false
+DO_RESTART_BACKEND=false
+CHECK_ONLY=false
+DRY_RUN=false
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-# Configurações da VPS
-VPS_IP="147.79.87.156"
-VPS_USER="root"
-VPS_PATH="/var/www/mokbeats"
+step() { echo -e "\n${BLUE}[STEP]${NC} $1"; }
+ok() { echo -e "${GREEN}[OK]${NC} $1"; }
+warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
+err() { echo -e "${RED}[ERROR]${NC} $1"; }
+info() { echo "    $1"; }
 
-# Banner
-echo -e "${CYAN}"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  🔧 Quick Fix VPS - Correção de Peaks"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo -e "${NC}"
+show_help() {
+  cat <<'EOF'
+Uso: ./quick-fix-vps.sh [opcoes]
 
-print_step() {
-  echo -e "${BLUE}[STEP]${NC} $1"
-}
+Opcoes:
+  --generate-peaks  Executa server/scripts/generate-peaks.js na VPS
+  --restart-backend Reinicia/cria processo PM2 mok-backend
+  --check-only      Apenas verifica estrutura, env, Node, PM2 e arquivos
+  --dry-run         Mostra o que seria feito, sem alterar a VPS
+  --help, -h        Mostra esta ajuda
 
-print_success() {
-  echo -e "${GREEN}[✓]${NC} $1"
-}
-
-print_warning() {
-  echo -e "${YELLOW}[!]${NC} $1"
-}
-
-print_error() {
-  echo -e "${RED}[✗]${NC} $1"
-}
-
-print_info() {
-  echo -e "${CYAN}[INFO]${NC} $1"
-}
-
-# Função para detectar Node.js e PM2 na VPS
-detect_node_and_pm2() {
-  print_step "Verificando instalação do Node.js e PM2..."
-
-  # Detectar Node.js usando shell de login (com suporte a NVM)
-  NODE_VERSION=$(ssh ${VPS_USER}@${VPS_IP} "bash -l -c 'source ~/.nvm/nvm.sh 2>/dev/null && node --version 2>/dev/null'" || echo "")
-  NODE_PATH=$(ssh ${VPS_USER}@${VPS_IP} "bash -l -c 'source ~/.nvm/nvm.sh 2>/dev/null && which node 2>/dev/null'" || echo "")
-
-  if [ -z "$NODE_VERSION" ]; then
-    print_error "Node.js não encontrado na VPS!"
-    print_warning "Você precisa instalar o Node.js primeiro:"
-    echo ""
-    echo "  ssh ${VPS_USER}@${VPS_IP}"
-    echo "  curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -"
-    echo "  sudo apt-get install -y nodejs"
-    echo ""
-    return 1
-  fi
-
-  print_success "Node.js encontrado: $NODE_VERSION"
-  print_info "Caminho do Node.js: $NODE_PATH"
-
-  # Detectar PM2 (com suporte a NVM)
-  PM2_VERSION=$(ssh ${VPS_USER}@${VPS_IP} "bash -l -c 'source ~/.nvm/nvm.sh 2>/dev/null && pm2 --version 2>/dev/null'" || echo "")
-
-  if [ -z "$PM2_VERSION" ]; then
-    print_warning "PM2 não encontrado, mas será instalado se necessário"
-  else
-    print_success "PM2 encontrado: v$PM2_VERSION"
-  fi
-
-  echo ""
-  return 0
-}
-
-# Passo 1: Verificar conexão com VPS
-print_step "1. Testando conexão com VPS..."
-if ssh -o ConnectTimeout=5 ${VPS_USER}@${VPS_IP} "echo 'Conexão OK'" > /dev/null 2>&1; then
-  print_success "Conexão estabelecida com ${VPS_IP}"
-else
-  print_error "Não foi possível conectar à VPS"
-  exit 1
-fi
-
-# Passo 2: Verificar estrutura de diretórios
-print_step "2. Verificando estrutura de diretórios na VPS..."
-ssh ${VPS_USER}@${VPS_IP} << 'EOF'
-echo "Estrutura de diretórios:"
-echo "  /var/www/mokbeats/:"
-ls -1 /var/www/mokbeats/ | head -10
-
-if [ -d "/var/www/mokbeats/assets/audios" ]; then
-  echo "  ✓ /var/www/mokbeats/assets/audios/ existe"
-  audio_count=$(find /var/www/mokbeats/assets/audios -name "*.mp3" 2>/dev/null | wc -l)
-  echo "  ✓ Arquivos MP3 encontrados: $audio_count"
-else
-  echo "  ✗ /var/www/mokbeats/assets/audios/ NÃO EXISTE"
-fi
-
-if [ -d "/var/www/mokbeats/server" ]; then
-  echo "  ✓ /var/www/mokbeats/server/ existe"
-else
-  echo "  ✗ /var/www/mokbeats/server/ NÃO EXISTE"
-fi
+Sem flags, executa reparo completo: env + generate-peaks + PM2.
 EOF
+}
 
-# Passo 3: Verificar se áudios estão presentes
-print_step "3. Verificando arquivos de áudio..."
-audio_check=$(ssh ${VPS_USER}@${VPS_IP} "find /var/www/mokbeats/assets/audios -name '*.mp3' 2>/dev/null | wc -l" || echo "0")
+parse_args() {
+  if [ "$#" -eq 0 ]; then
+    DO_GENERATE_PEAKS=true
+    DO_RESTART_BACKEND=true
+    return
+  fi
 
-if [ "$audio_check" -eq "0" ]; then
-  print_error "Nenhum arquivo de áudio encontrado na VPS!"
-  print_warning "Você precisa enviar os arquivos de áudio primeiro:"
-  echo ""
-  echo "  cd /home/hustler/Documentos/projetos/MokBeats"
-  echo "  rsync -avz src/assets/audios/ ${VPS_USER}@${VPS_IP}:/var/www/mokbeats/assets/audios/"
-  echo ""
-  read -p "Deseja enviar os arquivos de áudio agora? (s/N): " upload_now
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --generate-peaks) DO_GENERATE_PEAKS=true ;;
+      --restart-backend) DO_RESTART_BACKEND=true ;;
+      --check-only) CHECK_ONLY=true ;;
+      --dry-run) DRY_RUN=true ;;
+      --help|-h)
+        show_help
+        exit 0
+        ;;
+      *)
+        err "Opcao desconhecida: $1"
+        echo "Use --help para ver as opcoes disponiveis."
+        exit 1
+        ;;
+    esac
+    shift
+  done
 
-  if [[ $upload_now =~ ^[Ss]$ ]]; then
-    print_step "Enviando arquivos de áudio..."
-    cd /home/hustler/Documentos/projetos/MokBeats
-    rsync -avz src/assets/audios/ ${VPS_USER}@${VPS_IP}:/var/www/mokbeats/assets/audios/
-    print_success "Arquivos de áudio enviados"
-  else
-    print_error "Não é possível continuar sem os arquivos de áudio"
-    exit 1
+  if [ "$CHECK_ONLY" = true ]; then
+    DO_GENERATE_PEAKS=false
+    DO_RESTART_BACKEND=false
+  fi
+}
+
+run_remote() {
+  local label="$1"
+  shift
+
+  if [ "$DRY_RUN" = true ]; then
+    info "DRY-RUN: pularia bloco remoto: ${label}"
+    return 0
+  fi
+
+  ssh "$SSH" "$@"
+}
+
+print_banner() {
+  echo -e "${CYAN}"
+  echo "============================================================"
+  echo "  Quick Fix VPS - MokBeats"
+  echo "  VPS: ${SSH}"
+  echo "  Caminho: ${VPS_PATH}"
+  echo "============================================================"
+  echo -e "${NC}"
+
+  if [ "$DRY_RUN" = true ]; then
+    warn "Modo DRY-RUN ativo: nenhuma alteracao remota sera feita."
+  fi
+}
+
+check_connection() {
+  step "Testar conexao SSH"
+  if [ "$DRY_RUN" = true ]; then
+    info "DRY-RUN: testaria ssh ${SSH}"
+    return
+  fi
+
+  ssh -o ConnectTimeout=5 "$SSH" "echo 'Conexao OK'" >/dev/null
+  ok "Conexao estabelecida"
+}
+
+inspect_remote() {
+  step "Inspecionar estrutura remota"
+  run_remote "inspecao" bash -s -- "$VPS_PATH" "$PM2_NAME" <<'REMOTE'
+set -euo pipefail
+VPS_PATH="$1"
+PM2_NAME="$2"
+ENV_FILE="${VPS_PATH}/server/.env"
+
+echo "Diretorio principal: ${VPS_PATH}"
+[ -d "$VPS_PATH" ] && ls -1 "$VPS_PATH" | head -20 || echo "[WARN] Diretorio nao existe"
+echo ""
+
+if [ -d "${VPS_PATH}/assets/audios" ]; then
+  audio_count=$(find "${VPS_PATH}/assets/audios" -name "*.mp3" 2>/dev/null | wc -l)
+  echo "[OK] MP3 encontrados: ${audio_count}"
+else
+  echo "[WARN] ${VPS_PATH}/assets/audios nao existe"
+fi
+
+if [ -d "${VPS_PATH}/server" ]; then
+  echo "[OK] server/ existe"
+else
+  echo "[WARN] server/ nao existe"
+fi
+
+if [ -f "$ENV_FILE" ]; then
+  echo "[OK] .env existe"
+  grep -E '^(NODE_ENV|AUDIO_BASE_PATH)=' "$ENV_FILE" || true
+  if ! grep -q '^JWT_SECRET=.\+' "$ENV_FILE"; then
+    echo "[WARN] JWT_SECRET ausente ou vazio"
   fi
 else
-  print_success "Encontrados $audio_check arquivos MP3 na VPS"
+  echo "[WARN] .env nao existe"
 fi
 
-# Passo 4: Criar arquivo .env na VPS
-print_step "4. Criando arquivo .env na VPS..."
-ssh ${VPS_USER}@${VPS_IP} << 'EOF'
-cd /var/www/mokbeats/server
-
-# Fazer backup do .env antigo se existir
-if [ -f ".env" ]; then
-  cp .env .env.backup.$(date +%Y%m%d_%H%M%S)
-  echo "  ℹ️  Backup do .env antigo criado"
+if command -v node >/dev/null 2>&1; then
+  echo "[OK] Node.js $(node --version)"
+else
+  echo "[WARN] Node.js nao encontrado"
 fi
 
-# Criar novo .env
-cat > .env << 'ENVFILE'
-# Configuração de Ambiente - Produção (VPS)
+if command -v pm2 >/dev/null 2>&1; then
+  echo "[OK] PM2 $(pm2 --version)"
+  pm2 describe "$PM2_NAME" >/dev/null 2>&1 && echo "[OK] PM2 ${PM2_NAME} existe" || echo "[WARN] PM2 ${PM2_NAME} nao existe"
+else
+  echo "[WARN] PM2 nao encontrado"
+fi
+
+if command -v audiowaveform >/dev/null 2>&1; then
+  echo "[OK] $(audiowaveform --version 2>&1 | head -n1)"
+else
+  echo "[WARN] audiowaveform nao encontrado"
+fi
+REMOTE
+}
+
+repair_env() {
+  if [ "$CHECK_ONLY" = true ]; then
+    return
+  fi
+
+  step "Corrigir .env remoto sem sobrescrever secrets"
+  run_remote "env" bash -s -- "$VPS_PATH" <<'REMOTE'
+set -euo pipefail
+VPS_PATH="$1"
+ENV_FILE="${VPS_PATH}/server/.env"
+
+mkdir -p "${VPS_PATH}/server"
+if [ -f "$ENV_FILE" ]; then
+  cp "$ENV_FILE" "${ENV_FILE}.backup.$(date +%Y%m%d_%H%M%S)"
+  echo "[OK] Backup criado para .env existente"
+else
+  umask 077
+  GENERATED_SECRET="$(openssl rand -hex 32 2>/dev/null || node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")"
+  cat > "$ENV_FILE" <<ENVFILE
 NODE_ENV=production
-
-# Caminho base para arquivos de áudio
-# Na VPS: os áudios estão em ../../assets/audios/
 AUDIO_BASE_PATH=../../
+JWT_SECRET=${GENERATED_SECRET}
 ENVFILE
+  echo "[OK] .env criado com JWT_SECRET gerado automaticamente"
+fi
 
-echo "  ✓ Arquivo .env criado com sucesso"
-echo ""
-echo "Conteúdo do .env:"
-cat .env
-EOF
-
-if [ $? -eq 0 ]; then
-  print_success "Arquivo .env configurado"
+if grep -q '^NODE_ENV=' "$ENV_FILE"; then
+  sed -i 's|^NODE_ENV=.*|NODE_ENV=production|' "$ENV_FILE"
 else
-  print_error "Erro ao criar .env"
-  exit 1
+  printf '\nNODE_ENV=production\n' >> "$ENV_FILE"
 fi
 
-# Passo 5: Verificar Node.js e PM2
-echo ""
-if ! detect_node_and_pm2; then
-  print_error "Não é possível continuar sem Node.js instalado"
-  exit 1
-fi
-
-# Passo 6: Executar generate-peaks.js
-print_step "6. Gerando peaks dos áudios..."
-print_info "Este processo pode demorar alguns minutos..."
-echo ""
-
-ssh ${VPS_USER}@${VPS_IP} "bash -l -c 'source ~/.nvm/nvm.sh && cd /var/www/mokbeats/server && node scripts/generate-peaks.js'"
-
-if [ $? -eq 0 ]; then
-  print_success "Peaks gerados com sucesso"
+if grep -q '^AUDIO_BASE_PATH=' "$ENV_FILE"; then
+  sed -i 's|^AUDIO_BASE_PATH=.*|AUDIO_BASE_PATH=../../|' "$ENV_FILE"
 else
-  print_error "Erro ao gerar peaks"
-  print_warning "Verifique os logs acima para mais detalhes"
-  exit 1
+  printf 'AUDIO_BASE_PATH=../../\n' >> "$ENV_FILE"
 fi
 
-# Passo 7: Verificar musicas.json
-print_step "7. Verificando musicas.json..."
-ssh ${VPS_USER}@${VPS_IP} << 'EOF'
-cd /var/www/mokbeats/server
-
-# Verificar se arquivo existe
-if [ ! -f "data/musicas.json" ]; then
-  echo "  ✗ Arquivo musicas.json não encontrado"
-  exit 1
+if ! grep -q '^JWT_SECRET=.\+' "$ENV_FILE"; then
+  echo "[WARN] JWT_SECRET ausente ou vazio. Configure antes de usar producao."
 fi
 
-# Verificar tamanho
-file_size=$(stat -f%z "data/musicas.json" 2>/dev/null || stat -c%s "data/musicas.json" 2>/dev/null)
-echo "  ✓ Tamanho do musicas.json: $(echo "scale=2; $file_size/1024" | bc) KB"
+chmod 600 "$ENV_FILE" || true
+echo "[OK] NODE_ENV e AUDIO_BASE_PATH corrigidos"
+REMOTE
+  ok ".env remoto revisado"
+}
 
-# Verificar se tem peaks preenchidos
-peaks_count=$(grep -o '"peaks":\[' data/musicas.json | wc -l)
-echo "  ✓ Músicas com campo peaks: $peaks_count"
+generate_peaks() {
+  if [ "$DO_GENERATE_PEAKS" != true ]; then
+    return
+  fi
 
-# Verificar se peaks não estão vazios
-non_empty_peaks=$(grep -o '"peaks":\[[0-9]' data/musicas.json | wc -l)
-echo "  ✓ Músicas com peaks preenchidos: $non_empty_peaks"
-EOF
+  step "Gerar peaks na VPS"
+  run_remote "generate-peaks" bash -s -- "$VPS_PATH" <<'REMOTE'
+set -euo pipefail
+VPS_PATH="$1"
 
-if [ $? -eq 0 ]; then
-  print_success "musicas.json verificado"
+cd "${VPS_PATH}/server"
+if ! command -v audiowaveform >/dev/null 2>&1; then
+  echo "[ERROR] audiowaveform nao encontrado. Execute setup-vps.sh antes."
+  exit 1
+fi
+node scripts/generate-peaks.js
+
+if [ -f "data/musicas.json" ]; then
+  peaks_count=$(grep -Eo '"peaks"[[:space:]]*:[[:space:]]*\[' data/musicas.json | wc -l)
+  echo "[OK] musicas.json contem ${peaks_count} campo(s) peaks"
 else
-  print_warning "Problemas ao verificar musicas.json"
-fi
-
-# Passo 8: Reiniciar PM2
-print_step "8. Reiniciando backend com PM2..."
-ssh ${VPS_USER}@${VPS_IP} "bash -l -c 'source ~/.nvm/nvm.sh && pm2 restart mok-backend || pm2 start /var/www/mokbeats/server/src/index.js --name mok-backend'"
-
-if [ $? -eq 0 ]; then
-  print_success "Backend reiniciado"
-else
-  print_error "Erro ao reiniciar PM2"
+  echo "[ERROR] data/musicas.json nao encontrado apos geracao"
   exit 1
 fi
+REMOTE
+  ok "Peaks gerados"
+}
 
-# Passo 9: Verificar status final
-print_step "9. Verificando status do backend..."
-echo ""
-ssh ${VPS_USER}@${VPS_IP} "bash -l -c 'source ~/.nvm/nvm.sh && pm2 status && echo && echo \"Últimas linhas do log:\" && pm2 logs mok-backend --lines 15 --nostream'"
+restart_backend() {
+  if [ "$DO_RESTART_BACKEND" != true ]; then
+    return
+  fi
 
-# Finalização
-echo ""
-echo -e "${GREEN}"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  ✨ Correção concluída com sucesso!"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo -e "${NC}"
+  step "Reiniciar backend PM2"
+  run_remote "restart-backend" bash -s -- "$VPS_PATH" "$PM2_NAME" <<'REMOTE'
+set -euo pipefail
+VPS_PATH="$1"
+PM2_NAME="$2"
 
-print_success "Problema corrigido!"
-print_info "Próximos passos:"
-echo "  1. Teste o frontend: http://${VPS_IP}"
-echo "  2. Verifique se os waveforms carregam rapidamente"
-echo "  3. Monitore os logs: ssh ${VPS_USER}@${VPS_IP} 'pm2 logs mok-backend'"
+if ! command -v pm2 >/dev/null 2>&1; then
+  npm install -g pm2
+fi
+
+if pm2 describe "$PM2_NAME" >/dev/null 2>&1; then
+  pm2 restart "$PM2_NAME"
+else
+  pm2 start "${VPS_PATH}/server/src/index.js" --name "$PM2_NAME"
+fi
+
+pm2 save
+pm2 status
+pm2 logs "$PM2_NAME" --lines 15 --nostream
+REMOTE
+  ok "Backend reiniciado"
+}
+
+parse_args "$@"
+print_banner
+check_connection
+inspect_remote
+repair_env
+generate_peaks
+restart_backend
+
 echo ""
+ok "Quick fix finalizado"
+info "Frontend: https://gulini.com.br/mokbeats/"
+info "Logs: ssh ${SSH} 'pm2 logs ${PM2_NAME}'"

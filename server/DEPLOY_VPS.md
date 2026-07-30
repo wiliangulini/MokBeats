@@ -5,11 +5,12 @@ Este documento contém instruções completas para fazer deploy do sistema de pe
 ## 📋 Pré-requisitos
 
 - VPS com Ubuntu/Debian (Ubuntu 24.04 LTS)
-- Acesso SSH à VPS (root@147.79.87.156)
-- Node.js instalado (v14+)
+- Acesso SSH à VPS (root@31.97.160.61)
+- Node.js instalado — backend exige major 24, mínimo v24.18.1 (versão corrigida; ver lote R1a
+  do Plano P0 v2.2); upgrade da VPS é operação separada (lote R1b), não automatizada aqui
 - PM2 instalado e configurado
-- ⚠️ **CRÍTICO:** Arquivos de áudio (.mp3) em `/var/www/mokbeats/assets/audios/`
-- ⚠️ **CRÍTICO:** Arquivo `.env` em `/var/www/mokbeats/server/` com `NODE_ENV=production`
+- ⚠️ **CRÍTICO:** Arquivos de áudio (.mp3) em `/var/www/html/gulini.com.br/mokbeats/assets/audios/`
+- ⚠️ **CRÍTICO:** Arquivo `.env` em `/var/www/html/gulini.com.br/mokbeats/server/` com `NODE_ENV=production`
 
 ---
 
@@ -21,7 +22,7 @@ Este documento contém instruções completas para fazer deploy do sistema de pe
 
 ```bash
 # Conectar à VPS via SSH
-ssh root@147.79.87.156
+ssh root@31.97.160.61
 
 # 1. Atualizar repositórios
 sudo apt update
@@ -89,13 +90,13 @@ cd /home/hustler/Documentos/projetos/MokBeats
 
 # 1. Upload do frontend (build Angular)
 npm run build
-rsync -avz --delete dist/* root@147.79.87.156:/var/www/mokbeats/
+rsync -avz --delete dist/* root@31.97.160.61:/var/www/html/gulini.com.br/mokbeats/
 
 # 2. Upload do backend
-rsync -avz --delete --exclude=node_modules server/ root@147.79.87.156:/var/www/mokbeats/server/
+rsync -avz --delete --exclude=node_modules server/ root@31.97.160.61:/var/www/html/gulini.com.br/mokbeats/server/
 
 # 3. ⚠️ CRÍTICO: Upload dos arquivos de áudio
-rsync -avz src/assets/audios/ root@147.79.87.156:/var/www/mokbeats/assets/audios/
+rsync -avz src/assets/audios/ root@31.97.160.61:/var/www/html/gulini.com.br/mokbeats/assets/audios/
 ```
 
 ### Opção B: Via Git
@@ -108,8 +109,8 @@ git commit -m "feat: Add peaks generation system with audiowaveform"
 git push origin main
 
 # Na VPS
-ssh root@147.79.87.156
-cd /var/www/mokbeats
+ssh root@31.97.160.61
+cd /var/www/html/gulini.com.br/mokbeats
 git pull origin main
 
 # ⚠️ IMPORTANTE: Arquivos de áudio devem ser enviados separadamente via rsync
@@ -120,16 +121,16 @@ git pull origin main
 
 ```bash
 # Na VPS
-ssh root@147.79.87.156
+ssh root@31.97.160.61
 
 # Verificar estrutura completa
-ls -la /var/www/mokbeats/
+ls -la /var/www/html/gulini.com.br/mokbeats/
 # Deve conter: index.html, assets/, server/
 
-ls -la /var/www/mokbeats/assets/audios/
+ls -la /var/www/html/gulini.com.br/mokbeats/assets/audios/
 # Deve conter: *.mp3 (arquivos de áudio)
 
-ls -la /var/www/mokbeats/server/
+ls -la /var/www/html/gulini.com.br/mokbeats/server/
 # Deve conter: src/, scripts/, data/, package.json
 ```
 
@@ -143,10 +144,10 @@ ls -la /var/www/mokbeats/server/
 
 ```bash
 # Conectar à VPS
-ssh root@147.79.87.156
+ssh root@31.97.160.61
 
 # Navegar até o diretório do servidor
-cd /var/www/mokbeats/server
+cd /var/www/html/gulini.com.br/mokbeats/server
 
 # Criar arquivo .env para produção
 cat > .env << 'EOF'
@@ -169,16 +170,16 @@ cat .env
 ### 3.2. Verificar arquivos de áudio
 
 ```bash
-# Ainda na VPS (/var/www/mokbeats/server)
+# Ainda na VPS (/var/www/html/gulini.com.br/mokbeats/server)
 
 # Verificar se os arquivos de áudio existem
-ls -lh /var/www/mokbeats/assets/audios/*.mp3
+ls -lh /var/www/html/gulini.com.br/mokbeats/assets/audios/*.mp3
 
 # Contar quantos arquivos MP3 existem
-find /var/www/mokbeats/assets/audios -name "*.mp3" | wc -l
+find /var/www/html/gulini.com.br/mokbeats/assets/audios -name "*.mp3" | wc -l
 
 # Verificar tamanho total dos arquivos
-du -sh /var/www/mokbeats/assets/audios/
+du -sh /var/www/html/gulini.com.br/mokbeats/assets/audios/
 ```
 
 **Se os arquivos NÃO existirem:**
@@ -186,13 +187,13 @@ du -sh /var/www/mokbeats/assets/audios/
 ```bash
 # No seu computador local
 cd /home/hustler/Documentos/projetos/MokBeats
-rsync -avz src/assets/audios/ root@147.79.87.156:/var/www/mokbeats/assets/audios/
+rsync -avz src/assets/audios/ root@31.97.160.61:/var/www/html/gulini.com.br/mokbeats/assets/audios/
 ```
 
 ### 3.3. Executar script de geração de peaks
 
 ```bash
-# Na VPS (/var/www/mokbeats/server)
+# Na VPS (/var/www/html/gulini.com.br/mokbeats/server)
 node scripts/generate-peaks.js
 ```
 
@@ -204,7 +205,7 @@ node scripts/generate-peaks.js
 🎵 Iniciando processamento de músicas...
 
 🔧 Ambiente: production
-📁 Base path para áudios: /var/www/mokbeats
+📁 Base path para áudios: /var/www/html/gulini.com.br/mokbeats
 
 ✅ 24 músicas carregadas do JSON
 
@@ -232,7 +233,7 @@ node scripts/generate-peaks.js
    - Erros/avisos: 0
    - Arquivos únicos processados: 5
    - Peaks reutilizados: 19
-   - Arquivo salvo: /var/www/mokbeats/server/data/musicas.json
+   - Arquivo salvo: /var/www/html/gulini.com.br/mokbeats/server/data/musicas.json
    - Tamanho do arquivo: 8.64 KB
 
 🎉 Todas as músicas foram processadas com sucesso!
@@ -247,13 +248,13 @@ node scripts/generate-peaks.js
 🎵 Iniciando processamento de músicas...
 
 🔧 Ambiente: development                           ← ERRADO!
-📁 Base path para áudios: /var/www/mokbeats/src   ← CAMINHO ERRADO!
+📁 Base path para áudios: /var/www/html/gulini.com.br/mokbeats/src   ← CAMINHO ERRADO!
 
 ✅ 24 músicas carregadas do JSON
 
 [1/24] Processando: HighFrenetic
   📁 Arquivo: ../../assets/audios/MokBeats_Future_Forest_(FULL).mp3
-  ⚠️  Arquivo não encontrado: /var/www/mokbeats/src/assets/audios/...
+  ⚠️  Arquivo não encontrado: /var/www/html/gulini.com.br/mokbeats/src/assets/audios/...
   ℹ️  Mantendo peaks vazios para esta música
 
 ⚠️  24 música(s) não foram processadas.
@@ -270,7 +271,7 @@ node scripts/generate-peaks.js
 
 ```bash
 # Na VPS, navegar até o diretório do servidor
-cd /var/www/mokbeats/server
+cd /var/www/html/gulini.com.br/mokbeats/server
 
 # Instalar dependências npm
 npm install
@@ -281,7 +282,9 @@ npm install
 - express
 - cors
 - body-parser
-- connect-multiparty
+- multer (upload; `connect-multiparty` foi removido no lote U2c do Plano P0 v2.2)
+- bcrypt
+- jsonwebtoken
 - dotenv (gerenciamento de variáveis de ambiente)
 
 ### 4.2. Configurar Variáveis de Ambiente (.env)
@@ -290,7 +293,7 @@ npm install
 
 ```bash
 # Criar arquivo .env na VPS
-cd /var/www/mokbeats/server
+cd /var/www/html/gulini.com.br/mokbeats/server
 
 cat > .env << 'EOF'
 # Configuração de Ambiente - Produção (VPS)
@@ -322,7 +325,7 @@ O arquivo `.env` define automaticamente o caminho correto para cada ambiente.
 Agora, com o `.env` configurado, gere os peaks:
 
 ```bash
-cd /var/www/mokbeats/server
+cd /var/www/html/gulini.com.br/mokbeats/server
 node scripts/generate-peaks.js
 ```
 
@@ -331,7 +334,7 @@ node scripts/generate-peaks.js
 🎵 Iniciando processamento de músicas...
 
 🔧 Ambiente: production
-📁 Base path para áudios: /var/www/mokbeats
+📁 Base path para áudios: /var/www/html/gulini.com.br/mokbeats
 
 ✅ 24 músicas carregadas do JSON
 
@@ -344,14 +347,24 @@ node scripts/generate-peaks.js
 
 ### 4.4. Configurar PM2
 
-```bash
-# Se houver processo antigo rodando, parar
-pm2 stop all
-pm2 delete all
+**⚠️ Importante (lote R1b do Plano P0 v2.2):** o backend exige Node major 24 (>= v24.18.1),
+instalado via `nvm` nesta VPS (não é o Node do sistema). Uma sessão SSH não-interativa não carrega
+o `nvm.sh` automaticamente, então `pm2 start` sem `--interpreter` explícito herda o `node` do PATH
+— que aponta para o Node do sistema, **não** para o v24.18.1. Sempre fixe o caminho absoluto:
 
-# Iniciar novo backend com nome específico
-cd /var/www/mokbeats/server
-pm2 start src/index.js --name mok-backend
+```bash
+# Se houver processo antigo rodando, remover
+pm2 delete mok-backend 2>/dev/null || true
+
+# Descobrir o binario do Node correto (nvm instalado nesta VPS)
+export NVM_DIR="$HOME/.nvm"
+. "$NVM_DIR/nvm.sh"
+nvm which 24.18.1
+# Exemplo de saida: /root/.nvm/versions/node/v24.18.1/bin/node
+
+# Iniciar novo backend com o interpreter fixado nesse caminho
+cd /var/www/html/gulini.com.br/mokbeats/server
+pm2 start src/index.js --name mok-backend --interpreter /root/.nvm/versions/node/v24.18.1/bin/node
 
 # Configurar PM2 para iniciar automaticamente no boot
 pm2 save
@@ -360,6 +373,10 @@ pm2 startup
 # Executar o comando que o PM2 sugerir (começará com sudo)
 # Exemplo: sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u root --hp /root
 ```
+
+Prefira sempre `./deploy-to-vps.sh --backend-only` a este passo manual — o script já resolve o
+binário correto via `nvm` automaticamente (funções `resolve_remote_node_bin()` e
+`check_remote_runtime()`) e recria o processo com `--interpreter` sempre fixado.
 
 ### 4.5. Verificar Logs e Status
 
@@ -576,6 +593,6 @@ Se encontrar problemas:
 
 ---
 
-**Última atualização:** 2025-10-19
+**Última atualização:** 2026-07-29 (IP/path reconciliados com `deploy-to-vps.sh`, lote R1b do Plano P0 v2.2)
 **Versão do sistema:** 1.0.0
-**Compatibilidade:** Node.js 14+, Ubuntu 20.04+
+**Compatibilidade:** Node.js 24.18.1+ (backend, major 24, via nvm), Ubuntu 24.04 LTS

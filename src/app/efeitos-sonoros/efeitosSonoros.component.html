@@ -1,7 +1,7 @@
 <app-filter></app-filter>
 <article class="one pb-5">
   <div class="container-fluid w-100 p-0">
-    <div class="position-absolute" id="navLeft" [formGroup]="formG">
+    <div class="position-absolute" id="navLeft">
       <ul class="w-100">
         <div class="control">
           <li class="nav-item p-0 close border-0" (click)="filtrar()">
@@ -40,7 +40,7 @@
                     {{select}}
                   </button>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" *ngFor="let p of arrFilter;" (click)="filtroP(p)">{{p}}</a>
+                    <button type="button" class="dropdown-item" *ngFor="let p of arrFilter;" (click)="filtroP(p)">{{p}}</button>
                   </div>
                 </div>
               </div>
@@ -72,16 +72,23 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column border-bottom" id="array" *ngFor="let itens of arrMusic; let i = index;">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column border-bottom" id="array" *ngFor="let itens of itensPaginados; let i = index;">
           <div class="controlDivs d-flex flex-column w-100">
             <div class="controlDivsInt row">
               <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex align-items-start justify-content-start pr-5" >
-                <span class="svg">
+                <!-- Sem dado de áudio real (mock 100% estático, sem /api/efeitos — ver R14/R16): botão fica desabilitado com mensagem clara em vez de simular uma prévia inexistente. -->
+                <button
+                  type="button"
+                  class="svg"
+                  disabled
+                  title="Prévia indisponível: este efeito sonoro ainda não possui áudio associado."
+                  aria-label="Prévia de áudio indisponível para este efeito sonoro"
+                >
                   <svg width="24" fill="#FFF" height="24" viewBox="0 0 24 24"><path d="M20.7 12.4L7.9 20a.5.5 0 01-.8-.4v-15a.5.5 0 01.8-.4l12.8 7.5a.5.5 0 010 .8z"></path></svg>
-                </span>
+                </button>
                 <div class="text d-flex flex-column align-items-start justify-content-start">
-                  <p class="h4"><a href="#">{{itens.viewValue}}</a></p>
-                  <p class="h6">por <a href="#">{{dados[i].viewValue}}</a></p>
+                  <p class="h4"><span class="effect-name">{{itens.viewValue}}</span></p>
+                  <p class="h6">por <span class="effect-producer">{{itens.produtor}}</span></p>
                 </div>
               </div>
               <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around pl-2 pr-2 pt-0 pb-0">
@@ -97,7 +104,7 @@
 
               </div>
               <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 d-flex align-items-center justify-content-end licenca">
-                <button class="btn btn-primary" (click)="comprarLicensa(i)">COMPRAR LICENÇA
+                <button class="btn btn-primary" (click)="comprarLicensa(i)">LICENÇA
                   <svg width="24" height="24" fill="#fff" class="xdBUc" viewBox="0 0 24 24">
                     <path d="M12 15.6a1 1 0 01-.6-.3l-5.5-5.1a1 1 0 011.3-1.5l4.9 4.5 4.8-4.5a1 1 0 111.4 1.5l-5.5 5a1 1 0 01-.7.4z"></path>
                   </svg>
@@ -116,23 +123,12 @@
   </div>
   <div class="container">
     <div class="row justify-content-center align-items-center mt-5">
-      <nav aria-label="Page navigation example" class="d-flex justify-content-center align-items-center w-75">
-        <ul class="pagination mb-0 w-75 d-flex justify-content-center align-items-center">
-          <li class="page-item previous">
-            <a class="page-link" href="" aria-label="Previous">
-              <span aria-hidden="true" class="material-icons">navigate_next</span>
-            </a>
-          </li>
-          <li class="page-item active"><a class="page-link" href="">1</a></li>
-          <li class="page-item"><a class="page-link" href="">2</a></li>
-          <li class="page-item"><a class="page-link" href="">3</a></li>
-          <li class="page-item next">
-            <a class="page-link" href="" aria-label="Next">
-              <span aria-hidden="true" class="material-icons">navigate_next</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        [maxVisiblePages]="5"
+        (pageChange)="onPageChange($event)">
+      </app-pagination>
     </div>
   </div>
 </article>

@@ -2,71 +2,307 @@
 <section>
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 d-flex flex-column align-items-center justify-content-center">
-        <div class="title mb-5">
-          <h1 class="titleInt font-weight-bold">Informações de Contato</h1>
+      <div class="col-sm-11 col-md-9 col-lg-8 col-xl-7 d-flex flex-column align-items-center">
+
+        <div class="title mb-4">
+          <h1 class="titleInt font-weight-bold">Dados Pessoais</h1>
+          <p class="text-muted text-center mb-0">Mantenha seus dados atualizados para comprar, vender ou receber pagamentos.</p>
         </div>
-        <form class="d-flex flex-column justify-content-center align-items-center w-100" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <!-- ════════════════ FORMULÁRIO DADOS PESSOAIS ════════════════ -->
+        <form class="w-100" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+          <!-- Error summary -->
           <div #errorSummaryRef class="alert alert-danger w-100" *ngIf="submitted && (form.invalid || errorSummary.length)">
             <strong>Por favor, corrija os itens abaixo:</strong>
             <ul class="mb-0">
               <li *ngFor="let msg of errorSummary">{{ msg }}</li>
             </ul>
           </div>
-          <div class="card mb-4">
+
+          <!-- ── Seção 1: Identidade ── -->
+          <div class="card mb-4 p-3">
+            <h5 class="font-weight-bold mb-3">Identificação</h5>
+
             <mat-form-field appearance="fill" class="w-100 mb-3">
-              <mat-label>Nome de Contato</mat-label>
-              <input matInput type="text" formControlName="nomeContato" placeholder="Nome de Contato" required />
-              <mat-error *ngIf="form.get('nomeContato')?.hasError('required') && (form.get('nomeContato')?.dirty || form.get('nomeContato')?.touched)">Nome de Contato é obrigatório.</mat-error>
+              <mat-label>Nome completo</mat-label>
+              <input matInput formControlName="nomeCompleto" placeholder="Seu nome completo" />
+              <mat-error *ngIf="form.get('nomeCompleto')?.hasError('required') && form.get('nomeCompleto')?.touched">Nome completo é obrigatório.</mat-error>
+              <mat-error *ngIf="form.get('nomeCompleto')?.hasError('minlength') && form.get('nomeCompleto')?.touched">Mínimo de 3 caracteres.</mat-error>
+            </mat-form-field>
+
+            <!-- Tipo de documento -->
+            <label class="d-block mb-1 text-muted small">Tipo de documento</label>
+            <mat-radio-group formControlName="tipoDocumento" class="d-flex gap-3 mb-3">
+              <mat-radio-button value="cpf">CPF</mat-radio-button>
+              <mat-radio-button value="passaporte">Passaporte</mat-radio-button>
+            </mat-radio-group>
+
+            <mat-form-field appearance="fill" class="w-100 mb-3" *ngIf="tipoDocumento === 'cpf'">
+              <mat-label>CPF</mat-label>
+              <input matInput formControlName="cpf" placeholder="000.000.000-00" />
+              <mat-hint>Somente números</mat-hint>
+              <mat-error *ngIf="form.get('cpf')?.hasError('required') && form.get('cpf')?.touched">CPF é obrigatório.</mat-error>
+              <mat-error *ngIf="form.get('cpf')?.hasError('cpf') && form.get('cpf')?.touched">CPF inválido.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="w-100 mb-3" *ngIf="tipoDocumento === 'passaporte'">
+              <mat-label>Número do Passaporte</mat-label>
+              <input matInput formControlName="passaporte" placeholder="Ex: AB123456" />
+              <mat-hint>6 a 9 caracteres alfanuméricos</mat-hint>
+              <mat-error *ngIf="form.get('passaporte')?.hasError('required') && form.get('passaporte')?.touched">Passaporte é obrigatório.</mat-error>
+              <mat-error *ngIf="form.get('passaporte')?.hasError('passport') && form.get('passaporte')?.touched">Passaporte inválido.</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="fill" class="w-100 mb-3">
-              <mat-label>Nome da Empresa</mat-label>
-              <input matInput type="text" formControlName="nomeEmpresa" placeholder="Nome da Empresa" />
-              <mat-error *ngIf="form.get('nomeEmpresa')?.hasError('required') && (form.get('nomeEmpresa')?.dirty || form.get('nomeEmpresa')?.touched)">Nome da Empresa é obrigatório.</mat-error>
+              <mat-label>Data de nascimento</mat-label>
+              <input matInput type="date" formControlName="dataNascimento" />
+              <mat-error *ngIf="form.get('dataNascimento')?.hasError('required') && form.get('dataNascimento')?.touched">Data de nascimento é obrigatória.</mat-error>
+              <mat-error *ngIf="form.get('dataNascimento')?.hasError('birthDate') && form.get('dataNascimento')?.touched">
+                {{ form.get('dataNascimento')?.getError('birthDate')?.message || 'Data inválida.' }}
+              </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="fill" class="w-100 mb-3">
-              <mat-label>Número de Telefone</mat-label>
-              <input matInput type="tel" formControlName="numberPhone" placeholder="Número de Telefone" required />
-              <mat-error *ngIf="form.get('numberPhone')?.hasError('required') && (form.get('numberPhone')?.dirty || form.get('numberPhone')?.touched)">Número de Telefone é obrigatório.</mat-error>
-            </mat-form-field>
-
-            <div class="controlInt d-flex justify-content-center align-items-center w-100">
-              <mat-form-field appearance="fill" class="w-50 mr-2 mb-3">
-                <mat-label>País</mat-label>
-                <input matInput type="text" formControlName="pais" placeholder="País" required />
-                <mat-error *ngIf="form.get('pais')?.hasError('required') && (form.get('pais')?.dirty || form.get('pais')?.touched)">País é obrigatório.</mat-error>
+            <div class="d-flex gap-2 mb-3">
+              <mat-form-field appearance="fill" class="flex-grow-1">
+                <mat-label>País de origem</mat-label>
+                <input matInput formControlName="paisOrigem" placeholder="Ex: Brasil" />
+                <mat-error *ngIf="form.get('paisOrigem')?.hasError('required') && form.get('paisOrigem')?.touched">País é obrigatório.</mat-error>
               </mat-form-field>
-              <mat-form-field appearance="fill" class="w-50 ml-2 mb-3">
-                <mat-label>Estado</mat-label>
-                <input matInput type="text" formControlName="estado" placeholder="Estado" required />
-                <mat-error *ngIf="form.get('estado')?.hasError('required') && (form.get('estado')?.dirty || form.get('estado')?.touched)">Estado é obrigatório.</mat-error>
+
+              <mat-form-field appearance="fill" class="flex-grow-1">
+                <mat-label>Telefone com DDD</mat-label>
+                <input matInput type="tel" formControlName="telefone" placeholder="+55 (11) 99999-9999" />
+                <mat-error *ngIf="form.get('telefone')?.hasError('required') && form.get('telefone')?.touched">Telefone é obrigatório.</mat-error>
+                <mat-error *ngIf="form.get('telefone')?.hasError('phone') && form.get('telefone')?.touched">Telefone inválido.</mat-error>
               </mat-form-field>
             </div>
+
+            <mat-form-field appearance="fill" class="w-100 mb-0">
+              <mat-label>E-mail</mat-label>
+              <input matInput type="email" formControlName="email" placeholder="seu@email.com" />
+              <mat-error *ngIf="form.get('email')?.hasError('required') && form.get('email')?.touched">E-mail é obrigatório.</mat-error>
+              <mat-error *ngIf="form.get('email')?.hasError('email') && form.get('email')?.touched">E-mail inválido.</mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- ── Seção 2: Endereço ── -->
+          <div class="card mb-4 p-3">
+            <h5 class="font-weight-bold mb-3">Endereço</h5>
 
             <mat-form-field appearance="fill" class="w-100 mb-3">
               <mat-label>Endereço</mat-label>
-              <input matInput type="text" formControlName="endereco" placeholder="Endereço" required />
-              <mat-error *ngIf="form.get('endereco')?.hasError('required') && (form.get('endereco')?.dirty || form.get('endereco')?.touched)">Endereço é obrigatório.</mat-error>
+              <input matInput formControlName="endereco" placeholder="Rua, número, complemento" />
+              <mat-error *ngIf="form.get('endereco')?.hasError('required') && form.get('endereco')?.touched">Endereço é obrigatório.</mat-error>
             </mat-form-field>
 
-            <div class="controlInt d-flex justify-content-center align-items-center w-100">
-              <mat-form-field appearance="fill" class="w-50 mr-2 mb-3">
+            <div class="d-flex gap-2 mb-3">
+              <mat-form-field appearance="fill" class="flex-grow-1">
                 <mat-label>Cidade</mat-label>
-                <input matInput type="text" formControlName="cidade" placeholder="Cidade" required />
-                <mat-error *ngIf="form.get('cidade')?.hasError('required') && (form.get('cidade')?.dirty || form.get('cidade')?.touched)">Cidade é obrigatória.</mat-error>
+                <input matInput formControlName="cidade" placeholder="Sua cidade" />
+                <mat-error *ngIf="form.get('cidade')?.hasError('required') && form.get('cidade')?.touched">Cidade é obrigatória.</mat-error>
               </mat-form-field>
-              <mat-form-field appearance="fill" class="w-50 ml-2 mb-3">
-                <mat-label>CEP</mat-label>
-                <input matInput type="text" formControlName="cep" placeholder="CEP" required />
-                <mat-error *ngIf="form.get('cep')?.hasError('required') && (form.get('cep')?.dirty || form.get('cep')?.touched)">CEP é obrigatório.</mat-error>
+
+              <mat-form-field appearance="fill" class="flex-grow-1" *ngIf="isBrasil">
+                <mat-label>Estado (UF)</mat-label>
+                <input matInput formControlName="estado" placeholder="Ex: SP" maxlength="2" />
+                <mat-error *ngIf="form.get('estado')?.hasError('required') && form.get('estado')?.touched">Estado é obrigatório.</mat-error>
               </mat-form-field>
             </div>
 
-            <button type="submit" class="btn-warning font-weight-bold text-uppercase text-center" [disabled]="form.invalid">atualizar informações</button>
+            <mat-form-field appearance="fill" class="w-100 mb-0" *ngIf="isBrasil">
+              <mat-label>CEP</mat-label>
+              <input matInput formControlName="cep" placeholder="00000000" maxlength="8" />
+              <mat-hint>Somente números, 8 dígitos</mat-hint>
+              <mat-error *ngIf="form.get('cep')?.hasError('required') && form.get('cep')?.touched">CEP é obrigatório.</mat-error>
+              <mat-error *ngIf="form.get('cep')?.hasError('pattern') && form.get('cep')?.touched">CEP deve conter 8 dígitos.</mat-error>
+            </mat-form-field>
           </div>
+
+          <!-- ── Seção 3: Documentos (uploads) ── -->
+          <div class="card mb-4 p-3">
+            <h5 class="font-weight-bold mb-3">Documentos</h5>
+
+            <div class="mb-4">
+              <label class="d-block font-weight-bold mb-1">Foto segurando documento <span class="text-danger">*</span></label>
+              <p class="text-muted small mb-2">Tire uma selfie segurando seu documento de identidade (RG, CNH ou Passaporte) aberto e visível.</p>
+              <app-custom-file-upload
+                title="Foto com documento"
+                subtitle="JPG ou PNG, máx. 10MB"
+                accept="image/jpeg,image/png"
+                [maxFiles]="1"
+                (filesSelected)="onFotoDocumentoSelected($event)">
+              </app-custom-file-upload>
+              <div class="text-danger small mt-1" *ngIf="uploadErrors.foto">{{ uploadErrors.foto }}</div>
+              <div class="text-danger small mt-1" *ngIf="submitted && !fotoDocumentoFile && !profileService.getSnapshot()?.fotoDocumentoUrl">
+                Foto segurando documento é obrigatória.
+              </div>
+            </div>
+
+            <div class="mb-0">
+              <label class="d-block font-weight-bold mb-1">Comprovante de residência <span class="text-danger">*</span></label>
+              <p class="text-muted small mb-2">Aceito: conta de luz, água, gás, telefone ou extrato bancário (últimos 3 meses).</p>
+              <app-custom-file-upload
+                title="Comprovante de residência"
+                subtitle="JPG, PNG ou PDF, máx. 10MB"
+                accept="image/jpeg,image/png,application/pdf"
+                [maxFiles]="1"
+                (filesSelected)="onComprovanteSelected($event)">
+              </app-custom-file-upload>
+              <div class="text-danger small mt-1" *ngIf="uploadErrors.comprovante">{{ uploadErrors.comprovante }}</div>
+              <div class="text-danger small mt-1" *ngIf="submitted && !comprovanteFile && !profileService.getSnapshot()?.comprovanteResidenciaUrl">
+                Comprovante de residência é obrigatório.
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Seção 4: Tipo de conta (Jurídica) ── -->
+          <div class="card mb-4 p-3">
+            <h5 class="font-weight-bold mb-3">Tipo de Conta</h5>
+
+            <mat-radio-group formControlName="tipoConta" class="d-flex flex-column gap-2">
+              <mat-radio-button value="none">Pessoa Física</mat-radio-button>
+              <mat-radio-button value="br">Conta Jurídica Brasileira</mat-radio-button>
+              <mat-radio-button value="foreign">Conta Jurídica Estrangeira</mat-radio-button>
+            </mat-radio-group>
+
+            <!-- Conta Jurídica Brasileira -->
+            <div *ngIf="tipoConta === 'br'" class="mt-4">
+              <h6 class="font-weight-bold mb-3">Dados da Empresa (Brasil)</h6>
+
+              <mat-form-field appearance="fill" class="w-100 mb-3">
+                <mat-label>Nome da empresa</mat-label>
+                <input matInput formControlName="nomeEmpresaBR" placeholder="Razão social" />
+                <mat-error *ngIf="form.get('nomeEmpresaBR')?.hasError('required') && form.get('nomeEmpresaBR')?.touched">Nome da empresa é obrigatório.</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="w-100 mb-3">
+                <mat-label>CNPJ</mat-label>
+                <input matInput formControlName="cnpj" placeholder="00.000.000/0000-00" />
+                <mat-hint>Somente números</mat-hint>
+                <mat-error *ngIf="form.get('cnpj')?.hasError('required') && form.get('cnpj')?.touched">CNPJ é obrigatório.</mat-error>
+                <mat-error *ngIf="form.get('cnpj')?.hasError('cnpj') && form.get('cnpj')?.touched">CNPJ inválido.</mat-error>
+              </mat-form-field>
+
+              <div class="mb-0">
+                <label class="d-block font-weight-bold mb-1">Documento da empresa <span class="text-danger">*</span></label>
+                <p class="text-muted small mb-2">
+                  Documentos aceitos: Contrato Social, CNPJ (cartão), Certificado de MEI, ou qualquer documento oficial emitido pela Receita Federal.
+                </p>
+                <app-custom-file-upload
+                  title="Documento da empresa"
+                  subtitle="JPG, PNG ou PDF, máx. 10MB"
+                  accept="image/jpeg,image/png,application/pdf"
+                  [maxFiles]="1"
+                  (filesSelected)="onDocEmpresaSelected($event)">
+                </app-custom-file-upload>
+                <div class="text-danger small mt-1" *ngIf="uploadErrors.docEmpresa">{{ uploadErrors.docEmpresa }}</div>
+                <div class="text-danger small mt-1" *ngIf="submitted && !docEmpresaFile && !profileService.getSnapshot()?.documentoEmpresaUrl">
+                  Documento da empresa é obrigatório.
+                </div>
+              </div>
+            </div>
+
+            <!-- Conta Jurídica Estrangeira -->
+            <div *ngIf="tipoConta === 'foreign'" class="mt-4">
+              <h6 class="font-weight-bold mb-3">Dados da Empresa (Estrangeira)</h6>
+
+              <mat-form-field appearance="fill" class="w-100 mb-3">
+                <mat-label>Nome da empresa</mat-label>
+                <input matInput formControlName="nomeEmpresaExt" placeholder="Company name" />
+                <mat-error *ngIf="form.get('nomeEmpresaExt')?.hasError('required') && form.get('nomeEmpresaExt')?.touched">Nome da empresa é obrigatório.</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="w-100 mb-3">
+                <mat-label>Tipo de empresa</mat-label>
+                <mat-select formControlName="tipoEmpresaExt">
+                  <mat-option *ngFor="let tipo of tiposEmpresaExt" [value]="tipo">{{ tipo }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.get('tipoEmpresaExt')?.hasError('required') && form.get('tipoEmpresaExt')?.touched">Tipo de empresa é obrigatório.</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="w-100 mb-3" *ngIf="tipoEmpresaExt === 'Outros'">
+                <mat-label>Descreva o tipo de empresa</mat-label>
+                <input matInput formControlName="tipoEmpresaOutros" placeholder="Descreva o tipo" />
+                <mat-error *ngIf="form.get('tipoEmpresaOutros')?.hasError('required') && form.get('tipoEmpresaOutros')?.touched">Descrição é obrigatória.</mat-error>
+              </mat-form-field>
+
+              <div class="mb-0">
+                <label class="d-block font-weight-bold mb-1">Documento da empresa <span class="text-danger">*</span></label>
+                <p class="text-muted small mb-2">
+                  Documentos aceitos: Commercial Registry / Business Certificate, Articles of Incorporation, Certificate of Formation (LLC), ou qualquer documento de registro oficial emitido pelo governo do país de origem.
+                </p>
+                <app-custom-file-upload
+                  title="Documento da empresa"
+                  subtitle="JPG, PNG ou PDF, máx. 10MB"
+                  accept="image/jpeg,image/png,application/pdf"
+                  [maxFiles]="1"
+                  (filesSelected)="onDocEmpresaSelected($event)">
+                </app-custom-file-upload>
+                <div class="text-danger small mt-1" *ngIf="uploadErrors.docEmpresa">{{ uploadErrors.docEmpresa }}</div>
+                <div class="text-danger small mt-1" *ngIf="submitted && !docEmpresaFile && !profileService.getSnapshot()?.documentoEmpresaUrl">
+                  Documento da empresa é obrigatório.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-warning font-weight-bold text-uppercase text-center w-100 mb-5"
+            [disabled]="savingProfile">
+            {{ savingProfile ? 'Salvando...' : 'Salvar Dados Pessoais' }}
+          </button>
         </form>
+
+        <!-- ════════════════ SEÇÃO ALTERAR SENHA ════════════════ -->
+        <div class="card mb-5 p-3 w-100">
+          <div class="d-flex justify-content-between align-items-center"
+               style="cursor:pointer;" (click)="senhaAberta = !senhaAberta">
+            <h5 class="font-weight-bold mb-0">Alterar Senha</h5>
+            <span class="material-icons">{{ senhaAberta ? 'expand_less' : 'expand_more' }}</span>
+          </div>
+
+          <div *ngIf="senhaAberta" class="mt-3">
+            <form [formGroup]="formSenha" (ngSubmit)="onSubmitSenha()">
+
+              <div #errorSummarySenhaRef class="alert alert-danger w-100" *ngIf="submittedSenha && (formSenha.invalid || errorSummarySenha.length)">
+                <strong>Por favor, corrija os itens abaixo:</strong>
+                <ul class="mb-0">
+                  <li *ngFor="let msg of errorSummarySenha">{{ msg }}</li>
+                </ul>
+              </div>
+
+              <mat-form-field appearance="fill" class="w-100 mb-3">
+                <mat-label>Senha atual</mat-label>
+                <input matInput type="password" formControlName="senhaAtual" placeholder="Senha atual" />
+                <mat-error *ngIf="formSenha.get('senhaAtual')?.hasError('required') && formSenha.get('senhaAtual')?.touched">Senha atual é obrigatória.</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="w-100 mb-3">
+                <mat-label>Nova senha</mat-label>
+                <input matInput type="password" formControlName="novaSenha" placeholder="Nova senha" />
+                <mat-hint>Mín. 8 caracteres, 1 maiúscula e 1 número</mat-hint>
+                <mat-error *ngIf="formSenha.get('novaSenha')?.hasError('required') && formSenha.get('novaSenha')?.touched">Nova senha é obrigatória.</mat-error>
+                <mat-error *ngIf="formSenha.get('novaSenha')?.hasError('passwordComplexity') && formSenha.get('novaSenha')?.touched">
+                  {{ formSenha.get('novaSenha')?.getError('passwordComplexity')?.message }}
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="w-100 mb-3">
+                <mat-label>Confirmar nova senha</mat-label>
+                <input matInput type="password" formControlName="confirmarSenha" placeholder="Repita a nova senha" />
+                <mat-error *ngIf="(formSenha.get('confirmarSenha')?.hasError('passwordsMismatch') || formSenha.hasError('passwordsMismatch')) && formSenha.get('confirmarSenha')?.touched">
+                  As senhas não coincidem.
+                </mat-error>
+              </mat-form-field>
+
+              <button type="submit" class="btn btn-outline-warning font-weight-bold text-uppercase w-100"
+                [disabled]="savingPassword">
+                {{ savingPassword ? 'Alterando...' : 'Alterar Senha' }}
+              </button>
+            </form>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

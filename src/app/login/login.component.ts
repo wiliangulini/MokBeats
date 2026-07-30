@@ -1,35 +1,65 @@
-import {AfterContentInit, Component, OnInit} from '@angular/core';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { AuthService } from "./auth.service";
 import { UsuarioLogin } from "./usuarioLogin";
 
+function senhasIguaisValidator(group: AbstractControl): ValidationErrors | null {
+  const senha = group.get('senha');
+  const confirmar = group.get('confirmarSenha');
+  if (!senha || !confirmar || !confirmar.value) return null;
+  return senha.value === confirmar.value ? null : { senhasNaoConferem: true };
+}
+
+type CustomSelectKey = 'typePerson' | 'tipoPerfil';
+
+interface CustomSelectOption {
+  value: string;
+  label: string;
+  tooltip?: string;
+}
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, AfterContentInit {
+export class LoginComponent implements OnInit {
 
   form: FormGroup;
-  public cadastro: any = {};
-  public usuario: UsuarioLogin = new UsuarioLogin();
-  public resetPass: any = {};
+  loginErro: boolean = false;
   log: any;
   register: any;
   resetP: any;
   mf: any;
-  person: any[] = [
-    {value: 'Pessoa Física', viewValue: 'Pessoa Física'},
-    {value: 'Pessoa Jurídica', viewValue: 'Pessoa Jurídica'},
-  ];
-  typeStems: any[] = [
-    { value: 'Druns', viewValue: 'Druns' },
-    { value:  'Melodia', viewValue:  'Melodia' },
-    { value: 'Harmonia', viewValue: 'Harmonia' },
-    { value: 'Efeitos/Vozes', viewValue: 'Efeitos/Vozes' },
-  ]
+  readonly customSelectPlaceholders: Record<CustomSelectKey, string> = {
+    typePerson: 'Tipo de Pessoa',
+    tipoPerfil: 'Tipo de Perfil',
+  };
+  readonly customSelectOptions: Record<CustomSelectKey, CustomSelectOption[]> = {
+    typePerson: [
+      { value: 'Pessoa Física', label: 'Pessoa Física' },
+      { value: 'Pessoa Jurídica', label: 'Pessoa Jurídica' },
+    ],
+    tipoPerfil: [
+      {
+        value: 'comprador',
+        label: 'Mok Starters',
+        tooltip: 'Conta para usuários que desejam navegar, comprar e assinar planos na plataforma.',
+      },
+      {
+        value: 'produtor',
+        label: 'Mok Makers',
+        tooltip: 'Conta para produtores e compositores que desejam publicar, vender e gerenciar suas criações.',
+      },
+    ],
+  };
+  customSelectState: Record<CustomSelectKey, boolean> = {
+    typePerson: false,
+    tipoPerfil: false,
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -40,78 +70,58 @@ export class LoginComponent implements OnInit, AfterContentInit {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required, Validators.minLength(8)]],
-      typePerson: [''],
+      confirmarSenha: ['', Validators.required],
+      typePerson: ['', Validators.required],
+      tipoPerfil: ['', Validators.required],
       emailLog: ['', [Validators.required, Validators.email]],
       senhaLog: ['', [Validators.required, Validators.minLength(8)]],
       emailReset: ['', [Validators.required, Validators.email]],
-    })
+    }, { validators: senhasIguaisValidator });
   }
 
   ngOnInit(): void {}
 
-  ngAfterContentInit() {
-    document.querySelector(".ls-select.status.forma")!.addEventListener("click", () => {
-      this.downStatus2();
+  isCustomSelectOpen(selectKey: CustomSelectKey): boolean {
+    return this.customSelectState[selectKey];
+  }
+
+  toggleCustomSelect(selectKey: CustomSelectKey): void {
+    const isOpening = !this.customSelectState[selectKey];
+    (Object.keys(this.customSelectState) as CustomSelectKey[]).forEach((key) => {
+      this.customSelectState[key] = key === selectKey ? isOpening : false;
     });
   }
 
-  downStatus2() {
-    let arrow2: any = document.getElementById('arrow2');
-    let down2: any = document.querySelector('.down.two');
-    if(down2.style.display == "none") {
+  selectCustomOption(event: Event, selectKey: CustomSelectKey, option: CustomSelectOption): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.form.get(selectKey)?.setValue(option.value);
+    this.form.get(selectKey)?.markAsTouched();
+    this.customSelectState[selectKey] = false;
+  }
 
-      down2.style.opacity = 0;
-      down2.style.display = "block";
-      setTimeout(() =>{
-        down2.style.opacity = 0.25;
-        arrow2.style.transform = "rotate(45deg)";
-      }, 100);
-      setTimeout(() =>{
-        down2.style.opacity = 0.5;
-        arrow2.style.transform = "rotate(90deg)";
-      }, 150);
-      setTimeout(() =>{
-        down2.style.opacity = 0.75;
-        arrow2.style.transform = "rotate(135deg)";
-      }, 200);
-      setTimeout(() => {
-        down2.style.opacity = 1;
-        arrow2.style.transform = "rotate(180deg)";
-      }, 250);
-
-    } else if(down2.style.display == "block") {
-
-      down2.style.opacity = 1;
-      setTimeout(() =>{
-        down2.style.opacity = 0.75;
-        arrow2.style.transform = "rotate(135deg)";
-      }, 100);
-      setTimeout(() =>{
-        down2.style.opacity = 0.5;
-        arrow2.style.transform = "rotate(90deg)";
-      }, 150);
-      setTimeout(() =>{
-        down2.style.opacity = 0.25;
-        arrow2.style.transform = "rotate(45deg)";
-      }, 200);
-      setTimeout(() => {
-        down2.style.opacity = 0;
-        arrow2.style.transform = "rotate(0deg)";
-        down2.style.display = "none";
-      }, 250);
-
+  onCustomSelectKeydown(event: KeyboardEvent, selectKey: CustomSelectKey): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.toggleCustomSelect(selectKey);
+      return;
+    }
+    if (event.key === 'Escape') {
+      this.customSelectState[selectKey] = false;
+      return;
+    }
+    if (event.key === 'ArrowDown' && !this.customSelectState[selectKey]) {
+      event.preventDefault();
+      this.toggleCustomSelect(selectKey);
     }
   }
 
-  radiocontainer(e: any) {
-    console.log(e)
-    let n = e.id;
-    let txt = document.getElementById(n)!.innerText;
-    document.getElementById("forma")!.innerHTML = txt;
-    this.downStatus2();
+  getSelectedLabel(selectKey: CustomSelectKey): string {
+    const selectedValue = this.form.get(selectKey)?.value;
+    const selectedOption = this.customSelectOptions[selectKey]
+      .find((option) => option.value === selectedValue);
+    return selectedOption?.label ?? this.customSelectPlaceholders[selectKey];
   }
-
-
 
   politica() {
     this.router.navigate(['/politica-de-privacidade']);
@@ -123,16 +133,10 @@ export class LoginComponent implements OnInit, AfterContentInit {
   }
 
   irProLogin(data: any) {
-    console.log(data);
     this.register = document.getElementById('register');
     this.log = document.getElementById('login');
     let logCad: any = document.getElementById('logCad');
     let aLog: any = document.getElementById('aLog');
-    console.log(logCad);
-    console.log(aLog);
-    console.log(data.target.innerText);
-    console.log(this.log);
-    console.log(this.register);
     if(data.target.innerText == 'Faça Login') {
       this.register!.style.display = 'none'
       this.log!.style.display = 'flex';
@@ -161,7 +165,7 @@ export class LoginComponent implements OnInit, AfterContentInit {
   }
 
   fazerLogin() {
-    // Validar apenas os campos de login
+    this.loginErro = false;
     const emailCtrl = this.form.get('emailLog');
     const passCtrl = this.form.get('senhaLog');
     emailCtrl?.markAsTouched();
@@ -170,22 +174,50 @@ export class LoginComponent implements OnInit, AfterContentInit {
       return;
     }
 
-    this.authService.fazerLogin(this.usuario).subscribe({
+    const usuario = new UsuarioLogin();
+    usuario.email = emailCtrl?.value;
+    usuario.senha = passCtrl?.value;
+
+    this.authService.fazerLogin(usuario).subscribe({
       next: () => {
-        // sucesso: fecha modal
         try { this.activeModal.close(); } catch (_) {}
       },
       error: (err) => {
-        // erro 401 ou outros: exibe mensagem simples no console e mantém modal aberto
         console.error('Falha no login', err);
-        alert('E-mail ou senha inválidos.');
+        this.loginErro = true;
       }
     });
   }
 
   onSubmit() {
-    try { this.form.markAllAsTouched(); } catch (_) {}
-    console.log('enviou');
-    // manter modal aberto; fluxo de cadastro/reset será integrado ao backend futuramente
+    const camposRegister = ['email', 'senha', 'confirmarSenha', 'typePerson', 'tipoPerfil'];
+    camposRegister.forEach(f => this.form.get(f)?.markAsTouched());
+
+    const campoInvalido = camposRegister.some(f => this.form.get(f)?.invalid);
+    const senhasDiferentes = this.form.hasError('senhasNaoConferem');
+    if (campoInvalido || senhasDiferentes) return;
+
+    const usuario = new UsuarioLogin();
+    usuario.email = this.form.get('email')?.value;
+    usuario.senha = this.form.get('senha')?.value;
+    usuario.tipoPessoa = this.form.get('typePerson')?.value;
+    usuario.tipoPerfil = this.form.get('tipoPerfil')?.value;
+
+    this.authService.registrar(usuario).subscribe({
+      next: () => {
+        try { this.activeModal.close(); } catch (_) {}
+      },
+      error: (err) => {
+        console.error('Falha no cadastro', err);
+      }
+    });
+  }
+
+  loginComGoogle() {
+    this.authService.loginComGoogle();
+  }
+
+  registrarComGoogle() {
+    this.authService.loginComGoogle();
   }
 }

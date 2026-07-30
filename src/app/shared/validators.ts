@@ -1,9 +1,146 @@
 import { AbstractControl, ValidationErrors, ValidatorFn, FormGroup } from '@angular/forms';
 
+export type RegistryType = 'ISRC' | 'UPC' | 'HASH' | 'OUTROS' | null;
+
+export interface RegistryClassification {
+  registryRaw: string | null;
+  registryType: RegistryType;
+  registryValue: string | null;
+  isrc: string | null;
+  upc: string | null;
+  hashType: 'MD5' | 'SHA-1' | 'SHA-256' | 'SHA-512' | null;
+}
+
 /**
  * Validadores compartilhados para o projeto MokBeats
  */
 export class SharedValidators {
+
+  /**
+   * Validador de CPF (11 dígitos + algoritmo de dígitos verificadores)
+   */
+  static cpf(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = (control.value || '').replace(/\D/g, '');
+      if (!value) return null;
+      if (value.length !== 11 || /^(\d)\1+$/.test(value)) {
+        return { cpf: { message: 'CPF inválido.' } };
+      }
+      let sum = 0;
+      for (let i = 0; i < 9; i++) sum += parseInt(value[i]) * (10 - i);
+      let remainder = (sum * 10) % 11;
+      if (remainder === 10 || remainder === 11) remainder = 0;
+      if (remainder !== parseInt(value[9])) return { cpf: { message: 'CPF inválido.' } };
+      sum = 0;
+      for (let i = 0; i < 10; i++) sum += parseInt(value[i]) * (11 - i);
+      remainder = (sum * 10) % 11;
+      if (remainder === 10 || remainder === 11) remainder = 0;
+      if (remainder !== parseInt(value[10])) return { cpf: { message: 'CPF inválido.' } };
+      return null;
+    };
+  }
+
+  /**
+   * Validador de CNPJ (14 dígitos + algoritmo de dígitos verificadores)
+   */
+  static cnpj(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = (control.value || '').replace(/\D/g, '');
+      if (!value) return null;
+      if (value.length !== 14 || /^(\d)\1+$/.test(value)) {
+        return { cnpj: { message: 'CNPJ inválido.' } };
+      }
+      const calcDigit = (base: string, weights: number[]): number => {
+        let sum = 0;
+        for (let i = 0; i < weights.length; i++) sum += parseInt(base[i]) * weights[i];
+        const remainder = sum % 11;
+        return remainder < 2 ? 0 : 11 - remainder;
+      };
+      const w1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+      const w2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+      if (calcDigit(value, w1) !== parseInt(value[12])) return { cnpj: { message: 'CNPJ inválido.' } };
+      if (calcDigit(value, w2) !== parseInt(value[13])) return { cnpj: { message: 'CNPJ inválido.' } };
+      return null;
+    };
+  }
+
+  /**
+   * Validador de passaporte (6 a 9 caracteres alfanuméricos)
+   */
+  static passport(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) return null;
+      const valid = /^[A-Za-z0-9]{6,9}$/.test(control.value);
+      return valid ? null : { passport: { message: 'Passaporte deve conter entre 6 e 9 caracteres alfanuméricos.' } };
+    };
+  }
+
+  /**
+   * Validador de telefone com DDD — aceita formato nacional e internacional
+   * Exemplos válidos: +55 (11) 99999-9999, (11) 99999-9999, 11999999999
+   */
+  static phoneWithDDD(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) return null;
+      const digits = (control.value as string).replace(/\D/g, '');
+      // Nacional: 10 ou 11 dígitos; Internacional: 8 a 15 dígitos
+      const valid = /^\+?[\d\s\-().]{7,20}$/.test(control.value) && digits.length >= 8 && digits.length <= 15;
+      return valid ? null : { phone: { message: 'Telefone inválido. Informe o DDD e o número.' } };
+    };
+  }
+
+  /**
+   * Validador de data de nascimento — data válida e idade mínima de 18 anos
+   */
+  static birthDate(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) return null;
+      const date = new Date(control.value);
+      if (isNaN(date.getTime())) return { birthDate: { message: 'Data de nascimento inválida.' } };
+      const today = new Date();
+      const age = today.getFullYear() - date.getFullYear() -
+        (today < new Date(today.getFullYear(), date.getMonth(), date.getDate()) ? 1 : 0);
+      if (age < 18) return { birthDate: { message: 'É necessário ter pelo menos 18 anos.' } };
+      return null;
+    };
+  }
+
+  /**
+   * Validador de correspondência de senhas — para uso em FormGroup
+   */
+  static passwordsMatch(pwdField: string = 'novaSenha', confirmField: string = 'confirmarSenha'): ValidatorFn {
+    return (group: AbstractControl): ValidationErrors | null => {
+      if (!(group instanceof FormGroup)) return null;
+      const pwd = group.get(pwdField);
+      const confirm = group.get(confirmField);
+      if (!pwd || !confirm || !pwd.value || !confirm.value) return null;
+      if (pwd.value !== confirm.value) {
+        confirm.setErrors({ ...confirm.errors, passwordsMismatch: { message: 'As senhas não coincidem.' } });
+        return { passwordsMismatch: { message: 'As senhas não coincidem.' } };
+      }
+      if (confirm.hasError('passwordsMismatch')) {
+        const errors = { ...confirm.errors };
+        delete errors['passwordsMismatch'];
+        confirm.setErrors(Object.keys(errors).length ? errors : null);
+      }
+      return null;
+    };
+  }
+
+  /**
+   * Validador de complexidade de senha — mín. 8 chars, 1 maiúscula, 1 número
+   */
+  static passwordComplexity(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) return null;
+      const value: string = control.value;
+      if (value.length < 8) return { passwordComplexity: { message: 'A senha deve ter pelo menos 8 caracteres.' } };
+      if (!/[A-Z]/.test(value)) return { passwordComplexity: { message: 'A senha deve conter pelo menos uma letra maiúscula.' } };
+      if (!/[0-9]/.test(value)) return { passwordComplexity: { message: 'A senha deve conter pelo menos um número.' } };
+      return null;
+    };
+  }
+
 
   /**
    * Regex patterns para diferentes tipos de registro
@@ -17,7 +154,140 @@ export class SharedValidators {
     SHA1: /^[A-Fa-f0-9]{40}$/, // SHA-1: 40 hex chars
     SHA256: /^[A-Fa-f0-9]{64}$/, // SHA-256: 64 hex chars
     SHA512: /^[A-Fa-f0-9]{128}$/, // SHA-512: 128 hex chars
+    IDENTIFICATION: /^[A-Za-z0-9.\-_/ ]{3,80}$/,
   };
+
+  /**
+   * Validador para identificação (CPF/RG/Passaporte) com formato flexível.
+   */
+  static identification(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = (control.value || '').trim();
+      if (!value) return null;
+      const valid = SharedValidators.PATTERNS.IDENTIFICATION.test(value);
+      return valid ? null : {
+        identification: {
+          message: 'Identificação inválida. Use entre 3 e 80 caracteres alfanuméricos.'
+        }
+      };
+    };
+  }
+
+  /**
+   * Validador de BPM em faixa configurável.
+   */
+  static bpm(min: number = 1, max: number = 300): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = String(control.value ?? '').trim();
+      if (!value) return null;
+      if (!/^\d+$/.test(value)) {
+        return { bpm: { message: 'BPM deve ser um número inteiro.' } };
+      }
+      const parsed = parseInt(value, 10);
+      if (parsed < min || parsed > max) {
+        return { bpm: { message: `BPM deve estar entre ${min} e ${max}.` } };
+      }
+      return null;
+    };
+  }
+
+  /**
+   * Validador para valor monetário positivo.
+   */
+  static saleValue(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = String(control.value ?? '').trim();
+      if (!value) return null;
+      const normalized = value.replace(',', '.');
+      if (!/^\d+(?:\.\d{1,2})?$/.test(normalized)) {
+        return { saleValue: { message: 'Valor de venda inválido.' } };
+      }
+      const parsed = parseFloat(normalized);
+      if (!(parsed > 0)) {
+        return { saleValue: { message: 'Valor de venda deve ser maior que zero.' } };
+      }
+      return null;
+    };
+  }
+
+  /**
+   * URL opcional (somente http/https).
+   */
+  static optionalHttpUrl(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = String(control.value ?? '').trim();
+      if (!value) return null;
+      const valid = /^https?:\/\/[^\s/$.?#].[^\s]*$/i.test(value);
+      return valid ? null : { url: { message: 'URL inválida. Use http:// ou https://.' } };
+    };
+  }
+
+  /**
+   * Classifica um registro livre em ISRC/UPC/HASH/OUTROS.
+   */
+  static classifyRegistryRaw(raw: string): RegistryClassification {
+    const value = String(raw ?? '').trim();
+    if (!value) {
+      return {
+        registryRaw: null,
+        registryType: null,
+        registryValue: null,
+        isrc: null,
+        upc: null,
+        hashType: null
+      };
+    }
+
+    if (SharedValidators.PATTERNS.ISRC.test(value)) {
+      return {
+        registryRaw: value,
+        registryType: 'ISRC',
+        registryValue: value,
+        isrc: value,
+        upc: null,
+        hashType: null
+      };
+    }
+
+    if (SharedValidators.PATTERNS.UPC.test(value)) {
+      return {
+        registryRaw: value,
+        registryType: 'UPC',
+        registryValue: value,
+        isrc: null,
+        upc: value,
+        hashType: null
+      };
+    }
+
+    const hashMap: Array<{ type: 'MD5' | 'SHA-1' | 'SHA-256' | 'SHA-512'; pattern: RegExp }> = [
+      { type: 'MD5', pattern: SharedValidators.PATTERNS.MD5 },
+      { type: 'SHA-1', pattern: SharedValidators.PATTERNS.SHA1 },
+      { type: 'SHA-256', pattern: SharedValidators.PATTERNS.SHA256 },
+      { type: 'SHA-512', pattern: SharedValidators.PATTERNS.SHA512 },
+    ];
+
+    const hashMatch = hashMap.find((item) => item.pattern.test(value));
+    if (hashMatch) {
+      return {
+        registryRaw: value,
+        registryType: 'HASH',
+        registryValue: value,
+        isrc: null,
+        upc: null,
+        hashType: hashMatch.type
+      };
+    }
+
+    return {
+      registryRaw: value,
+      registryType: 'OUTROS',
+      registryValue: value,
+      isrc: null,
+      upc: null,
+      hashType: null
+    };
+  }
 
   /**
    * Validador para ISRC

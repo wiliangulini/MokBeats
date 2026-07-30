@@ -3,10 +3,10 @@
   <article class="one pb-5">
     <div class="container-fluid w-100 p-0">
       <div class="position-absolute" id="navLeft">
-        <<ul class="w-100">
+        <ul class="w-100">
           <div class="control">
             <li class="nav-item p-0 close border-0" (click)="filtrar()">
-              <a class="nav-link d-flex justify-content-center align-items-center p-0 border-0" type="button">
+              <a class="nav-link d-flex justify-content-center align-items-center p-0 border-0">
                 <svg clip-rule="evenodd" fill="#fff" fill-rule="evenodd" width="24px" height="24px"
                   stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -110,7 +110,7 @@
             <li class="d-flex align-items-center justify-content-between w-100">Instrumentos <span
                 class="ml-3 material-icons">add</span></li>
           </div>
-        </ul>>
+        </ul>
       </div>
       <div id="cf" class="container-fluid mr-0 pt-4">
         <div class="row">
@@ -133,7 +133,6 @@
                   <textarea class="description" formControlName="textAreaDescription"
                     name="textAreaDescription"></textarea>
                   <span id="edit2" (click)="editDescription()" class="material-icons edit2">edit</span>
-                  <span id="save" (click)="saveDescription()" class="material-icons save d-none">save</span>
                 </div>
                 <div class="styleMusic d-flex justify-content-center align-items-center w-75">
                   <div class="mt-4 mr-2" *ngFor="let vx of arrVExtendida; let i = index;">
@@ -168,9 +167,6 @@
                 <p>Instrumental</p>
               </div>
               <div class="titlesMusic four position-relative">
-                <p>Trechos(seg.)</p>
-              </div>
-              <div class="titlesMusic five position-relative">
                 <p>Loops</p>
               </div>
             </div>
@@ -222,8 +218,11 @@
                     </svg>
                   </span>
                   <div class="text d-flex flex-column align-items-start justify-content-start">
-                    <p class="h4"><a href="#">{{itens.nome_musica}}</a></p>
-                    <p class="h6 mt-1">por <a href="#">{{itens.nome_produtor}}</a></p>
+                    <p class="h4"><span class="music-name">{{itens.nome_musica}}</span></p>
+                    <p class="h6 mt-1">por
+                      <a [routerLink]="['/pagina-artista']"
+                        [queryParams]="{ nome_produtor: itens.nome_produtor }">{{itens.nome_produtor}}</a>
+                    </p>
                   </div>
                 </div>
                 <div
@@ -240,24 +239,8 @@
                       </path>
                     </svg>
                   </span>
-                  <div class="trechos d-flex align-items-center justify-content-around w-50">
+                  <div class="trechos d-flex align-items-center justify-content-around w-100">
                     <span class="h6 span" *ngFor="let t of trecho;">{{t}}</span>
-                  </div>
-                  <div class="controlLoops">
-                    <span class="span loopsIcon" type="button" data-toggle="dropdown" aria-expanded="false">
-                      <svg width="16" height="16" viewBox="0 0 16 16">
-                        <path
-                          d="M11.5 4.4C13.5 4.4 15 6 15 8s-1.6 3.6-3.5 3.6H10l.4.4a.6.6 0 010 .8l-.4.2c-.1 0-.3 0-.4-.2l-1.3-1.3-.1-.2v-.7l1.5-1.5h.2L10 9h.1l.3.1a.6.6 0 010 .9l-.4.4h1.6c1.3 0 2.4-1.1 2.4-2.5s-1-2.5-2.4-2.5h-3A.6.6 0 018 5c0-.3.3-.5.6-.5zM6.1 3c.1 0 .3 0 .4.2l1.3 1.3.1.2v.6L6.3 6.9h-.2L6 7l-.3-.1a.6.6 0 010-.9l.4-.4H4.5A2.4 2.4 0 002 8c0 1.4 1 2.5 2.4 2.5h3c.2 0 .5.2.5.6 0 .3-.3.5-.6.5h-3C2.7 11.6 1 10 1 8s1.6-3.6 3.5-3.6H6L5.7 4a.6.6 0 010-.8l.4-.2z">
-                        </path>
-                      </svg>
-                      <span class="material-icons arrow">expand_more</span>
-                    </span>
-                    <div class="dropdown-menu">
-                      <div class="dropInt"></div>
-                      <a class="dropdown-item" *ngFor="let l of loop;">
-                        <span class="span">{{l}}</span>
-                      </a>
-                    </div>
                   </div>
                 </div>
                 <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 d-flex align-items-center justify-content-around">
@@ -338,7 +321,7 @@
                   </button>
                 </div>
                 <div class="div w-100 accordion" id="accordionT1">
-                  <div class="row flex-column" id="collapseT" class="collapse mb-5" aria-labelledby="headingOne"
+                  <div class="collapse mb-5" id="collapseT" aria-labelledby="headingOne"
                     data-parent="#accordion1">
                     <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 mb-3">{{frase}}</div>
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl12 w-100 d-block">
@@ -361,15 +344,15 @@
         <nav aria-label="Page navigation example" class="d-flex justify-content-center align-items-center w-75">
           <ul class="pagination mb-0 w-75 d-flex justify-content-center align-items-center">
             <li class="page-item previous">
-              <a class="page-link" href="" aria-label="Previous">
+              <a class="page-link" aria-label="Previous">
                 <span aria-hidden="true" class="material-icons">navigate_next</span>
               </a>
             </li>
-            <li class="page-item active"><a class="page-link" href="">1</a></li>
-            <li class="page-item"><a class="page-link" href="">2</a></li>
-            <li class="page-item"><a class="page-link" href="">3</a></li>
+            <li class="page-item active"><a class="page-link">1</a></li>
+            <li class="page-item"><a class="page-link">2</a></li>
+            <li class="page-item"><a class="page-link">3</a></li>
             <li class="page-item next">
-              <a class="page-link" href="" aria-label="Next">
+              <a class="page-link" aria-label="Next">
                 <span aria-hidden="true" class="material-icons">navigate_next</span>
               </a>
             </li>

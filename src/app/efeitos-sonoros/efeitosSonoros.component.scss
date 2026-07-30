@@ -67,6 +67,13 @@ button.btn.btn-icons.mobile {
   border: 1px solid #FFF;
   border-radius: 50%;
   cursor: pointer;
+  background: transparent;
+  padding: 0;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: .45;
+  }
 }
 button, a {
   transition: all .25s ease-in-out;
@@ -238,6 +245,15 @@ article.one .text p.h6 a {
 article.one .text p.h6 {
   color: #828282;
   font-weight: 200 !important;
+}
+// Nome/produtor viraram <span> (removido link vazio href="#"); estas classes
+// preservam as cores que antes dependiam do seletor "... a" acima.
+.effect-name {
+  color: #fff;
+}
+.effect-producer {
+  color: #b4b4b5;
+  font-weight: 600 !important;
 }
 article.one .material-icons {
   font-size: 45px !important;
@@ -610,46 +626,6 @@ section.atalhos .container-fluid .row .col-sm-6.col-md-6.col-lg-6.col-xl-6 .col-
   border-bottom: 1px solid #585858;
   width: 24px;
   position: absolute;
-}
-nav ul.pagination li.page-item.active {
-  opacity: 1;
-  background: rgba(255,255,255,.2);
-  border-radius: 50%;
-}
-nav ul.pagination li.page-item {
-  height: 33px;
-  width: 33px;
-  margin: 0 1%;
-  opacity: .5;
-}
-nav ul.pagination li.page-item:hover,
-.page-link:hover {
-  color: #FFF !important;
-  opacity: 1 !important;
-}
-nav ul.pagination li.page-item a {
-  border-radius: 50%;
-  color: #FFF;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  border: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: transparent;
-  transition: all .45s ease-in-out;
-}
-nav ul.pagination li.page-item.previous a span {
-  transform: rotate(180deg);
-}
-nav ul.pagination li.page-item.previous a,
-nav ul.pagination li.page-item.next a {
-  border: 1px solid #dee2e6 !important;
-}
-nav ul.pagination li.page-item.previous a span,
-nav ul.pagination li.page-item.next a span {
-  font-size: 24px !important;
 }
 .filterMobile {
   display: none;

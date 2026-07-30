@@ -41,7 +41,7 @@ Este guia explica, passo a passo, como baixar e rodar o projeto MokBeats no seu 
   4. Execute: `./start.ps1`
 
 O que os scripts do Windows fazem
-- Baixam e usam o Node.js 16.20.2 de forma portátil (sem instalar para o sistema) caso você não tenha Node 16.
+- Baixam e usam dois Node.js de forma portátil (sem instalar para o sistema), caso você não os tenha: Node 16.20.2 para o frontend (site) e Node 24.18.1 para o backend (API) — são runtimes diferentes, cada serviço usa o seu.
 - Instalam automaticamente as dependências do frontend (raiz) e backend (`server/`).
 - Sobem a API (`node server/src/index.js`) e o site (`npm run start`).
 - Abrem o navegador em http://localhost:4200.
@@ -53,10 +53,11 @@ Como parar no Windows
 
 O que o script faz por você
 - Instala o NVM (gerenciador de versões do Node.js).
-- Instala e usa o Node.js v16.20.2 (compatível com o projeto).
+- Instala e usa dois Node.js: v16.20.2 para o frontend (bridge exclusiva de build/test do Angular 14, nunca usada em produção) e v24.18.1 para o backend (API).
 - Instala o Angular CLI 14 e o PM2 (gerenciador de processos) quando necessário.
 - Instala as dependências do projeto (frontend e backend).
 - Sobe o backend (API) com PM2 e o frontend (site) com o Angular.
+- (Opcional) Se você tiver o `audiowaveform` instalado, rode `./start.sh --generate-peaks` para criar as formas de onda reais das músicas (`server/data/musicas.json`).
 
 Como acessar
 - Site (frontend): http://localhost:4200
@@ -66,21 +67,22 @@ Como parar
 - Volte ao terminal onde rodou o script e pressione Ctrl + C (o script desliga o backend e o frontend).
 
 5) Rodar manualmente (alternativa ao start.sh)
-- Passo 1 — Instalar Node.js 16 (ou usar NVM):
-  - Com NVM: `nvm install 16.20.2 && nvm use 16.20.2`
-- Passo 2 — Instalar dependências do projeto (frontend):
-  - Na pasta raiz do projeto: `npm install`
-- Passo 3 — Instalar dependências do backend:
-  - `cd server && npm install && cd ..`
-- Passo 4 — Subir o backend (API):
-  - `cd server && npm start` (deixa esse terminal aberto)
-- Passo 5 — Subir o frontend (site):
-  - Em outro terminal (na raiz do projeto): `npm run start`
+- Passo 1 — Instalar os dois Node.js exigidos (com NVM):
+  - Frontend (bridge EOL do Angular 14): `nvm install 16.20.2`
+  - Backend (versão corrigida, major 24): `nvm install 24.18.1`
+- Passo 2 — Instalar dependências do projeto (frontend), com Node 16 ativo:
+  - `nvm use 16.20.2 && npm install`
+- Passo 3 — Instalar dependências do backend, com Node 24 ativo:
+  - `cd server && nvm use 24.18.1 && npm install && cd ..`
+- Passo 4 — Subir o backend (API), com Node 24 ativo:
+  - `cd server && nvm use 24.18.1 && npm start` (deixa esse terminal aberto)
+- Passo 5 — Subir o frontend (site), com Node 16 ativo:
+ - Em outro terminal (na raiz do projeto): `nvm use 16.20.2 && npm run start`
 - Acessar: http://localhost:4200
 
 6) Login de teste (apenas para desenvolvimento)
-- E-mail: `test@mokbeats.com`
-- Senha: `test12345`
+- O backend aceita qualquer e-mail válido e uma senha com pelo menos 8 caracteres; ele gera um token fictício para destravar o front-end.
+- Se preferir um exemplo pronto, você pode usar o e-mail `test@mokbeats.com` com a senha `test12345`.
 
 7) Dicas de uso (resumo)
 - Página Inicial (Home):

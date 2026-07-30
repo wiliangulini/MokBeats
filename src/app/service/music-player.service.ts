@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Subject} from "rxjs";
 import WaveSurfer from "wavesurfer.js";
+import { Musica } from '../musicas/musicas.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,9 @@ export class MusicPlayerService {
   // Solicitações de seek vindas de outros componentes (ex.: lista)
   private seekRequestSubject = new Subject<{ musicId: number, time: number }>();
   seekRequest$ = this.seekRequestSubject.asObservable();
+
+  private currentMusicSubject = new BehaviorSubject<Musica | null>(null);
+  currentMusic$ = this.currentMusicSubject.asObservable();
 
   // private wavesurfer!: WaveSurfer;
   //
@@ -48,6 +52,10 @@ export class MusicPlayerService {
 
   requestSeek(musicId: number, time: number) {
     this.seekRequestSubject.next({ musicId, time });
+  }
+
+  setCurrentMusic(music: Musica | null): void {
+    this.currentMusicSubject.next(music);
   }
 
 }

@@ -1,37 +1,104 @@
-import {Injectable} from '@angular/core';
-import {Musica} from "../musicas/musicas.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {CartModalComponent} from "../carrinho/cartModal/cart-modal.component";
+import { Injectable } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CartModalComponent } from '../carrinho/cartModal/cart-modal.component';
+import {
+  CartItem,
+  CartSelection,
+} from '../carrinho/cartModal/cart-modal.models';
+import { Musica } from '../musicas/musicas.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarrinhoService {
 
-  music: Musica[] = [];
+  music: CartItem[] = [];
   
   constructor(
     private modalService: NgbModal,
     ) { }
   
-  public receivingCart(elm: Musica) {
-    this.music.push(elm);
-    let ms_number: any = document.querySelector('#ms_number');
-    console.log(this.music.length);
-    if (this.music.length > 0) {
-      ms_number.innerHTML = this.music.length;
-      ms_number.style.display = 'flex';
-    } else {
-      ms_number.style.display = 'none';
+  public receivingCart(elm: CartItem): CartItem[] {
+    const isDuplicate = this.music.some((item) =>
+      this.isSameCartItem(item, elm)
+    );
+
+    if (!isDuplicate) {
+      this.music.push(elm);
     }
+
+    const cartCounter = document.querySelector<HTMLElement>('#ms_number');
+
+    if (cartCounter) {
+      cartCounter.textContent = String(this.music.length);
+      cartCounter.style.display = this.music.length > 0 ? 'flex' : 'none';
+    }
+
     return this.music;
   }
-  public receivingCart2() {
+
+  public receivingCart2(): CartItem[] {
     return this.music;
   }
   
-  public openModalCart() {
-    this.modalService.open(CartModalComponent, {size: 'lg', modalDialogClass: 'modal-dialog-centered', container: 'body', backdrop: 'static', keyboard: false});
+  public openModalCart(music: Musica): Promise<CartItem | null> {
+    const activeModal = this.modalService.open(CartModalComponent, {
+      size: 'lg',
+      modalDialogClass: 'modal-dialog-centered',
+      container: 'body',
+      backdrop: 'static',
+      keyboard: false,
+    });
+
+    activeModal.componentInstance.music = music;
+
+    return activeModal.result
+      .then((selection: CartSelection | undefined) => {
+        if (!selection) {
+          return null;
+        }
+
+        const cartItem: CartItem = {
+          ...music,
+          ...selection,
+        };
+
+        this.receivingCart(cartItem);
+        return cartItem;
+      })
+      .catch(() => null);
+  }
+
+  private isSameCartItem(current: CartItem, candidate: CartItem): boolean {
+    return (
+      this.isSameMusic(current, candidate) &&
+      current.licencaSelecionada.id === candidate.licencaSelecionada.id &&
+      current.planoSelecionado.id === candidate.planoSelecionado.id
+    );
+  }
+
+  private isSameMusic(current: Musica, candidate: Musica): boolean {
+    if (current.id != null && candidate.id != null) {
+      return current.id === candidate.id;
+    }
+
+    if (current.url && candidate.url) {
+      return current.url === candidate.url;
+    }
+
+    const currentName = current.nome_musica?.trim();
+    const candidateName = candidate.nome_musica?.trim();
+    const currentProducer = current.nome_produtor?.trim();
+    const candidateProducer = candidate.nome_produtor?.trim();
+
+    return Boolean(
+      currentName &&
+      candidateName &&
+      currentProducer &&
+      candidateProducer &&
+      currentName === candidateName &&
+      currentProducer === candidateProducer
+    );
   }
   
 }

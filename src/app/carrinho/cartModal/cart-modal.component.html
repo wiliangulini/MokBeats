@@ -1,15 +1,113 @@
-<div class="modal-dialog modal-dialog-centered modal-lg m-0">
-  <div class="modal-content">
-    <div class="modal-header border-0 p-0">
-      <button type="button" class="close" (click)="closeModal()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+<div class="license-modal">
+  <div class="modal-header">
+    <div>
+      <p class="eyebrow mb-2">Licenciamento MokBeats</p>
+      <h2 class="modal-title">Escolha a licença ideal</h2>
+      <p class="track-info mb-0">
+        <strong>{{ music.nome_musica || 'Música selecionada' }}</strong>
+        <span *ngIf="music.nome_produtor">por {{ music.nome_produtor }}</span>
+      </p>
     </div>
-    <div class="modal-body">
-      <div class="card border-0 d-flex justify-content-center align-items-center">
-        <p class="h2 font-weight-bold text-center text-uppercase mb-0">Música adicionada ao carrinho!!!</p>
+    <button
+      type="button"
+      class="close-button"
+      aria-label="Fechar seleção de licença"
+      (click)="closeModal()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <p class="selection-help">
+      Selecione a licença e o plano para continuar. O item só será adicionado
+      ao carrinho após a confirmação.
+    </p>
+
+    <div class="license-grid" role="radiogroup" aria-label="Tipos de licença">
+      <label
+        class="license-card"
+        *ngFor="let license of licenseOptions"
+        [class.selected]="selectedLicenseId === license.id"
+        [attr.for]="'license-' + license.id"
+      >
+        <input
+          type="radio"
+          name="license-option"
+          [id]="'license-' + license.id"
+          [value]="license.id"
+          [checked]="selectedLicenseId === license.id"
+          (change)="selectLicense(license.id)"
+        />
+
+        <span class="license-card-content">
+          <span class="license-card-header">
+            <span class="license-name">{{ license.nome }}</span>
+            <span class="selection-indicator" aria-hidden="true"></span>
+          </span>
+
+          <span class="license-description">{{ license.descricao }}</span>
+
+          <span class="license-benefits">
+            <span *ngFor="let benefit of license.beneficios">
+              <span class="material-icons" aria-hidden="true">done</span>
+              {{ benefit }}
+            </span>
+          </span>
+
+        </span>
+      </label>
+    </div>
+
+    <div class="plan-section">
+      <h3 class="plan-title">Escolha o plano</h3>
+      <div
+        class="plan-grid"
+        role="radiogroup"
+        aria-label="Planos comerciais"
+      >
+        <label
+          class="plan-card"
+          *ngFor="let plan of commercialPlanOptions"
+          [class.selected]="selectedPlanId === plan.id"
+          [attr.for]="'plan-' + plan.id"
+        >
+          <input
+            type="radio"
+            name="commercial-plan-option"
+            [id]="'plan-' + plan.id"
+            [value]="plan.id"
+            [checked]="selectedPlanId === plan.id"
+            (change)="selectPlan(plan.id)"
+          />
+
+          <span class="plan-card-content">
+            <span class="plan-name">{{ plan.nome }}</span>
+            <span class="plan-price">
+              {{ formatPrice(plan.preco) }}
+            </span>
+            <span class="selection-indicator" aria-hidden="true"></span>
+          </span>
+        </label>
       </div>
     </div>
+
+    <p class="commercial-note">
+      O plano escolhido define o preço desta licença no carrinho.
+    </p>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-light" (click)="closeModal()">
+      Cancelar
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary confirm-button"
+      [disabled]="!selectedLicenseId || !selectedPlanId"
+      (click)="confirmSelection()"
+    >
+      Adicionar ao carrinho
+    </button>
   </div>
 </div>
-

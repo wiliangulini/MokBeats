@@ -8,7 +8,8 @@ import {
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -49,6 +50,7 @@ import { CustomFileUploadComponent } from './custom-file-upload/custom-file-uplo
 import { PlaceholderEllipsisDirective } from './directives/placeholder-ellipsis.directive';
 import { DownloadAmostraComponent } from './download-amostra/download-amostra.component';
 import { PaginationComponent } from './shared/pagination/pagination.component';
+import { ProfileNotificationBannerComponent } from './shared/profile-notification-banner/profile-notification-banner.component';
 import { EfeitosSonorosComponent } from './efeitos-sonoros/efeitosSonoros.component';
 import { EfeitosSonorosService } from './efeitos-sonoros/efeitosSonoros.service';
 import { FaqComponent } from './faq/faq.component';
@@ -81,6 +83,7 @@ import { SubMenuComponent } from './sub-menu/sub-menu.component';
 import { TermosPrivacidadeComponent } from './termos-privacidade/termos-privacidade.component';
 import { UsuarioArtistaComponent } from './usuario-artista/usuario-artista.component';
 import { WaveSurferTestComponent } from './wave-surfer-test/wave-surfer-test.component';
+import { DashboardProdutorComponent } from './dashboard-produtor/dashboard-produtor.component';
 
 @NgModule({
   declarations: [
@@ -125,6 +128,8 @@ import { WaveSurferTestComponent } from './wave-surfer-test/wave-surfer-test.com
     TermosPrivacidadeComponent,
     CustomFileUploadComponent,
     PaginationComponent,
+    ProfileNotificationBannerComponent,
+    DashboardProdutorComponent,
   ],
   imports: [
     BrowserModule,
@@ -151,6 +156,7 @@ import { WaveSurferTestComponent } from './wave-surfer-test/wave-surfer-test.com
     MatFormFieldModule,
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     NgbTooltip,
     NgbActiveModal,
     AuthService,

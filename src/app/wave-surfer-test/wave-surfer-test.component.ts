@@ -32,6 +32,9 @@ export class WaveSurferTestComponent
   private isCurrent: boolean = false;
   private intersectionObserver?: IntersectionObserver;
   private isInitialized: boolean = false;
+  private destroyed = false;
+  private retryObserverCount = 0;
+  private retryInitCount = 0;
 
   constructor(
     private musicPlayerService: MusicPlayerService,
@@ -81,9 +84,13 @@ export class WaveSurferTestComponent
   }
 
   private setupIntersectionObserver(): void {
+    if (this.destroyed) return;
     const container = document.querySelector(`#${this.idContainer}`);
     if (!container) {
-      // Se container não existe ainda, tenta novamente
+      if (this.retryObserverCount++ >= 15) {
+        console.warn(`WaveSurfer: container #${this.idContainer} não encontrado após 15 tentativas`);
+        return;
+      }
       setTimeout(() => this.setupIntersectionObserver(), 100);
       return;
     }
@@ -112,10 +119,13 @@ export class WaveSurferTestComponent
   }
 
   private initWaveSurfer() {
+    if (this.destroyed) return;
     const container = document.querySelector(`#${this.idContainer}`);
     if (!container) {
-      console.error(`Container ${this.idContainer} not found`);
-      // Tentar novamente após mais tempo
+      if (this.retryInitCount++ >= 15) {
+        console.warn(`WaveSurfer: init container #${this.idContainer} não encontrado após 15 tentativas`);
+        return;
+      }
       setTimeout(() => this.initWaveSurfer(), 200);
       return;
     }
@@ -126,6 +136,13 @@ export class WaveSurferTestComponent
     }
 
     try {
+      const minimap = Minimap.create({
+        height: 40,
+        waveColor: '#fff',
+        progressColor: '#dcad54',
+        dragToSeek: true,
+      });
+
       this.wavesurfer = WaveSurfer.create({
         container: `#${this.idContainer}`,
         waveColor: '#fff',
@@ -135,18 +152,17 @@ export class WaveSurferTestComponent
         fillParent: true,
         height: 0,
         backend: 'MediaElement',
-        plugins: [
-          Minimap.create({
-            height: 40,
-            waveColor: '#fff',
-            progressColor: '#dcad54',
-            dragToSeek: true,
-          }),
-        ],
+        plugins: [minimap],
+      });
+
+      // O Minimap é a waveform visível; seu clique fornece posição relativa (0 a 1).
+      minimap.on('click', (relativeX: number) => {
+        this.requestSeekFromMinimap(relativeX);
       });
 
       // Aguardar a criação antes de carregar
       setTimeout(() => {
+        if (this.destroyed) return;
         if (this.wavesurfer) {
           // Verifica se áudio está em cache primeiro
           const cachedBlobUrl = this.audioPreloader.getCachedBlobUrl(this.music.url);
@@ -155,22 +171,25 @@ export class WaveSurferTestComponent
           if (this.music.peaks && Array.isArray(this.music.peaks)) {
             console.log(`⚡ Carregando waveform com peaks pré-gerados para ${this.music.nome_musica}`);
 
-            // Se áudio está em cache, usa Blob URL (instantâneo)
-            // Caso contrário, usa URL original (será baixado quando der play)
             const audioUrl = cachedBlobUrl || this.music.url;
+            if (!audioUrl) {
+              console.warn(`WaveSurfer: URL de áudio ausente para ${this.music.nome_musica}`);
+              return;
+            }
 
             if (cachedBlobUrl) {
               console.log(`💾 Usando áudio do cache para ${this.music.nome_musica}`);
             }
 
-            // Carrega peaks com URL apropriada
             this.wavesurfer.load(audioUrl, this.music.peaks);
           } else if (this.music.url) {
-            // Fallback: carrega e processa o áudio completo (método antigo)
             console.log(`🎵 Carregando waveform processando áudio para ${this.music.nome_musica}`);
 
-            // Usa cache se disponível
             const audioUrl = cachedBlobUrl || this.music.url;
+            if (!audioUrl) {
+              console.warn(`WaveSurfer: URL de áudio ausente para ${this.music.nome_musica}`);
+              return;
+            }
             this.wavesurfer.load(audioUrl);
           }
 
@@ -196,16 +215,6 @@ export class WaveSurferTestComponent
             }
           });
 
-          // Propaga seek quando usuário interagir na lista (somente se for a faixa atual)
-          (this.wavesurfer as any).on('seek', (progress: number) => {
-            try {
-              const duration = this.wavesurfer.getDuration() || 0;
-              const time = progress * duration;
-              if (this.isCurrent) {
-                this.musicPlayerService.requestSeek(this.music.id, time);
-              }
-            } catch (e) {}
-          });
         }
       }, 50);
     } catch (error) {
@@ -213,7 +222,24 @@ export class WaveSurferTestComponent
     }
   }
 
+  private requestSeekFromMinimap(relativeX: number): void {
+    if (this.destroyed || !this.isCurrent || !this.wavesurfer) return;
+
+    const duration = this.wavesurfer.getDuration();
+    if (
+      !Number.isFinite(relativeX) ||
+      !Number.isFinite(duration) ||
+      duration <= 0
+    ) {
+      return;
+    }
+
+    const progress = Math.min(1, Math.max(0, relativeX));
+    this.musicPlayerService.requestSeek(this.music.id, progress * duration);
+  }
+
   ngOnDestroy() {
+    this.destroyed = true;
     if (this.subscription) {
       this.subscription.unsubscribe();
     }

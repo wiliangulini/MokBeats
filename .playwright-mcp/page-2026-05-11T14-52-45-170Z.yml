@@ -1,0 +1,244 @@
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e4]:
+      - link "Mokbeats - Produção Musical" [ref=e5] [cursor=pointer]:
+        - /url: "#/"
+        - img "Mokbeats - Produção Musical" [ref=e6]
+      - generic [ref=e7]:
+        - list [ref=e8]:
+          - listitem [ref=e9]:
+            - link "Home" [ref=e10] [cursor=pointer]:
+              - /url: "#/home"
+          - listitem [ref=e11]:
+            - link "Músicas" [ref=e12] [cursor=pointer]:
+              - /url: "#/musicas"
+          - listitem [ref=e13]:
+            - link "Efeitos Sonoros" [ref=e14] [cursor=pointer]:
+              - /url: "#/efeitos-sonoros"
+          - listitem [ref=e15]:
+            - link "Produtores" [ref=e16] [cursor=pointer]:
+              - /url: "#/produtores"
+          - listitem [ref=e17]:
+            - generic [ref=e18] [cursor=pointer]: HUB
+          - listitem [ref=e19]:
+            - link "Preços" [ref=e20] [cursor=pointer]:
+              - /url: "#/precos"
+          - listitem [ref=e21]:
+            - button "Idioma" [ref=e22] [cursor=pointer]
+        - list [ref=e23]:
+          - listitem [ref=e24]:
+            - link "shopping_cart" [ref=e25] [cursor=pointer]:
+              - /url: "#/carrinho"
+              - generic [ref=e26]: shopping_cart
+          - listitem [ref=e27]:
+            - generic [ref=e29] [cursor=pointer]: person
+  - generic [ref=e177]:
+    - heading "Seja parte de uma cultura inovadora e colaborativa." [level=1] [ref=e182]
+    - generic [ref=e184]:
+      - generic [ref=e185]:
+        - generic [ref=e187]:
+          - paragraph [ref=e188]: Venha ser um produtor Mokbeats
+          - paragraph [ref=e189]: Na Mokbeats, nós impulsionamos e apoiamos nossos artistas em seu trabalho criativo.
+          - paragraph [ref=e190]: Venha ser um produtor Mokbeats.
+        - generic [ref=e193]:
+          - paragraph [ref=e194]: "Garantir a qualidade é fundamental, verifique o seguinte:"
+          - generic [ref=e195]:
+            - generic [ref=e196]: done
+            - paragraph [ref=e197]:
+              - strong [ref=e198]: A sua música é 100% original?
+              - text: Você deve deter 100% da propriedade e controle sobre os direitos autorais da composição e das matrizes da gravação da música. Versões e samples NÃO são permitidos.
+          - generic [ref=e199]:
+            - generic [ref=e200]: done
+            - paragraph [ref=e201]:
+              - strong [ref=e202]: A sua música está disponível com exclusividade?
+              - text: Não aceitamos nenhuma música que não seja exclusiva. Você pode enviar faixas que já tenham sido utilizadas em outro lugar como exemplos do seu trabalho, mas todas as músicas adicionadas à biblioteca devem ser obrigatoriamente exclusivas.
+          - generic [ref=e203]:
+            - generic [ref=e204]: done
+            - paragraph [ref=e205]:
+              - strong [ref=e206]: A sua música está livre de direitos de terceiros?
+              - text: Nós agimos como editora musical exclusiva das composições em nossa biblioteca, promovendo e autorizando o uso das mesmas para nossos clientes no mundo inteiro.
+      - generic [ref=e208]:
+        - paragraph [ref=e209]: Envie sua música
+        - generic [ref=e210]:
+          - generic [ref=e215]:
+            - textbox "Nome / Nome Artístico" [ref=e216]:
+              - /placeholder: Digite o nome aqui...
+            - generic:
+              - generic: Nome / Nome Artístico *
+          - generic [ref=e221]:
+            - textbox "Email" [ref=e222]:
+              - /placeholder: "Por exemplo: exemplo@mail.com..."
+            - generic:
+              - generic: Email *
+          - generic [ref=e227] [cursor=pointer]:
+            - combobox "Código BR +55" [ref=e228]:
+              - generic [ref=e231]: BR +55
+            - generic:
+              - generic: Código *
+          - generic [ref=e238]:
+            - textbox "Telefone + DDD" [ref=e239]:
+              - /placeholder: Digite aqui...
+            - generic:
+              - generic: Telefone + DDD *
+          - generic [ref=e244]:
+            - textbox "Nº de Identificação (CPF, RG, Passaporte)" [ref=e245]:
+              - /placeholder: Digite aqui...
+            - generic:
+              - generic: Nº de Identificação (CPF, RG, Passaporte) *
+          - generic [ref=e250]:
+            - textbox "Nome da Música" [ref=e251]:
+              - /placeholder: Digite o nome aqui...
+            - generic:
+              - generic: Nome da Música *
+          - generic [ref=e256] [cursor=pointer]:
+            - combobox "Gênero" [ref=e257]
+            - generic:
+              - generic: Gênero *
+          - generic [ref=e267] [cursor=pointer]:
+            - combobox "Humor" [ref=e268]
+            - generic:
+              - generic: Humor *
+          - generic [ref=e278]:
+            - textbox "BPM" [ref=e279]:
+              - /placeholder: Digite seu bpm aqui...
+            - generic:
+              - generic: BPM *
+          - generic [ref=e284] [cursor=pointer]:
+            - combobox "Tom" [ref=e285]
+            - generic:
+              - generic: Tom *
+          - generic [ref=e295]:
+            - textbox "Registro (ISRC, Hash...)" [ref=e296]:
+              - /placeholder: Digite seu registro aqui...
+            - generic:
+              - generic: Registro (ISRC, Hash...)
+          - generic [ref=e301]:
+            - textbox "Link (Spotify, Youtube...)" [ref=e302]:
+              - /placeholder: Divulgue sua página aqui...
+            - generic:
+              - generic: Link (Spotify, Youtube...)
+          - generic [ref=e303]:
+            - paragraph [ref=e304]: Formato da música *
+            - radiogroup [ref=e305]:
+              - generic [ref=e307] [cursor=pointer]:
+                - radio "Single track" [checked] [ref=e311]
+                - generic [ref=e312]: Single track
+              - generic [ref=e314] [cursor=pointer]:
+                - radio "Single track + Stems" [ref=e318]
+                - generic [ref=e319]: Single track + Stems
+              - generic [ref=e321] [cursor=pointer]:
+                - radio "Efeitos (FX)" [ref=e325]
+                - generic [ref=e326]: Efeitos (FX)
+            - paragraph [ref=e327]: Stems
+            - paragraph [ref=e328]: ( Todos os áudios deverão ter exatamente a mesma duração )
+          - generic [ref=e329]:
+            - paragraph [ref=e330]: Loop 15s *
+            - generic [ref=e333] [cursor=pointer]:
+              - img
+              - generic: + UPLOAD
+              - button "+ UPLOAD" [ref=e334]
+            - generic [ref=e335]: Trecho de 15 segundos.
+          - generic [ref=e336]:
+            - paragraph [ref=e337]: Loop 30s *
+            - generic [ref=e340] [cursor=pointer]:
+              - img
+              - generic: + UPLOAD
+              - button "+ UPLOAD" [ref=e341]
+            - generic [ref=e342]: Trecho de 30 segundos.
+          - generic [ref=e343]:
+            - paragraph [ref=e344]: Loop 60s *
+            - generic [ref=e347] [cursor=pointer]:
+              - img
+              - generic: + UPLOAD
+              - button "+ UPLOAD" [ref=e348]
+            - generic [ref=e349]: Trecho de 60 segundos.
+          - generic [ref=e350]:
+            - paragraph [ref=e351]: Single Track *
+            - generic [ref=e354] [cursor=pointer]:
+              - img
+              - generic: + UPLOAD
+              - button "+ UPLOAD" [ref=e355]
+            - generic [ref=e356]: Faça upload de um arquivo de áudio.
+          - generic [ref=e357]:
+            - paragraph [ref=e358]: Termos e condições.
+            - generic [ref=e360] [cursor=pointer]:
+              - generic [ref=e361]:
+                - checkbox "Concordo com os termos e condições" [ref=e362]
+                - generic:
+                  - img
+              - paragraph [ref=e364]:
+                - text: Concordo com os
+                - link "termos e condições" [ref=e365]:
+                  - /url: "#/politica-de-privacidade"
+          - button "Envie aqui" [disabled] [ref=e367]
+    - contentinfo [ref=e369]:
+      - generic [ref=e370]:
+        - generic [ref=e371]:
+          - generic [ref=e372]:
+            - paragraph [ref=e373]: coleções
+            - list [ref=e374]:
+              - listitem [ref=e375] [cursor=pointer]:
+                - link "Músicas Mais Populares" [ref=e376]:
+                  - /url: "#"
+              - listitem [ref=e377] [cursor=pointer]:
+                - link "Músicas Mais Recentes" [ref=e378]:
+                  - /url: "#"
+              - listitem [ref=e379] [cursor=pointer]:
+                - link "Corporativo / Empresarial" [ref=e380]:
+                  - /url: "#"
+              - listitem [ref=e381] [cursor=pointer]:
+                - link "Música Jazz" [ref=e382]:
+                  - /url: "#"
+              - listitem [ref=e383] [cursor=pointer]:
+                - link "Música Clássica" [ref=e384]:
+                  - /url: "#"
+              - listitem [ref=e385] [cursor=pointer]:
+                - link "Música Livre de Direitos para Projetos" [ref=e386]:
+                  - /url: "#"
+              - listitem [ref=e387] [cursor=pointer]:
+                - link "Coleções de Música" [ref=e388]:
+                  - /url: "#"
+              - listitem [ref=e389] [cursor=pointer]:
+                - link "Música Gratuita" [ref=e390]:
+                  - /url: "#"
+          - generic [ref=e391]:
+            - paragraph [ref=e392]: INFORMAÇÕES
+            - list [ref=e393]:
+              - listitem [ref=e394] [cursor=pointer]: Sobre Nós
+              - listitem [ref=e395] [cursor=pointer]: Testemunhos
+              - listitem [ref=e396] [cursor=pointer]: Política de Privacidade
+              - listitem [ref=e397] [cursor=pointer]: Informações de Licença
+          - generic [ref=e398]:
+            - paragraph [ref=e399]: COMPOSITORES
+            - list [ref=e400]:
+              - listitem [ref=e401] [cursor=pointer]:
+                - link "Enviar Música" [ref=e402]:
+                  - /url: "#/produtores"
+          - generic [ref=e403]:
+            - paragraph [ref=e404]: SUPORTE
+            - list [ref=e405]:
+              - listitem [ref=e406] [cursor=pointer]: Entre em Contato
+              - listitem [ref=e407] [cursor=pointer]: Fale Conosco via WhatsApp
+              - listitem [ref=e408] [cursor=pointer]: FAQ
+              - listitem [ref=e409] [cursor=pointer]: HUB
+        - generic [ref=e410]:
+          - link "Facebook" [ref=e412] [cursor=pointer]:
+            - /url: https://www.facebook.com/premiumbeat
+            - img [ref=e413]
+          - link "Youtube" [ref=e416] [cursor=pointer]:
+            - /url: https://www.youtube.com/user/premiumbeat
+            - img [ref=e417]
+          - link "Instagram" [ref=e420] [cursor=pointer]:
+            - /url: https://www.instagram.com/premiumbeat
+            - img [ref=e421]
+        - generic [ref=e423]:
+          - generic [ref=e424]:
+            - generic [ref=e425]: task_alt
+            - text: COMPRAS 100% SEGURAS
+          - img [ref=e427]
+          - img [ref=e430]
+          - img [ref=e433]
+          - img [ref=e436]
+        - paragraph [ref=e439]:
+          - strong [ref=e440]: Mok Beats.com
+          - text: ©2025. Todos direitos reservados.
