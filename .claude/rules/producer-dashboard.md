@@ -2,7 +2,8 @@
 paths:
   - "src/app/dashboard-produtor/**/*"
   - "src/app/menu-produtor/**/*"
-  - "src/app/pages/artist/**/*"
+  - "src/app/artist/**/*"
+  - "src/app/usuario-artista/**/*"
 ---
 
 # Producer dashboard

@@ -35,7 +35,7 @@ Regras:
 - Manter rota protegida por produtor.
 - Branch de design pode orientar visual, não a arquitetura.
 - Exportação pode permanecer desativada se não existir backend.
-- Se for necessário instalar biblioteca de gráficos, justificar antes e validar compatibilidade com Angular 14.
+- Se for necessário instalar biblioteca de gráficos, justificar antes e validar compatibilidade com a versão vigente do Angular.
 
 MVP aceitável:
 

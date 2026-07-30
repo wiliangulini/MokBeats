@@ -13,7 +13,7 @@ updated: 2026-07-06
 Stack atual conhecida:
 
 ```txt
-Angular 14
+Angular 14.3.0 — em migração para 22.1.0 (ADR 0002; checkpoint em 21.2.19)
 TypeScript
 SCSS
 Bootstrap
@@ -25,7 +25,7 @@ Proxy local para /api
 
 Restrições:
 
-- Não migrar Angular sem autorização.
+- Não migrar Angular fora de um plano aprovado (`docs/adr/0002-migracao-angular-14-para-22.md`).
 - Não converter o projeto para arquitetura standalone sem autorização.
 - Não trocar a stack principal sem autorização.
 - Não remover WaveSurfer.js.

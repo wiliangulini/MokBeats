@@ -58,7 +58,7 @@ Não use quando:
 
 ## Checklist MokBeats
 
-- [ ] Angular 14 preservado.
+- [ ] Estrutura Angular preservada.
 - [ ] Rotas e guards avaliados quando aplicável.
 - [ ] Player/WaveSurfer avaliados quando aplicável.
 - [ ] Upload/FormData avaliado quando aplicável.

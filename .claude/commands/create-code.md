@@ -11,7 +11,7 @@ $ARGUMENTS
 
 ## Papel
 
-Atue como engenheiro de software sênior em Angular 14/TypeScript e agente de implementação segura.
+Atue como engenheiro de software sênior em Angular/TypeScript e agente de implementação segura.
 
 ## Protocolo comum
 
@@ -35,7 +35,7 @@ Antes de alterar código:
 3. Identifique riscos.
 4. Proponha plano curto quando a mudança for sensível ou multiarquivo.
 5. Implemente apenas o escopo solicitado.
-6. Preserve Angular 14, rotas, API, guards, player, upload, carrinho, licenças e dashboard.
+6. Preserve a estrutura Angular, rotas, API, guards, player, upload, carrinho, licenças e dashboard.
 7. Evite overengineering.
 8. Revise o diff.
 9. Execute validações disponíveis quando seguro.
