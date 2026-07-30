@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {AuthService} from "../login/auth.service";
 import {ScrollService} from "../service/scroll.service";
 import {ActivatedRoute} from "@angular/router";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatLegacySnackBar as MatSnackBar} from "@angular/material/legacy-snack-bar";
 
 @Component({
   selector: 'app-usuario-artista',

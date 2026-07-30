@@ -1,4 +1,6 @@
-// This file is required by karma.conf.js and loads recursively all the .spec and framework files
+// This file is required by karma.conf.js. Since Angular 15 the karma builder
+// discovers *.spec.ts automatically via tsconfig.spec.json's "include" — this
+// file only bootstraps the testing environment and global TestBed defaults.
 
 import 'zone.js/testing';
 import { getTestBed } from '@angular/core/testing';
@@ -13,22 +15,15 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Angular Material (comuns em formulários)
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
+import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio';
+import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
 // ng-bootstrap
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-declare const require: {
-  context(path: string, deep?: boolean, filter?: RegExp): {
-    <T>(id: string): T;
-    keys(): string[];
-  };
-};
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
@@ -87,23 +82,3 @@ getTestBed().initTestEnvironment(
     // ignore caso Response/Blob não estejam disponíveis
   }
 })();
-
-// Then we find tests, with optional focus via FOCUS_SPECS env (passed through karma client args)
-const args = ((window as any).__karma__ && (window as any).__karma__.config && (window as any).__karma__.config.args) || [''];
-const focusArg: string = args[0] || '';
-const context = require.context('./', true, /\.spec\.ts$/);
-
-if (focusArg && typeof focusArg === 'string' && focusArg.trim().length > 0) {
-  const focusedPaths = focusArg
-    .split(',')
-    .map((s: string) => s.trim())
-    .filter(Boolean)
-    .filter((fullPath: string) => fullPath.startsWith('src/'))
-    .map((fullPath: string) => './' + fullPath.substring('src/'.length));
-
-  const focusedSet = new Set(focusedPaths);
-  const selected = context.keys().filter((key: string) => focusedSet.has(key));
-  selected.forEach(context);
-} else {
-  context.keys().forEach(context);
-}
