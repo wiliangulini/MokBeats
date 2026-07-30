@@ -33,3 +33,4 @@ em que foram descobertos.
 | [0009](0009-faq-nao-tem-accordion-bootstrap.md) | FAQ não usa accordion do Bootstrap (correção de premissa do checklist) | 3 | Baixa | Resolvido (documentado) |
 | [0010](0010-close-e-custom-file-nao-existem-como-bootstrap.md) | `.close` e `custom-file` do plano (3b) não existem como componentes Bootstrap reais | 3 | Baixa | Resolvido (documentado) |
 | [0011](0011-form-group-mantido-intocado.md) | `form-group` mantido intocado (risco de colisão com CSS custom) | 3 | Baixa | Resolvido (documentado) |
+| [0012](0012-test-focus-quebrado-apos-angular15.md) | `npm run test:focus` quebra após `ng update` para Angular 15 | 4 | Média | Aberto |
