@@ -41,3 +41,4 @@ em que foram descobertos.
 | [0017](0017-testbed-relanca-ng0100-sem-providezonechangedetection.md) | `TestBed` relança `NG0100` sem `provideZoneChangeDetection()` no ambiente de teste (Angular 21) | 10 | Média | Resolvido (mig/d7) |
 | [0018](0018-wave-surfer-test-spec-nao-definia-input-music.md) | `wave-surfer-test.component.spec.ts` não definia `@Input() music` antes de `detectChanges()` | 10 | Baixa | Resolvido (mig/d7) |
 | [0019](0019-rxjs-bump-obrigatorio-no-d7.md) | `rxjs` precisou de bump para `~7.8.2` no D7 — `moduleResolution: bundler` passa a ser obrigatório | 10 | Baixa | Resolvido (mig/d7) |
+| [0020](0020-cypress-ts5011-rootdir-tsconfig-extends.md) | TypeScript 6.0 (`TS5011`) quebra o `ts-loader` interno do Cypress via `tsconfig.json` com `extends` | 11 | Média | Resolvido (mig/d8) |
