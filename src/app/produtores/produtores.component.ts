@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ScrollService } from '../service/scroll.service';
 import { MusicasService } from '../musicas/musicas.service';
 import { UploadFileService } from '../upload-file/upload-file.service';

@@ -62,21 +62,37 @@ describe('Upload do produtor — Single Track sem stems', () => {
         },
       });
 
-      cy.get('input[formcontrolname="nome"]').type('Produtor E2E');
-      cy.get('input[formcontrolname="email"]').type(email);
-      cy.get('input[formcontrolname="phone"]').type('11999999999');
-      cy.get('input[formcontrolname="identification"]').type('11122233344');
-      cy.get('input[formcontrolname="trackName"]').type('Faixa E2E');
+      // {force:true}: desde a migração para MDC (D3), o <mat-label> flutuante
+      // do próprio form-field fica posicionado sobre o centro do input até
+      // ganhar foco/valor (comportamento padrão do Material Design), o que o
+      // Cypress reporta como "covered" (confirmado via elementFromPoint: o
+      // elemento por cima é sempre o mat-label do mesmo componente, nunca um
+      // elemento externo) — force é seguro aqui porque o alvo do type()
+      // continua sendo o input já localizado pelo seletor.
+      cy.get('input[formcontrolname="nome"]').type('Produtor E2E', { force: true });
+      cy.get('input[formcontrolname="email"]').type(email, { force: true });
+      cy.get('input[formcontrolname="phone"]').type('11999999999', { force: true });
+      cy.get('input[formcontrolname="identification"]').type('11122233344', { force: true });
+      cy.get('input[formcontrolname="trackName"]').type('Faixa E2E', { force: true });
 
+      // Desde a migração para os componentes MDC (D3), o mat-select abre com
+      // uma animação mais longa; clicar na opção antes dela assentar faz o
+      // Cypress reportar "covered" e o clique não seleciona nada (confirmado:
+      // sem o wait, o form permanece invalid mesmo sem erro de asserção
+      // explícito). Um wait curto após abrir resolve de forma real, sem
+      // recorrer a {force:true} (que "vazou" o clique para outro elemento).
       cy.get('mat-select[formcontrolname="category"]').click();
+      cy.wait(400);
       cy.contains('mat-option', 'Beats').click();
 
       cy.get('mat-select[formcontrolname="genrePrimary"]').click();
+      cy.wait(400);
       cy.get('mat-option').first().click();
 
-      cy.get('input[formcontrolname="bpm"]').type('120');
+      cy.get('input[formcontrolname="bpm"]').type('120', { force: true });
 
       cy.get('mat-select[formcontrolname="key"]').click();
+      cy.wait(400);
       cy.contains('mat-option', 'C (Dó Maior)').click();
 
       cy.get('app-custom-file-upload')

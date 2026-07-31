@@ -34,3 +34,4 @@ em que foram descobertos.
 | [0010](0010-close-e-custom-file-nao-existem-como-bootstrap.md) | `.close` e `custom-file` do plano (3b) não existem como componentes Bootstrap reais | 3 | Baixa | Resolvido (documentado) |
 | [0011](0011-form-group-mantido-intocado.md) | `form-group` mantido intocado (risco de colisão com CSS custom) | 3 | Baixa | Resolvido (documentado) |
 | [0012](0012-test-focus-quebrado-apos-angular15.md) | `npm run test:focus` quebra após `ng update` para Angular 15 | 4 | Média | Aberto |
+| [0013](0013-mat-label-mdc-cobre-inputs-cypress.md) | `<mat-label>` do MDC cobre o centro dos inputs, quebrando `cy.type()` sem force | 6 | Baixa | Resolvido (mig/d3) |

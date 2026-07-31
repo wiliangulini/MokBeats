@@ -16,11 +16,11 @@ a {
 .modal-backdrop {
   z-index: 1050 !important;
 }
-.mat-simple-snack-bar-content {
+.mat-mdc-snack-bar-label {
   width: 100% !important;
   text-align: center !important;
 }
-.mat-snack-bar-container {
+.mat-mdc-snack-bar-container {
   background-color: #fff !important;
   font-weight: bold !important;
   border: 1px solid red !important;
@@ -71,7 +71,7 @@ input:-ms-input-placeholder,
 textarea:-ms-input-placeholder {
   font-style: italic;
 }
-::ng-deep .mat-form-field-label {
+::ng-deep .mdc-floating-label {
   font-style: italic;
 }
 
@@ -87,22 +87,22 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-textarea.mat-input-element {
+textarea.mat-mdc-input-element {
   background: rgba(0, 0, 0, 0.04) !important;
 }
-.mat-form-field-appearance-fill .mat-form-field-flex,
-.mat-form-field-appearance-fill .mat-form-field-infix {
+.mat-form-field-appearance-fill .mat-mdc-form-field-flex,
+.mat-form-field-appearance-fill .mat-mdc-form-field-infix {
   background: #fff !important;
 }
-.mat-form-field-appearance-fill .mat-form-field-flex {
+.mat-form-field-appearance-fill .mat-mdc-form-field-flex {
   padding-bottom: 0.35em !important;
 }
 
-.mat-form-field-appearance-fill .mat-form-field-underline::before {
+.mat-form-field-appearance-fill .mdc-line-ripple::before {
   background-color: #ced4da !important;
 }
 
-.mat-form-field-appearance-fill .mat-form-field-infix {
+.mat-form-field-appearance-fill .mat-mdc-form-field-infix {
   padding-bottom: 0 !important;
 }
 @media only screen and (min-width: 320px) and (max-width: 768px) {

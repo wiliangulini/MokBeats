@@ -80,10 +80,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "MokBeats_FrontEnd:build:production"
+              "buildTarget": "MokBeats_FrontEnd:build:production"
             },
             "development": {
-              "browserTarget": "MokBeats_FrontEnd:build:development"
+              "buildTarget": "MokBeats_FrontEnd:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -91,7 +91,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "MokBeats_FrontEnd:build"
+            "buildTarget": "MokBeats_FrontEnd:build"
           }
         },
         "test": {

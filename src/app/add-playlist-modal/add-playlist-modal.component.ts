@@ -2,7 +2,7 @@ import {AfterContentInit, Component, OnInit} from '@angular/core';
 import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {CreatePlaylistModalComponent, playlists} from "../create-playlist-modal/create-playlist-modal.component";
 import {PlaylistService} from "../create-playlist-modal/playlist.service";
-import {MatLegacySnackBar as MatSnackBar} from "@angular/material/legacy-snack-bar";
+import {MatSnackBar} from "@angular/material/snack-bar";
 import {EMPTY} from "rxjs";
 import {Musica} from "../musicas/musicas.service";
 
