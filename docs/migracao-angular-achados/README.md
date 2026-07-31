@@ -42,7 +42,7 @@ em que foram descobertos.
 | [0018](0018-wave-surfer-test-spec-nao-definia-input-music.md) | `wave-surfer-test.component.spec.ts` não definia `@Input() music` antes de `detectChanges()` | 10 | Baixa | Resolvido (mig/d7) |
 | [0019](0019-rxjs-bump-obrigatorio-no-d7.md) | `rxjs` precisou de bump para `~7.8.2` no D7 — `moduleResolution: bundler` passa a ser obrigatório | 10 | Baixa | Resolvido (mig/d7) |
 | [0020](0020-cypress-ts5011-rootdir-tsconfig-extends.md) | TypeScript 6.0 (`TS5011`) quebra o `ts-loader` interno do Cypress via `tsconfig.json` com `extends` | 11 | Média | Resolvido (mig/d8) |
-| [0021](0021-dist-output-muda-para-dist-browser.md) | Output da build de produção muda de `dist/` para `dist/browser/` | 12 | Alta | Aberto (ação obrigatória na Etapa 13) |
+| [0021](0021-dist-output-muda-para-dist-browser.md) | Output da build de produção muda de `dist/` para `dist/browser/` | 12 | Alta | Resolvido (mig/e13) |
 | [0022](0022-wavesurfer-exports-map-quebra-sob-esbuild.md) | `wavesurfer.js/dist/plugins/minimap` quebra sob esbuild; bug de empacotamento na versão 7.12.3 | 12 | Média | Resolvido (mig/e12) |
 | [0023](0023-schematic-jasmine-vitest-gaps.md) | Lacunas do schematic `refactor-jasmine-vitest` (relatório dizia "0 TODOs", mas havia bugs reais) | 12 | Média | Resolvido (mig/e12) |
 | [0024](0024-vitest-builder-config-zonejs-e-include.md) | Configuração do builder `unit-test`: `zone.js` nos polyfills e `include` explícito para `test-focus` | 12 | Média | Resolvido (mig/e12) |

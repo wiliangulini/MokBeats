@@ -3,7 +3,7 @@ tipo: resource
 area: resources
 status: active
 source: PROJECT_RULES.md
-updated: 2026-07-06
+updated: 2026-07-31
 ---
 
 # 3. Stack do projeto
@@ -13,7 +13,7 @@ updated: 2026-07-06
 Stack atual conhecida:
 
 ```txt
-Angular 14.3.0 — em migração para 22.1.0 (ADR 0002; checkpoint em 21.2.19)
+Angular 22.1.0 — migrado a partir do 14.3.0 (ADR 0002)
 TypeScript
 SCSS
 Bootstrap

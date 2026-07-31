@@ -32,7 +32,7 @@ Este e um wrapper de compatibilidade. O deploy oficial fica em:
 Opcoes comuns:
   --frontend-only   Envia apenas frontend e .htaccess
   --backend-only    Envia apenas backend e reinicia PM2
-  --no-build        Usa dist/ existente
+  --no-build        Usa dist/browser/ existente
   --no-audio        Nao envia src/assets/audios/
   --generate-peaks  Gera peaks na VPS apos enviar backend/audios
   --dry-run         Simula sem alterar a VPS

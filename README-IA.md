@@ -12,7 +12,7 @@ quebrar a base funcional da branch `dev`.
 ## Stack (não muda sem autorização)
 
 ```txt
-Angular 14.3.0 — em migração para 22.1.0 (ADR 0002; checkpoint em 21.2.19), TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API, WaveSurfer.js
+Angular 22.1.0 — migrado a partir do 14.3.0 (ADR 0002), TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API, WaveSurfer.js
 ```
 
 ## Arquivos principais
