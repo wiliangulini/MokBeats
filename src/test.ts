@@ -1,13 +1,8 @@
-// This file is required by karma.conf.js. Since Angular 15 the karma builder
-// discovers *.spec.ts automatically via tsconfig.spec.json's "include" — this
-// file only bootstraps the testing environment and global TestBed defaults.
+// This file is registered as "setupFiles" pelo builder @angular/build:unit-test
+// (runner: vitest). O builder inicializa o ambiente de teste do Angular
+// automaticamente — este arquivo só define os padrões globais do TestBed.
 
 import 'zone.js/testing';
-import { getTestBed } from '@angular/core/testing';
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting
-} from '@angular/platform-browser-dynamic/testing';
 import { TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, provideZoneChangeDetection } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -25,12 +20,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 // ng-bootstrap
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-// First, initialize the Angular testing environment.
-getTestBed().initTestEnvironment(
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting(),
-);
 
 // Padrões globais para reduzir atrito nas specs antigas
 (() => {
@@ -83,5 +72,39 @@ getTestBed().initTestEnvironment(
     (window as any).fetch = safeFetch;
   } catch (e) {
     // ignore caso Response/Blob não estejam disponíveis
+  }
+})();
+
+// jsdom (ambiente Vitest) não implementa IntersectionObserver nem DataTransfer,
+// diferente do Chrome real usado antes via Karma. Stubs mínimos, suficientes
+// para os specs existentes não quebrarem.
+(() => {
+  if (typeof (globalThis as any).IntersectionObserver === 'undefined') {
+    class IntersectionObserverStub {
+      constructor(_callback: IntersectionObserverCallback, _options?: IntersectionObserverInit) {}
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+      takeRecords(): IntersectionObserverEntry[] { return []; }
+    }
+    (globalThis as any).IntersectionObserver = IntersectionObserverStub;
+    (window as any).IntersectionObserver = IntersectionObserverStub;
+  }
+
+  if (typeof (globalThis as any).DataTransfer === 'undefined') {
+    class DataTransferStub {
+      private _files: File[] = [];
+      items = {
+        add: (file: File) => { this._files.push(file); },
+      };
+      get files(): FileList {
+        const files = this._files;
+        return Object.assign(files.slice(), {
+          item: (i: number) => files[i] ?? null,
+        }) as unknown as FileList;
+      }
+    }
+    (globalThis as any).DataTransfer = DataTransferStub;
+    (window as any).DataTransfer = DataTransferStub;
   }
 })();
