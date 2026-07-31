@@ -37,3 +37,7 @@ em que foram descobertos.
 | [0013](0013-mat-label-mdc-cobre-inputs-cypress.md) | `<mat-label>` do MDC cobre o centro dos inputs, quebrando `cy.type()` sem force | 6 | Baixa | Resolvido (mig/d3) |
 | [0014](0014-httpclienttestingmodule-orfao-apos-angular18.md) | `HttpClientTestingModule` órfão em `src/test.ts` após migração automática para Angular 18 | 7 | Baixa | Resolvido (mig/d4) |
 | [0015](0015-moduleresolution-bundler-quebra-rxjs-antigo.md) | `moduleResolution: "bundler"` (migração automática do Angular 20) quebra resolução de tipos do `rxjs~7.4.0` | 9 | Baixa | Resolvido (mig/d6) |
+| [0016](0016-control-flow-migration-obrigatoria-no-d7.md) | Migração de control-flow (`@if`/`@for`/`@switch`) rodou como obrigatória no D7, revertida (28 templates) | 10 | Baixa | Resolvido (mig/d7) |
+| [0017](0017-testbed-relanca-ng0100-sem-providezonechangedetection.md) | `TestBed` relança `NG0100` sem `provideZoneChangeDetection()` no ambiente de teste (Angular 21) | 10 | Média | Resolvido (mig/d7) |
+| [0018](0018-wave-surfer-test-spec-nao-definia-input-music.md) | `wave-surfer-test.component.spec.ts` não definia `@Input() music` antes de `detectChanges()` | 10 | Baixa | Resolvido (mig/d7) |
+| [0019](0019-rxjs-bump-obrigatorio-no-d7.md) | `rxjs` precisou de bump para `~7.8.2` no D7 — `moduleResolution: bundler` passa a ser obrigatório | 10 | Baixa | Resolvido (mig/d7) |
