@@ -9,7 +9,7 @@ import {
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
 import { TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, provideZoneChangeDetection } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -60,6 +60,7 @@ getTestBed().initTestEnvironment(
     ];
     moduleDef.providers = [
       ...(moduleDef.providers || []),
+      provideZoneChangeDetection(),
       provideHttpClient(),
       provideHttpClientTesting(),
       { provide: NgbActiveModal, useValue: { close: () => {}, dismiss: () => {} } },
