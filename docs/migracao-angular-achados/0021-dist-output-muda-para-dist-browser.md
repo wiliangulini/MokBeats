@@ -2,7 +2,7 @@
 
 **Etapa de origem:** 12 (migração para o builder `application`/esbuild — pré-requisito do Vitest)
 **Severidade:** Alta (quebra silenciosamente qualquer script/pipeline que assuma `dist/` como raiz publicável)
-**Status:** Aberto — **ação obrigatória na Etapa 13**
+**Status:** Resolvido (mig/e13)
 
 ## Descrição
 
@@ -46,6 +46,17 @@ deploy real. Duas opções:
 quebrado sem aviso claro, já que o `rsync`/upload em si não erraria (só o CONTEÚDO copiado estaria
 incompleto/incorreto).
 
+## Resolução (Etapa 13, `mig/e13`)
+
+Adotada a **opção 1**, confirmada com o usuário. `deploy-to-vps.sh` (`build_frontend()` e
+`upload_frontend()`) passou a checar/publicar `dist/browser/`; os textos de ajuda do próprio script
+e de `build-and-upload.sh` foram atualizados. `angular.json` permanece intocado.
+
+**Efeito colateral aceito:** `dist/3rdpartylicenses.txt` e `dist/prerendered-routes.json` (fora de
+`dist/browser/`) deixam de ser publicados — antes o primeiro ia para a raiz do site. É atribuição de
+licenças de terceiros, não código funcional; a opção 2 (que os preservaria) foi descartada.
+
 ## Referências
 
-`docs/ia-auditorias/2026-07-31__migracao-angular-etapa-12__claude.md`.
+`docs/ia-auditorias/2026-07-31__migracao-angular-etapa-12__claude.md`,
+`docs/ia-auditorias/2026-07-31__migracao-angular-etapa-13__claude.md`.

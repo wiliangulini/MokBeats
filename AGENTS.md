@@ -7,7 +7,7 @@ Use este arquivo para Codex, Claude Code e qualquer outro agente que atue neste 
 ## 1. Identidade do projeto
 
 **Projeto:** MokBeats — marketplace de beats, músicas, efeitos sonoros, licenças e área de produtores
-**Stack:** Angular 14.3.0 — em migração para 22.1.0 (`docs/adr/0002-migracao-angular-14-para-22.md`; checkpoint em 21.2.19), TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API, WaveSurfer.js
+**Stack:** Angular 22.1.0 — migrado a partir do 14.3.0 (`docs/adr/0002-migracao-angular-14-para-22.md`), TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API, WaveSurfer.js
 **Branch de implementação:** `dev`
 **Branch de referência visual (dashboard):** `codex/create-musical-producer-dashboard-design` — somente referência visual, nunca merge direto.
 
