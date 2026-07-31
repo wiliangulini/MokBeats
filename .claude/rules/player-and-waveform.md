@@ -3,7 +3,10 @@ paths:
   - "src/app/player/**/*.ts"
   - "src/app/player/**/*.html"
   - "src/app/player/**/*.scss"
-  - "src/app/services/music-player.service.ts"
+  - "src/app/service/music-player.service.ts"
+  - "src/app/service/wave-surfer.service.ts"
+  - "src/app/service/audio.service.ts"
+  - "src/app/service/audio-preloader.service.ts"
   - "src/app/wave-surfer-test/**/*"
 ---
 

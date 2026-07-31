@@ -12,7 +12,7 @@ quebrar a base funcional da branch `dev`.
 ## Stack (não muda sem autorização)
 
 ```txt
-Angular 14, TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API, WaveSurfer.js
+Angular 22.1.0 — migrado a partir do 14.3.0 (ADR 0002), TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API, WaveSurfer.js
 ```
 
 ## Arquivos principais
@@ -58,7 +58,7 @@ Relatórios em `docs/ia-auditorias/` são **histórico e continuidade**, não fo
 
 ## Invariantes críticos do MokBeats
 
-- Preservar estrutura Angular 14 e rotas existentes.
+- Preservar estrutura Angular (NgModule) e rotas existentes; migração de versão só via plano aprovado.
 - Preservar `AuthGuard`, `ProdutorGuard`, fluxo de token/perfil e contratos da API.
 - Preservar o ciclo de vida do WaveSurfer e o comportamento do player.
 - Preservar nomes de campos do `FormData` no upload do produtor.
@@ -72,7 +72,7 @@ Execute uma auditoria sem edição:
 ```txt
 Leia PROJECT_RULES.md, AGENTS.md, CLAUDE.md, CODEX.md, .codex/instructions.md e a estrutura atual.
 Não edite arquivos.
-Confirme se a configuração de agentes está coerente com Angular 14, guards, player/WaveSurfer,
+Confirme se a configuração de agentes está coerente com Angular, guards, player/WaveSurfer,
 upload, carrinho, licenças e dashboard do produtor.
 Finalize com Status final.
 ```

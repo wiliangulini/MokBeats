@@ -1,7 +1,7 @@
 ---
 paths:
   - "src/app/**/*.service.ts"
-  - "src/app/services/**/*.ts"
+  - "src/app/service/**/*.ts"
   - "src/environments/**/*.ts"
 ---
 

@@ -60,7 +60,7 @@ Não use quando:
 
 ## Checklist técnico MokBeats
 
-- [ ] Angular 14 preservado.
+- [ ] Estrutura Angular preservada.
 - [ ] Rotas e guards preservados.
 - [ ] APIs e payloads preservados.
 - [ ] Player/WaveSurfer preservado quando afetado.

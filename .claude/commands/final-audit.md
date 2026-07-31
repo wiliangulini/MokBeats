@@ -51,7 +51,7 @@ Verifique:
 - risco de segurança;
 - risco de performance;
 - risco de UX;
-- compatibilidade com Angular 14;
+- compatibilidade com a versão vigente do Angular;
 - compatibilidade com player, upload, carrinho, licenças e dashboard;
 - compatibilidade com continuidade Codex/Claude.
 

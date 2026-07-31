@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, OnInit} from '@angular/core';
+import {AfterContentInit, Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {CreatePlaylistModalComponent, playlists} from "../create-playlist-modal/create-playlist-modal.component";
 import {PlaylistService} from "../create-playlist-modal/playlist.service";
@@ -8,9 +8,11 @@ import {Musica} from "../musicas/musicas.service";
 
 
 @Component({
-  selector: 'app-add-playlist-modal',
-  templateUrl: './add-playlist-modal.component.html',
-  styleUrls: ['./add-playlist-modal.component.scss']
+    selector: 'app-add-playlist-modal',
+    templateUrl: './add-playlist-modal.component.html',
+    styleUrls: ['./add-playlist-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AddPlaylistModalComponent implements OnInit, AfterContentInit {
   

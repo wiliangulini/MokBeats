@@ -22,7 +22,7 @@
 
 ## Critical invariants
 
-- Preserve Angular 14 structure and existing routes.
+- Preserve the NgModule structure and existing routes; version migration only via an approved plan (`docs/adr/0002-migracao-angular-14-para-22.md`).
 - Preserve `AuthGuard`, `ProdutorGuard`, token/profile flow, and current API contracts.
 - Preserve WaveSurfer lifecycle and player behavior.
 - Preserve upload `FormData` field names unless backend validation explicitly supports change.

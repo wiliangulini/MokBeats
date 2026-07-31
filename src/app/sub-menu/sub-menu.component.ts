@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../login/auth.service';
 
 @Component({
-  selector: 'app-sub-menu',
-  templateUrl: './sub-menu.component.html',
-  styleUrls: ['./sub-menu.component.scss']
+    selector: 'app-sub-menu',
+    templateUrl: './sub-menu.component.html',
+    styleUrls: ['./sub-menu.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class SubMenuComponent implements OnInit {
 

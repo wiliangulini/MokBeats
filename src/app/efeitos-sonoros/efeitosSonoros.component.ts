@@ -1,11 +1,13 @@
-import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import { EfeitosSonorosService } from "./efeitosSonoros.service";
 import {ScrollService} from "../service/scroll.service";
 
 @Component({
-  selector: 'app-efeitos-sonoros',
-  templateUrl: './efeitosSonoros.component.html',
-  styleUrls: ['./efeitosSonoros.component.scss']
+    selector: 'app-efeitos-sonoros',
+    templateUrl: './efeitosSonoros.component.html',
+    styleUrls: ['./efeitosSonoros.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class EfeitosSonorosComponent implements OnInit, AfterViewInit {
 

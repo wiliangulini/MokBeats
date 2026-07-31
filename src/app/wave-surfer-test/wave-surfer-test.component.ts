@@ -6,17 +6,20 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import WaveSurfer from 'wavesurfer.js';
-import Minimap from 'wavesurfer.js/dist/plugins/minimap';
+import Minimap from 'wavesurfer.js/plugins/minimap';
 import { MusicPlayerService } from '../service/music-player.service';
 import { AudioPreloaderService } from '../service/audio-preloader.service';
 
 @Component({
-  selector: 'app-wave-surfer-test',
-  templateUrl: './wave-surfer-test.component.html',
-  styleUrls: ['./wave-surfer-test.component.scss'],
+    selector: 'app-wave-surfer-test',
+    templateUrl: './wave-surfer-test.component.html',
+    styleUrls: ['./wave-surfer-test.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class WaveSurferTestComponent
   implements OnInit, AfterViewInit, OnDestroy

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Musica, MusicasService} from "../musicas/musicas.service";
 import {AuthService} from "../login/auth.service";
@@ -9,9 +9,11 @@ import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-pag-playlist',
-  templateUrl: './pag-playlist.component.html',
-  styleUrls: ['./pag-playlist.component.scss']
+    selector: 'app-pag-playlist',
+    templateUrl: './pag-playlist.component.html',
+    styleUrls: ['./pag-playlist.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class PagPlaylistComponent implements OnInit {
 

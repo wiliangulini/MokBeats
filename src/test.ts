@@ -1,15 +1,13 @@
-// This file is required by karma.conf.js and loads recursively all the .spec and framework files
+// This file is registered as "setupFiles" pelo builder @angular/build:unit-test
+// (runner: vitest). O builder inicializa o ambiente de teste do Angular
+// automaticamente — este arquivo só define os padrões globais do TestBed.
 
 import 'zone.js/testing';
-import { getTestBed } from '@angular/core/testing';
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting
-} from '@angular/platform-browser-dynamic/testing';
 import { TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, provideZoneChangeDetection } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withXhr } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Angular Material (comuns em formulários)
@@ -23,19 +21,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 // ng-bootstrap
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-declare const require: {
-  context(path: string, deep?: boolean, filter?: RegExp): {
-    <T>(id: string): T;
-    keys(): string[];
-  };
-};
-
-// First, initialize the Angular testing environment.
-getTestBed().initTestEnvironment(
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting(),
-);
-
 // Padrões globais para reduzir atrito nas specs antigas
 (() => {
   const originalConfigure = (TestBed as any).configureTestingModule.bind(TestBed);
@@ -44,7 +29,6 @@ getTestBed().initTestEnvironment(
     moduleDef.imports = [
       ...(moduleDef.imports || []),
       RouterTestingModule,
-      HttpClientTestingModule,
       FormsModule,
       ReactiveFormsModule,
       BrowserAnimationsModule,
@@ -65,6 +49,9 @@ getTestBed().initTestEnvironment(
     ];
     moduleDef.providers = [
       ...(moduleDef.providers || []),
+      provideZoneChangeDetection(),
+      provideHttpClient(withXhr()),
+      provideHttpClientTesting(),
       { provide: NgbActiveModal, useValue: { close: () => {}, dismiss: () => {} } },
     ];
     return originalConfigure(moduleDef);
@@ -88,22 +75,36 @@ getTestBed().initTestEnvironment(
   }
 })();
 
-// Then we find tests, with optional focus via FOCUS_SPECS env (passed through karma client args)
-const args = ((window as any).__karma__ && (window as any).__karma__.config && (window as any).__karma__.config.args) || [''];
-const focusArg: string = args[0] || '';
-const context = require.context('./', true, /\.spec\.ts$/);
+// jsdom (ambiente Vitest) não implementa IntersectionObserver nem DataTransfer,
+// diferente do Chrome real usado antes via Karma. Stubs mínimos, suficientes
+// para os specs existentes não quebrarem.
+(() => {
+  if (typeof (globalThis as any).IntersectionObserver === 'undefined') {
+    class IntersectionObserverStub {
+      constructor(_callback: IntersectionObserverCallback, _options?: IntersectionObserverInit) {}
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+      takeRecords(): IntersectionObserverEntry[] { return []; }
+    }
+    (globalThis as any).IntersectionObserver = IntersectionObserverStub;
+    (window as any).IntersectionObserver = IntersectionObserverStub;
+  }
 
-if (focusArg && typeof focusArg === 'string' && focusArg.trim().length > 0) {
-  const focusedPaths = focusArg
-    .split(',')
-    .map((s: string) => s.trim())
-    .filter(Boolean)
-    .filter((fullPath: string) => fullPath.startsWith('src/'))
-    .map((fullPath: string) => './' + fullPath.substring('src/'.length));
-
-  const focusedSet = new Set(focusedPaths);
-  const selected = context.keys().filter((key: string) => focusedSet.has(key));
-  selected.forEach(context);
-} else {
-  context.keys().forEach(context);
-}
+  if (typeof (globalThis as any).DataTransfer === 'undefined') {
+    class DataTransferStub {
+      private _files: File[] = [];
+      items = {
+        add: (file: File) => { this._files.push(file); },
+      };
+      get files(): FileList {
+        const files = this._files;
+        return Object.assign(files.slice(), {
+          item: (i: number) => files[i] ?? null,
+        }) as unknown as FileList;
+      }
+    }
+    (globalThis as any).DataTransfer = DataTransferStub;
+    (window as any).DataTransfer = DataTransferStub;
+  }
+})();

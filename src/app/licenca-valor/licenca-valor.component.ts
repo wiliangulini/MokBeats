@@ -1,10 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ScrollService} from "../service/scroll.service";
 
 @Component({
-  selector: 'app-licenca-valor',
-  templateUrl: './licenca-valor.component.html',
-  styleUrls: ['./licenca-valor.component.scss'],
+    selector: 'app-licenca-valor',
+    templateUrl: './licenca-valor.component.html',
+    styleUrls: ['./licenca-valor.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class LicencaValorComponent implements OnInit {
 

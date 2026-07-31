@@ -1,6 +1,6 @@
 # Scripts shell do MokBeats
 
-Este inventario cobre os arquivos `.sh` encontrados no repositorio em 2026-06-30. Scripts dentro de `node_modules/` e `server/node_modules/` pertencem a dependencias instaladas e nao devem ser editados diretamente.
+Este inventario cobre os arquivos `.sh` encontrados no repositorio, revisado em 2026-07-31 (Etapa 13 da migracao Angular 14->22). Scripts dentro de `node_modules/` e `server/node_modules/` pertencem a dependencias instaladas e nao devem ser editados diretamente.
 
 ## Scripts mantidos pelo projeto
 
@@ -15,6 +15,8 @@ Script oficial de deploy do MokBeats para a VPS Hostinger.
 - Preserva `.env` remoto existente; quando precisa criar um novo, gera `JWT_SECRET` automaticamente e define `NODE_ENV=production` e `AUDIO_BASE_PATH=../../`.
 - Instala dependencias do backend, garante PM2 e configura/recarrega Apache quando o vhost existe.
 - Pode gerar peaks na VPS com `--generate-peaks`.
+- Builda o frontend localmente e publica `dist/browser/` (raiz publicavel do builder `@angular/build:application`, desde a Etapa 12/13 da migracao Angular 14->22; `dist/` deixou de ser a raiz direta).
+- Resolve o Node local do build a partir do `.nvmrc` da raiz (nvm-first, com fallback ao Node do `PATH` quando a major ja bate); `--allow-runtime-mismatch` cobre tanto o Node local quanto o remoto.
 
 Uso principal:
 
@@ -111,23 +113,6 @@ Script interno da dependencia `bcrypt`.
 - Usado pela propria dependencia para testes/empacotamento em ambiente Docker.
 - Remove artefatos locais dentro do pacote, instala dependencias Alpine quando aplicavel e roda testes do pacote.
 - Nao deve ser executado como parte do fluxo MokBeats.
-- Nao deve ser editado no projeto.
-
-### `node_modules/karma/scripts/integration-tests.sh`
-
-Script interno da dependencia `karma`.
-
-- Empacota o pacote atual com `npm pack`.
-- Clona testes de integracao do Karma e executa `run.sh`.
-- Depende de rede e do contexto de desenvolvimento do pacote Karma.
-- Nao deve ser executado como parte do fluxo MokBeats.
-
-### `node_modules/karma/scripts/karma-completion.sh`
-
-Script interno da dependencia `karma`.
-
-- Registra auto-complete shell para o comando `karma`.
-- Pode ser usado por quem desenvolve o pacote Karma, nao pelo deploy MokBeats.
 - Nao deve ser editado no projeto.
 
 ### `node_modules/node-gyp/gyp/tools/emacs/run-unit-tests.sh`

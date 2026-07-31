@@ -14,15 +14,15 @@
                 </svg>
               </a>
             </li>
-            <li data-toggle="collapse" data-target="#collapse01" aria-expanded="true" aria-controls="collapse01"
+            <li data-bs-toggle="collapse" data-bs-target="#collapse01" aria-expanded="true" aria-controls="collapse01"
               class="d-flex align-items-center justify-content-between w-100">Estilos <span
-                class="ml-3 material-icons">add</span></li>
+                class="ms-3 material-icons">add</span></li>
             <div class="accordion w-100" id="accordion1">
               <div class="card">
-                <div id="collapse01" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion1">
+                <div id="collapse01" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion1">
                   <div class="div2 pt-3" *ngFor="let g of titles; let i = index;">
                     <mat-checkbox>{{g}}</mat-checkbox>
-                    <div *ngFor="let mus of music[i];" class="textMusic d-flex mt-3 mb-3 pl-3">
+                    <div *ngFor="let mus of music[i];" class="textMusic d-flex mt-3 mb-3 ps-3">
                       <mat-checkbox>{{mus}}</mat-checkbox>
                     </div>
                   </div>
@@ -31,14 +31,14 @@
             </div>
           </div>
           <div class="control">
-            <li data-toggle="collapse" data-target="#collapse02" aria-expanded="true" aria-controls="collapse02"
+            <li data-bs-toggle="collapse" data-bs-target="#collapse02" aria-expanded="true" aria-controls="collapse02"
               class="d-flex align-items-center justify-content-between w-100">
-              <p class="m-0">Vozes <span id="up" class="ml-1 text-uppercase">Novidade</span></p><span
-                class="ml-3 material-icons">add</span>
+              <p class="m-0">Vozes <span id="up" class="ms-1 text-uppercase">Novidade</span></p><span
+                class="ms-3 material-icons">add</span>
             </li>
             <div class="accordion w-100" id="accordion2">
               <div class="card">
-                <div id="collapse02" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion2">
+                <div id="collapse02" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion2">
                   <div class="div2 pt-3" *ngFor="let g of vozes;">
                     <mat-checkbox>{{g}}</mat-checkbox>
                   </div>
@@ -47,12 +47,12 @@
             </div>
           </div>
           <div class="control">
-            <li data-toggle="collapse" data-target="#collapse03" aria-expanded="true" aria-controls="collapse03"
+            <li data-bs-toggle="collapse" data-bs-target="#collapse03" aria-expanded="true" aria-controls="collapse03"
               class="d-flex align-items-center justify-content-between w-100">Humor <span
-                class="ml-3 material-icons">add</span></li>
+                class="ms-3 material-icons">add</span></li>
             <div class="accordion w-100" id="accordion3">
               <div class="card">
-                <div id="collapse03" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion3">
+                <div id="collapse03" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion3">
                   <div class="div2 pt-3" *ngFor="let g of humor;">
                     <mat-checkbox>{{g}}</mat-checkbox>
                   </div>
@@ -61,14 +61,14 @@
             </div>
           </div>
           <div class="control">
-            <li data-toggle="collapse" data-target="#collapse04" aria-expanded="true" aria-controls="collapse04"
+            <li data-bs-toggle="collapse" data-bs-target="#collapse04" aria-expanded="true" aria-controls="collapse04"
               class="d-flex align-items-center justify-content-between w-100">
               BPM <p class="mb-0 position-relative" *ngIf="number != undefined">(0-<span id="num">{{number}}</span>)</p>
-              <span class="ml-3 material-icons">add</span>
+              <span class="ms-3 material-icons">add</span>
             </li>
             <div class="accordion w-100" id="accordion4">
               <div class="card">
-                <div id="collapse04" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion4">
+                <div id="collapse04" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion4">
                   <div class="div2 pt-3">
                     <input class="w-100" type="range" formControlName="bpm" min="1" max="250"
                       (ngModelChange)="onChangedEvent($event, 'bpm')" [(ngModel)]="musicas.bpm" />
@@ -82,14 +82,14 @@
             </div>
           </div>
           <div class="control">
-            <li data-toggle="collapse" data-target="#collapse05" aria-expanded="true" aria-controls="collapse05"
+            <li data-bs-toggle="collapse" data-bs-target="#collapse05" aria-expanded="true" aria-controls="collapse05"
               class="d-flex align-items-center justify-content-between w-100">
               Duração <p class="mb-0 position-relative dur" *ngIf="duration != undefined">(0:00-<span
-                  id="dur">{{durationAut}}</span>)</p><span class="ml-3 material-icons">add</span>
+                  id="dur">{{durationAut}}</span>)</p><span class="ms-3 material-icons">add</span>
             </li>
             <div class="accordion w-100" id="accordion5">
               <div class="card">
-                <div id="collapse05" class="collapse mb-5" aria-labelledby="headingOne" data-parent="#accordion5">
+                <div id="collapse05" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion5">
                   <div class="div2 pt-3">
                     <input class="w-100" type="range" formControlName="duracao" min="1" max="300"
                       (ngModelChange)="onChangedEvent($event, 'duracao')" [(ngModel)]="musicas.duracao" />
@@ -104,15 +104,15 @@
           </div>
           <div class="control">
             <li class="d-flex align-items-center justify-content-between w-100">Artistas <span
-                class="ml-3 material-icons">add</span></li>
+                class="ms-3 material-icons">add</span></li>
           </div>
           <div class="control">
             <li class="d-flex align-items-center justify-content-between w-100">Instrumentos <span
-                class="ml-3 material-icons">add</span></li>
+                class="ms-3 material-icons">add</span></li>
           </div>
         </ul>
       </div>
-      <div id="cf" class="container-fluid mr-0 pt-4">
+      <div id="cf" class="container-fluid me-0 pt-4">
         <div class="row">
           <div
             class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column align-items-start justify-content-center">
@@ -135,7 +135,7 @@
                   <span id="edit2" (click)="editDescription()" class="material-icons edit2">edit</span>
                 </div>
                 <div class="styleMusic d-flex justify-content-center align-items-center w-75">
-                  <div class="mt-4 mr-2" *ngFor="let vx of arrVExtendida; let i = index;">
+                  <div class="mt-4 me-2" *ngFor="let vx of arrVExtendida; let i = index;">
                     <a id="arve" class="p-2 text-center">
                       {{vx.viewValue}}
                     </a>
@@ -149,7 +149,7 @@
         <div class="row mt-5">
           <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex titlesMDiv mb-3">
             <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start">
-              <div class="titlesMusic position-relative pl-5">
+              <div class="titlesMusic position-relative ps-5">
                 <p>Nome</p>
               </div>
             </div>
@@ -175,7 +175,7 @@
               class="col-sm-4 col-md-4 col-lg-4 col-xl-4 d-flex justify-content-end align-items-center">
               <div class="popularidade">
                 <div class="dropdown">
-                  <button class="bttn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                  <button class="bttn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {{select}}
                   </button>
                   <div class="dropdown-menu">
@@ -186,7 +186,7 @@
 
               </div>
               <div class="visualizacao">
-                <button class="button" type="button" data-toggle="collapse" data-target="#collapseT"
+                <button class="button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseT"
                   aria-expanded="true" aria-controls="collapseT">
                   <svg width="24" height="24" viewBox="0 0 24 24">
                     <path
@@ -211,7 +211,7 @@
             *ngFor="let itens of arrMusica; let i = index;">
             <div class="controlDivs d-flex flex-column w-100">
               <div class="controlDivsInt row">
-                <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start pr-5">
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start pe-5">
                   <span class="svg">
                     <svg width="24" fill="#FFF" height="24" viewBox="0 0 24 24">
                       <path d="M20.7 12.4L7.9 20a.5.5 0 01-.8-.4v-15a.5.5 0 01.8-.4l12.8 7.5a.5.5 0 010 .8z"></path>
@@ -226,7 +226,7 @@
                   </div>
                 </div>
                 <div
-                  class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around pl-2 pr-2 pt-0 pb-0">
+                  class="col-sm-1 col-md-1 col-lg-1 col-xl-1 one d-flex align-items-center justify-content-around ps-2 pe-2 pt-0 pb-0">
                   <p class="h6 mb-0" id="duracao">{{this.msToMinute(itens.duracao)}}</p>
                   <p class="h6 mb-0" id="bpm">{{itens.bpm}}</p>
                 </div>
@@ -244,7 +244,7 @@
                   </div>
                 </div>
                 <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 d-flex align-items-center justify-content-around">
-                  <button type="button" data-toggle="tooltip" data-placement="bot" title="Adicionar aos favoritos"
+                  <button type="button" data-bs-toggle="tooltip" data-placement="bot" title="Adicionar aos favoritos"
                     class="btn btn-icons" (click)="curtir(i)">
                     <svg style="display: block;" class="hearth" width="24" height="24" fill="rgba(255,255,255,.5)"
                       viewBox="0 0 24 24">
@@ -259,7 +259,7 @@
                       </path>
                     </svg>
                   </button>
-                  <button class="btn btn-icons rmv" type="button" data-toggle="tooltip" data-placement="top"
+                  <button class="btn btn-icons rmv" type="button" data-bs-toggle="tooltip" data-placement="top"
                     title="Copiar link" (click)="copiarLink(i)">
                     <svg width="24" height="24" fill="rgba(255,255,255,.5)" viewBox="0 0 24 24">
                       <path
@@ -267,7 +267,7 @@
                       </path>
                     </svg>
                   </button>
-                  <button class="btn btn-icons rmv" type="button" data-toggle="tooltip" data-placement="top"
+                  <button class="btn btn-icons rmv" type="button" data-bs-toggle="tooltip" data-placement="top"
                     title="Baixar amostra" (click)="baixarAmostra(i)">
                     <svg width="24" height="24" fill="rgba(255,255,255,.5)" viewBox="0 0 24 24">
                       <path
@@ -322,10 +322,10 @@
                 </div>
                 <div class="div w-100 accordion" id="accordionT1">
                   <div class="collapse mb-5" id="collapseT" aria-labelledby="headingOne"
-                    data-parent="#accordion1">
+                    data-bs-parent="#accordion1">
                     <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 mb-3">{{frase}}</div>
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl12 w-100 d-block">
-                      <div class="div2 float-left mt-4 mr-2" *ngFor="let vx of arrVExtendida; let i = index;">
+                      <div class="div2 float-start mt-4 me-2" *ngFor="let vx of arrVExtendida; let i = index;">
                         <a id="arrve" class="p-2 text-center">
                           {{vx.viewValue}}
                         </a>

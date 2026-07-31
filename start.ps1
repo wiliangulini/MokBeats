@@ -1,11 +1,13 @@
 $ErrorActionPreference = 'Stop'
 
-# Backend (server/) e frontend (raiz) rodam em majors de Node diferentes
-# (lote R1a do Plano P0 v2.2): backend em Node 24.18.1+ (corrigido,
-# server/.nvmrc), frontend em Node 16.20.2 (.nvmrc da raiz), bridge EOL
-# exclusiva de build/test do Angular 14 - nunca runtime de producao.
-$FRONTEND_NODE_VERSION = '16.20.2'
-$BACKEND_NODE_VERSION = '24.18.1'
+# Backend (server/) e frontend (raiz) sao resolvidos a partir dos
+# respectivos .nvmrc (server/.nvmrc e .nvmrc da raiz) - desde a Etapa 2 da
+# migracao Angular 14->22, ambos fixam Node 24.18.1 (runtime unificado; ver
+# docs/adr/0002-migracao-angular-14-para-22.md). Lidos em runtime, nao
+# hardcoded, para nao divergir dos arquivos-fonte (mesmo padrao de
+# start.sh:resolve_node_bin()).
+$FRONTEND_NODE_VERSION = (Get-Content (Join-Path $PSScriptRoot ".nvmrc") -Raw).Trim()
+$BACKEND_NODE_VERSION = (Get-Content (Join-Path $PSScriptRoot "server/.nvmrc") -Raw).Trim()
 $TOOLS_DIR = Join-Path $PSScriptRoot ".tools"
 
 Write-Host "🚀 Iniciando o Sistema MokBeats (Windows) ..." -ForegroundColor Cyan
