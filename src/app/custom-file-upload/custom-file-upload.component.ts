@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef, Output, EventEmitter } from '@angular/core';
+import { Component, Input, forwardRef, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface FilePreview {
@@ -10,16 +10,18 @@ export interface FilePreview {
 }
 
 @Component({
-  selector: 'app-custom-file-upload',
-  templateUrl: './custom-file-upload.component.html',
-  styleUrls: ['./custom-file-upload.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => CustomFileUploadComponent),
-      multi: true
-    }
-  ]
+    selector: 'app-custom-file-upload',
+    templateUrl: './custom-file-upload.component.html',
+    styleUrls: ['./custom-file-upload.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => CustomFileUploadComponent),
+            multi: true
+        }
+    ],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class CustomFileUploadComponent implements ControlValueAccessor {
   @Input() title: string = 'Upload de arquivo';

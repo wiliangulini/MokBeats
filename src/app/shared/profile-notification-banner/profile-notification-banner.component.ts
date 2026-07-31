@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subject, combineLatest } from 'rxjs';
 import { takeUntil, filter, startWith, map } from 'rxjs/operators';
@@ -6,8 +6,10 @@ import { AuthService } from '../../login/auth.service';
 import { UserProfileService } from '../../service/user-profile.service';
 
 @Component({
-  selector: 'app-profile-notification-banner',
-  templateUrl: './profile-notification-banner.component.html',
+    selector: 'app-profile-notification-banner',
+    templateUrl: './profile-notification-banner.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class ProfileNotificationBannerComponent implements OnInit, OnDestroy {
 

@@ -14,6 +14,7 @@ describe('WaveSurferTestComponent', () => {
 
     fixture = TestBed.createComponent(WaveSurferTestComponent);
     component = fixture.componentInstance;
+    component.music = { id: 1, url: 'a.mp3', nome_musica: 'A' };
     fixture.detectChanges();
   });
 

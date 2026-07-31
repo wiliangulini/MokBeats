@@ -3,14 +3,14 @@
   <div class="modal-header flex-column justify-content-center align-items-center">
     <p class="h6">Sua Conta</p>
     <div class="modal-title w-100 d-flex">
-      <h2 class="mb-0 font-weight-bold" id="exampleModalLabel">Olá, {{ nome }}</h2>
-      <button type="button" class="close" data-dismiss="modal" (click)="closeModal()" aria-label="Close">
+      <h2 class="mb-0 fw-bold" id="exampleModalLabel">Olá, {{ nome }}</h2>
+      <button type="button" class="close" data-bs-dismiss="modal" (click)="closeModal()" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
   </div>
   <div class="modal-body">
-    <div class="card pl-4 pr-4 pb-3 pt-3 flex-column">
+    <div class="card ps-4 pe-4 pb-3 pt-3 flex-column">
       <div class="indique d-flex justify-content-between align-items-center mb-3 w-100">
         <span class="material-icons">redeem</span>
         <p class="h5 mb-0">Ganhe R$25 ao indicar um amigo!</p>
@@ -62,6 +62,6 @@
       </div>
     </nav>
 
-    <button type="button" class="btn btn-secondary w-75" data-dismiss="modal" (click)="logout()">Sair</button>
+    <button type="button" class="btn btn-secondary w-75" data-bs-dismiss="modal" (click)="logout()">Sair</button>
   </div>
 </div>

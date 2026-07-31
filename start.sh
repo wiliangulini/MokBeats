@@ -16,7 +16,7 @@ Opcoes:
 
 Servicos iniciados:
   Backend:  http://localhost:3100 (Node fixado em server/.nvmrc)
-  Frontend: http://localhost:4200 (Node fixado em .nvmrc, bridge EOL do Angular 14)
+  Frontend: http://localhost:4200 (Node fixado em .nvmrc)
 
 Variaveis de override (opcionais, apontam para um binario node):
   MOKBEATS_BACKEND_NODE, MOKBEATS_FRONTEND_NODE
@@ -71,10 +71,10 @@ if [ -s "$HOME/.nvm/nvm.sh" ]; then
     source "$HOME/.nvm/nvm.sh"
 fi
 
-# Backend (server/) e frontend (raiz) rodam em majors de Node diferentes
-# (lote R1a do Plano P0 v2.2): backend em Node 24.18.1+ fixado em
-# server/.nvmrc; frontend em Node 16.20.2 (.nvmrc da raiz), bridge EOL
-# exclusiva de build/test do Angular 14 — nunca runtime de producao.
+# Backend (server/) e frontend (raiz) sao resolvidos a partir dos
+# respectivos .nvmrc (server/.nvmrc e .nvmrc da raiz) — desde a Etapa 2
+# da migracao Angular 14->22, ambos fixam Node 24.18.1 (runtime
+# unificado; ver docs/adr/0002-migracao-angular-14-para-22.md).
 # MOKBEATS_BACKEND_NODE / MOKBEATS_FRONTEND_NODE permitem apontar
 # diretamente para um binario node, sem depender do nvm.
 resolve_node_bin() {

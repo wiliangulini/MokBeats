@@ -42,7 +42,7 @@ Não use quando:
 
 1. Ler documentação e relatórios relacionados em `docs/ia-auditorias/`.
 2. Ler arquivos reais relacionados.
-3. Identificar restrições de Angular 14, TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API e WaveSurfer.js.
+3. Identificar restrições de Angular, TypeScript, SCSS, Bootstrap, Angular Material, Node.js/API e WaveSurfer.js.
 4. Identificar impactos em autenticação, rotas, player, upload, carrinho, licenças e dashboard.
 
 ## Fluxo de execução

@@ -3,8 +3,8 @@ paths:
   - "src/app/login/**/*.ts"
   - "src/app/login/**/*.html"
   - "src/app/**/auth*.ts"
-  - "src/app/**/guard*.ts"
-  - "src/app/**/interceptor*.ts"
+  - "src/app/guards/**/*.ts"
+  - "src/app/interceptors/**/*.ts"
 ---
 
 # Auth and guards

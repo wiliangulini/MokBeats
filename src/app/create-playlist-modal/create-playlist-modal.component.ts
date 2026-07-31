@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PlaylistService} from "./playlist.service";
@@ -14,9 +14,11 @@ export interface playlists {
 }
 
 @Component({
-  selector: 'app-create-playlist-modal',
-  templateUrl: './create-playlist-modal.component.html',
-  styleUrls: ['./create-playlist-modal.component.scss']
+    selector: 'app-create-playlist-modal',
+    templateUrl: './create-playlist-modal.component.html',
+    styleUrls: ['./create-playlist-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class CreatePlaylistModalComponent implements OnInit {
   

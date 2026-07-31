@@ -1,11 +1,11 @@
 <div class="custom-file-upload">
-  <p class="h5 font-weight-bold mb-2" *ngIf="title">{{ title }}</p>
+  <p class="h5 fw-bold mb-2" *ngIf="title">{{ title }}</p>
 
   <label class="upload-area d-flex justify-content-center align-items-center" [class.dragging]="isDragging"
     [class.compact]="variant === 'compact'" [class.image]="variant === 'image'"
     [class.disabled]="disabled" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
     (drop)="onDrop($event)">
-    <svg class="mr-3" width="24" height="24" viewBox="0 0 32 32">
+    <svg class="me-3" width="24" height="24" viewBox="0 0 32 32">
       <path
         d="M27.25,28.953H4.75a1,1,0,0,1-1-1V21.221a1,1,0,0,1,2,0v5.732h20.5V21.221a1,1,0,1,1,2,0v6.732A1,1,0,0,1,27.25,28.953Z">
       </path>
@@ -28,7 +28,7 @@
     <div class="file-item mt-2 w-100 d-flex justify-content-between align-items-center"
       *ngFor="let file of files; let i = index">
       <div class="file-info d-flex justify-content-start align-items-center h6 m-0">
-        <span class="material-icons mr-2">
+        <span class="material-icons me-2">
           {{ file.isAudio ? 'music_note' : 'insert_drive_file' }}
         </span>
         <div class="d-flex flex-column">
@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="file-actions d-flex justify-content-end align-items-center h6 m-0">
-        <span class="file-size pr-2">{{ file.size }}</span>
+        <span class="file-size pe-2">{{ file.size }}</span>
         <button type="button" class="btn btn-sm btn-link text-danger p-0" (click)="removeFile(i)" [disabled]="disabled"
           title="Remover arquivo">
           <span class="material-icons">close</span>
