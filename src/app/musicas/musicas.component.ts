@@ -8,6 +8,7 @@ import {
   Output,
   QueryList,
   ViewChildren,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { forkJoin } from 'rxjs';
@@ -27,6 +28,7 @@ import { AudioPreloaderService } from '../service/audio-preloader.service';
     selector: 'app-musicas',
     templateUrl: './musicas.component.html',
     styleUrls: ['./musicas.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MusicasComponent

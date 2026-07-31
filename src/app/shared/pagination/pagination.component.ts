@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-pagination',
@@ -78,6 +78,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       line-height: 1;
     }
   `],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PaginationComponent {

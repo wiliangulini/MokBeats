@@ -1,4 +1,4 @@
-import {AfterContentInit, Component} from '@angular/core';
+import {AfterContentInit, Component, ChangeDetectionStrategy} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {PlaylistService} from "../create-playlist-modal/playlist.service";
 import {FavoritosService} from "../favoritos/favoritos.service";
@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
     selector: 'app-menu-produtor',
     templateUrl: './menu-produtor.component.html',
     styleUrls: ['./menu-produtor.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MenuProdutorComponent implements AfterContentInit {

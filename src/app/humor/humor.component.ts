@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MusicasService } from "../musicas/musicas.service";
 
 @Component({
     selector: 'app-humor',
     templateUrl: './humor.component.html',
     styleUrls: ['./humor.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class HumorComponent implements OnInit {

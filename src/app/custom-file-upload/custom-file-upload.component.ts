@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef, Output, EventEmitter } from '@angular/core';
+import { Component, Input, forwardRef, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface FilePreview {
@@ -20,6 +20,7 @@ export interface FilePreview {
             multi: true
         }
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CustomFileUploadComponent implements ControlValueAccessor {

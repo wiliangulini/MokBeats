@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import { LoginComponent } from "../login/login.component";
 import {AuthService} from "../login/auth.service";
@@ -11,6 +11,7 @@ import {CarrinhoService} from "../service/carrinho.service";
     selector: 'app-menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MenuComponent implements OnInit, OnDestroy {

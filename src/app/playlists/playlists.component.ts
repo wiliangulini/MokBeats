@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {AfterContentInit, Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {MusicasService} from "../musicas/musicas.service";
 import {FavoritosService} from "../favoritos/favoritos.service";
@@ -14,6 +14,7 @@ import {EditPlaylistModalComponent} from "../create-playlist-modal/edit-playlist
     selector: 'app-playlists',
     templateUrl: './playlists.component.html',
     styleUrls: ['./playlists.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PlaylistsComponent implements OnInit, AfterContentInit {

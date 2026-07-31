@@ -8,7 +8,7 @@ import {
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
 
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -170,6 +170,6 @@ import { DashboardProdutorComponent } from './dashboard-produtor/dashboard-produ
                 clickAction: 'check-indeterminate',
             } as MatCheckboxDefaultOptions,
         },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
     ] })
 export class AppModule {}

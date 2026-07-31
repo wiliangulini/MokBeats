@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormGroup, Validators,} from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
 import {CarrinhoService} from "../service/carrinho.service";
@@ -8,6 +8,7 @@ import {CartItem} from "./cartModal/cart-modal.models";
     selector: 'app-carrinho',
     templateUrl: './carrinho.component.html',
     styleUrls: ['./carrinho.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CarrinhoComponent implements OnInit, AfterContentInit {
