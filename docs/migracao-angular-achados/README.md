@@ -33,7 +33,7 @@ em que foram descobertos.
 | [0009](0009-faq-nao-tem-accordion-bootstrap.md) | FAQ não usa accordion do Bootstrap (correção de premissa do checklist) | 3 | Baixa | Resolvido (documentado) |
 | [0010](0010-close-e-custom-file-nao-existem-como-bootstrap.md) | `.close` e `custom-file` do plano (3b) não existem como componentes Bootstrap reais | 3 | Baixa | Resolvido (documentado) |
 | [0011](0011-form-group-mantido-intocado.md) | `form-group` mantido intocado (risco de colisão com CSS custom) | 3 | Baixa | Resolvido (documentado) |
-| [0012](0012-test-focus-quebrado-apos-angular15.md) | `npm run test:focus` quebra após `ng update` para Angular 15 | 4 | Média | Aberto |
+| [0012](0012-test-focus-quebrado-apos-angular15.md) | `npm run test:focus` quebra após `ng update` para Angular 15 | 4 | Média | Resolvido (mig/e12) |
 | [0013](0013-mat-label-mdc-cobre-inputs-cypress.md) | `<mat-label>` do MDC cobre o centro dos inputs, quebrando `cy.type()` sem force | 6 | Baixa | Resolvido (mig/d3) |
 | [0014](0014-httpclienttestingmodule-orfao-apos-angular18.md) | `HttpClientTestingModule` órfão em `src/test.ts` após migração automática para Angular 18 | 7 | Baixa | Resolvido (mig/d4) |
 | [0015](0015-moduleresolution-bundler-quebra-rxjs-antigo.md) | `moduleResolution: "bundler"` (migração automática do Angular 20) quebra resolução de tipos do `rxjs~7.4.0` | 9 | Baixa | Resolvido (mig/d6) |
@@ -42,3 +42,7 @@ em que foram descobertos.
 | [0018](0018-wave-surfer-test-spec-nao-definia-input-music.md) | `wave-surfer-test.component.spec.ts` não definia `@Input() music` antes de `detectChanges()` | 10 | Baixa | Resolvido (mig/d7) |
 | [0019](0019-rxjs-bump-obrigatorio-no-d7.md) | `rxjs` precisou de bump para `~7.8.2` no D7 — `moduleResolution: bundler` passa a ser obrigatório | 10 | Baixa | Resolvido (mig/d7) |
 | [0020](0020-cypress-ts5011-rootdir-tsconfig-extends.md) | TypeScript 6.0 (`TS5011`) quebra o `ts-loader` interno do Cypress via `tsconfig.json` com `extends` | 11 | Média | Resolvido (mig/d8) |
+| [0021](0021-dist-output-muda-para-dist-browser.md) | Output da build de produção muda de `dist/` para `dist/browser/` | 12 | Alta | Aberto (ação obrigatória na Etapa 13) |
+| [0022](0022-wavesurfer-exports-map-quebra-sob-esbuild.md) | `wavesurfer.js/dist/plugins/minimap` quebra sob esbuild; bug de empacotamento na versão 7.12.3 | 12 | Média | Resolvido (mig/e12) |
+| [0023](0023-schematic-jasmine-vitest-gaps.md) | Lacunas do schematic `refactor-jasmine-vitest` (relatório dizia "0 TODOs", mas havia bugs reais) | 12 | Média | Resolvido (mig/e12) |
+| [0024](0024-vitest-builder-config-zonejs-e-include.md) | Configuração do builder `unit-test`: `zone.js` nos polyfills e `include` explícito para `test-focus` | 12 | Média | Resolvido (mig/e12) |

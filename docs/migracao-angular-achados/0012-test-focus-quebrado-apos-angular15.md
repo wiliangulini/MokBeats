@@ -2,7 +2,7 @@
 
 **Etapa de origem:** 4 (D1 — `ng update` Angular/Material 15)
 **Severidade:** Média (não bloqueia o DoD oficial da etapa, mas é regressão real de uma ferramenta de dev)
-**Status:** Aberto
+**Status:** Resolvido (`mig/e12`) — corrigido como efeito colateral da migração Karma→Vitest
 
 ## Descrição
 
@@ -55,8 +55,18 @@ Reconfirmado após `ng update` para Angular 16 (Etapa 5): `npm run test:focus` c
 padrão de falha (`wave-surfer-test.component.spec.ts is missing from the TypeScript compilation`).
 Sem regressão nova nem melhora — comportamento estável no mesmo estado do D1.
 
+## Resolução (Etapa 12 — migração Karma→Vitest)
+
+Corrigido como efeito colateral da migração para Vitest. O builder `@angular/build:unit-test`
+usa uma opção própria `"include"` (separada de `tsConfig`) para restringir a descoberta de
+arquivos de teste — diferente do builder Karma, que varria o filesystem inteiro em busca de
+`.spec.ts` independentemente do `tsconfig` usado (causa raiz original deste achado). Configurado
+`"include": ["src/app/**/*.behavior.spec.ts"]` no alvo `test-focus` de `angular.json` (ver achado
+0024). Confirmado por execução real: `npm run test:focus` — **3 arquivos, 27 testes passando**.
+
 ## Referências
 
 `docs/ia-auditorias/2026-07-30__migracao-angular-etapa-4__claude.md`.
 `docs/ia-auditorias/2026-07-30__migracao-angular-etapa-5__claude.md` (a ser criado).
 `docs/ia-auditorias/R09-musicas-integracao-licenca-carrinho.md:49`.
+`docs/ia-auditorias/2026-07-31__migracao-angular-etapa-12__claude.md`.
