@@ -7,7 +7,7 @@ import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {environment} from "../../environments/environment";
 import {UploadFileService} from "../upload-file/upload-file.service";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: 'app-artist',

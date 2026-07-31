@@ -11,7 +11,8 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Angular Material (comuns em formulários)
@@ -39,7 +40,6 @@ getTestBed().initTestEnvironment(
     moduleDef.imports = [
       ...(moduleDef.imports || []),
       RouterTestingModule,
-      HttpClientTestingModule,
       FormsModule,
       ReactiveFormsModule,
       BrowserAnimationsModule,
@@ -60,6 +60,8 @@ getTestBed().initTestEnvironment(
     ];
     moduleDef.providers = [
       ...(moduleDef.providers || []),
+      provideHttpClient(),
+      provideHttpClientTesting(),
       { provide: NgbActiveModal, useValue: { close: () => {}, dismiss: () => {} } },
     ];
     return originalConfigure(moduleDef);
