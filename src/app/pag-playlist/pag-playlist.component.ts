@@ -6,7 +6,7 @@ import {ScrollService} from "../service/scroll.service";
 import {PlaylistService} from "../create-playlist-modal/playlist.service";
 import {playlists} from "../create-playlist-modal/create-playlist-modal.component";
 import {ActivatedRoute} from "@angular/router";
-import {MatLegacySnackBar as MatSnackBar} from "@angular/material/legacy-snack-bar";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-pag-playlist',

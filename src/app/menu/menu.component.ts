@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {NgbModal, NgbNavbar} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import { LoginComponent } from "../login/login.component";
 import {AuthService} from "../login/auth.service";
 import {MusicasService} from "../musicas/musicas.service";

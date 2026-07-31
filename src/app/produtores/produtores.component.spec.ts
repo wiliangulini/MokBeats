@@ -7,7 +7,7 @@ import { ProdutoresComponent } from './produtores.component';
 import { ScrollService } from '../service/scroll.service';
 import { MusicasService } from '../musicas/musicas.service';
 import { UploadFileService } from '../upload-file/upload-file.service';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-custom-file-upload',
