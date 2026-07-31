@@ -14,9 +14,10 @@ export interface playlists {
 }
 
 @Component({
-  selector: 'app-create-playlist-modal',
-  templateUrl: './create-playlist-modal.component.html',
-  styleUrls: ['./create-playlist-modal.component.scss']
+    selector: 'app-create-playlist-modal',
+    templateUrl: './create-playlist-modal.component.html',
+    styleUrls: ['./create-playlist-modal.component.scss'],
+    standalone: false
 })
 export class CreatePlaylistModalComponent implements OnInit {
   

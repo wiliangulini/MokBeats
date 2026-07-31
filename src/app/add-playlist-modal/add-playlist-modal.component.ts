@@ -8,9 +8,10 @@ import {Musica} from "../musicas/musicas.service";
 
 
 @Component({
-  selector: 'app-add-playlist-modal',
-  templateUrl: './add-playlist-modal.component.html',
-  styleUrls: ['./add-playlist-modal.component.scss']
+    selector: 'app-add-playlist-modal',
+    templateUrl: './add-playlist-modal.component.html',
+    styleUrls: ['./add-playlist-modal.component.scss'],
+    standalone: false
 })
 export class AddPlaylistModalComponent implements OnInit, AfterContentInit {
   

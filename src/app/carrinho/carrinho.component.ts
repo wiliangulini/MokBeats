@@ -5,9 +5,10 @@ import {CarrinhoService} from "../service/carrinho.service";
 import {CartItem} from "./cartModal/cart-modal.models";
 
 @Component({
-  selector: 'app-carrinho',
-  templateUrl: './carrinho.component.html',
-  styleUrls: ['./carrinho.component.scss']
+    selector: 'app-carrinho',
+    templateUrl: './carrinho.component.html',
+    styleUrls: ['./carrinho.component.scss'],
+    standalone: false
 })
 export class CarrinhoComponent implements OnInit, AfterContentInit {
 

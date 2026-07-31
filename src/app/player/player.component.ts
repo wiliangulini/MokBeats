@@ -14,9 +14,10 @@ import { MusicPlayerService } from '../service/music-player.service';
 import { PlayerService } from './player.service';
 
 @Component({
-  selector: 'app-player',
-  templateUrl: './player.component.html',
-  styleUrls: ['./player.component.scss'],
+    selector: 'app-player',
+    templateUrl: './player.component.html',
+    styleUrls: ['./player.component.scss'],
+    standalone: false
 })
 export class PlayerComponent
   implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy

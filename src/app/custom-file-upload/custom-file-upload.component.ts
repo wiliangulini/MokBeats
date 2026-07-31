@@ -10,16 +10,17 @@ export interface FilePreview {
 }
 
 @Component({
-  selector: 'app-custom-file-upload',
-  templateUrl: './custom-file-upload.component.html',
-  styleUrls: ['./custom-file-upload.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => CustomFileUploadComponent),
-      multi: true
-    }
-  ]
+    selector: 'app-custom-file-upload',
+    templateUrl: './custom-file-upload.component.html',
+    styleUrls: ['./custom-file-upload.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => CustomFileUploadComponent),
+            multi: true
+        }
+    ],
+    standalone: false
 })
 export class CustomFileUploadComponent implements ControlValueAccessor {
   @Input() title: string = 'Upload de arquivo';

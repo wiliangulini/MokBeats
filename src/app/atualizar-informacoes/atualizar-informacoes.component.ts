@@ -11,9 +11,10 @@ const ALLOWED_MIME = ['image/jpeg', 'image/png', 'application/pdf'];
 const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10 MB
 
 @Component({
-  selector: 'app-atualizar-informacoes',
-  templateUrl: './atualizar-informacoes.component.html',
-  styleUrls: ['./atualizar-informacoes.component.scss']
+    selector: 'app-atualizar-informacoes',
+    templateUrl: './atualizar-informacoes.component.html',
+    styleUrls: ['./atualizar-informacoes.component.scss'],
+    standalone: false
 })
 export class AtualizarInformacoesComponent implements OnInit, OnDestroy {
 

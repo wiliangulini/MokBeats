@@ -10,9 +10,10 @@ import {
 } from './cart-modal.models';
 
 @Component({
-  selector: 'app-cart-modal',
-  templateUrl: './cart-modal.component.html',
-  styleUrls: ['./cart-modal.component.scss']
+    selector: 'app-cart-modal',
+    templateUrl: './cart-modal.component.html',
+    styleUrls: ['./cart-modal.component.scss'],
+    standalone: false
 })
 export class CartModalComponent {
   music: Musica = {};

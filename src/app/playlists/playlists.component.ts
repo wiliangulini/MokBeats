@@ -11,9 +11,10 @@ import {EMPTY} from "rxjs";
 import {EditPlaylistModalComponent} from "../create-playlist-modal/edit-playlist-modal/edit-playlist-modal.component";
 
 @Component({
-  selector: 'app-playlists',
-  templateUrl: './playlists.component.html',
-  styleUrls: ['./playlists.component.scss']
+    selector: 'app-playlists',
+    templateUrl: './playlists.component.html',
+    styleUrls: ['./playlists.component.scss'],
+    standalone: false
 })
 export class PlaylistsComponent implements OnInit, AfterContentInit {
   

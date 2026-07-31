@@ -2,9 +2,10 @@ import {AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Co
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-formas-de-pagamento',
-  templateUrl: './formas-de-pagamento.component.html',
-  styleUrls: ['./formas-de-pagamento.component.scss']
+    selector: 'app-formas-de-pagamento',
+    templateUrl: './formas-de-pagamento.component.html',
+    styleUrls: ['./formas-de-pagamento.component.scss'],
+    standalone: false
 })
 export class FormasDePagamentoComponent implements OnInit, AfterViewChecked, AfterContentInit {
 

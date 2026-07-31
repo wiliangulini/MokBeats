@@ -1,7 +1,9 @@
 import { Directive, ElementRef, AfterViewInit } from '@angular/core';
 
 @Directive({
-  selector: 'input[placeholder], textarea[placeholder]' // aplica em todos que tiverem placeholder
+    selector: 'input[placeholder], textarea[placeholder]' // aplica em todos que tiverem placeholder
+    ,
+    standalone: false
 })
 export class PlaceholderEllipsisDirective implements AfterViewInit {
 

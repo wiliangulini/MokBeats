@@ -2,9 +2,10 @@ import { AfterContentInit, Component, OnInit } from '@angular/core';
 import { MusicasService } from "../musicas/musicas.service";
 
 @Component({
-  selector: 'app-genero',
-  templateUrl: './genero.component.html',
-  styleUrls: ['./genero.component.scss']
+    selector: 'app-genero',
+    templateUrl: './genero.component.html',
+    styleUrls: ['./genero.component.scss'],
+    standalone: false
 })
 export class GeneroComponent implements OnInit, AfterContentInit {
 

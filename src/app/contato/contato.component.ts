@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {ScrollService} from "../service/scroll.service";
 
 @Component({
-  selector: 'app-contato',
-  templateUrl: './contato.component.html',
-  styleUrls: ['./contato.component.scss']
+    selector: 'app-contato',
+    templateUrl: './contato.component.html',
+    styleUrls: ['./contato.component.scss'],
+    standalone: false
 })
 export class ContatoComponent implements OnInit {
 

@@ -2,9 +2,10 @@ import {AfterContentInit, Component, OnInit} from '@angular/core';
 import i18next from "i18next";
 
 @Component({
-  selector: 'app-i18next-test',
-  templateUrl: './i18next-test.component.html',
-  styleUrls: ['./i18next-test.component.scss']
+    selector: 'app-i18next-test',
+    templateUrl: './i18next-test.component.html',
+    styleUrls: ['./i18next-test.component.scss'],
+    standalone: false
 })
 export class I18nextTestComponent implements OnInit, AfterContentInit {
   

@@ -8,9 +8,10 @@ import {empty, Subscription} from "rxjs";
 import {CarrinhoService} from "../service/carrinho.service";
 
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+    selector: 'app-menu',
+    templateUrl: './menu.component.html',
+    styleUrls: ['./menu.component.scss'],
+    standalone: false
 })
 export class MenuComponent implements OnInit, OnDestroy {
 

@@ -7,9 +7,10 @@ import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-usuario-artista',
-  templateUrl: './usuario-artista.component.html',
-  styleUrls: ['./usuario-artista.component.scss']
+    selector: 'app-usuario-artista',
+    templateUrl: './usuario-artista.component.html',
+    styleUrls: ['./usuario-artista.component.scss'],
+    standalone: false
 })
 export class UsuarioArtistaComponent implements OnInit {
 

@@ -7,9 +7,10 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {playlists} from "../create-playlist-modal.component";
 
 @Component({
-  selector: 'app-edit-playlist-modal',
-  templateUrl: './edit-playlist-modal.component.html',
-  styleUrls: ['./edit-playlist-modal.component.scss']
+    selector: 'app-edit-playlist-modal',
+    templateUrl: './edit-playlist-modal.component.html',
+    styleUrls: ['./edit-playlist-modal.component.scss'],
+    standalone: false
 })
 export class EditPlaylistModalComponent implements OnInit {
   
