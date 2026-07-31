@@ -36,3 +36,4 @@ em que foram descobertos.
 | [0012](0012-test-focus-quebrado-apos-angular15.md) | `npm run test:focus` quebra após `ng update` para Angular 15 | 4 | Média | Aberto |
 | [0013](0013-mat-label-mdc-cobre-inputs-cypress.md) | `<mat-label>` do MDC cobre o centro dos inputs, quebrando `cy.type()` sem force | 6 | Baixa | Resolvido (mig/d3) |
 | [0014](0014-httpclienttestingmodule-orfao-apos-angular18.md) | `HttpClientTestingModule` órfão em `src/test.ts` após migração automática para Angular 18 | 7 | Baixa | Resolvido (mig/d4) |
+| [0015](0015-moduleresolution-bundler-quebra-rxjs-antigo.md) | `moduleResolution: "bundler"` (migração automática do Angular 20) quebra resolução de tipos do `rxjs~7.4.0` | 9 | Baixa | Resolvido (mig/d6) |
