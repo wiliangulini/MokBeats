@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Musica} from "../../musicas/musicas.service";
@@ -10,6 +10,7 @@ import {playlists} from "../create-playlist-modal.component";
     selector: 'app-edit-playlist-modal',
     templateUrl: './edit-playlist-modal.component.html',
     styleUrls: ['./edit-playlist-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class EditPlaylistModalComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { MusicasService } from "../musicas/musicas.service";
 
@@ -6,6 +6,7 @@ import { MusicasService } from "../musicas/musicas.service";
     selector: 'app-download-amostra',
     templateUrl: './download-amostra.component.html',
     styleUrls: ['./download-amostra.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DownloadAmostraComponent implements OnInit {

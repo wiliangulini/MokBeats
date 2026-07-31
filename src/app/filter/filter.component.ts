@@ -1,11 +1,12 @@
 import { empty, Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { MusicasService } from "../musicas/musicas.service";
 
 @Component({
     selector: 'app-filter',
     templateUrl: './filter.component.html',
     styleUrls: ['./filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FilterComponent implements OnInit, OnDestroy {

@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import WaveSurfer from 'wavesurfer.js';
@@ -17,6 +18,7 @@ import { AudioPreloaderService } from '../service/audio-preloader.service';
     selector: 'app-wave-surfer-test',
     templateUrl: './wave-surfer-test.component.html',
     styleUrls: ['./wave-surfer-test.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class WaveSurferTestComponent

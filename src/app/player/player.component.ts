@@ -5,6 +5,7 @@ import {
   Component,
   OnDestroy,
   OnInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import WaveSurfer from 'wavesurfer.js';
@@ -17,6 +18,7 @@ import { PlayerService } from './player.service';
     selector: 'app-player',
     templateUrl: './player.component.html',
     styleUrls: ['./player.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PlayerComponent

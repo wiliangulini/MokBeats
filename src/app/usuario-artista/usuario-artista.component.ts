@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {Musica, MusicasService} from "../musicas/musicas.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {AuthService} from "../login/auth.service";
@@ -10,6 +10,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
     selector: 'app-usuario-artista',
     templateUrl: './usuario-artista.component.html',
     styleUrls: ['./usuario-artista.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class UsuarioArtistaComponent implements OnInit {

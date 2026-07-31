@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ScrollService } from '../service/scroll.service';
@@ -15,6 +15,7 @@ type Option = { value: string; label: string };
     selector: 'app-produtores',
     templateUrl: './produtores.component.html',
     styleUrls: ['./produtores.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ProdutoresComponent implements OnInit {

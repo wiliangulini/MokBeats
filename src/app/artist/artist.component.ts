@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Musica, MusicasService} from "../musicas/musicas.service";
 import {AuthService} from "../login/auth.service";
@@ -13,6 +13,7 @@ import { HttpClient } from "@angular/common/http";
     selector: 'app-artist',
     templateUrl: './artist.component.html',
     styleUrls: ['./artist.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ArtistComponent implements OnInit, AfterViewInit {

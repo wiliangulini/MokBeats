@@ -11,7 +11,7 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, provideZoneChangeDetection } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -61,7 +61,7 @@ getTestBed().initTestEnvironment(
     moduleDef.providers = [
       ...(moduleDef.providers || []),
       provideZoneChangeDetection(),
-      provideHttpClient(),
+      provideHttpClient(withXhr()),
       provideHttpClientTesting(),
       { provide: NgbActiveModal, useValue: { close: () => {}, dismiss: () => {} } },
     ];

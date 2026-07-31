@@ -1,4 +1,4 @@
-import { Component, forwardRef, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, forwardRef, NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flushMicrotasks, tick } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { of } from 'rxjs';
@@ -19,6 +19,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
             multi: true,
         },
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 class CustomFileUploadStubComponent implements ControlValueAccessor {

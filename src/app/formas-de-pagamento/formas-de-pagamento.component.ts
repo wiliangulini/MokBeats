@@ -1,10 +1,11 @@
-import {AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
     selector: 'app-formas-de-pagamento',
     templateUrl: './formas-de-pagamento.component.html',
     styleUrls: ['./formas-de-pagamento.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FormasDePagamentoComponent implements OnInit, AfterViewChecked, AfterContentInit {
