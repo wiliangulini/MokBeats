@@ -2,9 +2,10 @@ import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/c
 import {ScrollService} from "../service/scroll.service";
 
 @Component({
-  selector: 'app-faq',
-  templateUrl: './faq.component.html',
-  styleUrls: ['./faq.component.scss']
+    selector: 'app-faq',
+    templateUrl: './faq.component.html',
+    styleUrls: ['./faq.component.scss'],
+    standalone: false
 })
 export class FaqComponent implements OnInit {
 

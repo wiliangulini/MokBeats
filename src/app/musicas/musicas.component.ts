@@ -24,9 +24,10 @@ import { Musica, MusicasService } from './musicas.service';
 import { AudioPreloaderService } from '../service/audio-preloader.service';
 
 @Component({
-  selector: 'app-musicas',
-  templateUrl: './musicas.component.html',
-  styleUrls: ['./musicas.component.scss'],
+    selector: 'app-musicas',
+    templateUrl: './musicas.component.html',
+    styleUrls: ['./musicas.component.scss'],
+    standalone: false
 })
 export class MusicasComponent
   implements OnInit, AfterViewInit, OnDestroy

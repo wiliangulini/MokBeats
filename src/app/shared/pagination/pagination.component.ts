@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-pagination',
-  template: `
+    selector: 'app-pagination',
+    template: `
     <nav aria-label="Page navigation" *ngIf="totalPages > 1">
       <ul class="pagination mb-0 d-flex justify-content-center align-items-center">
         <li class="page-item previous" [class.disabled]="currentPage === 1">
@@ -43,7 +43,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       </ul>
     </nav>
   `,
-  styles: [`
+    styles: [`
     .page-link {
       color: #4b3a8f;
       background-color: transparent;
@@ -77,7 +77,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       font-size: 20px;
       line-height: 1;
     }
-  `]
+  `],
+    standalone: false
 })
 export class PaginationComponent {
   @Input() currentPage: number = 1;

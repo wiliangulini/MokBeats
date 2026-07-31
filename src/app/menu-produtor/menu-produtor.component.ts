@@ -6,9 +6,10 @@ import {AuthService} from "../login/auth.service";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-menu-produtor',
-  templateUrl: './menu-produtor.component.html',
-  styleUrls: ['./menu-produtor.component.scss']
+    selector: 'app-menu-produtor',
+    templateUrl: './menu-produtor.component.html',
+    styleUrls: ['./menu-produtor.component.scss'],
+    standalone: false
 })
 export class MenuProdutorComponent implements AfterContentInit {
 

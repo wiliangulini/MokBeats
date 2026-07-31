@@ -6,8 +6,9 @@ import { AuthService } from '../../login/auth.service';
 import { UserProfileService } from '../../service/user-profile.service';
 
 @Component({
-  selector: 'app-profile-notification-banner',
-  templateUrl: './profile-notification-banner.component.html',
+    selector: 'app-profile-notification-banner',
+    templateUrl: './profile-notification-banner.component.html',
+    standalone: false
 })
 export class ProfileNotificationBannerComponent implements OnInit, OnDestroy {
 

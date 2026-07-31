@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
-  selector: 'app-pedidos',
-  templateUrl: './pedidos.component.html',
-  styleUrls: ['./pedidos.component.scss']
+    selector: 'app-pedidos',
+    templateUrl: './pedidos.component.html',
+    styleUrls: ['./pedidos.component.scss'],
+    standalone: false
 })
 export class PedidosComponent implements OnInit {
 

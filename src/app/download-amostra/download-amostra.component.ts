@@ -3,9 +3,10 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { MusicasService } from "../musicas/musicas.service";
 
 @Component({
-  selector: 'app-download-amostra',
-  templateUrl: './download-amostra.component.html',
-  styleUrls: ['./download-amostra.component.scss']
+    selector: 'app-download-amostra',
+    templateUrl: './download-amostra.component.html',
+    styleUrls: ['./download-amostra.component.scss'],
+    standalone: false
 })
 export class DownloadAmostraComponent implements OnInit {
 

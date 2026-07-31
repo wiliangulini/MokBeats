@@ -9,9 +9,10 @@ import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-pag-playlist',
-  templateUrl: './pag-playlist.component.html',
-  styleUrls: ['./pag-playlist.component.scss']
+    selector: 'app-pag-playlist',
+    templateUrl: './pag-playlist.component.html',
+    styleUrls: ['./pag-playlist.component.scss'],
+    standalone: false
 })
 export class PagPlaylistComponent implements OnInit {
 

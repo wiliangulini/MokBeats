@@ -10,15 +10,16 @@ import { UploadFileService } from '../upload-file/upload-file.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-custom-file-upload',
-  template: '',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => CustomFileUploadStubComponent),
-      multi: true,
-    },
-  ],
+    selector: 'app-custom-file-upload',
+    template: '',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => CustomFileUploadStubComponent),
+            multi: true,
+        },
+    ],
+    standalone: false
 })
 class CustomFileUploadStubComponent implements ControlValueAccessor {
   writeValue(): void {}

@@ -2,9 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-finalizar-compra',
-  templateUrl: './finalizar-compra.component.html',
-  styleUrls: ['./finalizar-compra.component.scss']
+    selector: 'app-finalizar-compra',
+    templateUrl: './finalizar-compra.component.html',
+    styleUrls: ['./finalizar-compra.component.scss'],
+    standalone: false
 })
 export class FinalizarCompraComponent implements OnInit {
 

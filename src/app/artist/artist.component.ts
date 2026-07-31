@@ -10,9 +10,10 @@ import {UploadFileService} from "../upload-file/upload-file.service";
 import { HttpClient } from "@angular/common/http";
 
 @Component({
-  selector: 'app-artist',
-  templateUrl: './artist.component.html',
-  styleUrls: ['./artist.component.scss']
+    selector: 'app-artist',
+    templateUrl: './artist.component.html',
+    styleUrls: ['./artist.component.scss'],
+    standalone: false
 })
 export class ArtistComponent implements OnInit, AfterViewInit {
 

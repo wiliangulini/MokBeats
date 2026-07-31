@@ -14,9 +14,10 @@ import {ScrollService} from "../service/scroll.service";
 import {FavoritosService} from "./favoritos.service";
 
 @Component({
-  selector: 'app-favoritos',
-  templateUrl: './favoritos.component.html',
-  styleUrls: ['./favoritos.component.scss']
+    selector: 'app-favoritos',
+    templateUrl: './favoritos.component.html',
+    styleUrls: ['./favoritos.component.scss'],
+    standalone: false
 })
 export class FavoritosComponent implements OnInit, AfterViewInit, AfterViewChecked {
 

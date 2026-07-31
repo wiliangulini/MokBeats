@@ -12,9 +12,10 @@ type TrackMode = 'trackNoStems' | 'trackWithStems' | 'effectsFx';
 type Option = { value: string; label: string };
 
 @Component({
-  selector: 'app-produtores',
-  templateUrl: './produtores.component.html',
-  styleUrls: ['./produtores.component.scss']
+    selector: 'app-produtores',
+    templateUrl: './produtores.component.html',
+    styleUrls: ['./produtores.component.scss'],
+    standalone: false
 })
 export class ProdutoresComponent implements OnInit {
   @ViewChild('errorSummaryRef') errorSummaryRef?: ElementRef;

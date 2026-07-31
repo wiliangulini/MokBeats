@@ -17,9 +17,10 @@ import {
 } from './dashboard.models';
 
 @Component({
-  selector: 'app-dashboard-produtor',
-  templateUrl: './dashboard-produtor.component.html',
-  styleUrls: ['./dashboard-produtor.component.scss']
+    selector: 'app-dashboard-produtor',
+    templateUrl: './dashboard-produtor.component.html',
+    styleUrls: ['./dashboard-produtor.component.scss'],
+    standalone: false
 })
 export class DashboardProdutorComponent implements OnInit, OnDestroy {
 

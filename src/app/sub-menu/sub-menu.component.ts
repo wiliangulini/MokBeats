@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../login/auth.service';
 
 @Component({
-  selector: 'app-sub-menu',
-  templateUrl: './sub-menu.component.html',
-  styleUrls: ['./sub-menu.component.scss']
+    selector: 'app-sub-menu',
+    templateUrl: './sub-menu.component.html',
+    styleUrls: ['./sub-menu.component.scss'],
+    standalone: false
 })
 export class SubMenuComponent implements OnInit {
 
