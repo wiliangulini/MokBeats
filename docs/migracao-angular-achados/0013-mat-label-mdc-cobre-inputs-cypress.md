@@ -47,4 +47,4 @@ Padrão a repetir em specs futuros que interajam com `<mat-form-field>`/`<mat-se
 
 ## Referências
 
-`docs/ia-auditorias/2026-07-30__migracao-angular-etapa-6__claude.md` (a ser criado).
+`docs/ia-auditorias/2026-07-30__migracao-angular-etapa-6__claude.md`.
