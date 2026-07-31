@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import WaveSurfer from 'wavesurfer.js';
-import Minimap from 'wavesurfer.js/dist/plugins/minimap';
+import Minimap from 'wavesurfer.js/plugins/minimap';
 import { Musica, MusicasService, MusicStem } from '../musicas/musicas.service';
 import { MusicPlayerService } from '../service/music-player.service';
 import { PlayerService } from './player.service';
