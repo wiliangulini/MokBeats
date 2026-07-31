@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../login/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProdutorGuard implements CanActivate {
+export class ProdutorGuard {
 
   constructor(private auth: AuthService, private router: Router) {}
 

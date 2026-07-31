@@ -49,7 +49,14 @@ Não corrigido nesta etapa — o DoD oficial do plano para os degraus (`npm run 
 de resolver definitivamente (Vitest tem suporte nativo a filtro de arquivo via CLI, sem precisar de
 `require.context` nem de um `tsconfig` paralelo).
 
+## Atualização (D2)
+
+Reconfirmado após `ng update` para Angular 16 (Etapa 5): `npm run test:focus` continua com o mesmo
+padrão de falha (`wave-surfer-test.component.spec.ts is missing from the TypeScript compilation`).
+Sem regressão nova nem melhora — comportamento estável no mesmo estado do D1.
+
 ## Referências
 
-`docs/ia-auditorias/2026-07-30__migracao-angular-etapa-4__claude.md` (a ser criado).
+`docs/ia-auditorias/2026-07-30__migracao-angular-etapa-4__claude.md`.
+`docs/ia-auditorias/2026-07-30__migracao-angular-etapa-5__claude.md` (a ser criado).
 `docs/ia-auditorias/R09-musicas-integracao-licenca-carrinho.md:49`.
