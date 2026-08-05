@@ -94,15 +94,29 @@ Script de desenvolvimento local.
 - Garante dependencias locais de frontend/backend quando incompletas.
 - Inicia backend em `http://localhost:3100`.
 - Inicia frontend Angular em `http://localhost:4200`.
-- Libera portas locais `3100` e `4200` antes de subir os processos.
+- Libera portas locais `3100` e `4200` antes de subir os processos, mas so apos listar o(s)
+  processo(s) ocupando a porta e confirmar (interativamente ou via `MOKBEATS_FORCE_FREE_PORT=1`);
+  nunca mata processo de terceiro em silencio.
 - Com `--generate-peaks`, gera peaks locais usando `AUDIO_BASE_PATH=../../src`.
+- Encerra com exit code diferente de zero se o backend ou o frontend cair inesperadamente enquanto
+  o outro segue rodando (antes disso, o script sempre saia com `0` mesmo nesse caso).
+- Ctrl+C encerra os dois servidores e toda a arvore de processos de cada um (ex.: o `ng serve`
+  iniciado pelo `npm run start` do frontend), evitando processo orfao preso na porta.
 
 Uso:
 
 ```bash
 ./start.sh
 ./start.sh --generate-peaks
+./start.sh --help
 ```
+
+Variaveis de ambiente (opcionais):
+
+- `MOKBEATS_BACKEND_NODE` / `MOKBEATS_FRONTEND_NODE`: apontam para um binario `node` especifico
+  (absoluto), sem depender do `nvm`, para o backend e o frontend respectivamente.
+- `MOKBEATS_FORCE_FREE_PORT=1`: libera a porta 3100/4200 ocupada sem pedir confirmacao interativa
+  (uso nao interativo, ex.: automacao local).
 
 ## Scripts de dependencias
 
