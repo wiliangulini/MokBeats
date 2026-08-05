@@ -72,16 +72,5 @@ Não use quando:
 
 ## Formato de saída esperado
 
-```text
-## Resumo
-## Arquivos lidos
-## Arquivos alterados
-## O que foi implementado
-## Decisões técnicas
-## Validações executadas
-## Validações não executadas
-## Riscos residuais
-## Pendências
-## Próximo passo recomendado
-## Status final
-```
+Use exclusivamente o formato e os status de `PROJECT_RULES.md §15`. Não crie formato de relatório
+concorrente.
