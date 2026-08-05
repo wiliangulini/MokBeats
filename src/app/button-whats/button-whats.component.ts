@@ -1,9 +1,11 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 
 @Component({
-  selector: 'app-button-whats',
-  templateUrl: './button-whats.component.html',
-  styleUrls: ['./button-whats.component.scss']
+    selector: 'app-button-whats',
+    templateUrl: './button-whats.component.html',
+    styleUrls: ['./button-whats.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class ButtonWhatsComponent implements OnInit {
 

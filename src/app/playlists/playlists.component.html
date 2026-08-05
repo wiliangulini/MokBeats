@@ -1,22 +1,22 @@
 <app-filter></app-filter>
 <article class="one pb-5">
   <div class="container-fluid w-100 p-0">
-    <div id="cf" class="container-fluid mr-0 pt-4">
+    <div id="cf" class="container-fluid me-0 pt-4">
       <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column align-items-start justify-content-center">
           <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex p-0">
             <div class="controlDivCol d-flex justify-content-start align-items-center w-50">
-              <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 pl-Number p-0">
+              <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 ps-Number p-0">
                 <h4 class="mb-0">Playlists <span class="span numFavorite">({{numF}})</span></h4>
               </div>
               <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 p-0">
-                <button type="button" class="btn btn-primary" (click)="createPlaylistModal()"><span class="material-icons mr-2">add</span>Criar nova playlist</button>
+                <button type="button" class="btn btn-primary" (click)="createPlaylistModal()"><span class="material-icons me-2">add</span>Criar nova playlist</button>
               </div>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex justify-content-end align-items-center">
               <div class="popularidade">
                 <div class="dropdown">
-                  <button class="bttn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                  <button class="bttn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {{select}}
                   </button>
                   <div class="dropdown-menu">
@@ -40,7 +40,7 @@
           <span class="material-icons mb-2">playlist_add</span>
           <p class="h2 mb-4">Nenhuma playlist ainda</p>
           <p class="h5">As playlists são úteis para agrupar músicas e efeitos para seus próximos projetos ou então criar playlist para você ouvir.</p>
-          <a class="btn btnPlaylist d-flex justify-content-center align-items-center mt-5 mb-4"><span class="material-icons mr-2">add</span>Criar Nova Playlist</a>
+          <a class="btn btnPlaylist d-flex justify-content-center align-items-center mt-5 mb-4"><span class="material-icons me-2">add</span>Criar Nova Playlist</a>
         </div>
       </div>
       
@@ -63,7 +63,7 @@
           </div>
           <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 d-flex flex-column align-items-center justify-content-center">
             <div class="titlesMusic dataPlaylist position-relative">
-              <p class="h6 font-weight-bold playlist">Ações</p>
+              <p class="h6 fw-bold playlist">Ações</p>
             </div>
           </div>
         </div>
@@ -72,26 +72,26 @@
           <div class="controlPlaylist d-flex justify-content-between align-items-center w-100" (click)="pagPlaylist(playlist)" >
             <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 d-flex flex-column align-items-start justify-content-center" >
               <div class="titlesMusic nomePlaylist position-relative">
-                <p class="h6 font-weight-bold playlist">{{ playlist["name"] }}</p>
+                <p class="h6 fw-bold playlist">{{ playlist["name"] }}</p>
               </div>
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 dataAlteracao d-flex flex-column align-items-center justify-content-center">
               <div class="titlesMusic dataPlaylist position-relative">
-                <p class="h6 font-weight-bold playlist">{{ playlist["data_alteracao"] }}</p>
+                <p class="h6 fw-bold playlist">{{ playlist["data_alteracao"] }}</p>
               </div>
             </div>
             <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 p-0 loops d-flex flex-column align-items-center justify-content-center">
               <div class="titlesMusic numberMusicPlaylist d-flex justify-content-end align-items-center w-100">
-                <p class="h6 font-weight-bold playlist">{{ numMusics[i] }}</p>
+                <p class="h6 fw-bold playlist">{{ numMusics[i] }}</p>
               </div>
             </div>
           </div>
           <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 d-flex flex-column align-items-center justify-content-center">
             <div class="titlesMusic actionPlaylist position-relative w-100 h-100 d-flex justify-content-center align-items-center">
-              <button class="btn btn-icons rmv w-25 h-75 mr-2" type="button" data-toogle="tooltip" data-placement="top" title="Editar" (click)="editPlaylist(playlist)">
+              <button class="btn btn-icons rmv w-25 h-75 me-2" type="button" data-toogle="tooltip" data-placement="top" title="Editar" (click)="editPlaylist(playlist)">
                 <span class="material-icons">edit</span>
               </button>
-              <button class="btn btn-icons rmv w-25 h-75" type="button" data-toggle="tooltip" data-placement="top" title="Copiar link" (click)="copiarLink(playlist)">
+              <button class="btn btn-icons rmv w-25 h-75" type="button" data-bs-toggle="tooltip" data-placement="top" title="Copiar link" (click)="copiarLink(playlist)">
                 <svg width="24" height="24" fill="rgba(255,255,255,.5)" viewBox="0 0 24 24">
                   <path d="M22.5 4l-2.6-2.5a3 3 0 00-4.2 0L11 6.2a3 3 0 000 4.2l.4.4-.6.6-.4-.4a3 3 0 00-4.2 0l-4.7 4.7a3 3 0 000 4.2l2.6 2.6a3 3 0 004.2 0l4.7-4.7a3 3 0 000-4.2l-.8-.8.6-.6.8.8a3 3 0 004.2 0l4.7-4.7a3 3 0 000-4.2zm-11 11a1 1 0 010 1.4L7 21a1 1 0 01-1.4 0L3 18.4A1 1 0 013 17l4.7-4.7a1 1 0 011.4 0l.4.4-1.8 1.8A1 1 0 109 16l1.8-1.8zm9.6-8.1l-4.7 4.7a1 1 0 01-1.4 0l-.8-.8L16 9a1 1 0 00-1.4-1.4l-1.8 1.8-.4-.4a1 1 0 010-1.4L17.1 3a1 1 0 011.4 0l2.6 2.6a1 1 0 010 1.4z"></path>
                 </svg>

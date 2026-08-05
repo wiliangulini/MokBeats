@@ -5,7 +5,8 @@ import {
   Component,
   EventEmitter,
   OnInit,
-  Output
+  Output,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Musica, MusicasService} from "../musicas/musicas.service";
@@ -14,9 +15,11 @@ import {ScrollService} from "../service/scroll.service";
 import {FavoritosService} from "./favoritos.service";
 
 @Component({
-  selector: 'app-favoritos',
-  templateUrl: './favoritos.component.html',
-  styleUrls: ['./favoritos.component.scss']
+    selector: 'app-favoritos',
+    templateUrl: './favoritos.component.html',
+    styleUrls: ['./favoritos.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class FavoritosComponent implements OnInit, AfterViewInit, AfterViewChecked {
 

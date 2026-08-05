@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Subject, combineLatest } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -17,9 +17,11 @@ import {
 } from './dashboard.models';
 
 @Component({
-  selector: 'app-dashboard-produtor',
-  templateUrl: './dashboard-produtor.component.html',
-  styleUrls: ['./dashboard-produtor.component.scss']
+    selector: 'app-dashboard-produtor',
+    templateUrl: './dashboard-produtor.component.html',
+    styleUrls: ['./dashboard-produtor.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class DashboardProdutorComponent implements OnInit, OnDestroy {
 

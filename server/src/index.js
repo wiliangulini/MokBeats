@@ -1,5 +1,11 @@
 if (process.env.NODE_ENV !== 'test') {
-  require('dotenv').config();
+  // Caminho explicito por __dirname (nao process.cwd()): o backend precisa
+  // carregar server/.env independente de onde for iniciado. Sem isso,
+  // start.sh:250 (cwd = raiz do repo) fazia o dotenv procurar .env na raiz,
+  // que nao existe, e server/.env era silenciosamente ignorado (achado A-1
+  // da auditoria de 2026-08-05). Mesmo padrao ja usado em
+  // server/scripts/generate-peaks.js:4.
+  require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
 }
 const express = require('express');
 const cors = require('cors');

@@ -8,13 +8,14 @@
 #
 # Opcoes:
 #   --no-audio        Nao envia src/assets/audios/
-#   --no-build        Usa o dist/ existente, sem executar npm run build
+#   --no-build        Usa o dist/browser/ existente, sem executar npm run build
 #   --frontend-only   Envia apenas frontend e .htaccess
 #   --backend-only    Envia apenas backend e reinicia PM2
 #   --generate-peaks  Executa server/scripts/generate-peaks.js na VPS
 #   --dry-run         Mostra o que seria enviado/configurado, sem alterar a VPS
-#   --allow-runtime-mismatch  Prossegue mesmo se o Node remoto divergir do
-#                      exigido (>=24.18.1, major 24); nao recomendado, ver R1a/R1b
+#   --allow-runtime-mismatch  Prossegue mesmo se o Node local ou remoto
+#                      divergirem do exigido (>=24.18.1, major 24); nao
+#                      recomendado, ver R1a/R1b
 #   --help            Mostra esta ajuda
 ################################################################################
 
@@ -68,13 +69,14 @@ Uso: ./deploy-to-vps.sh [opcoes]
 
 Opcoes:
   --no-audio        Nao envia src/assets/audios/
-  --no-build        Usa o dist/ existente, sem executar npm run build
+  --no-build        Usa o dist/browser/ existente, sem executar npm run build
   --frontend-only   Envia apenas frontend e .htaccess
   --backend-only    Envia apenas backend e reinicia PM2
   --generate-peaks  Executa server/scripts/generate-peaks.js na VPS
   --dry-run         Mostra o que seria enviado/configurado, sem alterar a VPS
-  --allow-runtime-mismatch  Prossegue mesmo se o Node remoto divergir do
-                     exigido (>=24.18.1, major 24); nao recomendado, ver R1a/R1b
+  --allow-runtime-mismatch  Prossegue mesmo se o Node local ou remoto
+                     divergirem do exigido (>=24.18.1, major 24); nao
+                     recomendado, ver R1a/R1b
   --help, -h        Mostra esta ajuda
 
 Destino:
@@ -166,6 +168,71 @@ print_banner() {
   fi
 }
 
+# Resolucao do Node LOCAL usado para buildar o frontend (achado A13, Etapa 13
+# da migracao Angular 14->22). Ate aqui so o Node REMOTO era resolvido
+# (resolve_remote_node_bin(), abaixo); build_frontend() chamava
+# "npm run build" com o npm do PATH do operador, sem checar a major - footgun
+# silencioso ja documentado no plano. Mesmo padrao de start.sh:80-109
+# (resolve_node_bin), com dois ajustes proprios deste script: aceita o node
+# do PATH quando a major ja bate com .nvmrc (evita depender de nvm em toda
+# maquina de deploy) e respeita --allow-runtime-mismatch como as checagens
+# remotas. Retorna "" (sem erro) se --allow-runtime-mismatch cobrir a
+# ausencia de um Node compativel - nesse caso o build segue com o node do
+# PATH tal como estava antes desta etapa.
+resolve_local_node_bin() {
+  local nvmrc_path=".nvmrc"
+  local required required_major
+  required="$(cat "$nvmrc_path")"
+  required_major="${required%%.*}"
+
+  if [ -n "${MOKBEATS_FRONTEND_NODE:-}" ]; then
+    if [ ! -x "$MOKBEATS_FRONTEND_NODE" ]; then
+      err "MOKBEATS_FRONTEND_NODE='${MOKBEATS_FRONTEND_NODE}' nao e um binario node executavel."
+      exit 1
+    fi
+    echo "$MOKBEATS_FRONTEND_NODE"
+    return 0
+  fi
+
+  export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+  if [ -s "$NVM_DIR/nvm.sh" ]; then
+    # shellcheck disable=SC1091
+    . "$NVM_DIR/nvm.sh" >/dev/null 2>&1
+  fi
+
+  local bin=""
+  if command -v nvm >/dev/null 2>&1; then
+    bin="$(nvm which "$required" 2>/dev/null)"
+    [ "$bin" = "N/A" ] && bin=""
+  fi
+
+  if [ -z "$bin" ] || [ ! -x "$bin" ]; then
+    local sys_node
+    sys_node="$(command -v node || true)"
+    if [ -n "$sys_node" ]; then
+      local sys_version sys_major
+      sys_version="$("$sys_node" --version 2>/dev/null | sed 's/^v//')"
+      sys_major="${sys_version%%.*}"
+      [ "$sys_major" = "$required_major" ] && bin="$sys_node"
+    fi
+  fi
+
+  if [ -z "$bin" ] || [ ! -x "$bin" ]; then
+    if [ "$ALLOW_RUNTIME_MISMATCH" = true ]; then
+      warn "Node local ${required} nao encontrado (nem via nvm, nem compativel no PATH). Prosseguindo por --allow-runtime-mismatch: o build usara o node do PATH tal como esta."
+      echo ""
+      return 0
+    fi
+    err "Node local ${required} nao encontrado (nem via nvm, nem compativel no PATH em major ${required_major})."
+    info "Instale com: nvm install ${required}"
+    info "Ou aponte MOKBEATS_FRONTEND_NODE para um binario node compativel."
+    info "Use --allow-runtime-mismatch para prosseguir mesmo assim (nao recomendado)."
+    exit 1
+  fi
+
+  echo "$bin"
+}
+
 build_frontend() {
   if [ "$BACKEND_ONLY" = true ]; then
     return
@@ -173,13 +240,25 @@ build_frontend() {
 
   if [ "$NO_BUILD" = true ]; then
     step "Build pulado (--no-build)"
-    [ -d "dist" ] || { err "dist/ nao encontrado. Remova --no-build ou gere o build antes."; exit 1; }
+    [ -d "dist/browser" ] || { err "dist/browser/ nao encontrado. Remova --no-build ou gere o build antes."; exit 1; }
     return
   fi
 
   step "Build do Angular (--base-href /mokbeats/)"
-  npm run build -- --base-href /mokbeats/
-  ok "Build concluido em dist/"
+  # O frontend e SEMPRE buildado localmente; so o dist/browser/ resultante
+  # vai por rsync (upload_frontend(), abaixo). O Node da VPS (resolvido mais
+  # adiante por check_remote_runtime()) e irrelevante aqui - so importa para
+  # o backend. A unificacao de runtime da migracao Angular 14->22 e de
+  # desenvolvimento/CI, nao de producao do frontend.
+  local node_bin
+  node_bin="$(resolve_local_node_bin)"
+  if [ -n "$node_bin" ]; then
+    ok "Node local $("$node_bin" -v) (${node_bin})"
+    PATH="$(dirname "$node_bin"):${PATH}" npm run build -- --base-href /mokbeats/
+  else
+    npm run build -- --base-href /mokbeats/
+  fi
+  ok "Build concluido em dist/browser/"
 }
 
 upload_frontend() {
@@ -187,12 +266,12 @@ upload_frontend() {
     return
   fi
 
-  [ -d "dist" ] || { err "dist/ nao encontrado."; exit 1; }
+  [ -d "dist/browser" ] || { err "dist/browser/ nao encontrado."; exit 1; }
 
   step "Upload do frontend"
   info "Destino: ${SSH}:${VPS_PATH}/"
   run_ssh "mkdir -p '${VPS_PATH}'"
-  rsync_run --delete --exclude=server/ --exclude=.htaccess dist/ "${SSH}:${VPS_PATH}/"
+  rsync_run --delete --exclude=server/ --exclude=.htaccess dist/browser/ "${SSH}:${VPS_PATH}/"
   ok "Frontend enviado"
 
   step "Configurar .htaccess da SPA"

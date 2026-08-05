@@ -1,6 +1,6 @@
 # Scripts shell do MokBeats
 
-Este inventario cobre os arquivos `.sh` encontrados no repositorio em 2026-06-30. Scripts dentro de `node_modules/` e `server/node_modules/` pertencem a dependencias instaladas e nao devem ser editados diretamente.
+Este inventario cobre os arquivos `.sh` encontrados no repositorio, revisado em 2026-07-31 (Etapa 13 da migracao Angular 14->22). Scripts dentro de `node_modules/` e `server/node_modules/` pertencem a dependencias instaladas e nao devem ser editados diretamente.
 
 ## Scripts mantidos pelo projeto
 
@@ -15,6 +15,8 @@ Script oficial de deploy do MokBeats para a VPS Hostinger.
 - Preserva `.env` remoto existente; quando precisa criar um novo, gera `JWT_SECRET` automaticamente e define `NODE_ENV=production` e `AUDIO_BASE_PATH=../../`.
 - Instala dependencias do backend, garante PM2 e configura/recarrega Apache quando o vhost existe.
 - Pode gerar peaks na VPS com `--generate-peaks`.
+- Builda o frontend localmente e publica `dist/browser/` (raiz publicavel do builder `@angular/build:application`, desde a Etapa 12/13 da migracao Angular 14->22; `dist/` deixou de ser a raiz direta).
+- Resolve o Node local do build a partir do `.nvmrc` da raiz (nvm-first, com fallback ao Node do `PATH` quando a major ja bate); `--allow-runtime-mismatch` cobre tanto o Node local quanto o remoto.
 
 Uso principal:
 
@@ -92,15 +94,29 @@ Script de desenvolvimento local.
 - Garante dependencias locais de frontend/backend quando incompletas.
 - Inicia backend em `http://localhost:3100`.
 - Inicia frontend Angular em `http://localhost:4200`.
-- Libera portas locais `3100` e `4200` antes de subir os processos.
+- Libera portas locais `3100` e `4200` antes de subir os processos, mas so apos listar o(s)
+  processo(s) ocupando a porta e confirmar (interativamente ou via `MOKBEATS_FORCE_FREE_PORT=1`);
+  nunca mata processo de terceiro em silencio.
 - Com `--generate-peaks`, gera peaks locais usando `AUDIO_BASE_PATH=../../src`.
+- Encerra com exit code diferente de zero se o backend ou o frontend cair inesperadamente enquanto
+  o outro segue rodando (antes disso, o script sempre saia com `0` mesmo nesse caso).
+- Ctrl+C encerra os dois servidores e toda a arvore de processos de cada um (ex.: o `ng serve`
+  iniciado pelo `npm run start` do frontend), evitando processo orfao preso na porta.
 
 Uso:
 
 ```bash
 ./start.sh
 ./start.sh --generate-peaks
+./start.sh --help
 ```
+
+Variaveis de ambiente (opcionais):
+
+- `MOKBEATS_BACKEND_NODE` / `MOKBEATS_FRONTEND_NODE`: apontam para um binario `node` especifico
+  (absoluto), sem depender do `nvm`, para o backend e o frontend respectivamente.
+- `MOKBEATS_FORCE_FREE_PORT=1`: libera a porta 3100/4200 ocupada sem pedir confirmacao interativa
+  (uso nao interativo, ex.: automacao local).
 
 ## Scripts de dependencias
 
@@ -111,23 +127,6 @@ Script interno da dependencia `bcrypt`.
 - Usado pela propria dependencia para testes/empacotamento em ambiente Docker.
 - Remove artefatos locais dentro do pacote, instala dependencias Alpine quando aplicavel e roda testes do pacote.
 - Nao deve ser executado como parte do fluxo MokBeats.
-- Nao deve ser editado no projeto.
-
-### `node_modules/karma/scripts/integration-tests.sh`
-
-Script interno da dependencia `karma`.
-
-- Empacota o pacote atual com `npm pack`.
-- Clona testes de integracao do Karma e executa `run.sh`.
-- Depende de rede e do contexto de desenvolvimento do pacote Karma.
-- Nao deve ser executado como parte do fluxo MokBeats.
-
-### `node_modules/karma/scripts/karma-completion.sh`
-
-Script interno da dependencia `karma`.
-
-- Registra auto-complete shell para o comando `karma`.
-- Pode ser usado por quem desenvolve o pacote Karma, nao pelo deploy MokBeats.
 - Nao deve ser editado no projeto.
 
 ### `node_modules/node-gyp/gyp/tools/emacs/run-unit-tests.sh`

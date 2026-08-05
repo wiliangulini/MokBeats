@@ -2,11 +2,11 @@
 paths:
   - "src/app/carrinho/**/*"
   - "src/app/finalizar-compra/**/*"
-  - "src/app/cart-modal/**/*"
-  - "src/app/services/carrinho.service.ts"
+  - "src/app/carrinho/cartModal/**/*"
+  - "src/app/service/carrinho.service.ts"
   - "src/app/licenca-valor/**/*"
   - "src/app/musicas/**/*"
-  - "src/app/efeitosSonoros/**/*"
+  - "src/app/efeitos-sonoros/**/*"
 ---
 
 # License, cart, and checkout

@@ -1,10 +1,12 @@
-import { AfterContentInit, Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MusicasService } from "../musicas/musicas.service";
 
 @Component({
-  selector: 'app-genero',
-  templateUrl: './genero.component.html',
-  styleUrls: ['./genero.component.scss']
+    selector: 'app-genero',
+    templateUrl: './genero.component.html',
+    styleUrls: ['./genero.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class GeneroComponent implements OnInit, AfterContentInit {
 

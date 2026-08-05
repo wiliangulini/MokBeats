@@ -8,6 +8,7 @@ import {
   Output,
   QueryList,
   ViewChildren,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { forkJoin } from 'rxjs';
@@ -24,9 +25,11 @@ import { Musica, MusicasService } from './musicas.service';
 import { AudioPreloaderService } from '../service/audio-preloader.service';
 
 @Component({
-  selector: 'app-musicas',
-  templateUrl: './musicas.component.html',
-  styleUrls: ['./musicas.component.scss'],
+    selector: 'app-musicas',
+    templateUrl: './musicas.component.html',
+    styleUrls: ['./musicas.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class MusicasComponent
   implements OnInit, AfterViewInit, OnDestroy

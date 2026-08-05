@@ -11,6 +11,7 @@
       "Bash(git diff *)",
       "Bash(git log)",
       "Bash(git log *)",
+      "Bash(git ls-files *)",
       "Bash(find *)",
       "Bash(ls *)",
       "Bash(rg *)",
