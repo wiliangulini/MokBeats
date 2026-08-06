@@ -511,3 +511,132 @@ Aprovado com observações
   refatoração dedicada.
 - Remover imports/injeções não utilizados em `artist.component.ts`.
 - Remover `console.log` de depuração remanescentes em `artist.component.ts:114,153,159,166`.
+
+---
+
+## Execução — 2026-08-06
+
+### Resumo da etapa
+
+A Etapa 12A já estava entregue, revisada e corrigida (seção "Correção pós-revisão — 2026-07-29" acima),
+commitada na `dev`, com status "Aprovado com observações". O critério de aceite "HTML da página fica
+válido" não estava totalmente fechado: o próprio relatório documentou como pendência o aninhamento
+`<ul> > <div class="control">`, os IDs duplicados dentro de `*ngFor` e os `<a>` inertes — todos exigem
+reescrever seletores SCSS acoplados à estrutura atual, com risco real de regressão visual, portanto
+fora do escopo de uma correção pequena.
+
+Esta execução corrigiu apenas o subconjunto de baixo risco dessas pendências, sem tocar `.ts`, `.scss`,
+rotas, guards ou services:
+
+1. `col-xl12` → `col-xl-12` (classe inexistente no Bootstrap; visualmente no-op, o elemento já tinha
+   `col-lg-12` + `w-100`).
+2. Remoção de `aria-labelledby="headingOne"` órfão (7 ocorrências por template) — o id `headingOne` não
+   existe em nenhum arquivo do projeto (`grep -rn 'id="headingOne"' src/` = zero resultados); o atributo
+   deixava o elemento sem nome acessível válido.
+3. Remoção de `data-bs-parent="#accordion1"` do bloco `#collapseT` (visualização expandida da faixa) —
+   esse bloco apontava para o accordion do filtro **Estilos** no menu lateral em vez do
+   `#accordionT1` que de fato o envolve; consequência real no Bootstrap 5 Collapse: expandir uma faixa
+   fechava o filtro Estilos se ele estivesse aberto. Não foi redirecionado para `#accordionT1` porque
+   esse id está duplicado dentro do `*ngFor` (mesma pendência documentada acima); removido o atributo,
+   o collapse passa a abrir/fechar isoladamente, que é o comportamento correto.
+
+Item 3 é o único dos três com efeito de comportamento (correção de um bug de interação existente); os
+itens 1 e 2 são estritamente no-op na renderização.
+
+### Arquivos lidos
+
+- `src/app/artist/artist.component.html`, `.ts`, `.scss`
+- `src/app/usuario-artista/usuario-artista.component.html`, `.ts`
+- `src/app/app-routing.module.ts` (confirmação de que o guard da execução anterior segue intacto)
+- `src/app/musicas/musicas.component.html`, `src/app/pag-playlist/pag-playlist.component.html`,
+  `src/app/favoritos/favoritos.component.html` (confirmação de que `col-xl12` e o padrão
+  `aria-labelledby="headingOne"` são copy-paste replicado nesses módulos, fora de escopo aqui)
+- `.claude/rules/producer-dashboard.md`, `.claude/rules/angular.md`
+- `CLAUDE.md`, `PROJECT_RULES.md`, `AGENTS.md`
+- Este relatório (`docs/ia-auditorias/R19-pagina-artista-html-responsabilidades.md`), histórico completo
+
+### Arquivos alterados
+
+- `src/app/artist/artist.component.html`
+- `src/app/usuario-artista/usuario-artista.component.html`
+- `docs/ia-auditorias/R19-pagina-artista-html-responsabilidades.md` (esta seção)
+
+Nenhum `.ts`, `.scss`, rota, guard ou service foi tocado.
+
+### O que foi implementado ou auditado
+
+- Confirmado por leitura do código atual (não apenas do relatório) que tudo entregue em 2026-07-29
+  segue aplicado: `AuthGuard` em `/artista`, zero `href="#"`/`href=""`, link do produtor via
+  `routerLink`, `saveDescription()` removido, `#collapseT` sem `class` duplicado.
+- Aplicadas as 3 correções descritas no resumo, replicadas simetricamente nos dois templates (12
+  ocorrências de `aria-labelledby` removidas no total — 6 por arquivo —, 2 `col-xl12` corrigidos, 2
+  `data-bs-parent` removidos).
+- Confirmado por `grep` que `data-bs-parent="#accordion1"` remanescente aparece só uma vez por arquivo,
+  no `#collapse01` do filtro Estilos — o único uso correto desse valor.
+
+### Comandos executados
+
+- [x] git status
+- [x] npm run build
+- [x] npm test
+
+### Resultado dos comandos
+
+- `git status` → branch `dev`, estado limpo antes de iniciar (apenas `past_tmp/` não rastreado, pré-
+  existente e não relacionado a esta etapa). Após a edição: 2 arquivos modificados
+  (`artist.component.html`, `usuario-artista.component.html`), nenhum arquivo novo.
+- `npm run build` → **falhou no Node ativo por padrão do ambiente** (`v22.18.0`; o Angular CLI 22 exige
+  mínimo `v22.22.3`/`v24.15.0`/`v26.0.0`; erro de pré-requisito de versão, não do código). Reexecutado
+  com `nvm use v24.18.1` (versão já instalada no ambiente) → **sucesso**, sem erro novo. Bundle inicial
+  2.49 MB raw / 423.04 kB transfer. Único aviso: deprecation do `@import` do Sass em `src/styles.scss:79`
+  (Dart Sass 3.0), preexistente e não relacionado a este diff.
+- `npm test`: o projeto migrou de Karma/Jasmine (usado na execução de 2026-07-29) para
+  `@angular/build:unit-test` com runner **Vitest** (`angular.json:110-125`) — mudança de infraestrutura
+  de teste ocorrida em migração posterior à R19, não nesta etapa. A flag `--browsers=ChromeHeadless`
+  (documentada no comando de validação original) não existe mais nesse runner; `npx ng test` (sem
+  flags, comportamento padrão do script real `test` do `package.json`) já roda em modo não-interativo
+  e retorna. Resultado: **115 de 115 testes (54 arquivos de teste) SUCCESS**, incluindo
+  `src/app/artist/artist.component.spec.ts` e `src/app/usuario-artista/usuario-artista.component.spec.ts`
+  (`should create`). Mesma contagem total (115) do baseline registrado em 2026-07-29, agora sob o runner
+  Vitest.
+
+### Como validar manualmente
+
+1. `npm start` (ou com `nvm use v24.18.1` se o Node ativo for `< v22.22.3`), acessar `/artista` logado e
+   `/pagina-artista?nome_produtor=<nome>`: layout do bloco de faixa e dos filtros idêntico ao anterior
+   (itens 1 e 2 são no-op visual).
+2. No menu lateral de filtros, abrir o accordion **Estilos** (clicar no cabeçalho "Estilos"). Em
+   seguida, na listagem de faixas, clicar no botão de alternância de visualização (ícone de grade, ao
+   lado do dropdown de ordenação) para expandir o bloco `#collapseT` de uma faixa. **Antes desta
+   correção**, isso fechava o filtro Estilos; **depois**, o filtro Estilos permanece aberto.
+3. Inspecionar o DOM (DevTools) dos dois templates e confirmar ausência de `aria-labelledby` e
+   `col-xl12`.
+4. Confirmar que `/musicas` segue intacto (nenhum arquivo desse módulo foi tocado).
+
+### Riscos ou pendências
+
+- Nenhum risco novo introduzido pelos itens 1 e 2 (remoção de atributo sem consumidor em SCSS/JS,
+  confirmado por busca textual). O item 3 corrige um bug de interação pré-existente; o roteiro manual
+  acima cobre a verificação.
+- Pendências já registradas no relatório original permanecem inalteradas e fora do escopo desta
+  execução: aninhamento `<ul>/<div class="control">`, IDs duplicados em `*ngFor` (`array`, `collapseT`,
+  `accordionT1`, `duracao`, `bpm`, `arve`, `arrve`), `<a>` inertes (paginação, tags de estilo, fechar
+  filtro, `dropdown-item`), botão "Reproduzir Músicas" sem `(click)`, `console.log` de depuração e
+  imports órfãos em `artist.component.ts`, endpoint de perfil público inexistente.
+- **Pendência transversal nova**: os mesmos três defeitos corrigidos aqui (`col-xl12`,
+  `aria-labelledby="headingOne"` órfão, `data-bs-parent` de accordion incorreto) existem, por
+  copy-paste, em `src/app/musicas/musicas.component.html`, `src/app/pag-playlist/pag-playlist.component.html`
+  e `src/app/favoritos/favoritos.component.html`. Fora do escopo da Etapa 12A (módulos diferentes);
+  candidata a etapa própria ou à R28 (QA final).
+- Ambiente local roda Node `v22.18.0` por padrão, abaixo do mínimo exigido pelo Angular CLI 22
+  (`v22.22.3`); build e teste só executam usando `nvm use v24.18.1`. Não é uma regressão desta etapa,
+  mas fica registrado porque não estava documentado nas execuções anteriores da R19.
+
+### Confirmação de escopo
+
+Alterados somente os dois arquivos HTML previstos e este relatório. Nenhum `.ts`, `.scss`, rota, guard,
+service ou arquivo de outro módulo foi tocado. Não houve necessidade de sair do escopo declarado.
+
+## Status final da etapa (atualizado)
+
+Aprovado com observações
