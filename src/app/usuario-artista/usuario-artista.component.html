@@ -13,7 +13,7 @@
             <li data-bs-toggle="collapse" data-bs-target="#collapse01" aria-expanded="true" aria-controls="collapse01" class="d-flex align-items-center justify-content-between w-100">Estilos <span class="ms-3 material-icons">add</span></li>
             <div class="accordion w-100" id="accordion1">
               <div class="card">
-                <div id="collapse01" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion1">
+                <div id="collapse01" class="collapse mb-5" data-bs-parent="#accordion1">
                   <div class="div2 pt-3" *ngFor="let g of titles; let i = index;">
                     <mat-checkbox>{{g}}</mat-checkbox>
                     <div *ngFor="let mus of music[i];" class="textMusic d-flex mt-3 mb-3 ps-3">
@@ -28,7 +28,7 @@
             <li data-bs-toggle="collapse" data-bs-target="#collapse02" aria-expanded="true" aria-controls="collapse02" class="d-flex align-items-center justify-content-between w-100"><p class="m-0">Vozes<span id="up" class="ms-1 text-uppercase">Novidade</span></p><span class="ms-3 material-icons">add</span></li>
             <div class="accordion w-100" id="accordion2">
               <div class="card">
-                <div id="collapse02" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion2">
+                <div id="collapse02" class="collapse mb-5" data-bs-parent="#accordion2">
                   <div class="div2 pt-3" *ngFor="let g of vozes;">
                     <mat-checkbox>{{g}}</mat-checkbox>
                   </div>
@@ -40,7 +40,7 @@
             <li data-bs-toggle="collapse" data-bs-target="#collapse03" aria-expanded="true" aria-controls="collapse03" class="d-flex align-items-center justify-content-between w-100">Humor <span class="ms-3 material-icons">add</span></li>
             <div class="accordion w-100" id="accordion3">
               <div class="card">
-                <div id="collapse03" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion3">
+                <div id="collapse03" class="collapse mb-5" data-bs-parent="#accordion3">
                   <div class="div2 pt-3" *ngFor="let g of humor;">
                     <mat-checkbox>{{g}}</mat-checkbox>
                   </div>
@@ -54,7 +54,7 @@
             </li>
             <div class="accordion w-100" id="accordion4">
               <div class="card">
-                <div id="collapse04" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion4">
+                <div id="collapse04" class="collapse mb-5" data-bs-parent="#accordion4">
                   <div class="div2 pt-3">
                     <input class="w-100" type="range" formControlName="bpm" min="1" max="250"  (ngModelChange)="onChangedEvent($event, 'bpm')"
                            [(ngModel)]="musicas.bpm"/>
@@ -73,7 +73,7 @@
             </li>
             <div class="accordion w-100" id="accordion5">
               <div class="card">
-                <div id="collapse05" class="collapse mb-5" aria-labelledby="headingOne" data-bs-parent="#accordion5">
+                <div id="collapse05" class="collapse mb-5" data-bs-parent="#accordion5">
                   <div class="div2 pt-3">
                     <input class="w-100" type="range" formControlName="duracao" min="1" max="300"  (ngModelChange)="onChangedEvent($event, 'duracao')" [(ngModel)]="musicas.duracao"/>
                     <div class="num d-flex justify-content-between align-items-center w-100">
@@ -223,9 +223,9 @@
                   </button>
                 </div>
                 <div class="div w-100 accordion"  id="accordionT1">
-                  <div class="collapse mb-5" id="collapseT" aria-labelledby="headingOne" data-bs-parent="#accordion1">
+                  <div class="collapse mb-5" id="collapseT">
                     <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 mb-3">{{frase}}</div>
-                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl12 w-100 d-block" >
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 w-100 d-block" >
                       <div class="div2 float-start mt-4 me-2" *ngFor="let vx of arrVExtendida; let i = index;">
                         <a id="arrve"  class="p-2 text-center">
                           {{vx.viewValue}}
