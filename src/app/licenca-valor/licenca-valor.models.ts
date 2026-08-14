@@ -34,3 +34,22 @@ export const LICENCAS_MUSICA_POR_PERIODO: Record<PeriodoLicencaMusica, OpcaoLice
     comparativoLabel: '6 meses R$199,99 | Vitalício R$999,99',
   },
 };
+
+/** Licença de preço único (sem alternância de período), usada nos cards de assinatura mensal e efeitos sonoros. */
+export interface LicencaPrecoUnico {
+  tabLabel: string;
+  precoLabel: string;
+  periodoLabel: string;
+}
+
+export const ASSINATURA_MENSAL: LicencaPrecoUnico = {
+  tabLabel: 'Mensalmente',
+  precoLabel: 'R$49,99',
+  periodoLabel: '/mês',
+};
+
+export const LICENCA_EFEITOS_SONOROS: LicencaPrecoUnico = {
+  tabLabel: 'Vitalício',
+  precoLabel: 'R$4,99',
+  periodoLabel: '/vitalício',
+};

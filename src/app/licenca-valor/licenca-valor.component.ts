@@ -1,6 +1,8 @@
 import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ScrollService} from "../service/scroll.service";
 import {
+  ASSINATURA_MENSAL,
+  LICENCA_EFEITOS_SONOROS,
   LICENCAS_MUSICA_POR_PERIODO,
   OpcaoLicencaMusica,
   PeriodoLicencaMusica,
@@ -21,6 +23,12 @@ export class LicencaValorComponent implements OnInit {
 
   /** Período atualmente selecionado no toggle 6/12 meses. */
   periodoLicencaMusicaSelecionado: PeriodoLicencaMusica = '6';
+
+  /** Licença de preço único do card de assinatura mensal. */
+  readonly assinaturaMensal = ASSINATURA_MENSAL;
+
+  /** Licença de preço único do card de efeitos sonoros. */
+  readonly licencaEfeitosSonoros = LICENCA_EFEITOS_SONOROS;
 
   constructor(
     private scrollService: ScrollService,
