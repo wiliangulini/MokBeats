@@ -84,6 +84,8 @@ import { TermosPrivacidadeComponent } from './termos-privacidade/termos-privacid
 import { UsuarioArtistaComponent } from './usuario-artista/usuario-artista.component';
 import { WaveSurferTestComponent } from './wave-surfer-test/wave-surfer-test.component';
 import { DashboardProdutorComponent } from './dashboard-produtor/dashboard-produtor.component';
+import { BarListChartComponent } from './dashboard-produtor/charts/bar-list-chart.component';
+import { LineChartComponent } from './dashboard-produtor/charts/line-chart.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -129,6 +131,8 @@ import { DashboardProdutorComponent } from './dashboard-produtor/dashboard-produ
         PaginationComponent,
         ProfileNotificationBannerComponent,
         DashboardProdutorComponent,
+        BarListChartComponent,
+        LineChartComponent,
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         BrowserAnimationsModule,
