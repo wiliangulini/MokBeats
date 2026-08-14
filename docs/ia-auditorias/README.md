@@ -33,15 +33,15 @@ Legenda: **Preenchido** = conteúdo real · **Modelo** = stub não preenchido ("
 | R11 | Waveform — lazy loading e sincronização | Preenchido | `player-and-waveform` |
 | R12 | Player — stems, carregamento, sincronização | Preenchido | `player-and-waveform` |
 | R13 | Filtros — minimizar scroll | Preenchido | `buyer-flow` |
-| R14 | Efeitos sonoros — dados/service/backend | Modelo | `api-contracts` / `license-cart-checkout` |
-| R15 | Efeitos sonoros — visual, botões, paginação | Modelo | `buyer-flow` |
-| R16 | Efeitos sonoros — player, waveform, licença | Modelo | `player-and-waveform` |
-| R17 | Upload produtor — UI single/stems/fx | Modelo | `producer-upload` |
-| R18 | Upload produtor — validações, duração, FormData | Modelo | `producer-upload` |
-| R19 | Página do artista — HTML e responsabilidades | Modelo | `producer-dashboard` |
-| R20 | Área do produtor — menu, rotas, proteção | Modelo | `auth-and-guards` / `producer-dashboard` |
-| R21 | Dashboard produtor — contrato de dados | Modelo | `producer-dashboard` / `api-contracts` |
-| R22 | Dashboard produtor — visual (branch codex) | Modelo | `producer-dashboard` |
+| R14 | Efeitos sonoros — dados/service/backend | Preenchido | `api-contracts` / `license-cart-checkout` |
+| R15 | Efeitos sonoros — visual, botões, paginação | Preenchido | `buyer-flow` |
+| R16 | Efeitos sonoros — player, waveform, licença | Preenchido | `player-and-waveform` |
+| R17 | Upload produtor — UI single/stems/fx | Preenchido | `producer-upload` |
+| R18 | Upload produtor — validações, duração, FormData | Preenchido | `producer-upload` |
+| R19 | Página do artista — HTML e responsabilidades | Preenchido | `producer-dashboard` |
+| R20 | Área do produtor — menu, rotas, proteção | Preenchido | `auth-and-guards` / `producer-dashboard` |
+| R21 | Dashboard produtor — contrato de dados | Preenchido | `producer-dashboard` / `api-contracts` |
+| R22 | Dashboard produtor — visual (branch codex) | Preenchido | `producer-dashboard` |
 | R23 | Dashboard produtor — gráficos, estados, responsividade | Modelo | `producer-dashboard` |
 | R24 | Pricing — toggle e cards responsivos | Modelo | `license-cart-checkout` |
 | R25 | FAQ — navegação, visual, responsividade | Modelo | `buyer-flow` |
@@ -59,6 +59,6 @@ Legenda: **Preenchido** = conteúdo real · **Modelo** = stub não preenchido ("
   do Plano P0 v2.2 (remediação de vulnerabilidades de dependências), arquivados após merge do PR
   #2 em `dev` (commit `20569dc`). Backend encerrado com 0 vulnerabilidades no `npm audit`.
 
-> Os relatórios **Modelo** (R14–R28) são stubs planejados: preencha-os ao executar a etapa
+> Os relatórios **Modelo** (R23–R28) são stubs planejados: preencha-os ao executar a etapa
 > correspondente, não os trate como auditoria concluída. R02 está vazio e deve ser refeito ou
 > descartado quando a etapa de dashboard for auditada.
