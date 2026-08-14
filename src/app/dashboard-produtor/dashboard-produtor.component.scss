@@ -1,13 +1,58 @@
+// ─── Tokens locais (paleta real do MokBeats — roxo #4B3A8F, mesma cor primária
+// usada em pedidos/assinatura/atualizar-informacoes/formas-de-pagamento) ──────
+$mok-primary: #4b3a8f;
+$mok-primary-soft: rgba(75, 58, 143, 0.08);
+$mok-primary-hover: rgba(75, 58, 143, 0.06);
+$mok-page-bg: #f3f3f4;
+$mok-surface: #fff;
+$mok-border: #e6e6ea;
+
 .dashboard-produtor {
   min-height: calc(100vh - 120px);
+  background-color: $mok-page-bg;
+  padding: 2.5rem 0 3rem;
 }
 
+// Troca de período com dados já carregados: mantém o conteúdo anterior visível
+// e esmaecido em vez de esconder tudo atrás de um skeleton (evita o "flash").
+.dashboard-produtor.dash-refreshing {
+  .dash-card, .row {
+    transition: opacity 0.15s ease;
+  }
+  .dash-card {
+    opacity: 0.6;
+  }
+}
+
+// ─── Card base compartilhado ──────────────────────────────────────────────
+.dash-card {
+  background-color: $mok-surface;
+  border: 1px solid $mok-border;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+// ─── Identidade no cabeçalho ──────────────────────────────────────────────
+.dash-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $mok-primary-soft;
+  color: $mok-primary;
+  flex-shrink: 0;
+}
+
+// ─── KPI cards ─────────────────────────────────────────────────────────────
 .kpi-card {
-  border-left: 4px solid #FFC107;
-  transition: box-shadow 0.2s ease;
+  border-top: 3px solid $mok-primary;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
   }
 
   h3 {
@@ -16,9 +61,110 @@
   }
 }
 
-.gap-2 { gap: 0.5rem; }
-.gap-3 { gap: 0.75rem; }
-.gap-4 { gap: 1rem; }
+.kpi-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $mok-primary-soft;
+  color: $mok-primary;
+  margin-bottom: 0.5rem;
+}
+
+// ─── Título de bloco (com subtítulo descritivo) ───────────────────────────
+.block-title {
+  h5 {
+    margin-bottom: 0.15rem;
+  }
+  p {
+    margin-bottom: 0;
+  }
+}
+
+// ─── Breakdown de licenças ─────────────────────────────────────────────────
+.licenca-tile {
+  background-color: $mok-page-bg;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  min-width: 108px;
+}
+
+// ─── Skeletons de loading (1º carregamento apenas — ver .dash-refreshing) ──
+@keyframes dash-skeleton-pulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+
+.skeleton {
+  display: block;
+  background-color: $mok-page-bg;
+  border-radius: 6px;
+  animation: dash-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  margin-bottom: 0.75rem;
+}
+
+.skeleton-line {
+  height: 12px;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-line-lg {
+  height: 22px;
+}
+
+.chart-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.skeleton-bar-row {
+  height: 14px;
+  border-radius: 7px;
+}
+// Larguras variadas para não parecerem barras idênticas
+.skeleton-bar-row:nth-child(1) { width: 92%; }
+.skeleton-bar-row:nth-child(2) { width: 74%; }
+.skeleton-bar-row:nth-child(3) { width: 58%; }
+.skeleton-bar-row:nth-child(4) { width: 40%; }
+
+.chart-skeleton-line .skeleton-block {
+  height: 140px;
+  border-radius: 10px;
+}
+
+.table-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.skeleton-table-row {
+  height: 40px;
+  border-radius: 8px;
+}
+
+// ─── Tabela de faixas ──────────────────────────────────────────────────────
+.track-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $mok-primary-soft;
+  color: $mok-primary;
+  font-weight: 700;
+  flex-shrink: 0;
+}
 
 .table th {
   font-weight: 600;
@@ -30,5 +176,104 @@
 }
 
 .table-hover tbody tr:hover {
-  background-color: #FFF8E1;
+  background-color: $mok-primary-hover;
+}
+
+// ─── Seleção do filtro de período em roxo ──────────────────────────────────
+:host ::ng-deep {
+  .mat-button-toggle-checked {
+    background-color: $mok-primary-soft;
+    color: $mok-primary;
+  }
+}
+
+// ─── Responsividade ────────────────────────────────────────────────────────
+@media (max-width: 767.98px) {
+  .dashboard-produtor {
+    padding: 1.5rem 0 2rem;
+  }
+
+  .dash-header {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+
+  .dash-header-actions {
+    flex-direction: column;
+    align-items: stretch !important;
+    width: 100%;
+
+    mat-button-toggle-group {
+      width: 100%;
+    }
+  }
+
+  // ─── Tabela de faixas em cards (evita scroll lateral com 7 colunas) ──────
+  .table-responsive table.table {
+    thead {
+      // Oculta visualmente sem remover da árvore de acessibilidade — os
+      // rótulos reaparecem por linha via `data-label` + `::before`.
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    tbody, tr, td {
+      display: block;
+      width: 100%;
+    }
+
+    tr {
+      background-color: $mok-surface;
+      border: 1px solid $mok-border;
+      border-radius: 12px;
+      margin-bottom: 0.75rem;
+      padding: 0.75rem 1rem;
+    }
+
+    tr:hover {
+      background-color: $mok-surface;
+    }
+
+    td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      text-align: right;
+      border: none;
+      padding: 0.35rem 0;
+
+      &::before {
+        content: attr(data-label);
+        font-weight: 600;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: #6c757d;
+        text-align: left;
+        flex: 0 0 auto;
+      }
+
+      // 1ª célula (badge + nome da faixa) funciona como cabeçalho do card —
+      // não repete o rótulo "Música".
+      &:first-child {
+        justify-content: flex-start;
+
+        &::before {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .table-actions {
+    justify-content: flex-end;
+  }
 }

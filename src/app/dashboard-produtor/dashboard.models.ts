@@ -58,11 +58,16 @@ export interface LikesVsSalesPoint {
 }
 
 // ─── Constantes de visualização ──────────────────────────────────────────
+// Paleta alinhada à identidade adotada na R22 (roxo #4B3A8F — cor primária real
+// do projeto, ver dashboard-produtor.component.scss). `secondary` é usado apenas
+// na 2ª série do gráfico "Curtidas × Compras" (par validado com o script
+// validate_palette.js da skill dataviz: ΔE CVD 29,0 / normal 36,4 — acima dos
+// pisos de 8 e 15; contraste ≥ 3:1 no fundo branco do card).
 export const CHART_COLORS = {
-  primary:   '#FFC107',
-  secondary: '#212121',
-  accent:    '#757575',
-  light:     '#FFF8E1',
+  primary:   '#4B3A8F',
+  secondary: '#EB6834',
+  neutral:   '#E6E6EA',
+  muted:     '#898781',
   danger:    '#E53935',
 };
 

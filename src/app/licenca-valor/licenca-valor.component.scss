@@ -31,17 +31,27 @@ section.one .container {
   text-align: center;
 }
 #myTab2 .nav-item a,
+#myTab2 .nav-item button,
 #myTab1 .nav-item a,
-#myTab .nav-item a {
+#myTab1 .nav-item button,
+#myTab .nav-item a,
+#myTab .nav-item button {
   border-radius: 50px;
   color: #233d63;
   font-size: 20px;
   font-weight: 700;
   border: none;
+  background-color: transparent;
+  font-family: inherit;
+  width: 100%;
+  cursor: pointer;
 }
 #myTab2 .nav-item a.active,
+#myTab2 .nav-item button.active,
 #myTab1 .nav-item a.active,
-#myTab .nav-item a.active {
+#myTab1 .nav-item button.active,
+#myTab .nav-item a.active,
+#myTab .nav-item button.active {
   background-color: #4b3a8f;
   color: white;
 }
@@ -478,14 +488,26 @@ section.faq.access
     overflow-x: auto;
   }
 }
-@media (min-width: 768px) and (max-width: 1024.98px) {
+/* Faixa tablet (576px–991.98px): 3 cards em coluna única.
+   Evita o layout quebrado de "2 + 1 órfão" que ocorria com largura fixa de 48%
+   para os 3 cards da seção (col.card.one/two/three). Acima de 991.98px os cards
+   voltam ao layout de 3 colunas com os transforms de destaque. */
+@media (min-width: 576px) and (max-width: 991.98px) {
   section.one .container {
     max-width: 90% !important;
     top: 0;
   }
   section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card {
-    max-width: 48%;
-    flex: 0 0 48%;
+    max-width: 100%;
+    flex: 0 0 100%;
+    margin-bottom: 16px;
+  }
+  section.one
+    .container
+    .row
+    .col-sm-6.col-md-6.col-lg-6.col-xl-6.card
+    .card-body {
+    height: auto;
   }
 }
 @media (min-width: 320px) and (max-width: 390px) {

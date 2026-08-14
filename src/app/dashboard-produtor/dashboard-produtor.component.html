@@ -1,24 +1,29 @@
 <app-sub-menu></app-sub-menu>
 
-<section class="dashboard-produtor">
+<section class="dashboard-produtor" [class.dash-refreshing]="loading && hasLoadedOnce">
   <div class="container py-4">
 
     <!-- ════════ CABEÇALHO ════════ -->
-    <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-2">
-      <div>
-        <p class="text-muted small mb-0">
-          Dashboard do Produtor &rsaquo;
-          <span class="text-dark fw-bold">Visão Geral</span>
-        </p>
-        <p class="text-muted small mb-1">{{ today }}</p>
-        <h1 class="fw-bold mb-0" *ngIf="nomeProdutor">
-          Olá, {{ nomeProdutor }}!
-        </h1>
-        <h1 class="fw-bold mb-0" *ngIf="!nomeProdutor">
-          Dashboard
-        </h1>
+    <div class="dash-header d-flex justify-content-between align-items-start mb-4 flex-wrap gap-2">
+      <div class="d-flex align-items-start gap-3">
+        <div class="dash-logo">
+          <span class="material-icons">equalizer</span>
+        </div>
+        <div>
+          <p class="text-muted small mb-0">
+            Dashboard do Produtor &rsaquo;
+            <span class="text-dark fw-bold">Visão Geral</span>
+          </p>
+          <p class="text-muted small mb-1">{{ today }}</p>
+          <h1 class="fw-bold mb-0" *ngIf="nomeProdutor">
+            Olá, {{ nomeProdutor }}!
+          </h1>
+          <h1 class="fw-bold mb-0" *ngIf="!nomeProdutor">
+            Dashboard
+          </h1>
+        </div>
       </div>
-      <div class="d-flex align-items-center gap-2">
+      <div class="dash-header-actions d-flex align-items-center gap-2">
         <!-- Filtro de período -->
         <mat-button-toggle-group
           [value]="selectedPeriod"
@@ -40,221 +45,300 @@
       </div>
     </div>
 
-    <!-- ════════ ESTADO DE ERRO ════════ -->
-    <div *ngIf="loadError" class="alert alert-warning mb-4">
-      <span class="material-icons align-middle me-2">warning_amber</span>
-      Não foi possível carregar os dados. Tente novamente mais tarde.
-    </div>
+    <!-- ════════ KPI CARDS ════════ -->
+    <div class="row mb-4" [ngSwitch]="blockDisplayState(summaryState)">
+      <ng-container *ngSwitchCase="'loading'">
+        <div class="col-sm-6 col-lg-3 mb-3" *ngFor="let _ of skeletonKpis">
+          <div class="dash-card kpi-card h-100 p-3">
+            <span class="skeleton skeleton-icon"></span>
+            <span class="skeleton skeleton-line" style="width:70%"></span>
+            <span class="skeleton skeleton-line skeleton-line-lg" style="width:50%"></span>
+            <span class="skeleton skeleton-line" style="width:60%"></span>
+          </div>
+        </div>
+      </ng-container>
 
-    <!-- ════════ LOADING ════════ -->
-    <div *ngIf="loading" class="text-center py-5">
-      <div class="spinner-border text-warning" role="status">
-        <span class="visually-hidden">Carregando...</span>
+      <div class="col-12" *ngSwitchCase="'error'">
+        <div class="alert alert-warning mb-0">
+          <span class="material-icons align-middle me-2">warning_amber</span>
+          Não foi possível carregar os indicadores. Tente novamente mais tarde.
+        </div>
       </div>
+
+      <div class="col-12" *ngSwitchCase="'empty'">
+        <div class="dash-card p-4 text-center text-muted mb-0">
+          Nenhum indicador disponível para o período selecionado.
+        </div>
+      </div>
+
+      <ng-container *ngSwitchCase="'ready'">
+        <div class="col-sm-6 col-lg-3 mb-3" *ngFor="let kpi of kpiCards">
+          <div class="dash-card kpi-card h-100 p-3">
+            <div class="kpi-icon">
+              <span class="material-icons">{{ kpi.icon }}</span>
+            </div>
+            <p class="text-muted small mb-1">{{ kpi.label }}</p>
+            <h3 class="fw-bold mb-1">{{ kpi.value }}</h3>
+            <p class="text-muted small mb-0">{{ kpi.helper }}</p>
+          </div>
+        </div>
+      </ng-container>
     </div>
 
-    <ng-container *ngIf="!loading">
+    <!-- ════════ RESUMO FINANCEIRO ════════ -->
+    <div class="dash-card mb-4 p-3" *ngIf="blockDisplayState(summaryState) === 'ready'">
+      <div class="block-title mb-3">
+        <h5 class="fw-bold">Resumo Financeiro</h5>
+        <p class="text-muted small">Saldo, saque e distribuição por tipo de licença</p>
+      </div>
+      <div class="d-flex flex-wrap align-items-center gap-4">
 
-      <!-- ════════ KPI CARDS ════════ -->
-      <div class="row mb-4">
+        <!-- Saldo disponível — bloqueado Fase 1 -->
+        <div class="d-flex align-items-center gap-3">
+          <div>
+            <p class="text-muted small mb-0">Saldo disponível</p>
+            <p class="h5 fw-bold mb-0 text-muted">—</p>
+            <p class="text-muted" style="font-size:0.75rem">Disponível em breve</p>
+          </div>
+          <button
+            class="btn btn-warning fw-bold"
+            disabled
+            ngbTooltip="Disponível em breve">
+            Solicitar Saque
+          </button>
+        </div>
 
-        <!-- Vendas totais -->
-        <div class="col-sm-6 col-lg-3 mb-3">
-          <div class="card kpi-card h-100 p-3">
-            <p class="text-muted small mb-1">Vendas totais</p>
-            <h3 class="fw-bold mb-1">
-              {{ summary ? formatCompact(summary.vendasTotais) : '—' }}
-            </h3>
-            <p class="text-muted small mb-0">
-              <span class="material-icons align-middle" style="font-size:16px;color:#4CAF50">trending_up</span>
-              +12% vs mês anterior
+        <div class="divider-v d-none d-md-block" style="border-left:1px solid #dee2e6;height:48px"></div>
+
+        <!-- Breakdown de licenças -->
+        <div *ngIf="summary?.licencas" class="d-flex flex-wrap gap-3">
+          <div class="licenca-tile text-center">
+            <p class="text-muted small mb-0">Básica</p>
+            <p class="h6 fw-bold mb-0">
+              {{ formatCompact(summary!.licencas!.basica.quantidade) }}
+            </p>
+            <p class="text-muted" style="font-size:0.75rem">
+              {{ formatBRL(summary!.licencas!.basica.receita) }}
+            </p>
+          </div>
+          <div class="licenca-tile text-center">
+            <p class="text-muted small mb-0">Profissional</p>
+            <p class="h6 fw-bold mb-0">
+              {{ formatCompact(summary!.licencas!.profissional.quantidade) }}
+            </p>
+            <p class="text-muted" style="font-size:0.75rem">
+              {{ formatBRL(summary!.licencas!.profissional.receita) }}
+            </p>
+          </div>
+          <div class="licenca-tile text-center">
+            <p class="text-muted small mb-0">Exclusiva</p>
+            <p class="h6 fw-bold mb-0">
+              {{ formatCompact(summary!.licencas!.exclusiva.quantidade) }}
+            </p>
+            <p class="text-muted" style="font-size:0.75rem">
+              {{ formatBRL(summary!.licencas!.exclusiva.receita) }}
+            </p>
+          </div>
+          <div class="licenca-tile text-center">
+            <p class="text-muted small mb-0">Total licenças</p>
+            <p class="h6 fw-bold mb-0">
+              {{ formatCompact(totalLicencas) }}
             </p>
           </div>
         </div>
 
-        <!-- Valor total em vendas -->
-        <div class="col-sm-6 col-lg-3 mb-3">
-          <div class="card kpi-card h-100 p-3">
-            <p class="text-muted small mb-1">Valor total em vendas</p>
-            <h3 class="fw-bold mb-1">
-              {{ summary ? formatBRL(summary.valorTotalVendas) : '—' }}
-            </h3>
-            <div class="kpi-sparkline mt-1"></div>
-          </div>
-        </div>
-
-        <!-- Nº total de curtidas -->
-        <div class="col-sm-6 col-lg-3 mb-3">
-          <div class="card kpi-card h-100 p-3">
-            <p class="text-muted small mb-1">Nº total de curtidas</p>
-            <h3 class="fw-bold mb-1">
-              {{ summary ? formatCompact(summary.totalCurtidas) : '—' }}
-            </h3>
-            <span class="badge bg-success">+8%</span>
-          </div>
-        </div>
-
-        <!-- Ticket médio por venda -->
-        <div class="col-sm-6 col-lg-3 mb-3">
-          <div class="card kpi-card h-100 p-3">
-            <p class="text-muted small mb-1">Ticket médio por venda</p>
-            <h3 class="fw-bold mb-1">
-              {{ summary ? formatBRL(summary.ticketMedio) : '—' }}
-            </h3>
-            <p class="text-muted small mb-0">por licença vendida</p>
-          </div>
-        </div>
-
       </div>
+    </div>
 
-      <!-- ════════ RESUMO FINANCEIRO ════════ -->
-      <div class="card mb-4 p-3" *ngIf="summary">
-        <h5 class="fw-bold mb-3">Resumo Financeiro</h5>
-        <div class="d-flex flex-wrap align-items-center gap-4">
+    <!-- ════════ GRÁFICOS ════════ -->
+    <div class="row mb-4">
 
-          <!-- Saldo disponível — bloqueado Fase 1 -->
-          <div class="d-flex align-items-center gap-3">
-            <div>
-              <p class="text-muted small mb-0">Saldo disponível</p>
-              <p class="h5 fw-bold mb-0 text-muted">—</p>
-              <p class="text-muted" style="font-size:0.75rem">Disponível em breve</p>
-            </div>
-            <button
-              class="btn btn-warning fw-bold"
-              disabled
-              ngbTooltip="Disponível em breve">
-              Solicitar Saque
-            </button>
+      <!-- Origem das compras -->
+      <div class="col-md-6 mb-3">
+        <div class="dash-card p-3 h-100" [ngSwitch]="blockDisplayState(originState)">
+          <div class="block-title mb-3">
+            <h5 class="fw-bold">Origem das compras</h5>
+            <p class="text-muted small">Cidades com mais compras no período selecionado</p>
           </div>
 
-          <div class="divider-v d-none d-md-block" style="border-left:1px solid #dee2e6;height:48px"></div>
-
-          <!-- Breakdown de licenças -->
-          <div *ngIf="summary.licencas" class="d-flex flex-wrap gap-4">
-            <div class="text-center">
-              <p class="text-muted small mb-0">Básica</p>
-              <p class="h6 fw-bold mb-0">
-                {{ formatCompact(summary.licencas.basica.quantidade) }}
-              </p>
-              <p class="text-muted" style="font-size:0.75rem">
-                {{ formatBRL(summary.licencas.basica.receita) }}
-              </p>
-            </div>
-            <div class="text-center">
-              <p class="text-muted small mb-0">Profissional</p>
-              <p class="h6 fw-bold mb-0">
-                {{ formatCompact(summary.licencas.profissional.quantidade) }}
-              </p>
-              <p class="text-muted" style="font-size:0.75rem">
-                {{ formatBRL(summary.licencas.profissional.receita) }}
-              </p>
-            </div>
-            <div class="text-center">
-              <p class="text-muted small mb-0">Exclusiva</p>
-              <p class="h6 fw-bold mb-0">
-                {{ formatCompact(summary.licencas.exclusiva.quantidade) }}
-              </p>
-              <p class="text-muted" style="font-size:0.75rem">
-                {{ formatBRL(summary.licencas.exclusiva.receita) }}
-              </p>
-            </div>
-            <div class="text-center">
-              <p class="text-muted small mb-0">Total licenças</p>
-              <p class="h6 fw-bold mb-0">
-                {{ formatCompact(totalLicencas) }}
-              </p>
-            </div>
+          <div *ngSwitchCase="'loading'" class="chart-skeleton" aria-hidden="true">
+            <span class="skeleton skeleton-bar-row" *ngFor="let _ of skeletonBarRows"></span>
           </div>
 
+          <div *ngSwitchCase="'error'" class="alert alert-warning mb-0">
+            <span class="material-icons align-middle me-2">warning_amber</span>
+            Não foi possível carregar a origem das compras. Tente novamente mais tarde.
+          </div>
+
+          <div *ngSwitchCase="'empty'" class="chart-empty text-center py-4">
+            <span class="material-icons text-muted" style="font-size:40px">public_off</span>
+            <p class="text-muted mt-2 mb-0">Nenhuma compra registrada no período selecionado.</p>
+          </div>
+
+          <app-bar-list-chart *ngSwitchCase="'ready'" [items]="originBarItems"></app-bar-list-chart>
         </div>
       </div>
 
-      <!-- ════════ GRÁFICOS — Fase 2 ════════ -->
-      <!-- Placeholder visual para os 4 gráficos que serão implementados na Fase 2 -->
-      <div class="row mb-4">
-        <div class="col-md-6 mb-3">
-          <div class="card p-3 h-100 d-flex align-items-center justify-content-center"
-               style="min-height:200px; border:2px dashed #dee2e6">
-            <span class="material-icons text-muted" style="font-size:40px">bar_chart</span>
-            <p class="text-muted small mt-2 mb-0">Origem das compras — Fase 2</p>
+      <!-- Vendas por faixa -->
+      <div class="col-md-6 mb-3">
+        <div class="dash-card p-3 h-100" [ngSwitch]="blockDisplayState(tracksChartState)">
+          <div class="block-title mb-3">
+            <h5 class="fw-bold">Vendas por faixa</h5>
+            <p class="text-muted small">Compras por faixa no período selecionado</p>
           </div>
-        </div>
-        <div class="col-md-6 mb-3">
-          <div class="card p-3 h-100 d-flex align-items-center justify-content-center"
-               style="min-height:200px; border:2px dashed #dee2e6">
-            <span class="material-icons text-muted" style="font-size:40px">stacked_bar_chart</span>
-            <p class="text-muted small mt-2 mb-0">Vendas por faixa — Fase 2</p>
+
+          <div *ngSwitchCase="'loading'" class="chart-skeleton" aria-hidden="true">
+            <span class="skeleton skeleton-bar-row" *ngFor="let _ of skeletonBarRows"></span>
           </div>
-        </div>
-        <div class="col-md-6 mb-3">
-          <div class="card p-3 h-100 d-flex align-items-center justify-content-center"
-               style="min-height:200px; border:2px dashed #dee2e6">
-            <span class="material-icons text-muted" style="font-size:40px">pie_chart</span>
-            <p class="text-muted small mt-2 mb-0">Receita por música — Fase 2</p>
+
+          <div *ngSwitchCase="'error'" class="alert alert-warning mb-0">
+            <span class="material-icons align-middle me-2">warning_amber</span>
+            Não foi possível carregar as vendas por faixa. Tente novamente mais tarde.
           </div>
+
+          <div *ngSwitchCase="'empty'" class="chart-empty text-center py-4">
+            <span class="material-icons text-muted" style="font-size:40px">music_off</span>
+            <p class="text-muted mt-2 mb-0">Nenhuma venda registrada no período selecionado.</p>
+          </div>
+
+          <app-bar-list-chart *ngSwitchCase="'ready'" [items]="tracksBarItems"></app-bar-list-chart>
         </div>
-        <div class="col-md-6 mb-3">
-          <div class="card p-3 h-100 d-flex align-items-center justify-content-center"
-               style="min-height:200px; border:2px dashed #dee2e6">
+      </div>
+
+      <!-- Receita por música -->
+      <div class="col-md-6 mb-3">
+        <div class="dash-card p-3 h-100" [ngSwitch]="blockDisplayState(revenueState)">
+          <div class="block-title mb-3">
+            <h5 class="fw-bold">Receita por música</h5>
+            <p class="text-muted small">Participação de cada faixa na receita do período</p>
+          </div>
+
+          <div *ngSwitchCase="'loading'" class="chart-skeleton" aria-hidden="true">
+            <span class="skeleton skeleton-bar-row" *ngFor="let _ of skeletonBarRows"></span>
+          </div>
+
+          <div *ngSwitchCase="'error'" class="alert alert-warning mb-0">
+            <span class="material-icons align-middle me-2">warning_amber</span>
+            Não foi possível carregar a receita por música. Tente novamente mais tarde.
+          </div>
+
+          <div *ngSwitchCase="'empty'" class="chart-empty text-center py-4">
+            <span class="material-icons text-muted" style="font-size:40px">payments</span>
+            <p class="text-muted mt-2 mb-0">Nenhuma receita registrada no período selecionado.</p>
+          </div>
+
+          <app-bar-list-chart *ngSwitchCase="'ready'" [items]="revenueBarItems"></app-bar-list-chart>
+        </div>
+      </div>
+
+      <!-- Curtidas vs Compras -->
+      <div class="col-md-6 mb-3">
+        <div class="dash-card p-3 h-100" [ngSwitch]="blockDisplayState(trendState)">
+          <div class="block-title mb-3">
+            <h5 class="fw-bold">Curtidas × Compras</h5>
+            <p class="text-muted small">Indexado a 100% no início do período selecionado</p>
+          </div>
+
+          <div *ngSwitchCase="'loading'" class="chart-skeleton chart-skeleton-line" aria-hidden="true">
+            <span class="skeleton skeleton-block"></span>
+          </div>
+
+          <div *ngSwitchCase="'error'" class="alert alert-warning mb-0">
+            <span class="material-icons align-middle me-2">warning_amber</span>
+            Não foi possível carregar curtidas × compras. Tente novamente mais tarde.
+          </div>
+
+          <div *ngSwitchCase="'empty'" class="chart-empty text-center py-4">
             <span class="material-icons text-muted" style="font-size:40px">show_chart</span>
-            <p class="text-muted small mt-2 mb-0">Curtidas vs Compras — Fase 2</p>
+            <p class="text-muted mt-2 mb-0">Sem série histórica para o período selecionado.</p>
           </div>
+
+          <app-line-chart
+            *ngSwitchCase="'ready'"
+            [series]="trendSeries"
+            [baselineY]="trendBaselineY">
+          </app-line-chart>
         </div>
       </div>
 
-      <!-- ════════ TABELA DINÂMICA ════════ -->
-      <div class="card p-3 mb-5">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-          <h5 class="fw-bold mb-0">Faixas</h5>
-          <!-- Filtro destaque -->
-          <mat-button-toggle-group
-            [value]="filtroDestaque"
-            (change)="filtroDestaque = $event.value"
-            aria-label="Filtro">
-            <mat-button-toggle value="todos">Todas</mat-button-toggle>
-            <mat-button-toggle value="destaque">Em destaque</mat-button-toggle>
-          </mat-button-toggle-group>
+    </div>
+
+    <!-- ════════ TABELA DINÂMICA ════════ -->
+    <div class="dash-card p-3 mb-5">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <div class="block-title">
+          <h5 class="fw-bold">Faixas</h5>
+          <p class="text-muted small">Desempenho de vendas por faixa no período selecionado</p>
+        </div>
+        <!-- Filtro destaque -->
+        <mat-button-toggle-group
+          [value]="filtroDestaque"
+          (change)="filtroDestaque = $event.value"
+          aria-label="Filtro">
+          <mat-button-toggle value="todos">Todas</mat-button-toggle>
+          <mat-button-toggle value="destaque">Em destaque</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <ng-container [ngSwitch]="blockDisplayState(tracksState)">
+
+        <!-- Loading -->
+        <div *ngSwitchCase="'loading'" class="table-skeleton" aria-hidden="true">
+          <span class="skeleton skeleton-table-row" *ngFor="let _ of skeletonBarRows"></span>
         </div>
 
-        <!-- Estado vazio -->
-        <div *ngIf="salesByTrackFiltered.length === 0" class="text-center py-4">
+        <!-- Erro (inclusive erro parcial: summary OK, faixas falharam) -->
+        <div *ngSwitchCase="'error'" class="alert alert-warning mb-0">
+          <span class="material-icons align-middle me-2">warning_amber</span>
+          Não foi possível carregar as faixas. Tente novamente mais tarde.
+        </div>
+
+        <!-- Vazio -->
+        <div *ngSwitchCase="'empty'" class="text-center py-4">
           <span class="material-icons text-muted" style="font-size:48px">music_off</span>
           <p class="text-muted mt-2">Nenhuma faixa encontrada para o filtro selecionado.</p>
         </div>
 
         <!-- Tabela -->
-        <div *ngIf="salesByTrackFiltered.length > 0" class="table-responsive">
+        <div *ngSwitchCase="'ready'" class="table-responsive">
           <table class="table table-hover align-middle mb-0">
             <thead>
               <tr>
-                <th>Música</th>
-                <th class="text-end">Compras</th>
-                <th class="text-end">Receita total</th>
-                <th>Origem principal</th>
-                <th class="text-end">Likes</th>
-                <th>Destaque</th>
-                <th>Ações</th>
+                <th scope="col">Música</th>
+                <th scope="col" class="text-end">Compras</th>
+                <th scope="col" class="text-end">Receita total</th>
+                <th scope="col">Origem principal</th>
+                <th scope="col" class="text-end">Likes</th>
+                <th scope="col">Destaque</th>
+                <th scope="col">Ações</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let track of salesByTrackFiltered">
-                <td class="fw-bold">{{ track.nome }}</td>
-                <td class="text-end">{{ formatCompact(track.compras) }}</td>
-                <td class="text-end">{{ formatBRL(track.receita) }}</td>
-                <td>{{ track.origemPrincipal }}</td>
-                <td class="text-end">{{ formatCompact(track.likes) }}</td>
-                <td>
+              <tr *ngFor="let track of salesByTrackFiltered; trackBy: trackByTrackId">
+                <td data-label="Música">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="track-badge">{{ initialOf(track.nome) }}</span>
+                    <span class="fw-bold">{{ track.nome }}</span>
+                  </div>
+                </td>
+                <td class="text-end" data-label="Compras">{{ formatCompact(track.compras) }}</td>
+                <td class="text-end" data-label="Receita total">{{ formatBRL(track.receita) }}</td>
+                <td data-label="Origem principal">{{ track.origemPrincipal }}</td>
+                <td class="text-end" data-label="Likes">{{ formatCompact(track.likes) }}</td>
+                <td data-label="Destaque">
                   <span *ngIf="track.destaque" class="badge bg-warning">Destaque</span>
                   <span *ngIf="!track.destaque" class="text-muted">—</span>
                 </td>
-                <td>
-                  <div class="d-flex gap-2">
+                <td data-label="Ações">
+                  <div class="d-flex gap-2 table-actions">
                     <button class="btn btn-sm btn-outline-secondary"
-                            ngbTooltip="Ver detalhes">
+                            disabled
+                            ngbTooltip="Disponível em breve">
                       <span class="material-icons" style="font-size:16px">visibility</span>
                     </button>
                     <button class="btn btn-sm btn-outline-warning"
-                            ngbTooltip="Promover">
+                            disabled
+                            ngbTooltip="Disponível em breve">
                       <span class="material-icons" style="font-size:16px">rocket_launch</span>
                     </button>
                     <button class="btn btn-sm btn-outline-secondary"
@@ -268,9 +352,9 @@
             </tbody>
           </table>
         </div>
-      </div>
+      </ng-container>
+    </div>
 
-    </ng-container>
   </div>
 </section>
 

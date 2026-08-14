@@ -14,6 +14,10 @@ li {
 a.nav-link.h5.mb-0 {
   color: #000;
 }
+.nav-item.active a.nav-link.h5.mb-0 {
+  font-weight: 700;
+  border-bottom: 2px solid #000;
+}
 .talk {
   border-bottom: 1px solid;
 }

@@ -10,10 +10,10 @@
             <p class="h3 fw-bold">Assinatura Mensal</p>
           </div>
           <div class="card-body">
-            <ul id="myTab" class="nav nav-tabs">
-              <li class="nav-item">
-                <a id="home-tab" class="nav-link active show" data-bs-toggle="tab" href="" role="tab" aria-controls="home"
-                  aria-selected="true">Mensalmente</a>
+            <ul id="myTab" class="nav nav-tabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button id="home-tab" type="button" class="nav-link active" role="tab" aria-controls="home"
+                  aria-selected="true">Mensalmente</button>
               </li>
             </ul>
             <div class="cardInt priceDad d-flex flex-column align-items-center justify-content-center">
@@ -61,23 +61,24 @@
             <p class="h3 fw-bold text-center">Por Tempo Determinado</p>
           </div>
           <div class="card-body">
-            <ul id="myTab1" class="nav nav-tabs">
-              <li class="nav-item">
-                <a id="home-tab1" class="nav-link active show" data-bs-toggle="tab" href="" role="tab" aria-controls="home"
-                  aria-selected="true">6 meses</a>
-              </li>
-              <li class="nav-item">
-                <a id="profile-tab1" class="nav-link" data-bs-toggle="tab" href="" role="tab" aria-controls="profile"
-                  aria-selected="false">12 meses</a>
+            <ul id="myTab1" class="nav nav-tabs" role="tablist">
+              <li class="nav-item" role="presentation" *ngFor="let periodo of periodosLicencaMusica">
+                <button
+                  type="button"
+                  class="nav-link"
+                  [class.active]="periodoLicencaMusicaSelecionado === periodo.value"
+                  role="tab"
+                  [attr.aria-selected]="periodoLicencaMusicaSelecionado === periodo.value"
+                  (click)="selecionarPeriodoLicencaMusica(periodo.value)">{{ periodo.label }}</button>
               </li>
             </ul>
             <div class="cardInt priceDad d-flex flex-column align-items-center justify-content-center">
               <div class="price d-flex justify-content-center align-items-center">
-                <p class="h2 fw-bold">R$199,99</p>
-                <p class="h6 m-0 fw-bold">/6 meses</p>
+                <p class="h2 fw-bold">{{ licencaMusicaAtual.precoLabel }}</p>
+                <p class="h6 m-0 fw-bold">{{ licencaMusicaAtual.periodoLabel }}</p>
               </div>
               <div class="priceMsg d-flex justify-content-center align-items-center">
-                <small class="small">12 meses R$249,99 | Vitalício R$999,99</small>
+                <small class="small">{{ licencaMusicaAtual.comparativoLabel }}</small>
               </div>
             </div>
             <div class="cardInt btn d-flex justify-content-center align-items-center">
@@ -116,10 +117,10 @@
             <p class="h3 fw-bold text-center effect_sons">Licenças de Efeitos Sonoros</p>
           </div>
           <div class="card-body">
-            <ul id="myTab2" class="nav nav-tabs">
-              <li class="nav-item">
-                <a id="home-tab2" class="nav-link active show" data-bs-toggle="tab" href="" role="tab" aria-controls="home"
-                  aria-selected="true">Vitalício</a>
+            <ul id="myTab2" class="nav nav-tabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button id="home-tab2" type="button" class="nav-link active" role="tab" aria-controls="home"
+                  aria-selected="true">Vitalício</button>
               </li>
             </ul>
             <div class="cardInt priceDad d-flex flex-column align-items-center justify-content-center">
