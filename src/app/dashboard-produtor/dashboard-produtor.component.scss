@@ -1,13 +1,47 @@
+// ─── Tokens locais (paleta real do MokBeats — roxo #4B3A8F, mesma cor primária
+// usada em pedidos/assinatura/atualizar-informacoes/formas-de-pagamento) ──────
+$mok-primary: #4b3a8f;
+$mok-primary-soft: rgba(75, 58, 143, 0.08);
+$mok-primary-hover: rgba(75, 58, 143, 0.06);
+$mok-page-bg: #f3f3f4;
+$mok-surface: #fff;
+$mok-border: #e6e6ea;
+
 .dashboard-produtor {
   min-height: calc(100vh - 120px);
+  background-color: $mok-page-bg;
+  padding: 2.5rem 0 3rem;
 }
 
+// ─── Card base compartilhado ──────────────────────────────────────────────
+.dash-card {
+  background-color: $mok-surface;
+  border: 1px solid $mok-border;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+// ─── Identidade no cabeçalho ──────────────────────────────────────────────
+.dash-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $mok-primary-soft;
+  color: $mok-primary;
+  flex-shrink: 0;
+}
+
+// ─── KPI cards ─────────────────────────────────────────────────────────────
 .kpi-card {
-  border-left: 4px solid #FFC107;
-  transition: box-shadow 0.2s ease;
+  border-top: 3px solid $mok-primary;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
   }
 
   h3 {
@@ -16,9 +50,71 @@
   }
 }
 
-.gap-2 { gap: 0.5rem; }
-.gap-3 { gap: 0.75rem; }
-.gap-4 { gap: 1rem; }
+.kpi-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $mok-primary-soft;
+  color: $mok-primary;
+  margin-bottom: 0.5rem;
+}
+
+// ─── Título de bloco (com subtítulo descritivo) ───────────────────────────
+.block-title {
+  h5 {
+    margin-bottom: 0.15rem;
+  }
+  p {
+    margin-bottom: 0;
+  }
+}
+
+// ─── Breakdown de licenças ─────────────────────────────────────────────────
+.licenca-tile {
+  background-color: $mok-page-bg;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  min-width: 108px;
+}
+
+// ─── Placeholders de gráfico (Fase 2) ──────────────────────────────────────
+.chart-placeholder {
+  min-height: 200px;
+  border: 2px dashed $mok-border;
+  border-radius: 12px;
+  color: $mok-primary;
+  opacity: 0.6;
+}
+
+.chart-placeholder-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background-color: $mok-primary-soft;
+  color: $mok-primary;
+  opacity: 1;
+}
+
+// ─── Tabela de faixas ──────────────────────────────────────────────────────
+.track-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $mok-primary-soft;
+  color: $mok-primary;
+  font-weight: 700;
+  flex-shrink: 0;
+}
 
 .table th {
   font-weight: 600;
@@ -30,5 +126,39 @@
 }
 
 .table-hover tbody tr:hover {
-  background-color: #FFF8E1;
+  background-color: $mok-primary-hover;
+}
+
+// ─── Seleção do filtro de período em roxo ──────────────────────────────────
+:host ::ng-deep {
+  .mat-button-toggle-checked {
+    background-color: $mok-primary-soft;
+    color: $mok-primary;
+  }
+}
+
+// ─── Responsividade ────────────────────────────────────────────────────────
+@media (max-width: 767.98px) {
+  .dashboard-produtor {
+    padding: 1.5rem 0 2rem;
+  }
+
+  .dash-header {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+
+  .dash-header-actions {
+    flex-direction: column;
+    align-items: stretch !important;
+    width: 100%;
+
+    mat-button-toggle-group {
+      width: 100%;
+    }
+  }
+
+  .table-actions {
+    flex-direction: column;
+  }
 }

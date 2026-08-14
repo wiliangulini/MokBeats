@@ -4,21 +4,26 @@
   <div class="container py-4">
 
     <!-- ════════ CABEÇALHO ════════ -->
-    <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-2">
-      <div>
-        <p class="text-muted small mb-0">
-          Dashboard do Produtor &rsaquo;
-          <span class="text-dark fw-bold">Visão Geral</span>
-        </p>
-        <p class="text-muted small mb-1">{{ today }}</p>
-        <h1 class="fw-bold mb-0" *ngIf="nomeProdutor">
-          Olá, {{ nomeProdutor }}!
-        </h1>
-        <h1 class="fw-bold mb-0" *ngIf="!nomeProdutor">
-          Dashboard
-        </h1>
+    <div class="dash-header d-flex justify-content-between align-items-start mb-4 flex-wrap gap-2">
+      <div class="d-flex align-items-start gap-3">
+        <div class="dash-logo">
+          <span class="material-icons">equalizer</span>
+        </div>
+        <div>
+          <p class="text-muted small mb-0">
+            Dashboard do Produtor &rsaquo;
+            <span class="text-dark fw-bold">Visão Geral</span>
+          </p>
+          <p class="text-muted small mb-1">{{ today }}</p>
+          <h1 class="fw-bold mb-0" *ngIf="nomeProdutor">
+            Olá, {{ nomeProdutor }}!
+          </h1>
+          <h1 class="fw-bold mb-0" *ngIf="!nomeProdutor">
+            Dashboard
+          </h1>
+        </div>
       </div>
-      <div class="d-flex align-items-center gap-2">
+      <div class="dash-header-actions d-flex align-items-center gap-2">
         <!-- Filtro de período -->
         <mat-button-toggle-group
           [value]="selectedPeriod"
@@ -57,59 +62,24 @@
 
       <!-- ════════ KPI CARDS ════════ -->
       <div class="row mb-4">
-
-        <!-- Vendas totais -->
-        <div class="col-sm-6 col-lg-3 mb-3">
-          <div class="card kpi-card h-100 p-3">
-            <p class="text-muted small mb-1">Vendas totais</p>
-            <h3 class="fw-bold mb-1">
-              {{ summary ? formatCompact(summary.vendasTotais) : '—' }}
-            </h3>
-            <p class="text-muted small mb-0">
-              <span class="material-icons align-middle" style="font-size:16px;color:#4CAF50">trending_up</span>
-              +12% vs mês anterior
-            </p>
+        <div class="col-sm-6 col-lg-3 mb-3" *ngFor="let kpi of kpiCards">
+          <div class="dash-card kpi-card h-100 p-3">
+            <div class="kpi-icon">
+              <span class="material-icons">{{ kpi.icon }}</span>
+            </div>
+            <p class="text-muted small mb-1">{{ kpi.label }}</p>
+            <h3 class="fw-bold mb-1">{{ kpi.value }}</h3>
+            <p class="text-muted small mb-0">{{ kpi.helper }}</p>
           </div>
         </div>
-
-        <!-- Valor total em vendas -->
-        <div class="col-sm-6 col-lg-3 mb-3">
-          <div class="card kpi-card h-100 p-3">
-            <p class="text-muted small mb-1">Valor total em vendas</p>
-            <h3 class="fw-bold mb-1">
-              {{ summary ? formatBRL(summary.valorTotalVendas) : '—' }}
-            </h3>
-            <div class="kpi-sparkline mt-1"></div>
-          </div>
-        </div>
-
-        <!-- Nº total de curtidas -->
-        <div class="col-sm-6 col-lg-3 mb-3">
-          <div class="card kpi-card h-100 p-3">
-            <p class="text-muted small mb-1">Nº total de curtidas</p>
-            <h3 class="fw-bold mb-1">
-              {{ summary ? formatCompact(summary.totalCurtidas) : '—' }}
-            </h3>
-            <span class="badge bg-success">+8%</span>
-          </div>
-        </div>
-
-        <!-- Ticket médio por venda -->
-        <div class="col-sm-6 col-lg-3 mb-3">
-          <div class="card kpi-card h-100 p-3">
-            <p class="text-muted small mb-1">Ticket médio por venda</p>
-            <h3 class="fw-bold mb-1">
-              {{ summary ? formatBRL(summary.ticketMedio) : '—' }}
-            </h3>
-            <p class="text-muted small mb-0">por licença vendida</p>
-          </div>
-        </div>
-
       </div>
 
       <!-- ════════ RESUMO FINANCEIRO ════════ -->
-      <div class="card mb-4 p-3" *ngIf="summary">
-        <h5 class="fw-bold mb-3">Resumo Financeiro</h5>
+      <div class="dash-card mb-4 p-3" *ngIf="summary">
+        <div class="block-title mb-3">
+          <h5 class="fw-bold">Resumo Financeiro</h5>
+          <p class="text-muted small">Saldo, saque e distribuição por tipo de licença</p>
+        </div>
         <div class="d-flex flex-wrap align-items-center gap-4">
 
           <!-- Saldo disponível — bloqueado Fase 1 -->
@@ -130,8 +100,8 @@
           <div class="divider-v d-none d-md-block" style="border-left:1px solid #dee2e6;height:48px"></div>
 
           <!-- Breakdown de licenças -->
-          <div *ngIf="summary.licencas" class="d-flex flex-wrap gap-4">
-            <div class="text-center">
+          <div *ngIf="summary.licencas" class="d-flex flex-wrap gap-3">
+            <div class="licenca-tile text-center">
               <p class="text-muted small mb-0">Básica</p>
               <p class="h6 fw-bold mb-0">
                 {{ formatCompact(summary.licencas.basica.quantidade) }}
@@ -140,7 +110,7 @@
                 {{ formatBRL(summary.licencas.basica.receita) }}
               </p>
             </div>
-            <div class="text-center">
+            <div class="licenca-tile text-center">
               <p class="text-muted small mb-0">Profissional</p>
               <p class="h6 fw-bold mb-0">
                 {{ formatCompact(summary.licencas.profissional.quantidade) }}
@@ -149,7 +119,7 @@
                 {{ formatBRL(summary.licencas.profissional.receita) }}
               </p>
             </div>
-            <div class="text-center">
+            <div class="licenca-tile text-center">
               <p class="text-muted small mb-0">Exclusiva</p>
               <p class="h6 fw-bold mb-0">
                 {{ formatCompact(summary.licencas.exclusiva.quantidade) }}
@@ -158,7 +128,7 @@
                 {{ formatBRL(summary.licencas.exclusiva.receita) }}
               </p>
             </div>
-            <div class="text-center">
+            <div class="licenca-tile text-center">
               <p class="text-muted small mb-0">Total licenças</p>
               <p class="h6 fw-bold mb-0">
                 {{ formatCompact(totalLicencas) }}
@@ -173,39 +143,42 @@
       <!-- Placeholder visual para os 4 gráficos que serão implementados na Fase 2 -->
       <div class="row mb-4">
         <div class="col-md-6 mb-3">
-          <div class="card p-3 h-100 d-flex align-items-center justify-content-center"
-               style="min-height:200px; border:2px dashed #dee2e6">
-            <span class="material-icons text-muted" style="font-size:40px">bar_chart</span>
-            <p class="text-muted small mt-2 mb-0">Origem das compras — Fase 2</p>
+          <div class="dash-card chart-placeholder p-3 h-100 d-flex flex-column align-items-center justify-content-center">
+            <span class="material-icons" style="font-size:40px">bar_chart</span>
+            <p class="small mt-2 mb-1">Origem das compras</p>
+            <span class="chart-placeholder-tag">Fase 2</span>
           </div>
         </div>
         <div class="col-md-6 mb-3">
-          <div class="card p-3 h-100 d-flex align-items-center justify-content-center"
-               style="min-height:200px; border:2px dashed #dee2e6">
-            <span class="material-icons text-muted" style="font-size:40px">stacked_bar_chart</span>
-            <p class="text-muted small mt-2 mb-0">Vendas por faixa — Fase 2</p>
+          <div class="dash-card chart-placeholder p-3 h-100 d-flex flex-column align-items-center justify-content-center">
+            <span class="material-icons" style="font-size:40px">stacked_bar_chart</span>
+            <p class="small mt-2 mb-1">Vendas por faixa</p>
+            <span class="chart-placeholder-tag">Fase 2</span>
           </div>
         </div>
         <div class="col-md-6 mb-3">
-          <div class="card p-3 h-100 d-flex align-items-center justify-content-center"
-               style="min-height:200px; border:2px dashed #dee2e6">
-            <span class="material-icons text-muted" style="font-size:40px">pie_chart</span>
-            <p class="text-muted small mt-2 mb-0">Receita por música — Fase 2</p>
+          <div class="dash-card chart-placeholder p-3 h-100 d-flex flex-column align-items-center justify-content-center">
+            <span class="material-icons" style="font-size:40px">pie_chart</span>
+            <p class="small mt-2 mb-1">Receita por música</p>
+            <span class="chart-placeholder-tag">Fase 2</span>
           </div>
         </div>
         <div class="col-md-6 mb-3">
-          <div class="card p-3 h-100 d-flex align-items-center justify-content-center"
-               style="min-height:200px; border:2px dashed #dee2e6">
-            <span class="material-icons text-muted" style="font-size:40px">show_chart</span>
-            <p class="text-muted small mt-2 mb-0">Curtidas vs Compras — Fase 2</p>
+          <div class="dash-card chart-placeholder p-3 h-100 d-flex flex-column align-items-center justify-content-center">
+            <span class="material-icons" style="font-size:40px">show_chart</span>
+            <p class="small mt-2 mb-1">Curtidas vs Compras</p>
+            <span class="chart-placeholder-tag">Fase 2</span>
           </div>
         </div>
       </div>
 
       <!-- ════════ TABELA DINÂMICA ════════ -->
-      <div class="card p-3 mb-5">
+      <div class="dash-card p-3 mb-5">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-          <h5 class="fw-bold mb-0">Faixas</h5>
+          <div class="block-title">
+            <h5 class="fw-bold">Faixas</h5>
+            <p class="text-muted small">Desempenho de vendas por faixa no período selecionado</p>
+          </div>
           <!-- Filtro destaque -->
           <mat-button-toggle-group
             [value]="filtroDestaque"
@@ -216,14 +189,20 @@
           </mat-button-toggle-group>
         </div>
 
+        <!-- Estado de erro parcial (summary OK, faixas falharam) -->
+        <div *ngIf="tracksError" class="alert alert-warning mb-0">
+          <span class="material-icons align-middle me-2">warning_amber</span>
+          Não foi possível carregar as faixas. Tente novamente mais tarde.
+        </div>
+
         <!-- Estado vazio -->
-        <div *ngIf="salesByTrackFiltered.length === 0" class="text-center py-4">
+        <div *ngIf="!tracksError && salesByTrackFiltered.length === 0" class="text-center py-4">
           <span class="material-icons text-muted" style="font-size:48px">music_off</span>
           <p class="text-muted mt-2">Nenhuma faixa encontrada para o filtro selecionado.</p>
         </div>
 
         <!-- Tabela -->
-        <div *ngIf="salesByTrackFiltered.length > 0" class="table-responsive">
+        <div *ngIf="!tracksError && salesByTrackFiltered.length > 0" class="table-responsive">
           <table class="table table-hover align-middle mb-0">
             <thead>
               <tr>
@@ -237,8 +216,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let track of salesByTrackFiltered">
-                <td class="fw-bold">{{ track.nome }}</td>
+              <tr *ngFor="let track of salesByTrackFiltered; trackBy: trackByTrackId">
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="track-badge">{{ initialOf(track.nome) }}</span>
+                    <span class="fw-bold">{{ track.nome }}</span>
+                  </div>
+                </td>
                 <td class="text-end">{{ formatCompact(track.compras) }}</td>
                 <td class="text-end">{{ formatBRL(track.receita) }}</td>
                 <td>{{ track.origemPrincipal }}</td>
@@ -250,11 +234,13 @@
                 <td>
                   <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-outline-secondary"
-                            ngbTooltip="Ver detalhes">
+                            disabled
+                            ngbTooltip="Disponível em breve">
                       <span class="material-icons" style="font-size:16px">visibility</span>
                     </button>
                     <button class="btn btn-sm btn-outline-warning"
-                            ngbTooltip="Promover">
+                            disabled
+                            ngbTooltip="Disponível em breve">
                       <span class="material-icons" style="font-size:16px">rocket_launch</span>
                     </button>
                     <button class="btn btn-sm btn-outline-secondary"
