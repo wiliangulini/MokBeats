@@ -94,7 +94,7 @@ Alterados **somente** arquivos dentro do escopo da Etapa 14A: os 3 arquivos do c
 
 ---
 
-## Execução — 2026-08-14 (fechamento)
+## Execução — 2026-08-14
 
 ### Resumo da etapa
 
@@ -158,6 +158,8 @@ Fora de escopo, mantido como pendência (decisão do usuário): botões "ASSINE 
 - `zoom: 90% !important` (linha ~401, faixa 1440–1600px) é propriedade não padronizada; não foi tocada por estar fora do escopo dos gaps identificados, mas fica sinalizada.
 - Botões "ASSINE JÁ" (3×) seguem sem `(click)`/`routerLink`, por decisão explícita de deixar como pendência até haver definição comercial/endpoint de checkout.
 
-### Status final da etapa
+## Status final da etapa
 
-**Aprovado.** Toggle 6/12 meses funciona como estado Angular real e sem reload (evidenciado por teste de DOM), os 3 blocos de tabs não têm `href` vazio, os 3 cards têm preços isolados em arquivo tipado e marcados como temporários, a regressão de CSS mobile introduzida na execução original foi corrigida, e build + suíte completa de testes passam sem regressão.
+Aprovado
+
+Toggle 6/12 meses funciona como estado Angular real e sem reload (evidenciado por teste de DOM), os 3 blocos de tabs não têm `href` vazio, os 3 cards têm preços isolados em arquivo tipado e marcados como temporários, a regressão de CSS mobile introduzida na execução original foi corrigida, e build + suíte completa de testes passam sem regressão.
