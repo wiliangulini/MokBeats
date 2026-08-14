@@ -9,7 +9,8 @@ section {
   padding: 5%;
   width: 100%;
 }
-input {
+input,
+textarea {
   margin-bottom: 4%;
   font-size: 18px;
   padding: 1% 0 1% 1%;
@@ -18,29 +19,40 @@ input {
   outline: none;
   text-decoration: none;
 }
-input.numeroCartao {
-  max-width: 62% !important;
+textarea {
+  resize: vertical;
 }
 h1.titleInt {
   font-size: 35px;
 }
-section .container-fluid .row form button.btn-warning {
+.editarPerfil {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #4B3A8F;
+}
+.resumoItem {
+  border-bottom: 1px solid #DDD;
+  padding: 12px 0;
+}
+.resumoItem:last-of-type {
+  border-bottom: 0;
+}
+.btn-warning {
   background-color: #4B3A8F;
   border: 0;
-  padding: 1.25% 0;
+  padding: 14px 32px;
   border-radius: 30px;
   margin: 4% 0;
   transition: all .35s linear;
   color: #FFF;
-  width: 50%;
   font-weight: bold;
 }
-section .container-fluid .row form button.btn-warning:hover {
+.btn-warning:hover {
   box-shadow: 0 0 10px 0 #4B3A8F !important;
   border: 1px solid #4B3A8F !important;
   background-color: #FFF !important;
   color: #4B3A8F !important;
-  padding: 1.5% 0 !important;
 }
 small {
   position: relative;
@@ -54,21 +66,35 @@ small.total .h6.h5.font-weight-bold.text-uppercase {
 p.h5.mb-5 {
   font-size: 18px !important;
 }
+.estadoVazio .cartIcon,
+.confirmacao .check_circle {
+  font-size: 72px;
+  margin-bottom: 2%;
+}
+.confirmacao .check_circle {
+  color: #28a745;
+}
+.confirmacao .aviso {
+  max-width: 520px;
+  color: #6c757d;
+}
+.resumoConfirmado {
+  max-width: 480px;
+  text-align: left;
+}
 
 /* Responsividade */
 @media (max-width: 575.98px) {
   section { margin-top: 8vh; padding: 24px 0; }
   h1.titleInt { font-size: 26px; }
   .card { padding: 20px; }
-  input { font-size: 16px; }
-  input.numeroCartao { max-width: 100% !important; }
+  input, textarea { font-size: 16px; }
   section .container-fluid .row { width: 100% !important; margin: 0; }
-  section .container-fluid .row form button.btn-warning { width: 100%; padding: 12px 0; }
+  .btn-warning { width: 100%; padding: 12px 0; }
   .matRadioBtn { margin-right: 8px; }
 }
 @media (min-width: 768px) and (max-width: 1024.98px) {
   section .container-fluid .row { width: 90%; }
-  section .container-fluid .row form button.btn-warning { width: 75%; }
 }
 @media (min-width: 1440px) {
   section { padding: 3% 0; }

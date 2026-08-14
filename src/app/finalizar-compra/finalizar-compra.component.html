@@ -1,59 +1,100 @@
-<section>
-  <div class="container-fluid d-flex justify-content-center">
+<section [ngSwitch]="checkoutState">
+
+  <div *ngSwitchCase="'vazio'" class="container-fluid d-flex flex-column align-items-center justify-content-center py-5 estadoVazio">
+    <span class="material-icons cartIcon">shopping_cart</span>
+    <p class="h2 fw-bold text-center">Seu carrinho está vazio</p>
+    <p class="h6 text-center mb-4">Escolha uma licença em nossas músicas antes de finalizar a compra.</p>
+    <a class="btn btn-warning fw-bold text-uppercase" [routerLink]="['/musicas']">Visite nossas Músicas</a>
+  </div>
+
+  <div *ngSwitchCase="'confirmado'" class="container-fluid d-flex flex-column align-items-center justify-content-center py-5 confirmacao">
+    <span class="material-icons check_circle">check_circle</span>
+    <p class="h2 fw-bold text-center mb-2">Pedido simulado registrado</p>
+    <p class="h6 text-center mb-4 aviso">
+      Esta etapa ainda não está integrada a um endpoint real de pedido nem a um gateway de pagamento.
+      Nenhuma cobrança foi realizada e nenhum pedido foi enviado ao servidor.
+    </p>
+    <div class="card resumoConfirmado" *ngIf="pedidoSimulado as pedido">
+      <p class="mb-1"><strong>Projeto:</strong> {{ pedido.nomeProjeto }}</p>
+      <p class="mb-1" *ngIf="pedido.observacoes"><strong>Observações:</strong> {{ pedido.observacoes }}</p>
+      <p class="mb-1"><strong>Forma de pagamento:</strong> {{ pedido.formaDePagamento }}</p>
+      <p class="mb-1"><strong>Itens:</strong> {{ pedido.itens.length }}</p>
+      <p class="mb-0"><strong>Total:</strong> {{ formatPrice(pedido.total) }}</p>
+    </div>
+    <a class="btn btn-warning fw-bold text-uppercase mt-4" [routerLink]="['/musicas']">Voltar para Músicas</a>
+  </div>
+
+  <div *ngSwitchDefault class="container-fluid d-flex justify-content-center">
     <div class="row w-75 justify-content-between">
       <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
         <div class="title mb-5">
           <h1 class="titleInt fw-bold mb-3">Finalizar a Compra</h1>
-          <p class="h6">Verifique as suas informações de pagamento</p>
+          <p class="h6">Revise o pedido e confirme o fechamento</p>
         </div>
-        <form class="d-flex flex-column justify-content-center align-items-center" [formGroup]="form">
+        <form class="d-flex flex-column justify-content-center align-items-center" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="alert alert-danger w-100" *ngIf="submitted && errorSummary.length" role="alert">
+            <p class="fw-bold mb-1">Revise os campos abaixo:</p>
+            <ul class="mb-0">
+              <li *ngFor="let erro of errorSummary">{{ erro }}</li>
+            </ul>
+          </div>
+
+          <div class="card mb-4">
+            <p class="h4 fw-bold mb-4">Detalhes do projeto</p>
+            <input type="text" formControlName="nomeProjeto" placeholder="Nome do projeto *" class="w-100" required/>
+            <textarea formControlName="observacoes" placeholder="Observações ou comentários (opcional)" class="w-100" rows="3"></textarea>
+          </div>
+
           <div class="card mb-4">
             <p class="h4 fw-bold mb-4">Endereço de cobrança</p>
-            <input type="text" formControlName="nomeContato" placeholder="Nome de Contato" class="w-100" required/>
-            <input type="text" formControlName="nomeEmpresa" placeholder="Nome da Empresa" class="w-100" />
-            <input type="number" formControlName="numberPhone" placeholder="Número de Telefone" class="w-100" required/>
-            <input type="text" formControlName="endereco" placeholder="Endereço" class="w-100" required/>
-            <input type="text" formControlName="cidade" placeholder="Cidade" class="w-100" required/>
-            <input type="text" formControlName="cep" placeholder="CEP" class="w-100" required/>
+            <ng-container *ngIf="perfil?.endereco; else semPerfil">
+              <p class="mb-1">{{ perfil?.nomeCompleto }}</p>
+              <p class="mb-1">{{ perfil?.endereco }}</p>
+              <p class="mb-1">
+                {{ perfil?.cidade }}<span *ngIf="perfil?.estado">, {{ perfil?.estado }}</span><span *ngIf="perfil?.cep"> · CEP {{ perfil?.cep }}</span>
+              </p>
+            </ng-container>
+            <ng-template #semPerfil>
+              <p class="mb-1">Nenhum dado de cobrança encontrado no seu perfil.</p>
+            </ng-template>
+            <a class="editarPerfil" [routerLink]="['/atualizar-informacoes']">Editar dados de cobrança</a>
           </div>
+
           <div class="card mb-5">
             <p class="h4 fw-bold mb-4">Forma de Pagamento</p>
             <mat-radio-group
-              aria-label="Cartão de Crédito"
+              aria-label="Forma de pagamento"
               formControlName="formaDePagamento"
-              (change)="changeCard($event)"
-              [(ngModel)]="formaPagamento"
               class="d-flex align-items-center justify-content-between w-100"
             >
-              <mat-radio-button class="matRadioBtn" *ngFor="let fp of formaPag;" [checked]="formaPagamento === fp.value" [value]="fp.value">{{fp["viewValue"]}}</mat-radio-button>
+              <mat-radio-button class="matRadioBtn" *ngFor="let fp of formaPag;" [value]="fp.value">{{fp.viewValue}}</mat-radio-button>
             </mat-radio-group>
-            <div *ngIf="formaPagamento === cartao" class="control d-flex flex-column justify-content-center align-items-center mt-4">
-              <input class="w-100" type="text" formControlName="nomeCartao" placeholder="Nome no cartão" required/>
-              <div class="controlInt d-flex justify-content-center align-items-center">
-                <input class="col-sm-8 col-md-8 col-lg-8 col-xl-8 ms-0 mt-0 mb-0 me-1 p-0 numeroCartao" type="text" formControlName="numeroCartao" placeholder="Número no cartão" required/>
-                <input class="col-sm-2 col-md-2 col-lg-2 col-xl-2 p-0 me-2 ms-2 mb-0 mt-0" type="text" formControlName="mes_ano" placeholder="MM/AA" required/>
-                <input class="col-sm-2 col-md-2 col-lg-2 col-xl-2 me-0 mt-0 mb-0 ms-1 p-0" type="text" formControlName="cvc" placeholder="CVC" required/>
-              </div>
-            </div>
           </div>
 
           <div class="mat-checkbox mb-3">
-            <mat-checkbox formControlName="termos_licenca">Eu li e aceito os termos do Contrato de licença da MokBeats</mat-checkbox>
+            <mat-checkbox formControlName="aceiteTermos">Eu li e aceito os termos do Contrato de licença da MokBeats</mat-checkbox>
           </div>
-          <button class="btn-warning fw-bold text-center text-uppercase">Conclua Seu Pedido</button>
+          <button class="btn-warning fw-bold text-center text-uppercase" type="submit">Concluir pedido</button>
         </form>
       </div>
       <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 m-0 p-0">
         <p class="h2 mb-3">Resumo do pedido</p>
-        <p class="h5 mb-5">No Seu Carrinho</p>
-        <p class="h6 mb-4 w-50">Assinatura mensal de músicas 5 Licenças Padrão por mês</p>
+        <p class="h5 mb-4">No seu carrinho ({{ musics.length }})</p>
+        <div class="resumoItem d-flex justify-content-between align-items-center" *ngFor="let music of musics">
+          <div>
+            <p class="mb-0 fw-bold">{{ music.nome_musica }}</p>
+            <small>{{ music.licencaSelecionada.nome }} · {{ music.planoSelecionado.nome }}</small>
+          </div>
+          <strong>{{ formatPrice(music.planoSelecionado.preco) }}</strong>
+        </div>
         <hr>
-        <small>Você será cobrado mensalmente até que a assinatura seja cancelada. Cancele quando quiser nas configurações da sua conta. Os créditos de download não utilizados não são acumulados para o mês seguinte. Consulte as <a [routerLink]="['/faq']" >Perguntas frequentes para mais detalhes</a>.</small>
+        <small>Consulte as <a [routerLink]="['/faq']">Perguntas frequentes para mais detalhes</a>.</small>
         <div class="total d-flex justify-content-end align-items-center mt-4">
-          <p class="h5 fw-bold text-uppercase">total em R$ {{ total }}</p>
+          <p class="h5 fw-bold text-uppercase">total em {{ formatPrice(total) }}</p>
         </div>
         <p class="h6 mt-5 d-flex justify-content-center align-items-center mb-0 p-0"><span class="material-icons me-1">check_circle</span> Compras 100% Seguras</p>
       </div>
     </div>
   </div>
+
 </section>

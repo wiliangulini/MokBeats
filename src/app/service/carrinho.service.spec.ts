@@ -47,6 +47,12 @@ describe('CarrinhoService', () => {
         return count;
     };
 
+    const getCartTotal = (): number => {
+        let total = 0;
+        service.cartTotal$.subscribe((value) => (total = value)).unsubscribe();
+        return total;
+    };
+
     beforeEach(() => {
         modalService = {
             open: vi.fn().mockName("NgbModal.open")
@@ -191,5 +197,60 @@ describe('CarrinhoService', () => {
         });
 
         expect(emissions).toEqual([0, 1]);
+    });
+
+    it('should expose cartTotal$ as the sum of the selected plans', () => {
+        const monthlyItem: CartItem = { ...music, ...monthlySelection };
+        const sixMonthItem: CartItem = {
+            ...music,
+            id: 2,
+            licencaSelecionada: standardLicense,
+            planoSelecionado: sixMonthPlan,
+        };
+
+        expect(getCartTotal()).toBe(0);
+
+        service.receivingCart(monthlyItem);
+        expect(getCartTotal()).toBe(49.99);
+
+        service.receivingCart(sixMonthItem);
+        expect(getCartTotal()).toBe(249.98);
+    });
+
+    it('should remove a matching item from the cart', () => {
+        const monthlyItem: CartItem = { ...music, ...monthlySelection };
+        const sixMonthItem: CartItem = {
+            ...music,
+            id: 2,
+            licencaSelecionada: standardLicense,
+            planoSelecionado: sixMonthPlan,
+        };
+
+        service.receivingCart(monthlyItem);
+        service.receivingCart(sixMonthItem);
+
+        const remaining = service.removeItem(monthlyItem);
+
+        expect(remaining).toEqual([sixMonthItem]);
+        expect(service.receivingCart2()).toEqual([sixMonthItem]);
+        expect(getCartCount()).toBe(1);
+        expect(getCartTotal()).toBe(199.99);
+    });
+
+    it('should be a no-op when removing an item that is not in the cart', () => {
+        const monthlyItem: CartItem = { ...music, ...monthlySelection };
+        const unrelatedItem: CartItem = {
+            id: 99,
+            nome_musica: 'Outra faixa',
+            nome_produtor: 'Outro produtor',
+            licencaSelecionada: standardLicense,
+            planoSelecionado: sixMonthPlan,
+        };
+
+        service.receivingCart(monthlyItem);
+        const result = service.removeItem(unrelatedItem);
+
+        expect(result).toEqual([monthlyItem]);
+        expect(getCartCount()).toBe(1);
     });
 });
