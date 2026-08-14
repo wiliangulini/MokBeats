@@ -1,6 +1,5 @@
-import {AfterContentInit, Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy} from '@angular/core';
-import {FormBuilder, FormGroup, Validators,} from "@angular/forms";
-import { HttpClient } from "@angular/common/http";
+import {AfterContentInit, Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Subscription} from "rxjs";
 import {CarrinhoService} from "../service/carrinho.service";
 import {CartItem} from "./cartModal/cart-modal.models";
 
@@ -11,67 +10,38 @@ import {CartItem} from "./cartModal/cart-modal.models";
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
-export class CarrinhoComponent implements OnInit, AfterContentInit {
+export class CarrinhoComponent implements OnInit, AfterContentInit, OnDestroy {
 
   nav: any;
 
-  numberMusic!: number;
+  numberMusic: number = 0;
   musics: CartItem[] = [];
-  form!: FormGroup;
-  cidadeJson: any = '../../assets/json/Cidades.json';
-  estadoJson: any = '../../assets/json/Estados.json';
-  paisJson: any = '../../assets/json/locale_MUN.json';
   price: number = 0;
-  cidades: any[] = [];
-  estados: any[] = [];
-  pais: any[] = [];
   insert: boolean = false;
+
   private readonly currencyFormatter = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   });
+  private cartItemsSubscription!: Subscription;
+  private cartTotalSubscription!: Subscription;
 
   constructor(
-    private fb: FormBuilder,
-    private http: HttpClient,
     private cartService: CarrinhoService,
-  ) {
-    this.form = this.fb.group({
-      nomeProjeto: [''],
-      observacoes: [''],
-      nomeContato: ['', Validators.required],
-      endereco: ['', Validators.required],
-      enderecoLinha2: [''],
-      pais: ['', Validators.required],
-      estado: ['', Validators.required],
-      cidade: ['', Validators.required],
-      cep: ['', Validators.required],
-      credito: [''],
-      termosLicensa: ['', Validators.required],
-    });
-  }
+  ) {}
+
   ngOnInit(): void {
-    this.http.get<any>(this.paisJson).subscribe((data: any) => {
-      console.log(data);
-      this.pais = data;
+    this.cartItemsSubscription = this.cartService.cartItems$.subscribe((items) => {
+      this.musics = items;
+      this.numberMusic = items.length;
+      this.insert = items.length > 0;
     });
-    this.http.get<any>(this.estadoJson).subscribe((data: any) => {
-      console.log(data);
-      this.estados = data;
+    this.cartTotalSubscription = this.cartService.cartTotal$.subscribe((total) => {
+      this.price = total;
     });
-    this.http.get<any>(this.cidadeJson).subscribe((data: any) => {
-      console.log(data);
-      this.cidades = data;
-    });
-    this.musics = this.cartService.receivingCart2();
-    this.numberMusic = this.musics.length;
-    this.numberMusic > 0 ? this.insert = true : this.insert = false;
-    this.price = this.calculateTotal(this.musics);
-    console.log('carrinho: ', this.musics);
   }
 
   ngAfterContentInit() {
-    console.log(this.price);
     this.nav = document.querySelector('nav');
     let url: string = location.href;
     let newUrl = url.slice(-8);
@@ -80,21 +50,21 @@ export class CarrinhoComponent implements OnInit, AfterContentInit {
     }
   }
 
-  calculateTotal(items: CartItem[]): number {
-    const totalInCents = items.reduce(
-      (total, item) => total + Math.round(item.planoSelecionado.preco * 100),
-      0
-    );
+  ngOnDestroy(): void {
+    if (this.cartItemsSubscription) {
+      this.cartItemsSubscription.unsubscribe();
+    }
+    if (this.cartTotalSubscription) {
+      this.cartTotalSubscription.unsubscribe();
+    }
+  }
 
-    return totalInCents / 100;
+  removeItem(item: CartItem): void {
+    this.cartService.removeItem(item);
   }
 
   formatPrice(price: number): string {
     return this.currencyFormatter.format(price);
-  }
-
-  onSubmit(data: any) {
-    console.log(data);
   }
 
 }

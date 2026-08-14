@@ -23,6 +23,9 @@ export class CarrinhoService {
   public readonly cartCount$: Observable<number> = this.cartItems$.pipe(
     map((items) => items.length)
   );
+  public readonly cartTotal$: Observable<number> = this.cartItems$.pipe(
+    map((items) => this.calculateTotal(items))
+  );
 
   constructor(
     private modalService: NgbModal,
@@ -43,7 +46,25 @@ export class CarrinhoService {
   public receivingCart2(): CartItem[] {
     return this.cartItemsSubject.value;
   }
-  
+
+  public removeItem(elm: CartItem): CartItem[] {
+    const nextItems = this.cartItemsSubject.value.filter(
+      (item) => !this.isSameCartItem(item, elm)
+    );
+    this.cartItemsSubject.next(nextItems);
+
+    return nextItems;
+  }
+
+  private calculateTotal(items: CartItem[]): number {
+    const totalInCents = items.reduce(
+      (total, item) => total + Math.round(item.planoSelecionado.preco * 100),
+      0
+    );
+
+    return totalInCents / 100;
+  }
+
   public openModalCart(music: Musica): Promise<CartItem | null> {
     const activeModal = this.modalService.open(CartModalComponent, {
       size: 'lg',
