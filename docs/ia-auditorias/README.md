@@ -47,7 +47,7 @@ Legenda: **Preenchido** = conteúdo real · **Modelo** = stub não preenchido ("
 | R25 | FAQ — navegação, visual, responsividade | Preenchido | `buyer-flow` |
 | R26 | Carrinho — modelo de item, contador, licença | Preenchido | `license-cart-checkout` |
 | R27 | Checkout — fechamento de pedido | Preenchido | `license-cart-checkout` |
-| R28 | QA final — regressão completa | Modelo | `validacao-qa` |
+| R28 | QA final — regressão completa | Preenchido | `validacao-qa` |
 
 ## Outros arquivos da pasta
 
@@ -59,5 +59,5 @@ Legenda: **Preenchido** = conteúdo real · **Modelo** = stub não preenchido ("
   do Plano P0 v2.2 (remediação de vulnerabilidades de dependências), arquivados após merge do PR
   #2 em `dev` (commit `20569dc`). Backend encerrado com 0 vulnerabilidades no `npm audit`.
 
-> O relatório **Modelo** (R28) é um stub planejado: preencha-o ao executar a etapa correspondente,
-> não o trate como auditoria concluída.
+> Todos os relatórios R01–R28 estão **Preenchidos**. Ao planejar uma etapa nova, crie o próximo Rxx
+> como stub **Modelo** e só o trate como auditoria concluída depois de preenchido.
