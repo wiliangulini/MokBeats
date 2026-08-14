@@ -21,7 +21,7 @@ Legenda: **Preenchido** = conteúdo real · **Modelo** = stub não preenchido ("
 | Rxx | Tema | Status | Área/Rule relacionada |
 |---|---|---|---|
 | R01 | Auditoria inicial da branch `dev` | Preenchido | geral |
-| R02 | Auditoria branch dashboard (codex) | **Vazio** | `producer-dashboard` |
+| R02 | Auditoria branch dashboard (codex) | Preenchido | `producer-dashboard` |
 | R03 | Comparação `dev` vs dashboard (codex) | Preenchido | `producer-dashboard` |
 | R04 | Header/footer — links globais | Preenchido | `buyer-flow` |
 | R05 | Home — navegação institucional | Preenchido | `buyer-flow` |
@@ -60,5 +60,4 @@ Legenda: **Preenchido** = conteúdo real · **Modelo** = stub não preenchido ("
   #2 em `dev` (commit `20569dc`). Backend encerrado com 0 vulnerabilidades no `npm audit`.
 
 > O relatório **Modelo** (R28) é um stub planejado: preencha-o ao executar a etapa correspondente,
-> não o trate como auditoria concluída. R02 está vazio e deve ser refeito ou descartado quando a
-> etapa de dashboard for auditada.
+> não o trate como auditoria concluída.
