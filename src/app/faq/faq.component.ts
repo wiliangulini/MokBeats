@@ -14,7 +14,8 @@ export class FaqComponent implements OnInit {
   @ViewChild('control', {static: true}) control!:ElementRef;
 
   @HostListener('window:scroll') onWindowScroll() {
-    if (window.scrollY < 657) {
+    const isDesktopLayout = window.innerWidth > 575.98;
+    if (!isDesktopLayout || window.scrollY < 657) {
       this.menuL.nativeElement.style.position = 'initial';
       this.control.nativeElement.style.marginLeft = '0%';
     } else {
@@ -22,6 +23,10 @@ export class FaqComponent implements OnInit {
       this.menuL.nativeElement.style.top = '10%';
       this.control.nativeElement.style.marginLeft = '25%';
     }
+  }
+
+  @HostListener('window:resize') onWindowResize() {
+    this.onWindowScroll();
   }
 
   menuLeft: Array<any> = [
