@@ -42,8 +42,8 @@ Legenda: **Preenchido** = conteúdo real · **Modelo** = stub não preenchido ("
 | R20 | Área do produtor — menu, rotas, proteção | Preenchido | `auth-and-guards` / `producer-dashboard` |
 | R21 | Dashboard produtor — contrato de dados | Preenchido | `producer-dashboard` / `api-contracts` |
 | R22 | Dashboard produtor — visual (branch codex) | Preenchido | `producer-dashboard` |
-| R23 | Dashboard produtor — gráficos, estados, responsividade | Modelo | `producer-dashboard` |
-| R24 | Pricing — toggle e cards responsivos | Modelo | `license-cart-checkout` |
+| R23 | Dashboard produtor — gráficos, estados, responsividade | Preenchido | `producer-dashboard` |
+| R24 | Pricing — toggle e cards responsivos | Preenchido | `license-cart-checkout` |
 | R25 | FAQ — navegação, visual, responsividade | Modelo | `buyer-flow` |
 | R26 | Carrinho — modelo de item, contador, licença | Modelo | `license-cart-checkout` |
 | R27 | Checkout — fechamento de pedido | Modelo | `license-cart-checkout` |
@@ -59,6 +59,6 @@ Legenda: **Preenchido** = conteúdo real · **Modelo** = stub não preenchido ("
   do Plano P0 v2.2 (remediação de vulnerabilidades de dependências), arquivados após merge do PR
   #2 em `dev` (commit `20569dc`). Backend encerrado com 0 vulnerabilidades no `npm audit`.
 
-> Os relatórios **Modelo** (R23–R28) são stubs planejados: preencha-os ao executar a etapa
+> Os relatórios **Modelo** (R25–R28) são stubs planejados: preencha-os ao executar a etapa
 > correspondente, não os trate como auditoria concluída. R02 está vazio e deve ser refeito ou
 > descartado quando a etapa de dashboard for auditada.
