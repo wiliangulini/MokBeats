@@ -16,6 +16,13 @@ import {
   formatCompact,
 } from './dashboard.models';
 
+interface KpiCard {
+  icon: string;
+  label: string;
+  value: string;
+  helper: string;
+}
+
 @Component({
     selector: 'app-dashboard-produtor',
     templateUrl: './dashboard-produtor.component.html',
@@ -34,10 +41,12 @@ export class DashboardProdutorComponent implements OnInit, OnDestroy {
 
   loading = false;
   loadError = false;
+  tracksError = false;
 
   summary: DashboardSummary | null = null;
   salesByTrack: TrackSales[] = [];
   salesByOrigin: SalesByOrigin[] = [];
+  kpiCards: KpiCard[] = [];
 
   // Perfil do produtor (nome para o cabeçalho)
   nomeProdutor = '';
@@ -86,13 +95,24 @@ export class DashboardProdutorComponent implements OnInit, OnDestroy {
     return basica.quantidade + profissional.quantidade + exclusiva.quantidade;
   }
 
+  trackByTrackId(_index: number, track: TrackSales): number {
+    return track.trackId;
+  }
+
+  initialOf(nome: string): string {
+    return (nome ?? '').trim().charAt(0).toUpperCase() || '—';
+  }
+
   private loadData(): void {
     this.loading = true;
     this.loadError = false;
+    this.tracksError = false;
 
     combineLatest([
       this.dashboardService.getSummary().pipe(catchError(() => of(null))),
-      this.dashboardService.getSalesByTrack(this.selectedPeriod).pipe(catchError(() => of([]))),
+      this.dashboardService.getSalesByTrack(this.selectedPeriod).pipe(
+        catchError(() => { this.tracksError = true; return of([]); })
+      ),
       this.dashboardService.getSalesByOrigin(this.selectedPeriod).pipe(catchError(() => of([]))),
     ]).pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -100,6 +120,7 @@ export class DashboardProdutorComponent implements OnInit, OnDestroy {
           this.summary = summary;
           this.salesByTrack = salesByTrack;
           this.salesByOrigin = salesByOrigin;
+          this.kpiCards = this.buildKpiCards(summary);
           this.loading = false;
           if (!summary) this.loadError = true;
         },
@@ -108,5 +129,34 @@ export class DashboardProdutorComponent implements OnInit, OnDestroy {
           this.loadError = true;
         }
       });
+  }
+
+  private buildKpiCards(summary: DashboardSummary | null): KpiCard[] {
+    return [
+      {
+        icon: 'shopping_bag',
+        label: 'Vendas totais',
+        value: summary ? formatCompact(summary.vendasTotais) : '—',
+        helper: 'licenças vendidas',
+      },
+      {
+        icon: 'payments',
+        label: 'Valor total em vendas',
+        value: summary ? formatBRL(summary.valorTotalVendas) : '—',
+        helper: 'receita bruta no período',
+      },
+      {
+        icon: 'favorite',
+        label: 'Nº total de curtidas',
+        value: summary ? formatCompact(summary.totalCurtidas) : '—',
+        helper: 'curtidas acumuladas',
+      },
+      {
+        icon: 'confirmation_number',
+        label: 'Ticket médio por venda',
+        value: summary ? formatBRL(summary.ticketMedio) : '—',
+        helper: 'por licença vendida',
+      },
+    ];
   }
 }
