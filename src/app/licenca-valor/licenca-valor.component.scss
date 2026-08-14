@@ -32,10 +32,13 @@ section.one .container {
 }
 #myTab2 .nav-item a,
 #myTab2 .nav-item button,
+#myTab2 .nav-item span,
 #myTab1 .nav-item a,
 #myTab1 .nav-item button,
+#myTab1 .nav-item span,
 #myTab .nav-item a,
-#myTab .nav-item button {
+#myTab .nav-item button,
+#myTab .nav-item span {
   border-radius: 50px;
   color: #233d63;
   font-size: 20px;
@@ -46,12 +49,20 @@ section.one .container {
   width: 100%;
   cursor: pointer;
 }
+/* #myTab e #myTab2 são rótulos estáticos (sem alternância) — sem cursor de clique. */
+#myTab .nav-item span,
+#myTab2 .nav-item span {
+  cursor: default;
+}
 #myTab2 .nav-item a.active,
 #myTab2 .nav-item button.active,
+#myTab2 .nav-item span.active,
 #myTab1 .nav-item a.active,
 #myTab1 .nav-item button.active,
+#myTab1 .nav-item span.active,
 #myTab .nav-item a.active,
-#myTab .nav-item button.active {
+#myTab .nav-item button.active,
+#myTab .nav-item span.active {
   background-color: #4b3a8f;
   color: white;
 }
@@ -117,12 +128,10 @@ section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.two {
   z-index: 2;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
-@media (max-width: 992px) {
+@media (max-width: 991.98px) {
   .card-footer {
     text-align: center;
   }
-}
-@media (max-width: 991.98px) {
   section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.one,
   section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.two,
   section.one .container .row .col-sm-6.col-md-6.col-lg-6.col-xl-6.card.three {
@@ -469,8 +478,14 @@ section.faq.access
     border-radius: 16px;
   }
   #myTab .nav-item a,
+  #myTab .nav-item button,
+  #myTab .nav-item span,
   #myTab1 .nav-item a,
-  #myTab2 .nav-item a {
+  #myTab1 .nav-item button,
+  #myTab1 .nav-item span,
+  #myTab2 .nav-item a,
+  #myTab2 .nav-item button,
+  #myTab2 .nav-item span {
     font-size: 16px;
   }
   section.two {

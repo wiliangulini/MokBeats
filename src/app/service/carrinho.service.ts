@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CartModalComponent } from '../carrinho/cartModal/cart-modal.component';
 import {
   CartItem,
@@ -12,35 +14,57 @@ import { Musica } from '../musicas/musicas.service';
 })
 export class CarrinhoService {
 
-  music: CartItem[] = [];
-  
+  // Estado em memória (singleton `providedIn: 'root'`): não há persistência em
+  // localStorage/backend, então o carrinho é perdido em reload de página ou
+  // nova aba. Ver docs/ia-auditorias/R26-carrinho-modelo-item-contador-licenca.md.
+  private readonly cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
+
+  public readonly cartItems$: Observable<CartItem[]> = this.cartItemsSubject.asObservable();
+  public readonly cartCount$: Observable<number> = this.cartItems$.pipe(
+    map((items) => items.length)
+  );
+  public readonly cartTotal$: Observable<number> = this.cartItems$.pipe(
+    map((items) => this.calculateTotal(items))
+  );
+
   constructor(
     private modalService: NgbModal,
     ) { }
-  
+
   public receivingCart(elm: CartItem): CartItem[] {
-    const isDuplicate = this.music.some((item) =>
+    const currentItems = this.cartItemsSubject.value;
+    const isDuplicate = currentItems.some((item) =>
       this.isSameCartItem(item, elm)
     );
 
-    if (!isDuplicate) {
-      this.music.push(elm);
-    }
+    const nextItems = isDuplicate ? currentItems : [...currentItems, elm];
+    this.cartItemsSubject.next(nextItems);
 
-    const cartCounter = document.querySelector<HTMLElement>('#ms_number');
-
-    if (cartCounter) {
-      cartCounter.textContent = String(this.music.length);
-      cartCounter.style.display = this.music.length > 0 ? 'flex' : 'none';
-    }
-
-    return this.music;
+    return nextItems;
   }
 
   public receivingCart2(): CartItem[] {
-    return this.music;
+    return this.cartItemsSubject.value;
   }
-  
+
+  public removeItem(elm: CartItem): CartItem[] {
+    const nextItems = this.cartItemsSubject.value.filter(
+      (item) => !this.isSameCartItem(item, elm)
+    );
+    this.cartItemsSubject.next(nextItems);
+
+    return nextItems;
+  }
+
+  private calculateTotal(items: CartItem[]): number {
+    const totalInCents = items.reduce(
+      (total, item) => total + Math.round(item.planoSelecionado.preco * 100),
+      0
+    );
+
+    return totalInCents / 100;
+  }
+
   public openModalCart(music: Musica): Promise<CartItem | null> {
     const activeModal = this.modalService.open(CartModalComponent, {
       size: 'lg',

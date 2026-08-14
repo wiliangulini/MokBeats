@@ -10,16 +10,15 @@
             <p class="h3 fw-bold">Assinatura Mensal</p>
           </div>
           <div class="card-body">
-            <ul id="myTab" class="nav nav-tabs" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button id="home-tab" type="button" class="nav-link active" role="tab" aria-controls="home"
-                  aria-selected="true">Mensalmente</button>
+            <ul id="myTab" class="nav nav-tabs">
+              <li class="nav-item">
+                <span class="nav-link active">{{ assinaturaMensal.tabLabel }}</span>
               </li>
             </ul>
             <div class="cardInt priceDad d-flex flex-column align-items-center justify-content-center">
               <div class="price d-flex justify-content-center align-items-center">
-                <p class="h2 fw-bold">R$49,99</p>
-                <p class="h6 m-0 fw-bold">/mês</p>
+                <p class="h2 fw-bold">{{ assinaturaMensal.precoLabel }}</p>
+                <p class="h6 m-0 fw-bold">{{ assinaturaMensal.periodoLabel }}</p>
               </div>
               <div class="priceMsg d-flex justify-content-center align-items-center">
                 <small class="small">Cobrado mensalmente</small>
@@ -61,14 +60,13 @@
             <p class="h3 fw-bold text-center">Por Tempo Determinado</p>
           </div>
           <div class="card-body">
-            <ul id="myTab1" class="nav nav-tabs" role="tablist">
-              <li class="nav-item" role="presentation" *ngFor="let periodo of periodosLicencaMusica">
+            <ul id="myTab1" class="nav nav-tabs" role="group" aria-label="Período da licença">
+              <li class="nav-item" *ngFor="let periodo of periodosLicencaMusica">
                 <button
                   type="button"
                   class="nav-link"
                   [class.active]="periodoLicencaMusicaSelecionado === periodo.value"
-                  role="tab"
-                  [attr.aria-selected]="periodoLicencaMusicaSelecionado === periodo.value"
+                  [attr.aria-pressed]="periodoLicencaMusicaSelecionado === periodo.value"
                   (click)="selecionarPeriodoLicencaMusica(periodo.value)">{{ periodo.label }}</button>
               </li>
             </ul>
@@ -117,16 +115,15 @@
             <p class="h3 fw-bold text-center effect_sons">Licenças de Efeitos Sonoros</p>
           </div>
           <div class="card-body">
-            <ul id="myTab2" class="nav nav-tabs" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button id="home-tab2" type="button" class="nav-link active" role="tab" aria-controls="home"
-                  aria-selected="true">Vitalício</button>
+            <ul id="myTab2" class="nav nav-tabs">
+              <li class="nav-item">
+                <span class="nav-link active">{{ licencaEfeitosSonoros.tabLabel }}</span>
               </li>
             </ul>
             <div class="cardInt priceDad d-flex flex-column align-items-center justify-content-center">
               <div class="price d-flex justify-content-center align-items-center">
-                <p class="h2 fw-bold">R$4,99</p>
-                <p class="h6 m-0 fw-bold">/vitalício</p>
+                <p class="h2 fw-bold">{{ licencaEfeitosSonoros.precoLabel }}</p>
+                <p class="h6 m-0 fw-bold">{{ licencaEfeitosSonoros.periodoLabel }}</p>
               </div>
             </div>
             <div class="cardInt btn d-flex justify-content-center align-items-center">

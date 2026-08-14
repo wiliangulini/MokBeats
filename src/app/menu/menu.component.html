@@ -77,7 +77,7 @@
         <li routerLinkActive="active" class="nav-item">
           <a class="nav-link cart-link" [routerLink]="['/carrinho']" (click)="closeNav()">
             <span class="material-icons">shopping_cart</span>
-            <small id="ms_number">0</small>
+            <small id="ms_number" *ngIf="cartCount > 0">{{ cartCount }}</small>
             <span class="txt-mobile">Carrinho</span>
           </a>
         </li>

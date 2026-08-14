@@ -27,19 +27,13 @@ export class MenuComponent implements OnInit, OnDestroy {
   isUserLoggedIn: boolean = false;
   private authSubscription!: Subscription;
 
+  // Contador do carrinho (via observable do CarrinhoService, sem leitura/escrita direta do DOM)
+  cartCount: number = 0;
+  private cartSubscription!: Subscription;
+
   @HostListener('window:scroll') onWindowScroll() {
     let url: string = location.href;
     let newUrl = url.slice(-8);
-    let ms_number: any = document.querySelector('#ms_number');
-    let music = this.cartService.receivingCart2();
-
-    // Atualizar contador do carrinho
-    if (music.length > 0) {
-      ms_number.innerHTML = music.length;
-      ms_number.style.display = 'flex';
-    } else {
-      ms_number.style.display = 'none';
-    }
 
     // Aplicar efeito de scroll no menu
     if (window.scrollY > 75) {
@@ -82,11 +76,6 @@ export class MenuComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    let ms_number: any = document.querySelector('#ms_number');
-    if (ms_number) {
-      ms_number.style.display = 'none';
-    }
-
     this.checkScreenSize();
 
     // Subscrever ao estado de autenticação
@@ -95,12 +84,22 @@ export class MenuComponent implements OnInit, OnDestroy {
         this.isUserLoggedIn = isLoggedIn;
       }
     );
+
+    // Subscrever ao contador do carrinho
+    this.cartSubscription = this.cartService.cartCount$.subscribe(
+      (count: number) => {
+        this.cartCount = count;
+      }
+    );
   }
 
   ngOnDestroy(): void {
-    // Cancelar a subscrição para evitar memory leak
+    // Cancelar as subscrições para evitar memory leak
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
+    }
+    if (this.cartSubscription) {
+      this.cartSubscription.unsubscribe();
     }
   }
 

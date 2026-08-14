@@ -1,9 +1,8 @@
 import type { MockedObject } from "vitest";
-import { HttpClient } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { CartItem, CommercialPlanOption, LicenseOption, } from './cartModal/cart-modal.models';
 import { CarrinhoService } from '../service/carrinho.service';
@@ -13,6 +12,7 @@ describe('CarrinhoComponent', () => {
     let component: CarrinhoComponent;
     let fixture: ComponentFixture<CarrinhoComponent>;
     let cartService: MockedObject<CarrinhoService>;
+    let itemsSubject: BehaviorSubject<CartItem[]>;
 
     const standardLicense: LicenseOption = {
         id: 'padrao',
@@ -52,23 +52,26 @@ describe('CarrinhoComponent', () => {
         },
     ];
 
+    const centsTotal = (items: CartItem[]): number =>
+        items.reduce((total, item) => total + Math.round(item.planoSelecionado.preco * 100), 0) / 100;
+
     beforeEach(async () => {
+        itemsSubject = new BehaviorSubject<CartItem[]>(cartItems);
+
         cartService = {
-            receivingCart2: vi.fn().mockName("CarrinhoService.receivingCart2")
+            cartItems$: itemsSubject.asObservable(),
+            cartTotal$: itemsSubject.asObservable().pipe(map(centsTotal)),
+            removeItem: vi.fn().mockName("CarrinhoService.removeItem").mockImplementation((item: CartItem) => {
+                const next = itemsSubject.value.filter((current) => current !== item);
+                itemsSubject.next(next);
+                return next;
+            }),
         } as unknown as MockedObject<CarrinhoService>;
-        cartService.receivingCart2.mockReturnValue(cartItems);
 
         await TestBed.configureTestingModule({
             declarations: [CarrinhoComponent],
-            imports: [ReactiveFormsModule],
             providers: [
                 { provide: CarrinhoService, useValue: cartService },
-                {
-                    provide: HttpClient,
-                    useValue: {
-                        get: () => of([]),
-                    },
-                },
             ],
             schemas: [NO_ERRORS_SCHEMA],
         })
@@ -97,5 +100,19 @@ describe('CarrinhoComponent', () => {
         expect(content).toContain('49,99');
         expect(content).toContain('total de R$');
         expect(content).toContain('249,98');
+    });
+
+    it('should delegate item removal to the cart service', () => {
+        component.removeItem(cartItems[0]);
+
+        expect(cartService.removeItem).toHaveBeenCalledWith(cartItems[0]);
+    });
+
+    it('should show the empty cart state when there are no items left', () => {
+        itemsSubject.next([]);
+        fixture.detectChanges();
+
+        expect(component.insert).toBe(false);
+        expect(fixture.nativeElement.textContent).toContain('Seu carrinho está vazio');
     });
 });

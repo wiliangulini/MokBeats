@@ -91,3 +91,75 @@ Implementada a Etapa 14A na branch `dev`, repositório limpo antes de iniciar (R
 ## Confirmação de escopo
 
 Alterados **somente** arquivos dentro do escopo da Etapa 14A: os 3 arquivos do componente `licenca-valor` (`.html`, `.ts`, `.scss`), um novo arquivo de modelos/constantes de preço colocado na mesma pasta (`licenca-valor.models.ts` — explicitamente previsto no escopo como "modelos/constantes de preço se existirem"), e este relatório. Nenhuma rota, guard, service, módulo global, outro componente ou dependência foi alterado. Não houve necessidade de sair do escopo declarado.
+
+---
+
+## Execução — 2026-08-14
+
+### Resumo da etapa
+
+Auditoria identificou que a implementação da Etapa 14A registrada acima (commit `7bb0b15`) estava correta no núcleo, mas com 4 gaps residuais dentro do próprio escopo: uma regressão de CSS introduzida pela própria R24 (breakpoint mobile das tabs não acompanhou a troca `<a>`→`<button>`), semântica ARIA falsa nas duas abas de item único, preços dos cards 1 e 3 ainda hardcoded no HTML (só o card 2 tinha sido isolado no `models.ts`), e ausência de teste para o toggle. Este fechamento corrige os 4 pontos, sem alterar o comportamento visual nem os valores de preço. O relatório original acima também não continha "Status final da etapa" (perdido ao substituir o stub) — adicionado ao fim desta seção.
+
+### Arquivos lidos
+
+- `src/app/licenca-valor/licenca-valor.component.html`, `.ts`, `.scss`, `.models.ts`, `.component.spec.ts` (estado pós-`7bb0b15`)
+- `src/app/service/scroll.service.ts` (confirmar ausência de dependências para o novo spec)
+- `src/test.ts` (setup global de teste — `RouterTestingModule`, `NO_ERRORS_SCHEMA` já injetados)
+- `docs/ia-auditorias/README.md`
+- `.claude/rules/license-cart-checkout.md`
+- `docs/areas/license-cart-checkout.md`, `docs/areas/identidade-visual-ux.md`
+
+### Arquivos alterados
+
+- `src/app/licenca-valor/licenca-valor.component.html`
+- `src/app/licenca-valor/licenca-valor.component.scss`
+- `src/app/licenca-valor/licenca-valor.component.ts`
+- `src/app/licenca-valor/licenca-valor.models.ts`
+- `src/app/licenca-valor/licenca-valor.component.spec.ts`
+- `docs/ia-auditorias/R24-pricing-toggle-cards-responsivos.md` (esta seção)
+- `docs/ia-auditorias/README.md`
+
+### O que foi implementado ou auditado
+
+1. **CSS mobile das tabs (`≤575.98px`)**: os seletores que reduziam a fonte do toggle para `16px` miravam só `.nav-item a`, elemento que não existe mais desde a conversão para `<button>`/`<span>` — CSS morto, regressão da própria R24. Estendido para `a`, `button` e `span` nos 3 blocos (`#myTab`, `#myTab1`, `#myTab2`).
+2. **A11y das abas de item único (`#myTab` "Mensalmente" e `#myTab2` "Vitalício")**: anunciavam `role="tablist"`/`role="tab"`/`aria-controls="home"` para um painel (`id="home"`) que nunca existiu, e eram focáveis via `<button>` sem executar nenhuma ação. Convertidos para `<span class="nav-link active">` (rótulo estático, fora do tab-order), com `cursor: default`. O toggle real (`#myTab1`) passou do padrão tab falso para o padrão ARIA correto de grupo de alternância: `role="group"` + `aria-label="Período da licença"` no `<ul>`, `[attr.aria-pressed]` nos botões (no lugar de `aria-selected`, que pressupõe `tablist`).
+3. **Preços dos cards 1 e 3 isolados no modelo**: adicionados `LicencaPrecoUnico`, `ASSINATURA_MENSAL` (`R$49,99 /mês`) e `LICENCA_EFEITOS_SONOROS` (`R$4,99 /vitalício`) a `licenca-valor.models.ts`, sob o mesmo aviso de valores temporários/configuráveis (§13). Componente reexpõe como `readonly assinaturaMensal`/`readonly licencaEfeitosSonoros`; HTML interpola preço, período e rótulo da aba — nenhum valor mudou, só a fonte. Agora os 3 cards seguem o mesmo padrão do card 2.
+4. **Teste do toggle**: `licenca-valor.component.spec.ts` ganhou 4 casos — estado inicial `'6'`, troca para `'12'` via `selecionarPeriodoLicencaMusica`, clique real no segundo `<button>` de `#myTab1` confirmando que o preço no DOM muda após `detectChanges()` (evidência do critério "sem reload"), e renderização dos preços dos cards 1/3 a partir das novas constantes.
+5. Consolidados dois `@media` redundantes e sobrepostos (`max-width: 992px` e `max-width: 991.98px`, ambos afetando os mesmos cards) em um único bloco `991.98px`, alinhado ao breakpoint Bootstrap 5 já usado no resto do arquivo.
+
+Fora de escopo, mantido como pendência (decisão do usuário): botões "ASSINE JÁ" sem ação — destino depende de definição comercial (§13).
+
+### Comandos executados
+
+- [x] `git status`
+- [x] `npm run build`
+- [x] `npm test -- --watch=false`
+
+### Resultado dos comandos
+
+- `git status` → branch `dev`, working tree limpo antes de iniciar (apenas os arquivos desta seção alterados ao final).
+- `nvm use 24.18.1` necessário (padrão do ambiente é `v22.18.0`, incompatível com o Angular CLI do projeto — mesma condição já registrada na execução anterior).
+- `npm run build` → sucesso. Bundle inicial **2,52 MB / 427,29 kB** transferência estimada — equivalente ao baseline da execução anterior (2,51 MB / 427,43 kB), sem regressão de tamanho. Único aviso: deprecation do Sass `@import` em `src/styles.scss:79`, pré-existente e fora de escopo.
+- `npm test -- --watch=false` → **56 arquivos de teste, 141 testes, todos passaram** (137 do baseline + 4 novos em `licenca-valor.component.spec.ts`, que agora tem 5 testes). Nenhuma regressão.
+
+### Como validar manualmente
+
+1. `nvm use 24.18.1 && npm start`, acessar `/#/precos`.
+2. Reduzir a janela para ≤575px (ou emular um celular no DevTools): confirmar que o texto dos dois botões do toggle central ("6 meses" / "12 meses") fica visivelmente menor (16px) que em desktop — antes desta correção permanecia em 20px.
+3. Passar o mouse sobre "Mensalmente" (card 1) e "Vitalício" (card 3): o cursor deve ser o padrão (seta), não a mãozinha de link/botão. Pressionar Tab a partir do topo da página: o foco deve pular direto para os dois botões reais do toggle central, sem parar em "Mensalmente" ou "Vitalício".
+4. Confirmar visualmente que os preços R$49,99/mês (card 1) e R$4,99/vitalício (card 3) permanecem idênticos a antes.
+5. Repetir a alternância 6/12 meses do relatório anterior (item 2 da seção "Como validar manualmente" acima) — comportamento inalterado.
+6. Chrome e Firefox, sem quebra visual.
+
+### Riscos ou pendências
+
+- Preços continuam temporários/fictícios (§13), agora isolados em `licenca-valor.models.ts` nos 3 cards.
+- Divergência de preço pré-existente com `assinatura.component.html` (R$64,95) e duplicação de fonte com `cart-modal.component.ts`/`cart-modal.models.ts` (valores numéricos) seguem sem unificação — seguem fora de escopo, candidatas à etapa R26 (carrinho).
+- `zoom: 90% !important` (linha ~401, faixa 1440–1600px) é propriedade não padronizada; não foi tocada por estar fora do escopo dos gaps identificados, mas fica sinalizada.
+- Botões "ASSINE JÁ" (3×) seguem sem `(click)`/`routerLink`, por decisão explícita de deixar como pendência até haver definição comercial/endpoint de checkout.
+
+## Status final da etapa
+
+Aprovado
+
+Toggle 6/12 meses funciona como estado Angular real e sem reload (evidenciado por teste de DOM), os 3 blocos de tabs não têm `href` vazio, os 3 cards têm preços isolados em arquivo tipado e marcados como temporários, a regressão de CSS mobile introduzida na execução original foi corrigida, e build + suíte completa de testes passam sem regressão.
