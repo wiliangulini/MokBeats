@@ -139,6 +139,24 @@ function authenticateToken(req, res, next) {
   }
 }
 
+// ─── Middleware de autenticação opcional (nunca bloqueia) ─────────────────
+// Usado por GET /api/favoritos: catálogo público (ex.: MusicasComponent, via
+// forkJoin) chama esse endpoint mesmo para visitante deslogado só para saber
+// "quais faixas eu curti" — a resposta correta para "eu" ser ninguém é lista
+// vazia, não 401. Corrige regressão: antes da Fase 2 o endpoint era aberto;
+// exigir authenticateToken quebrou a navegação anônima em /musicas.
+function optionalAuth(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  if (!token) { req.user = null; return next(); }
+  try {
+    req.user = jwt.verify(token, JWT_SECRET);
+  } catch (_) {
+    req.user = null;
+  }
+  next();
+}
+
 // ─── Middleware de autorização: apenas produtor autenticado ──────────────
 // Mitigação mínima do achado Crítico da auditoria (R29, Decisão 3): bloqueia
 // escrita anônima em PUT/DELETE /api/musicas/:id. Ownership completo (produtor
@@ -1773,10 +1791,13 @@ app.route('/api/playlists/:id').delete((request, response) => {
 });
 
 // Curtidas escopadas por usuário autenticado (R29, achado Alto: array global
-// sem userId, sem auth). GET/POST/PUT/DELETE agora exigem authenticateToken;
-// GET só retorna as curtidas do próprio usuário; PUT/DELETE só afetam
-// curtidas do próprio usuário (403 se pertencerem a outro).
-app.route('/api/favoritos').get(authenticateToken, (request, response) => {
+// sem userId, sem auth). POST/PUT/DELETE exigem authenticateToken; PUT/DELETE
+// só afetam curtidas do próprio usuário (403 se pertencerem a outro). GET usa
+// optionalAuth (não bloqueia): visitante deslogado recebe lista vazia, não
+// 401 — MusicasComponent chama este endpoint no forkJoin de carregamento do
+// catálogo público, mesmo sem usuário logado.
+app.route('/api/favoritos').get(optionalAuth, (request, response) => {
+  if (!request.user) return response.send([]);
   const minhas = FAVORITOS.filter(favoritoIterator => favoritoIterator.userId === request.user.userId);
   response.send(minhas);
 });

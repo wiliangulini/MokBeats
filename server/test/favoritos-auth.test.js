@@ -9,6 +9,13 @@ const { startTestServer } = require('./helpers/test-server');
 // achado Alto: array global sem userId, sem auth). Testa comprador (curtidas
 // são para quem navega/compra, não exclusivo de produtor) para não exigir
 // perfil específico além de estar logado.
+//
+// GET usa optionalAuth (não 401): MusicasComponent chama este endpoint no
+// forkJoin de carregamento do catálogo público, mesmo com visitante deslogado
+// — exigir token ali quebrava a navegação anônima em /musicas (regressão
+// encontrada e corrigida na mesma etapa). POST/PUT/DELETE continuam exigindo
+// autenticação (curtir de fato exige login, e o app já faz esse gate no
+// clique antes de chamar o backend).
 
 let ctx;
 
@@ -32,9 +39,20 @@ async function registerAndLogin() {
   return token;
 }
 
-test('GET /api/favoritos sem token retorna 401', async () => {
+test('GET /api/favoritos sem token retorna 200 com lista vazia (não 401 — catálogo público depende disso)', async () => {
   const res = await fetch(`${ctx.baseUrl}/api/favoritos`);
-  assert.strictEqual(res.status, 401);
+  assert.strictEqual(res.status, 200);
+  const body = await res.json();
+  assert.deepStrictEqual(body, []);
+});
+
+test('GET /api/favoritos com token inválido/expirado também degrada para lista vazia, não 401', async () => {
+  const res = await fetch(`${ctx.baseUrl}/api/favoritos`, {
+    headers: { Authorization: 'Bearer token-invalido-ou-expirado' },
+  });
+  assert.strictEqual(res.status, 200);
+  const body = await res.json();
+  assert.deepStrictEqual(body, []);
 });
 
 test('POST /api/favoritos sem token retorna 401', async () => {
