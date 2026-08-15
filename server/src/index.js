@@ -101,6 +101,31 @@ function saveUsers(users) {
 
 let users = loadUsers();
 
+// ─── Persistência de perfis artísticos de produtor (JSON file) ───────────
+// Contrato desacoplado do perfil pessoal/KYC em users.json (R29, Decisão 1).
+const PRODUCERS_FILE = (process.env.NODE_ENV === 'test' && process.env.TEST_PRODUCERS_FILE)
+  ? process.env.TEST_PRODUCERS_FILE
+  : path.join(__dirname, '../data/producers.json');
+
+function loadProducers() {
+  try {
+    if (fs.existsSync(PRODUCERS_FILE)) {
+      return JSON.parse(fs.readFileSync(PRODUCERS_FILE, 'utf8'));
+    }
+  } catch (e) { console.error('Erro ao carregar producers.json:', e.message); }
+  return [];
+}
+
+function saveProducers(producers) {
+  try {
+    const dir = path.dirname(PRODUCERS_FILE);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(PRODUCERS_FILE, JSON.stringify(producers, null, 2), 'utf8');
+  } catch (e) { console.error('Erro ao salvar producers.json:', e.message); }
+}
+
+let producers = loadProducers();
+
 // ─── Middleware de autenticação JWT ────────────────────────────────────────
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
@@ -112,6 +137,19 @@ function authenticateToken(req, res, next) {
   } catch (_) {
     return res.status(401).json({ message: 'Token inválido ou expirado.' });
   }
+}
+
+// ─── Middleware de autorização: apenas produtor autenticado ──────────────
+// Mitigação mínima do achado Crítico da auditoria (R29, Decisão 3): bloqueia
+// escrita anônima em PUT/DELETE /api/musicas/:id. Ownership completo (produtor
+// só altera a própria faixa) fica para a Fase 3, quando existir producerId.
+function authenticateProdutor(req, res, next) {
+  authenticateToken(req, res, () => {
+    if (req.user?.tipoPerfil !== 'produtor') {
+      return res.status(403).json({ message: 'Acesso restrito a produtores.' });
+    }
+    next();
+  });
 }
 
 // ─── Multer para upload de documentos ─────────────────────────────────────
@@ -152,6 +190,42 @@ const documentUpload = multer({
   fileFilter: (_req, file, cb) => {
     if (ALLOWED_MIMES.includes(file.mimetype)) cb(null, true);
     else cb(new Error('Tipo de arquivo não permitido. Use JPG, PNG ou PDF.'));
+  }
+});
+
+// ─── Multer para avatar de produtor ───────────────────────────────────────
+// Raiz isolada de DOCUMENTS_UPLOADS_DIR (que é KYC/privado): avatar é servido
+// publicamente. Override exclusivo em teste via TEST_PRODUCER_AVATARS_DIR.
+const PRODUCER_AVATARS_DIR = (process.env.NODE_ENV === 'test' && process.env.TEST_PRODUCER_AVATARS_DIR)
+  ? process.env.TEST_PRODUCER_AVATARS_DIR
+  : path.join(__dirname, 'uploads', 'producers');
+
+const avatarStorage = multer.diskStorage({
+  destination: (req, _file, cb) => {
+    const dir = path.join(PRODUCER_AVATARS_DIR, req.user.userId, 'avatar');
+    fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
+  },
+  filename: (_req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `${Date.now()}${ext}`);
+  }
+});
+
+// Só imagem (diferente de ALLOWED_MIMES, que também aceita PDF para KYC).
+const ALLOWED_AVATAR_MIMES = ['image/jpeg', 'image/png'];
+const avatarUpload = multer({
+  storage: avatarStorage,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10 MB
+    files: 1,
+    fields: 0,
+    parts: 2,
+    fieldNestingDepth: 0,
+  },
+  fileFilter: (_req, file, cb) => {
+    if (ALLOWED_AVATAR_MIMES.includes(file.mimetype)) cb(null, true);
+    else cb(new Error('Tipo de arquivo não permitido. Use JPG ou PNG.'));
   }
 });
 
@@ -810,6 +884,47 @@ function validateProducerTrackUpload(body, files) {
   return { status: 200, body: { message: 'Upload validado e recebido com sucesso.', files: Object.keys(files) } };
 }
 
+// ─── Persistência real do upload de produtor (R29, Decisão 4) ────────────
+// Escopo restrito ao modo trackNoStems do contrato v2 — único caminho hoje
+// realmente usado pelo formulário do produtor (produtores.component.ts:272-273
+// sempre envia schemaVersion 'producer_form_v2'). trackWithStems/effectsFx
+// continuam apenas validando e descartando: getStemsForId (mais abaixo) é um
+// switch hard-coded, não orientado a dados — persistir stems de verdade exige
+// refatorar essa peça primeiro, fora desta rodada (ver R29).
+const PRODUCER_TRACK_PERSIST_DIR = (process.env.NODE_ENV === 'test' && process.env.TEST_PRODUCER_TRACK_PERSIST_DIR)
+  ? process.env.TEST_PRODUCER_TRACK_PERSIST_DIR
+  : path.join(__dirname, 'uploads', 'tracks');
+
+// copyFile (não rename): PRODUCER_TRACK_UPLOAD_DIR fica em os.tmpdir(), que
+// pode estar em filesystem diferente do destino — rename entre devices
+// diferentes falha com EXDEV. O arquivo temporário é removido logo em
+// seguida pelo cleanupProducerTrackFiles já existente no handler da rota.
+async function persistProducerTrack(producerId, meta, trackFile) {
+  const nextId = MUSICAS.length ? Math.max.apply(null, MUSICAS.map(m => m.id)) + 1 : 1;
+  const ext = path.extname(trackFile?.originalname || '') || '.mp3';
+  const dir = path.join(PRODUCER_TRACK_PERSIST_DIR, producerId, String(nextId));
+  await fs.promises.mkdir(dir, { recursive: true });
+  const destPath = path.join(dir, `track${ext}`);
+  await fs.promises.copyFile(trackFile.path, destPath);
+
+  const trackMs = parseInt(meta?.durations?.track_ms, 10);
+  const musica = {
+    id: nextId,
+    nome_musica: meta?.trackName,
+    nome_produtor: meta?.artistName,
+    producerId,
+    url: `/uploads/tracks/${producerId}/${nextId}/track${ext}`,
+    duracao: Number.isFinite(trackMs) ? trackMs : undefined,
+    duracaoReal: Number.isFinite(trackMs) ? trackMs / 1000 : undefined,
+    bpm: parseInt(meta?.bpm, 10),
+    genero: meta?.genre,
+    key: meta?.key,
+    created_at: new Date().toISOString(),
+  };
+  MUSICAS.push(musica);
+  return musica;
+}
+
 // ─── Endpoints de perfil do usuário ───────────────────────────────────────
 
 // GET /api/user/profile — retorna dados pessoais do usuário autenticado
@@ -1330,23 +1445,28 @@ app.route('/api/musicas').get((request, response) => {
   const page = parseInt(request.query.page) || 1;
   const limit = parseInt(request.query.limit) || 24; // default: retorna todas
 
+  // Filtro opcional por produtor dono (aditivo — sem o parâmetro, comportamento
+  // idêntico ao atual). Usado pela área privada para listar "minhas faixas".
+  const producerId = request.query.producerId;
+  const source = producerId ? MUSICAS.filter(m => m.producerId === producerId) : MUSICAS;
+
   // Se não houver parâmetros de paginação, retorna todas as músicas (compatibilidade)
   if (!request.query.page && !request.query.limit) {
-    return response.send(MUSICAS);
+    return response.send(source);
   }
 
   // Calcula índices de paginação
   const startIndex = (page - 1) * limit;
   const endIndex = startIndex + limit;
-  const paginatedData = MUSICAS.slice(startIndex, endIndex);
+  const paginatedData = source.slice(startIndex, endIndex);
 
   // Retorna dados paginados com metadados
   response.send({
     data: paginatedData,
     pagination: {
       currentPage: page,
-      totalPages: Math.ceil(MUSICAS.length / limit),
-      totalItems: MUSICAS.length,
+      totalPages: Math.ceil(source.length / limit),
+      totalItems: source.length,
       itemsPerPage: limit
     }
   });
@@ -1361,10 +1481,21 @@ app.route('/api/musicas').post((request, response) => {
   response.status(201).send(musica);
 });
 
-app.route('/api/musicas/:id').put((request, response) => {
+app.route('/api/musicas/:id').put(authenticateProdutor, (request, response) => {
   const musicaId = +request.params['id'];
-  const musica = request.body;
   const index = MUSICAS.findIndex(musicaIterator => musicaIterator.id === musicaId);
+  // Guarda de existência necessária para a checagem de ownership abaixo (evita
+  // acessar .producerId de undefined); antes, um id inexistente "sucedia" sem
+  // efeito real (MUSICAS[-1] = musica não altera o array).
+  if (index === -1) return response.status(404).json({ message: 'Música não encontrada.' });
+
+  // Ownership real (R29, Decisão 2): produtor só altera a própria faixa. Faixa
+  // legada sem producerId preserva o comportamento da Fase 2 (qualquer produtor).
+  if (MUSICAS[index].producerId && MUSICAS[index].producerId !== request.user.userId) {
+    return response.status(403).json({ message: 'Você só pode alterar suas próprias faixas.' });
+  }
+
+  const musica = request.body;
   MUSICAS[index] = musica;
   response.status(200).send(musica);
 });
@@ -1374,8 +1505,16 @@ app.route('/api/musicas/:id').get((request, response) => {
   response.status(200).send(MUSICAS.find(musicaIterator => musicaIterator.id === musicaId));
 });
 
-app.route('/api/musicas/:id').delete((request, response) => {
+app.route('/api/musicas/:id').delete(authenticateProdutor, (request, response) => {
   const musicaId = +request.params['id'];
+
+  // Ownership real (R29, Decisão 2): produtor só remove a própria faixa. Faixa
+  // legada sem producerId preserva o comportamento da Fase 2 (qualquer produtor).
+  const existing = MUSICAS.find(musicaIterator => musicaIterator.id === musicaId);
+  if (existing && existing.producerId && existing.producerId !== request.user.userId) {
+    return response.status(403).json({ message: 'Você só pode alterar suas próprias faixas.' });
+  }
+
   MUSICAS = MUSICAS.filter(musicaIterator => musicaIterator.id !== musicaId);
   response.status(204).send({});
 });
@@ -1633,41 +1772,133 @@ app.route('/api/playlists/:id').delete((request, response) => {
   response.status(204).send({});
 });
 
-app.route('/api/favoritos').get((request, response) => {
-  console.log(FAVORITOS);
-  response.send(FAVORITOS);
+// Curtidas escopadas por usuário autenticado (R29, achado Alto: array global
+// sem userId, sem auth). GET/POST/PUT/DELETE agora exigem authenticateToken;
+// GET só retorna as curtidas do próprio usuário; PUT/DELETE só afetam
+// curtidas do próprio usuário (403 se pertencerem a outro).
+app.route('/api/favoritos').get(authenticateToken, (request, response) => {
+  const minhas = FAVORITOS.filter(favoritoIterator => favoritoIterator.userId === request.user.userId);
+  response.send(minhas);
 });
 
-app.route('/api/favoritos').post((request, response) => {
+app.route('/api/favoritos').post(authenticateToken, (request, response) => {
   let favorito = request.body;
-  console.log(favorito);
+  favorito.userId = request.user.userId;
   const firstId = FAVORITOS ? Math.max.apply(null, FAVORITOS.map(favoritoIterator => favoritoIterator.id)) + 1 : 1;
   favorito.id = firstId;
   FAVORITOS.push(favorito);
   response.status(201).send(favorito);
 });
 
-app.route('/api/favoritos/:id').put((request, response) => {
+app.route('/api/favoritos/:id').put(authenticateToken, (request, response) => {
   const favoritoId = +request.params['id'];
-  const favorito = request.body;
   const index = FAVORITOS.findIndex(favoritoIterator => favoritoIterator.id === favoritoId);
+  if (index === -1) return response.status(404).json({ message: 'Curtida não encontrada.' });
+  if (FAVORITOS[index].userId !== request.user.userId) {
+    return response.status(403).json({ message: 'Você só pode alterar suas próprias curtidas.' });
+  }
+
+  const favorito = { ...request.body, userId: request.user.userId, id: favoritoId };
   FAVORITOS[index] = favorito;
   response.status(200).send(favorito);
 });
 
-app.route('/api/favoritos/:id').get((request, response) => {
+app.route('/api/favoritos/:id').get(authenticateToken, (request, response) => {
   const favoritoId = +request.params['id'];
-  response.status(200).send(FAVORITOS.find(favoritoIterator => favoritoIterator.id === favoritoId));
+  const favorito = FAVORITOS.find(favoritoIterator => favoritoIterator.id === favoritoId);
+  if (!favorito || favorito.userId !== request.user.userId) {
+    return response.status(404).json({ message: 'Curtida não encontrada.' });
+  }
+  response.status(200).send(favorito);
 });
 
-app.route('/api/favoritos/:id').delete((request, response) => {
+app.route('/api/favoritos/:id').delete(authenticateToken, (request, response) => {
   const favoritoId = +request.params['id'];
+  const existing = FAVORITOS.find(favoritoIterator => favoritoIterator.id === favoritoId);
+  if (existing && existing.userId !== request.user.userId) {
+    return response.status(403).json({ message: 'Você só pode remover suas próprias curtidas.' });
+  }
   FAVORITOS = FAVORITOS.filter(favoritoIterator => favoritoIterator.id !== favoritoId);
   response.status(204).send({});
 });
 
+// ─── Perfil artístico do produtor ─────────────────────────────────────────
+// Contrato público, desacoplado do perfil pessoal/KYC (/api/user/profile).
+// Ver docs/ia-auditorias/R29-pagina-artista-decisoes-fase0.md (Decisão 1).
+//
+// Ordem importa: as rotas literais (/me, /me/avatar) precisam ser registradas
+// ANTES da rota curinga /:producerId — senão o Express casa "me" como valor de
+// :producerId e a rota específica nunca é alcançada.
+
+// GET /api/producers/me — perfil artístico do produtor autenticado
+app.get('/api/producers/me', authenticateProdutor, (req, res) => {
+  producers = loadProducers();
+  const producer = producers.find(p => p.producerId === req.user.userId);
+  return res.json(producer || { producerId: req.user.userId, nomeArtistico: '', biografia: '', avatarUrl: '' });
+});
+
+// PUT /api/producers/me — atualiza nome artístico e biografia do produtor autenticado.
+// Identidade sempre de req.user.userId (token) — nunca de um id enviado pelo client.
+app.put('/api/producers/me', authenticateProdutor, (req, res) => {
+  producers = loadProducers();
+  const idx = producers.findIndex(p => p.producerId === req.user.userId);
+
+  const ALLOWED_PRODUCER_FIELDS = ['nomeArtistico', 'biografia'];
+  const body = req.body || {};
+  const update = {};
+  ALLOWED_PRODUCER_FIELDS.forEach(f => { if (body[f] !== undefined) update[f] = body[f]; });
+
+  if (idx === -1) {
+    const producer = { producerId: req.user.userId, nomeArtistico: '', biografia: '', avatarUrl: '', ...update };
+    producers.push(producer);
+    saveProducers(producers);
+    return res.json({ message: 'Perfil artístico criado.', producer });
+  }
+
+  producers[idx] = { ...producers[idx], ...update };
+  saveProducers(producers);
+  return res.json({ message: 'Perfil artístico atualizado.', producer: producers[idx] });
+});
+
+// POST /api/producers/me/avatar — upload de avatar do produtor autenticado
+app.post('/api/producers/me/avatar', authenticateProdutor, (req, res) => {
+  avatarUpload.single('file')(req, res, (err) => {
+    if (err) return res.status(400).json({ message: err.message });
+    if (!req.file) return res.status(400).json({ message: 'Nenhum arquivo enviado.' });
+
+    const relativePath = `/uploads/producers/${req.user.userId}/avatar/${req.file.filename}`;
+
+    producers = loadProducers();
+    const idx = producers.findIndex(p => p.producerId === req.user.userId);
+    if (idx === -1) {
+      producers.push({ producerId: req.user.userId, nomeArtistico: '', biografia: '', avatarUrl: relativePath });
+    } else {
+      producers[idx].avatarUrl = relativePath;
+    }
+    saveProducers(producers);
+
+    return res.json({ url: relativePath });
+  });
+});
+
+// Servir avatares de produtor (público)
+app.use('/uploads/producers', express.static(PRODUCER_AVATARS_DIR));
+
+// GET /api/producers/:producerId — perfil artístico público (sem auth).
+// Registrada por último neste grupo: rota curinga, deve vir depois das
+// rotas literais /me e /me/avatar (ver nota acima).
+app.get('/api/producers/:producerId', (req, res) => {
+  producers = loadProducers();
+  const producer = producers.find(p => p.producerId === req.params.producerId);
+  if (!producer) return res.status(404).json({ message: 'Produtor não encontrado.' });
+  return res.json(producer);
+});
+
+// Servir faixas publicadas por produtores (público)
+app.use('/uploads/tracks', express.static(PRODUCER_TRACK_PERSIST_DIR));
+
 // Regras de upload de produtores
-app.post('/api/producers/track', (req, res) => {
+app.post('/api/producers/track', authenticateProdutor, (req, res) => {
   // Nota: req.destroyed não serve como sinal de "cliente desconectou" — mesmo
   // racional da U2a (ver /api/uploads/ acima). O sinal real é o socket da
   // resposta (res.socket.destroyed).
@@ -1700,6 +1931,21 @@ app.post('/api/producers/track', (req, res) => {
     } catch (validationErr) {
       console.error(validationErr);
       result = { status: 500, body: { message: 'Erro interno ao processar upload.' } };
+    }
+
+    // Persistência real (R29, Decisão 4) — só trackNoStems do contrato v2.
+    // Roda ANTES do cleanup abaixo, que apaga os arquivos temporários
+    // (persistProducerTrack copia o track para fora dessa árvore primeiro).
+    if (result.status === 200 && req.body?.schemaVersion === 'producer_form_v2' && req.body?.mode === 'trackNoStems') {
+      try {
+        let meta = {};
+        try { meta = req.body?.meta ? JSON.parse(req.body.meta) : {}; } catch (e) { meta = {}; }
+        const musica = await persistProducerTrack(req.user.userId, meta, files.track);
+        result = { status: 201, body: { message: 'Faixa publicada com sucesso.', musica } };
+      } catch (persistErr) {
+        console.error('Falha ao persistir faixa do produtor:', persistErr);
+        result = { status: 500, body: { message: 'Erro ao publicar a faixa. Tente novamente.' } };
+      }
     }
 
     try {

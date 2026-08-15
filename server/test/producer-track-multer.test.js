@@ -29,10 +29,23 @@ const { startTestServer } = require('./helpers/test-server');
 // aceita. Consistente com as descobertas da U1 (parts:2 para N=1) e da U2a
 // (parts:21 para N=20).
 
+// POST /api/producers/track passou a exigir produtor autenticado (R29,
+// Decisão 4 — pré-requisito da persistência real). Registra um produtor uma
+// única vez em before() e injeta o token em todo request desta suíte.
 let ctx;
+let producerToken;
 
 before(async () => {
   ctx = await startTestServer();
+
+  const email = `u2b-producer-${Date.now()}@example.com`;
+  const registerRes = await fetch(`${ctx.baseUrl}/api/auth/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password: 'senha12345', tipoPessoa: 'fisica', tipoPerfil: 'produtor' }),
+  });
+  const registerBody = await registerRes.json();
+  producerToken = registerBody.token;
 });
 
 after(async () => {
@@ -46,6 +59,7 @@ function blob(content, type = 'audio/mpeg') {
 async function postTrack(form, extraOptions = {}) {
   return fetch(`${ctx.baseUrl}/api/producers/track`, {
     method: 'POST',
+    headers: { Authorization: `Bearer ${producerToken}` },
     body: form,
     ...extraOptions,
   });
@@ -150,14 +164,18 @@ test('V2 sucesso: trackNoStems sem image, apenas track+loops, MIME octet-stream 
   form.append('loop30', blob('loop30-conteudo'), 'loop30.mp3');
   form.append('loop60', blob('loop60-conteudo'), 'loop60.mp3');
 
+  // trackNoStems v2 agora persiste de verdade (R29, Decisão 4) — 201 com a
+  // faixa criada, não mais 200 com o eco de validação. Ver
+  // server/test/producer-track-persist.test.js para a cobertura completa da
+  // persistência; aqui só confirma-se que ESTE cenário específico (MIME
+  // octet-stream, sem image) permanece funcionando ponta a ponta.
   const res = await postTrack(form);
-  await assertStatus(res, 200);
+  await assertStatus(res, 201);
   const body = await res.json();
-  assert.strictEqual(body.message, 'Upload v2 validado e recebido com sucesso.');
-  assert.strictEqual(body.schemaVersion, 'producer_form_v2');
-  assert.strictEqual(body.mode, 'trackNoStems');
-  assert.strictEqual(body.hasImage, false);
-  assert.deepStrictEqual([...body.files].sort(), ['loop15', 'loop30', 'loop60', 'track'].sort());
+  assert.strictEqual(body.message, 'Faixa publicada com sucesso.');
+  assert.strictEqual(body.musica.nome_musica, 'Faixa Teste');
+  assert.strictEqual(body.musica.nome_produtor, 'Produtor Teste');
+  assert.match(body.musica.url, /^\/uploads\/tracks\/.+\/track\.bin$/);
 });
 
 test('V2 sucesso: trackWithStems com 4 stems nomeados, durações dentro da tolerância', async () => {
@@ -508,7 +526,8 @@ test('V2 sucesso limítrofe: loop15 a +200ms do alvo é aceito', async () => {
   const meta = v2MetaFor('trackNoStems', { durations: { loop15_ms: 15000 + 200 } });
   const form = appendV2Form({ mode: 'trackNoStems', meta, files: { track: 'track.mp3', loop15: 'l.mp3', loop30: 'l.mp3', loop60: 'l.mp3' } });
   const res = await postTrack(form);
-  await assertStatus(res, 200);
+  // trackNoStems v2 agora persiste de verdade (R29, Decisão 4) — 201, não 200.
+  await assertStatus(res, 201);
 });
 
 test('V2 422: loop15 a +201ms do alvo é rejeitado', async () => {
@@ -672,7 +691,7 @@ test('Requisição vazia (multipart sem partes) retorna 422 track ausente', asyn
 test('Requisição não multipart (JSON) retorna 422 track ausente', async () => {
   const res = await fetch(`${ctx.baseUrl}/api/producers/track`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${producerToken}` },
     body: JSON.stringify({ qualquer: 'coisa' }),
   });
   await assertStatus(res, 422);
@@ -802,7 +821,7 @@ test('Parser: campo aninhado (meta[a]) retorna 400, sem órfão', async () => {
 test('Parser: multipart sem boundary retorna 400 JSON (nunca HTML/500), sem órfão', async () => {
   const res = await fetch(`${ctx.baseUrl}/api/producers/track`, {
     method: 'POST',
-    headers: { 'Content-Type': 'multipart/form-data' }, // sem boundary=
+    headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${producerToken}` }, // sem boundary=
     body: 'conteudo-qualquer-sem-estrutura-multipart',
   });
   assert.strictEqual(res.status, 400);
@@ -825,7 +844,7 @@ test('Parser: multipart com encerramento incompleto retorna 400 JSON, sem órfã
 
   const res = await fetch(`${ctx.baseUrl}/api/producers/track`, {
     method: 'POST',
-    headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}` },
+    headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}`, Authorization: `Bearer ${producerToken}` },
     body,
     duplex: 'half',
   });
@@ -849,7 +868,7 @@ test('Parser: arquivo acima de 100 MiB retorna 413 com mensagem exata, sem parci
 
   const res = await fetch(`${ctx.baseUrl}/api/producers/track`, {
     method: 'POST',
-    headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}` },
+    headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}`, Authorization: `Bearer ${producerToken}` },
     body,
     duplex: 'half',
   });

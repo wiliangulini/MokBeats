@@ -14,10 +14,22 @@ const { startTestServer } = require('./helpers/test-server');
 // contrato funcional (200/422), agora servido pelo parser Multer. Serial
 // (--test-concurrency=1).
 
+// POST /api/producers/track passou a exigir produtor autenticado (R29,
+// Decisão 4 — pré-requisito da persistência real).
 let ctx;
+let producerToken;
 
 before(async () => {
   ctx = await startTestServer();
+
+  const email = `t0-producer-${Date.now()}@example.com`;
+  const registerRes = await fetch(`${ctx.baseUrl}/api/auth/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password: 'senha12345', tipoPessoa: 'fisica', tipoPerfil: 'produtor' }),
+  });
+  const registerBody = await registerRes.json();
+  producerToken = registerBody.token;
 });
 
 after(async () => {
@@ -82,18 +94,17 @@ test('POST /api/producers/track — contrato producer_form_v2, modo trackNoStems
 
   const res = await fetch(`${ctx.baseUrl}/api/producers/track`, {
     method: 'POST',
+    headers: { Authorization: `Bearer ${producerToken}` },
     body: form,
   });
 
-  assert.strictEqual(res.status, 200, `esperado 200; corpo: ${await res.clone().text()}`);
+  // trackNoStems v2 agora persiste de verdade (R29, Decisão 4) — 201 com a
+  // faixa criada, não mais 200 com o eco de validação. Cobertura completa da
+  // persistência em server/test/producer-track-persist.test.js.
+  assert.strictEqual(res.status, 201, `esperado 201; corpo: ${await res.clone().text()}`);
   const body = await res.json();
-  assert.strictEqual(body.schemaVersion, 'producer_form_v2');
-  assert.strictEqual(body.mode, 'trackNoStems');
-  assert.strictEqual(body.hasImage, false);
-  assert.deepStrictEqual(
-    [...body.files].sort(),
-    ['loop15', 'loop30', 'loop60', 'track'].sort()
-  );
+  assert.strictEqual(body.message, 'Faixa publicada com sucesso.');
+  assert.strictEqual(body.musica.nome_musica, 'Faixa de Teste T0');
 });
 
 test('POST /api/producers/track — ramo legado (sem schemaVersion), modo trackNoStems', async () => {
@@ -112,6 +123,7 @@ test('POST /api/producers/track — ramo legado (sem schemaVersion), modo trackN
 
   const res = await fetch(`${ctx.baseUrl}/api/producers/track`, {
     method: 'POST',
+    headers: { Authorization: `Bearer ${producerToken}` },
     body: form,
   });
 
@@ -131,6 +143,7 @@ test('POST /api/producers/track — legado sem track retorna 422 (contrato prese
 
   const res = await fetch(`${ctx.baseUrl}/api/producers/track`, {
     method: 'POST',
+    headers: { Authorization: `Bearer ${producerToken}` },
     body: form,
   });
 
