@@ -1,13 +1,14 @@
-import {AfterViewInit, Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {Subscription} from "rxjs";
 import {Musica, MusicasService} from "../musicas/musicas.service";
 import {AuthService} from "../login/auth.service";
 import {ScrollService} from "../service/scroll.service";
-import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {environment} from "../../environments/environment";
-import {UploadFileService} from "../upload-file/upload-file.service";
-import { HttpClient } from "@angular/common/http";
+import {ProducerProfileService} from "../service/producer-profile.service";
+import {DashboardService} from "../dashboard-produtor/dashboard.service";
+import {DashboardSummary, formatBRL} from "../dashboard-produtor/dashboard.models";
+import {MusicPlayerService} from "../service/music-player.service";
 
 @Component({
     selector: 'app-artist',
@@ -16,7 +17,7 @@ import { HttpClient } from "@angular/common/http";
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
-export class ArtistComponent implements OnInit, AfterViewInit {
+export class ArtistComponent implements OnInit, OnDestroy {
 
   public favorite: Musica = {};
   trecho: any[] = [15, 30, 60];
@@ -75,8 +76,28 @@ export class ArtistComponent implements OnInit, AfterViewInit {
     {value: "Trippy", viewValue: "Trippy"},
   ]
   arrMusica: Musica[] = [];
-  nameArtist: string = 'Wilian Gulini';
-  descriptionArtist: any = 'Wilian Gulini é um desenvolvedor web/mobile e de software que reside em Coronel Vivida. Wilian Gulini é um desenvolvedor web/mobile e de software que reside em Coronel Vivida';
+
+  // Identidade real do produtor autenticado (R29, Decisão 1) — nunca hard-coded.
+  producerId: string = '';
+  nomeArtistico: string = '';
+  biografia: string = '';
+  avatarUrl: string = '';
+
+  perfilCarregando = true;
+  perfilErro = false;
+  perfilEditavel = false;
+  savingProfile = false;
+  removendoId: number | null = null;
+
+  resumoVendas: DashboardSummary | null = null;
+  resumoVendasErro = false;
+  readonly formatBRL = formatBRL;
+
+  // Preview/player (R29, achado Alto): reaproveita o player global único
+  // (app-player em app.component.html) via MusicPlayerService — nunca cria
+  // uma instância própria de WaveSurfer aqui.
+  playingId: number | null = null;
+  private playerSubscription = new Subscription();
 
   @Output('ngModelChange') update: any = new EventEmitter();
 
@@ -85,16 +106,16 @@ export class ArtistComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private scrollService: ScrollService,
     private fb: FormBuilder,
-    private uploadFileService: UploadFileService,
+    private producerProfileService: ProducerProfileService,
+    private dashboardService: DashboardService,
+    private musicPlayerService: MusicPlayerService,
     private snackBar: MatSnackBar,
-    private http: HttpClient,
   ) {
     this.formG = this.fb.group({
       bpm: [],
       duracao: [],
-      upload: [],
-      textAreaDescription: [{value: this.descriptionArtist, disabled: true}],
-      nameArtist: [{value: this.nameArtist, disabled: true}],
+      textAreaDescription: [{value: '', disabled: true}],
+      nameArtist: [{value: '', disabled: true}],
     });
     this.titles = this.musicService.convertida2;
     this.music = this.musicService.convertida;
@@ -106,84 +127,144 @@ export class ArtistComponent implements OnInit, AfterViewInit {
     this.$$ = document.querySelector.bind(document);
     if (screen.width < 769) document.getElementById('navLeft')!.style.width = '0';
 
-    this.musicService.filterMusicas({ artistas: [this.nameArtist] }).subscribe((res: any) => {
-      this.arrMusica = res.data ?? res;
-    });
+    this.carregarPerfil();
+    this.carregarResumoVendas();
+
+    this.playerSubscription.add(
+      this.musicPlayerService.playPauseAction$.subscribe(({ action, musicId }) => {
+        if (action === 'pause' && this.playingId === musicId) this.playingId = null;
+      })
+    );
   }
 
-  ngAfterViewInit() {
-    this.uploadFileService.list().subscribe((data: any) => {
-      console.log(data);
-    })
-
-    this.uploadFile();
+  ngOnDestroy(): void {
+    this.playerSubscription.unsubscribe();
   }
 
-  convertToBase64 = (file: any) => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
+  tocarFaixa(musica: Musica): void {
+    if (musica.id == null) return;
 
-  files!: Set<File>;
-  onChange(event: any) {
-    const selectedFiles: FileList = event.srcElement.files;
-    this.files = new Set();
-    for(let i = 0; i < selectedFiles.length; i++) {
-      this.files.add(selectedFiles[i]);
+    if (this.playingId === musica.id) {
+      this.musicPlayerService.onPlayPause('pause', musica.id);
+      this.playingId = null;
+      return;
     }
-    // this.onUpload();
+
+    this.musicPlayerService.setCurrentMusicID(musica.id);
+    this.musicPlayerService.setCurrentMusicUrl(musica.url);
+    this.musicPlayerService.setCurrentMusic(musica);
+    this.musicPlayerService.onPlayPause('play', musica.id);
+    this.playingId = musica.id;
   }
 
-  // onUpload() {
-  //   if (this.files.size > 0) {
-  //     this.uploadFileService.upload(this.files, environment.apiBaseUrl + '/uploads').subscribe((data: any) => {
-  //       if(data.type == 4) {
-  //         console.log(data);
-  //         console.log('"Upload CONCLUIDO"');
-  //
-  //       }
-  //     })
-  //   }
-  // }
-
-  uploadFile(): void {
-    let fileChooser = this.$$('.input-file');
-
-    fileChooser.onchange = (e: any): void => {
-      console.log(e.target.files[0]);
-      let b64: any;
-      const getFileAndConvert = async () => {
-
-        const file = e.target.files[0];
-        const convertedFile = await this.convertToBase64(file)
-        console.log(convertedFile);
-        b64 = convertedFile;
-      }
-      // b64 = getFileAndConvert();
-      getFileAndConvert();
-      setTimeout(() => {
-        let img: any = document.getElementById('imgPerfil');
-        console.log(img);
-        img.setAttribute('src', b64);
-      }, 1000);
-    };
+  reproduzirPrimeiraFaixa(): void {
+    if (this.arrMusica.length > 0) this.tocarFaixa(this.arrMusica[0]);
   }
 
-  editDescription() {
-    let description: any = document.querySelector('.description');
-    let nameArtist: any = document.querySelector('.nameArtist');
-    description.removeAttribute('disabled');
-    nameArtist.removeAttribute('disabled');
-    this.formG.patchValue({
-      textAreaDescription: this.descriptionArtist
+  carregarPerfil(): void {
+    this.perfilCarregando = true;
+    this.perfilErro = false;
+    this.producerProfileService.getMyProfile().subscribe({
+      next: (perfil) => {
+        this.producerId = perfil.producerId;
+        this.nomeArtistico = perfil.nomeArtistico;
+        this.biografia = perfil.biografia;
+        this.avatarUrl = perfil.avatarUrl;
+        this.formG.patchValue({
+          nameArtist: perfil.nomeArtistico,
+          textAreaDescription: perfil.biografia,
+        });
+        this.perfilCarregando = false;
+
+        this.musicService.getByProducer(perfil.producerId).subscribe({
+          next: (faixas) => { this.arrMusica = faixas ?? []; },
+          error: () => { this.arrMusica = []; },
+        });
+      },
+      error: () => {
+        this.perfilCarregando = false;
+        this.perfilErro = true;
+      },
     });
-    description.style.background = "#FFF";
-    description.style.color = "#000";
-    nameArtist.style.background = "#FFF";
-    nameArtist.style.color = "#000";
-    description.focus();
+  }
+
+  carregarResumoVendas(): void {
+    this.dashboardService.getSummary().subscribe({
+      next: (summary) => { this.resumoVendas = summary; },
+      error: () => { this.resumoVendasErro = true; },
+    });
+  }
+
+  onChange(event: any): void {
+    const file: File | undefined = event.target?.files?.[0];
+    if (!file) return;
+
+    this.producerProfileService.uploadAvatar(file).subscribe({
+      next: ({ url }) => {
+        this.avatarUrl = url;
+        this.snackBar.open('Avatar atualizado com sucesso!', '', { duration: 4000 });
+      },
+      error: () => {
+        this.snackBar.open('Erro ao enviar avatar. Tente novamente.', '', { duration: 5000 });
+      },
+    });
+  }
+
+  editDescription(): void {
+    this.perfilEditavel = true;
+    this.formG.get('nameArtist')?.enable();
+    this.formG.get('textAreaDescription')?.enable();
+  }
+
+  cancelarEdicaoPerfil(): void {
+    this.perfilEditavel = false;
+    this.formG.patchValue({
+      nameArtist: this.nomeArtistico,
+      textAreaDescription: this.biografia,
+    });
+    this.formG.get('nameArtist')?.disable();
+    this.formG.get('textAreaDescription')?.disable();
+  }
+
+  salvarPerfil(): void {
+    this.savingProfile = true;
+    const nomeArtistico = this.formG.get('nameArtist')?.value ?? '';
+    const biografia = this.formG.get('textAreaDescription')?.value ?? '';
+
+    this.producerProfileService.saveMyProfile({ nomeArtistico, biografia }).subscribe({
+      next: () => {
+        this.savingProfile = false;
+        this.perfilEditavel = false;
+        this.nomeArtistico = nomeArtistico;
+        this.biografia = biografia;
+        this.formG.get('nameArtist')?.disable();
+        this.formG.get('textAreaDescription')?.disable();
+        this.snackBar.open('Perfil atualizado com sucesso!', '', { duration: 4000 });
+      },
+      error: () => {
+        this.savingProfile = false;
+        this.snackBar.open('Erro ao salvar perfil. Tente novamente.', '', { duration: 5000 });
+      },
+    });
+  }
+
+  removerFaixa(musica: Musica): void {
+    if (musica.id == null) return;
+    const confirmado = window.confirm(`Remover "${musica.nome_musica}"? Esta ação não pode ser desfeita.`);
+    if (!confirmado) return;
+
+    this.removendoId = musica.id;
+    this.musicService.remove(musica.id).subscribe({
+      next: () => {
+        this.arrMusica = this.arrMusica.filter((m) => m.id !== musica.id);
+        this.removendoId = null;
+        this.snackBar.open('Faixa removida com sucesso!', '', { duration: 4000 });
+      },
+      error: () => {
+        this.removendoId = null;
+        this.snackBar.open('Erro ao remover faixa. Tente novamente.', '', { duration: 5000 });
+      },
+    });
   }
 
   msToMinute(ms: any) {
@@ -229,7 +310,7 @@ export class ArtistComponent implements OnInit, AfterViewInit {
     }
   }
 
-  comprarLicensa(i: number): void { this.musicService.comprarLicensa(i); }
+  comprarLicensa(musica: Musica): void { this.musicService.comprarLicensa(musica); }
 
   filtroP(e: any): void { this.select = e; }
 

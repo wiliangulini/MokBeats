@@ -19,7 +19,7 @@
           <li class="nav-item" routerLinkActive="active">
             <a class="nav-link h5 mb-0" [routerLink]="['/formas-de-pagamento']">Formas de Pagamento</a>
           </li>
-          <li class="nav-item" routerLinkActive="active">
+          <li class="nav-item" routerLinkActive="active" *ngIf="isProdutor">
             <a class="nav-link h5 mb-0" [routerLink]="['/artista']">Artista</a>
           </li>
         </ul>

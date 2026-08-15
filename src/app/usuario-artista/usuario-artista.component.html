@@ -97,16 +97,27 @@
         </ul>
       </div>
       <div id="cf" class="container-fluid me-0 pt-4">
-        <div class="row">
+        <div class="row" *ngIf="carregando">
+          <div class="col-sm-12 text-center py-5">Carregando artista...</div>
+        </div>
+        <div class="row" *ngIf="!carregando && erro">
+          <div class="col-sm-12 alert alert-warning text-center">
+            Não foi possível carregar este artista. Tente novamente mais tarde.
+          </div>
+        </div>
+        <div class="row" *ngIf="!carregando && !erro && artistaNaoEncontrado">
+          <div class="col-sm-12 text-center py-5">Artista não encontrado.</div>
+        </div>
+        <div class="row" *ngIf="!carregando && !erro && !artistaNaoEncontrado">
           <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column align-items-start justify-content-center">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex p-0">
               <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 d-flex justify-content-center align-items-center">
-                <img class="w-100 img-fluid" src="./assets/images/smoking.png" alt="foto de perfil">
+                <img class="w-100 img-fluid" [src]="avatarUrl || './assets/images/smoking.png'" alt="foto de perfil">
               </div>
               <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10 p-0 d-flex justify-content-center align-items-center flex-column">
                 <div class="txt w-100 d-flex justify-content-center align-items-center flex-column mb-5">
                   <h1 class="mb-2">{{nameArtist}}</h1>
-                  <p class="description mb-4">{{descriptionArtist}}</p>
+                  <p *ngIf="biografia" class="description mb-4">{{biografia}}</p>
                 </div>
                 <div class="styleMusic d-flex justify-content-center align-items-center w-75">
                   <div class="mt-4 me-2" *ngFor="let vx of arrVExtendida; let i = index;">
@@ -115,12 +126,12 @@
                     </a>
                   </div>
                 </div>
-                <button id="reproduzirMusicas" type="button" class="btn btn-primary">Reproduzir Músicas</button>
+                <button id="reproduzirMusicas" type="button" class="btn btn-primary" [disabled]="arrMusica.length === 0" (click)="reproduzirPrimeiraFaixa()">Reproduzir Músicas</button>
               </div>
             </div>
           </div>
         </div>
-        <div class="row mt-5">
+        <div class="row mt-5" *ngIf="!carregando && !erro && !artistaNaoEncontrado">
           <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex titlesMDiv mb-3">
             <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start" >
               <div class="titlesMusic position-relative ps-5">
@@ -172,8 +183,9 @@
             <div class="controlDivs d-flex flex-column w-100">
               <div class="controlDivsInt row">
                 <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start pe-5" >
-                <span class="svg">
-                  <svg width="24" fill="#FFF" height="24" viewBox="0 0 24 24"><path d="M20.7 12.4L7.9 20a.5.5 0 01-.8-.4v-15a.5.5 0 01.8-.4l12.8 7.5a.5.5 0 010 .8z"></path></svg>
+                <span class="svg" role="button" title="Reproduzir prévia" (click)="tocarFaixa(itens)">
+                  <svg *ngIf="playingId !== itens.id" width="24" fill="#FFF" height="24" viewBox="0 0 24 24"><path d="M20.7 12.4L7.9 20a.5.5 0 01-.8-.4v-15a.5.5 0 01.8-.4l12.8 7.5a.5.5 0 010 .8z"></path></svg>
+                  <svg *ngIf="playingId === itens.id" width="24" fill="#dcad54" height="24" viewBox="0 0 24 24"><path d="M8 5h3v14H8zm5 0h3v14h-3z"></path></svg>
                 </span>
                   <div class="text d-flex flex-column align-items-start justify-content-start">
                     <p class="h4"><span class="music-name">{{itens.nome_musica}}</span></p>
@@ -216,7 +228,7 @@
                   </button>
                 </div>
                 <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-center justify-content-end licenca">
-                  <button class="btn btn-primary" (click)="comprarLicensa(i)">COMPRAR LICENÇA
+                  <button class="btn btn-primary" (click)="comprarLicensa(itens)">COMPRAR LICENÇA
                     <svg width="24" height="24" fill="#fff" class="xdBUc" viewBox="0 0 24 24">
                       <path d="M12 15.6a1 1 0 01-.6-.3l-5.5-5.1a1 1 0 011.3-1.5l4.9 4.5 4.8-4.5a1 1 0 111.4 1.5l-5.5 5a1 1 0 01-.7.4z"></path>
                     </svg>

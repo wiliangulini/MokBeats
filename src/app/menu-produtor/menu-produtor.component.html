@@ -55,7 +55,7 @@
           <li class="nav-item" routerLinkActive="active">
             <a class="nav-link h5" [routerLink]="['/formas-de-pagamento']" (click)="closeModal()">Formas de Pagamento <span class="material-icons">chevron_right</span></a>
           </li>
-          <li class="nav-item" routerLinkActive="active">
+          <li class="nav-item" routerLinkActive="active" *ngIf="isProdutor">
             <a class="nav-link h5" [routerLink]="['/artista']" (click)="closeModal()">Artista <span class="material-icons">chevron_right</span></a>
           </li>
         </ul>

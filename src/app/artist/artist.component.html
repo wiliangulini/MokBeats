@@ -118,21 +118,30 @@
             class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column align-items-start justify-content-center">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex p-0">
               <label class="col-sm-2 col-md-2 col-lg-2 col-xl-2 d-flex justify-content-center align-items-center">
-                <img id="imgPerfil" class="w-100 img-fluid" src="./assets/images/smoking.png" alt="foto de perfil">
+                <img id="imgPerfil" class="w-100 img-fluid" [src]="avatarUrl || './assets/images/smoking.png'" alt="foto de perfil">
                 <span id="edit" class="material-icons edit">edit</span>
-                <input type="file" formControlName="upload" name="upload" class="input-file" (change)="onChange($event)"
-                  accept="*/*" id="file" />
+                <input type="file" name="upload" class="input-file" (change)="onChange($event)"
+                  accept="image/png,image/jpeg" id="file" />
               </label>
               <div
                 class="col-sm-10 col-md-10 col-lg-10 col-xl-10 p-0 d-flex justify-content-center align-items-center flex-column">
-                <div
+                <div *ngIf="perfilCarregando" class="text-center py-2">Carregando seu perfil...</div>
+                <div *ngIf="perfilErro" class="alert alert-warning text-center mb-2">
+                  Não foi possível carregar seu perfil. Tente novamente mais tarde.
+                </div>
+                <div *ngIf="!perfilCarregando"
                   class="txt w-100 d-flex justify-content-center align-items-center flex-column position-relative mb-3">
-                  <!--                  <h1 class="mb-2 mt-4 nameArtist">{{nameArtist}}</h1>-->
-                  <input class="mb-2 mt-4 nameArtist" type="text" name="nameArtist" formControlName="nameArtist" />
-                  <!--                  <p class="description">{{descriptionArtist}}</p>-->
+                  <input class="mb-2 mt-4 nameArtist" type="text" name="nameArtist" formControlName="nameArtist"
+                    placeholder="Seu nome artístico" />
                   <textarea class="description" formControlName="textAreaDescription"
-                    name="textAreaDescription"></textarea>
-                  <span id="edit2" (click)="editDescription()" class="material-icons edit2">edit</span>
+                    name="textAreaDescription" placeholder="Fale um pouco sobre você e sua música"></textarea>
+                  <span *ngIf="!perfilEditavel" id="edit2" (click)="editDescription()" class="material-icons edit2">edit</span>
+                  <div *ngIf="perfilEditavel" class="d-flex mt-2">
+                    <button type="button" class="btn btn-primary me-2" [disabled]="savingProfile" (click)="salvarPerfil()">
+                      {{ savingProfile ? 'Salvando...' : 'Salvar' }}
+                    </button>
+                    <button type="button" class="btn btn-secondary" [disabled]="savingProfile" (click)="cancelarEdicaoPerfil()">Cancelar</button>
+                  </div>
                 </div>
                 <div class="styleMusic d-flex justify-content-center align-items-center w-75">
                   <div class="mt-4 me-2" *ngFor="let vx of arrVExtendida; let i = index;">
@@ -141,8 +150,25 @@
                     </a>
                   </div>
                 </div>
-                <button id="reproduzirMusicas" type="button" class="btn btn-primary">Reproduzir Músicas</button>
+                <button id="reproduzirMusicas" type="button" class="btn btn-primary" [disabled]="arrMusica.length === 0" (click)="reproduzirPrimeiraFaixa()">Reproduzir Músicas</button>
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-wrap justify-content-between align-items-center">
+            <div class="d-flex flex-wrap">
+              <a routerLink="/upload" class="btn btn-primary me-2 mb-2">Publicar nova faixa</a>
+              <a routerLink="/dashboard-produtor" class="btn btn-secondary mb-2">Ver dashboard completo</a>
+            </div>
+            <div class="d-flex flex-column align-items-end mb-2">
+              <ng-container *ngIf="resumoVendas; else semResumo">
+                <span class="h6 mb-0">{{ resumoVendas.vendasTotais }} vendas</span>
+                <span class="h6 mb-0">{{ formatBRL(resumoVendas.valorTotalVendas) }}</span>
+              </ng-container>
+              <ng-template #semResumo>
+                <span *ngIf="resumoVendasErro" class="text-muted">Resumo de vendas indisponível.</span>
+              </ng-template>
             </div>
           </div>
         </div>
@@ -207,14 +233,24 @@
               </div>
             </div>
           </div>
+          <div *ngIf="perfilCarregando" class="col-sm-12 text-center py-4">Carregando suas faixas...</div>
+          <div *ngIf="!perfilCarregando && perfilErro" class="col-sm-12 alert alert-warning text-center">
+            Não foi possível carregar suas faixas. Tente novamente mais tarde.
+          </div>
+          <div *ngIf="!perfilCarregando && !perfilErro && arrMusica.length === 0" class="col-sm-12 text-center py-4">
+            Você ainda não publicou faixas. <a routerLink="/upload">Publicar uma faixa</a>
+          </div>
           <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-column border-bottom" id="array"
             *ngFor="let itens of arrMusica; let i = index;">
             <div class="controlDivs d-flex flex-column w-100">
               <div class="controlDivsInt row">
                 <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-start justify-content-start pe-5">
-                  <span class="svg">
-                    <svg width="24" fill="#FFF" height="24" viewBox="0 0 24 24">
+                  <span class="svg" role="button" title="Reproduzir prévia" (click)="tocarFaixa(itens)">
+                    <svg *ngIf="playingId !== itens.id" width="24" fill="#FFF" height="24" viewBox="0 0 24 24">
                       <path d="M20.7 12.4L7.9 20a.5.5 0 01-.8-.4v-15a.5.5 0 01.8-.4l12.8 7.5a.5.5 0 010 .8z"></path>
+                    </svg>
+                    <svg *ngIf="playingId === itens.id" width="24" fill="#dcad54" height="24" viewBox="0 0 24 24">
+                      <path d="M8 5h3v14H8zm5 0h3v14h-3z"></path>
                     </svg>
                   </span>
                   <div class="text d-flex flex-column align-items-start justify-content-start">
@@ -275,6 +311,14 @@
                       </path>
                     </svg>
                   </button>
+                  <button class="btn btn-icons rmv" type="button" data-bs-toggle="tooltip" data-placement="top"
+                    title="Remover faixa" [disabled]="removendoId === itens.id" (click)="removerFaixa(itens)">
+                    <svg width="24" height="24" fill="rgba(255,255,255,.5)" viewBox="0 0 24 24">
+                      <path
+                        d="M6 7h12l-1 13a2 2 0 01-2 2H9a2 2 0 01-2-2L6 7zM9 4h6l1 2H8l1-2z">
+                      </path>
+                    </svg>
+                  </button>
                   <button class="btn btn-icons mobile" type="button">
                     <svg fill="rgba(255,255,255,.5)" height="24px" width="24px" viewBox="0 0 305.406 305.406">
                       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -312,7 +356,7 @@
                   </button>
                 </div>
                 <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex align-items-center justify-content-end licenca">
-                  <button class="btn btn-primary" (click)="comprarLicensa(i)">COMPRAR LICENÇA
+                  <button class="btn btn-primary" (click)="comprarLicensa(itens)">COMPRAR LICENÇA
                     <svg width="24" height="24" fill="#fff" class="xdBUc" viewBox="0 0 24 24">
                       <path
                         d="M12 15.6a1 1 0 01-.6-.3l-5.5-5.1a1 1 0 011.3-1.5l4.9 4.5 4.8-4.5a1 1 0 111.4 1.5l-5.5 5a1 1 0 01-.7.4z">

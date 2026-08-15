@@ -366,6 +366,14 @@ export class MusicasService extends CrudService<Musica> {
     });
   }
 
+  // Faixas do produtor autenticado (área privada — "minhas faixas").
+  // Faixas legadas sem producerId nunca aparecem aqui (R29, Decisão 2).
+  getByProducer(producerId: string): Observable<Musica[]> {
+    return this.http.get<Musica[]>(`${this.baseUrl}/musicas`, {
+      params: { producerId }
+    });
+  }
+
   override save(record: any): Observable<Musica> {
     return super.save(record);
   }

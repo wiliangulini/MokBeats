@@ -1,10 +1,13 @@
-import {Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {Musica, MusicasService} from "../musicas/musicas.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {Subscription} from "rxjs";
 import {AuthService} from "../login/auth.service";
 import {ScrollService} from "../service/scroll.service";
 import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {ProducerProfileService} from "../service/producer-profile.service";
+import {MusicPlayerService} from "../service/music-player.service";
 
 @Component({
     selector: 'app-usuario-artista',
@@ -13,7 +16,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
-export class UsuarioArtistaComponent implements OnInit {
+export class UsuarioArtistaComponent implements OnInit, OnDestroy {
 
   public favorite: Musica = {};
   trecho: any[] = [15, 30, 60];
@@ -72,7 +75,19 @@ export class UsuarioArtistaComponent implements OnInit {
   ]
   arrMusica: Musica[] = [];
   nameArtist: any = '';
-  descriptionArtist: any = 'Xalaika é um produtor musical que reside em Francisco Beltrão';
+  biografia: string = '';
+  avatarUrl: string = '';
+  producerId: string | null = null;
+
+  // Estado de carregamento da identidade do artista (R29, Decisão 1/2).
+  carregando = true;
+  erro = false;
+  artistaNaoEncontrado = false;
+
+  // Preview/player (R29, achado Alto): reaproveita o player global único
+  // (app-player em app.component.html) via MusicPlayerService.
+  playingId: number | null = null;
+  private playerSubscription = new Subscription();
 
   @Output('ngModelChange') update: any = new EventEmitter();
 
@@ -82,6 +97,8 @@ export class UsuarioArtistaComponent implements OnInit {
     private scrollService: ScrollService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private producerProfileService: ProducerProfileService,
+    private musicPlayerService: MusicPlayerService,
     private snackBar: MatSnackBar,
   ) {
     this.formG = this.fb.group({
@@ -98,11 +115,71 @@ export class UsuarioArtistaComponent implements OnInit {
     this.scrollService.scrollUp();
     if (screen.width < 769) document.getElementById('navLeft')!.style.width = '0';
 
+    this.playerSubscription.add(
+      this.musicPlayerService.playPauseAction$.subscribe(({ action, musicId }) => {
+        if (action === 'pause' && this.playingId === musicId) this.playingId = null;
+      })
+    );
+
     this.route.queryParams.subscribe((params: any) => {
-      this.nameArtist = params.nome_produtor || this.nameArtist;
-      this.musicService.filterMusicas({ artistas: [this.nameArtist] }).subscribe((res: any) => {
-        this.arrMusica = res.data ?? res;
+      const producerId = params.producerId || null;
+      const nomeProdutor = params.nome_produtor || this.nameArtist;
+
+      // producerId (contrato novo) tem prioridade; nome_produtor é mantido como
+      // fallback de compatibilidade com links públicos já existentes.
+      if (producerId) {
+        this.carregarPorProducerId(producerId);
+      } else {
+        this.nameArtist = nomeProdutor;
+        this.carregarPorNome(nomeProdutor);
+      }
+    });
+  }
+
+  private carregarPorProducerId(producerId: string): void {
+    this.carregando = true;
+    this.erro = false;
+    this.artistaNaoEncontrado = false;
+    this.producerId = producerId;
+
+    this.producerProfileService.getPublicProfile(producerId).subscribe((perfil) => {
+      if (!perfil) {
+        this.artistaNaoEncontrado = true;
+        this.carregando = false;
+        return;
+      }
+
+      this.nameArtist = perfil.nomeArtistico;
+      this.biografia = perfil.biografia;
+      this.avatarUrl = perfil.avatarUrl;
+      this.carregando = false;
+
+      this.musicService.getByProducer(producerId).subscribe({
+        next: (faixas) => { this.arrMusica = faixas ?? []; },
+        error: () => { this.arrMusica = []; },
       });
+    });
+  }
+
+  private carregarPorNome(nomeProdutor: string): void {
+    this.carregando = true;
+    this.erro = false;
+    this.artistaNaoEncontrado = !nomeProdutor;
+
+    if (!nomeProdutor) {
+      this.carregando = false;
+      return;
+    }
+
+    this.musicService.filterMusicas({ artistas: [nomeProdutor] }).subscribe({
+      next: (res: any) => {
+        this.arrMusica = res.data ?? res;
+        this.carregando = false;
+      },
+      error: () => {
+        this.carregando = false;
+        this.erro = true;
+      },
     });
   }
 
@@ -162,7 +239,7 @@ export class UsuarioArtistaComponent implements OnInit {
     }
   }
 
-  comprarLicensa(i: number): void { this.musicService.comprarLicensa(i); }
+  comprarLicensa(musica: Musica): void { this.musicService.comprarLicensa(musica); }
 
   filtroP(e: any): void { this.select = e; }
 
@@ -177,5 +254,29 @@ export class UsuarioArtistaComponent implements OnInit {
       let timeString: any = minutes.toString().padStart(1) + ':' + seconds.toString().padStart(2, '0');
       this.durationAut = timeString;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.playerSubscription.unsubscribe();
+  }
+
+  tocarFaixa(musica: Musica): void {
+    if (musica.id == null) return;
+
+    if (this.playingId === musica.id) {
+      this.musicPlayerService.onPlayPause('pause', musica.id);
+      this.playingId = null;
+      return;
+    }
+
+    this.musicPlayerService.setCurrentMusicID(musica.id);
+    this.musicPlayerService.setCurrentMusicUrl(musica.url);
+    this.musicPlayerService.setCurrentMusic(musica);
+    this.musicPlayerService.onPlayPause('play', musica.id);
+    this.playingId = musica.id;
+  }
+
+  reproduzirPrimeiraFaixa(): void {
+    if (this.arrMusica.length > 0) this.tocarFaixa(this.arrMusica[0]);
   }
 }
