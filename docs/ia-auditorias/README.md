@@ -48,6 +48,7 @@ Legenda: **Preenchido** = conteúdo real · **Modelo** = stub não preenchido ("
 | R26 | Carrinho — modelo de item, contador, licença | Preenchido | `license-cart-checkout` |
 | R27 | Checkout — fechamento de pedido | Preenchido | `license-cart-checkout` |
 | R28 | QA final — regressão completa | Preenchido | `validacao-qa` |
+| R29 | Página do artista — decisões de Fase 0 (identidade, ownership, carrinho) | Preenchido | `auth-and-guards` / `license-cart-checkout` / `producer-dashboard` |
 
 ## Outros arquivos da pasta
 
@@ -59,5 +60,5 @@ Legenda: **Preenchido** = conteúdo real · **Modelo** = stub não preenchido ("
   do Plano P0 v2.2 (remediação de vulnerabilidades de dependências), arquivados após merge do PR
   #2 em `dev` (commit `20569dc`). Backend encerrado com 0 vulnerabilidades no `npm audit`.
 
-> Todos os relatórios R01–R28 estão **Preenchidos**. Ao planejar uma etapa nova, crie o próximo Rxx
+> Todos os relatórios R01–R29 estão **Preenchidos**. Ao planejar uma etapa nova, crie o próximo Rxx
 > como stub **Modelo** e só o trate como auditoria concluída depois de preenchido.
