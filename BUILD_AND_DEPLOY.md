@@ -47,6 +47,7 @@ cd /home/hustler/Documentos/projetos/MokBeats
 8. ✅ Reinicia PM2 automaticamente
 
 **Vantagens:**
+
 - Processo completo em ~5-10 minutos
 - Sem esquecer nenhum passo
 - Validação automática de cada etapa
@@ -201,7 +202,7 @@ cd /home/hustler/Documentos/projetos/MokBeats
 # IMPORTANTE: Use dist/* para enviar o conteúdo, não a pasta dist/
 rsync -avz --delete dist/* root@31.97.160.61:/var/www/html/gulini.com.br/mokbeats/
 
-# A senha SSH será solicitada: ***REMOVIDA***
+# A senha SSH será solicitada: [CREDENCIAL NÃO VERSIONADA — AUTENTICAÇÃO POR CHAVE SSH]
 ```
 
 **⚠️ ATENÇÃO: Diferença importante**
@@ -225,7 +226,7 @@ rsync -avz --delete dist/ root@31.97.160.61:/var/www/html/gulini.com.br/mokbeats
 
 **Autenticação SSH:**
 
-- **Senha**: `***REMOVIDA***`
+- **Senha**: `[CREDENCIAL NÃO VERSIONADA — AUTENTICAÇÃO POR CHAVE SSH]`
 - A senha será solicitada automaticamente pelo rsync/ssh
 - Digite a senha quando solicitado e pressione Enter
 
@@ -238,7 +239,7 @@ cd /home/hustler/Documentos/projetos/MokBeats
 # Upload da pasta server/ para VPS (excluindo node_modules)
 rsync -avz --delete --exclude=node_modules server/ root@31.97.160.61:/var/www/html/gulini.com.br/mokbeats/server/
 
-# A senha SSH será solicitada: ***REMOVIDA***
+# A senha SSH será solicitada: [CREDENCIAL NÃO VERSIONADA — AUTENTICAÇÃO POR CHAVE SSH]
 
 # ⚠️ IMPORTANTE: node_modules é excluído automaticamente (será instalado na VPS)
 ```
@@ -256,7 +257,7 @@ cd /home/hustler/Documentos/projetos/MokBeats
 # Enviar todos os arquivos de áudio para VPS
 rsync -avz src/assets/audios/ root@31.97.160.61:/var/www/html/gulini.com.br/mokbeats/assets/audios/
 
-# A senha SSH será solicitada: ***REMOVIDA***
+# A senha SSH será solicitada: [CREDENCIAL NÃO VERSIONADA — AUTENTICAÇÃO POR CHAVE SSH]
 ```
 
 **Saída esperada:**
@@ -334,6 +335,7 @@ ls -la node_modules/
 **Por que o arquivo .env é necessário?**
 
 O script `generate-peaks.js` precisa saber onde encontrar os arquivos de áudio:
+
 - **Desenvolvimento** (local): `/home/hustler/.../src/assets/audios/` → `AUDIO_BASE_PATH=../../src`
 - **Produção** (VPS): `/var/www/html/gulini.com.br/mokbeats/assets/audios/` → `AUDIO_BASE_PATH=../../`
 
@@ -384,6 +386,7 @@ ls -la /var/www/html/gulini.com.br/mokbeats/server/.env
 ```
 
 **⚠️ ATENÇÃO:** Este foi o erro que aconteceu no deploy anterior:
+
 - Sem o `.env`, o script detectou ambiente como `development`
 - Com ambiente `development`, ele procurou áudios em `/var/www/html/gulini.com.br/mokbeats/src/assets/audios/` (ERRADO!)
 - Com `.env` correto, ele procurará em `/var/www/html/gulini.com.br/mokbeats/assets/audios/` (CERTO!)
@@ -580,15 +583,18 @@ pm2 flush
 ## 📝 Checklist de Deploy Completo
 
 **Preparação Local:**
+
 - [ ] Build local executado (`npm run build`)
 - [ ] Pasta `dist/` gerada com sucesso
 
 **Upload para VPS:**
+
 - [ ] Upload do frontend para `/var/www/html/gulini.com.br/mokbeats/`
 - [ ] Upload do backend para `/var/www/html/gulini.com.br/mokbeats/server/`
 - [ ] ⚠️ **CRÍTICO:** Arquivos de áudio em `/var/www/html/gulini.com.br/mokbeats/assets/audios/`
 
 **Configuração na VPS:**
+
 - [ ] ⚠️ **CRÍTICO:** Arquivo `.env` criado em `/var/www/html/gulini.com.br/mokbeats/server/` com `NODE_ENV=production`
 - [ ] Audiowaveform instalado na VPS via PPA
 - [ ] Dependências do backend instaladas (`npm install`)
@@ -596,18 +602,21 @@ pm2 flush
 - [ ] Arquivo `data/musicas.json` atualizado com peaks reais
 
 **PM2 e Backend:**
+
 - [ ] PM2 configurado com nome `mok-backend`
 - [ ] PM2 startup configurado
 - [ ] Backend rodando (verificar `pm2 status`)
 - [ ] Logs do backend sem erros
 
 **Validação Final:**
+
 - [ ] API respondendo (`curl localhost:3100/api/musicas`)
 - [ ] Apache configurado e rodando
 - [ ] Site acessível pelo navegador
 - [ ] Waveform carregando rápido (peaks reais)
 
 **Pontos de Atenção:**
+
 - ⚠️ Os 2 passos marcados como CRÍTICOS são essenciais - sem eles, os peaks não serão gerados
 
 ---
