@@ -1,37 +1,77 @@
-# MokBeatsFrontEnd
+# MokBeats
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
+Marketplace de beats e instrumentais para produtores musicais — catálogo, player com waveform, carrinho, checkout, licenciamento e área do produtor.
 
-## Development server
+**Demo:** https://gulini.com.br/mokbeats/
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Funcionalidades
 
-## Code scaffolding
+- Catálogo de músicas com player integrado (waveform via `wavesurfer.js`)
+- Carrinho, checkout e histórico de pedidos
+- Licenciamento com diferentes níveis de valor por faixa
+- Favoritos e playlists
+- Área do produtor: dashboard, upload de arquivos, gestão de faixas
+- Autenticação de usuários (comprador/produtor)
+- Internacionalização (i18next)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Stack
 
-## Build
+**Frontend:** Angular 22 · Angular Material · Bootstrap 5 · ng-bootstrap · RxJS · wavesurfer.js
+**Backend:** Node.js · Express · JWT · bcrypt
+**Testes:** Vitest (unitário) · Cypress (e2e)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Arquitetura
 
-## Running unit tests
+```
+src/app/          frontend Angular (componentes por funcionalidade:
+                   musicas, carrinho, finalizar-compra, player, playlists,
+                   dashboard-produtor, upload-file, favoritos, login...)
+server/
+  src/             API Express (autenticação, pedidos, catálogo)
+  data/            dados da aplicação
+  scripts/         geração de waveform peaks
+cypress/           testes end-to-end
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Frontend e backend vivem no mesmo repositório; o frontend consome a API via proxy (`proxy.conf.json` em desenvolvimento).
 
-## Running end-to-end tests
+## Instalação
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```bash
+git clone https://github.com/wiliangulini/MokBeats.git
+cd MokBeats
+npm install
+cd server && npm install && cd ..
+```
 
-## Further help
+## Variáveis de ambiente
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Backend (`server/.env`, ver `server/.env.production.example`):
 
+| Variável | Descrição |
+|---|---|
+| `NODE_ENV` | Ambiente de execução |
+| `AUDIO_BASE_PATH` | Caminho base para os arquivos de áudio |
+| `JWT_SECRET` | Chave de assinatura dos tokens (gerar com `openssl rand -hex 32`) |
 
-## em musicas.component.html dentro da div é assim que ficava anteriormente:
-<div class="wavesurfer">
- <!--<app-wavesurfer
-      [audioUrl]="itens"
-      [containerId]="'waveform-' + i"
-      (songFinished)="onSongFinished(i)"
-    ></app-wavesurfer>-->
-</div>
+## Comandos
+
+```bash
+npm start              # frontend (ng serve, com proxy para a API)
+npm run build            # build de produção
+npm test                  # testes unitários (Vitest)
+npm run cypress:run        # testes e2e (Cypress)
+npm run e2e                 # sobe o app e roda os testes e2e
+
+# backend (dentro de server/)
+npm start
+npm test
+```
+
+## Testes
+
+Cobertura unitária com Vitest e testes end-to-end com Cypress, incluindo fluxos de carrinho, checkout, login e upload.
+
+## Contexto
+
+Projeto pessoal, com backend próprio (Node/Express) e frontend Angular no mesmo repositório, em produção em `gulini.com.br/mokbeats`.
