@@ -61,3 +61,7 @@ docs/roadmap_tecnico_MokBeats_Codex_Claude.md
 
 _tmp/
 past_tmp/
+
+# Artefatos de depuração e capturas de teste
+.playwright-mcp/
+cypress/screenshots/

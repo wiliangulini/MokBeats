@@ -1,4 +1,0 @@
-[     223ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4200/produtores_mulher-tocando-teclado-e-sentindo-a-musica.jpg:0
-[     303ms] [ERROR] Failed to load resource: the server responded with a status of 504 (Gateway Timeout) @ http://localhost:4200/api/generos:0
-[     321ms] [ERROR] Failed to load resource: the server responded with a status of 504 (Gateway Timeout) @ http://localhost:4200/api/config:0
-[     337ms] [ERROR] ERROR HttpErrorResponse @ http://localhost:4200/vendor.js:58202
